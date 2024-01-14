@@ -2,13 +2,15 @@
 
 #include <string_view>
 
+#include "Chip8Core/Chip8Core.h"
+
 struct GLFWwindow;
 
 class Chip8topia {
 public:
     static constexpr auto PROJECT_NAME = "Chip8topia";
     static constexpr auto PROJECT_VERSION = "0.0.1";
-    static constexpr auto PROJECT_LINK = "";
+    static constexpr auto PROJECT_LINK = "https://github.com/Im-Rises/Chip8topia";
     static constexpr auto PROJECT_AUTHOR = "Im-Rises (Quentin Morel)";
     
 public:
@@ -39,4 +41,6 @@ private:
 
 private:
     GLFWwindow* m_window;
+
+    Chip8Core m_chip8Core;
 };

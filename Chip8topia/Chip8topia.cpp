@@ -211,6 +211,15 @@ int Chip8topia::run() {
     return 0;
 }
 
+void Chip8topia::handleInputs() {
+}
+void Chip8topia::handleUi(float deltaTime) {
+}
+void Chip8topia::updateGame(float deltaTime) {
+}
+void Chip8topia::updateScreen() {
+}
+
 auto Chip8topia::getOpenGLVendor() -> std::string_view {
     return reinterpret_cast<const char*>(glGetString(GL_RENDERER));
 }
