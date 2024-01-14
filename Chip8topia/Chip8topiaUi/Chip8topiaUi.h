@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Chip8topiaDebugger.h"
+
 class Chip8topiaUi {
 public:
     void drawUi();
@@ -17,4 +19,5 @@ private:
 
 private:
     bool m_showAboutPopup = false;
+    Chip8topiaDebugger m_chip8topiaDebugger;
 };

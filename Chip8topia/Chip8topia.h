@@ -3,6 +3,7 @@
 #include <string_view>
 
 #include "Chip8Core/Chip8Core.h"
+#include "Chip8topiaUi/Chip8topiaUi.h"
 
 struct GLFWwindow;
 
@@ -12,7 +13,7 @@ public:
     static constexpr auto PROJECT_VERSION = "0.0.1";
     static constexpr auto PROJECT_LINK = "https://github.com/Im-Rises/Chip8topia";
     static constexpr auto PROJECT_AUTHOR = "Im-Rises (Quentin Morel)";
-    
+
 public:
     Chip8topia();
     Chip8topia(const Chip8topia&) = delete;
@@ -40,6 +41,7 @@ private:
 
 private:
     GLFWwindow* m_window;
-
     Chip8Core m_chip8Core;
+    Chip8topiaUi m_chip8topiaUi;
+
 };

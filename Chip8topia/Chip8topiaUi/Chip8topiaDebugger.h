@@ -2,7 +2,7 @@
 
 class Chip8topiaDebugger {
 public:
-    void drawDebugger();
+    void drawDebuggerMenu();
 
 private:
     void drawRegisters();
