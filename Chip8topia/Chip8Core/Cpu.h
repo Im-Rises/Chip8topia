@@ -1,15 +1,16 @@
-//
-// Created by Quent on 13/01/2024.
-//
-
-#ifndef CHIP8TOPIA_CPU_H
-#define CHIP8TOPIA_CPU_H
-
-
+#pragma once
 
 class Cpu {
+    //    Uint8 ram[4096];
+    //    Uint16 stack[16];
+    //    Uint16 pc;
+    //    Uint8 sp;
+    //
+    //    Uint8 V[16];
+    //    Uint16 I;
+    //
+    //    Uint8 gameTimer;
+    //    Uint8 audioTimer;
+    //
+    //    bool inputs[16];
 };
-
-
-
-#endif // CHIP8TOPIA_CPU_H
