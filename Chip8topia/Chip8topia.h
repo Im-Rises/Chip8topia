@@ -2,6 +2,8 @@
 
 #include <string_view>
 
+struct GLFWwindow;
+
 class Chip8topia {
 public:
     static constexpr auto PROJECT_NAME = "Chip8topia";
@@ -18,7 +20,7 @@ public:
     ~Chip8topia();
 
 public:
-    int run();
+    auto run() -> int;
 
 private:
     void handleInputs();
@@ -29,9 +31,12 @@ private:
 private:
     static auto getOpenGLVendor() -> std::string_view;
     static auto getOpenGLVersion() -> std::string_view;
-    static auto getGLSLVersion() -> std::string_view;
+//    static auto getGLSLVersion() -> std::string_view;
     static auto getGLFWVersion() -> std::string;
     static auto getGladVersion() -> std::string_view;
     static auto getImGuiVersion() -> std::string;
 
+
+private:
+    GLFWwindow* m_window;
 };

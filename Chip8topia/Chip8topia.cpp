@@ -9,6 +9,7 @@
 #include <GLES2/gl2.h>
 #endif
 #include <GLFW/glfw3.h>
+#include <string>
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
@@ -24,15 +25,9 @@ static void glfw_error_callback(int error, const char* description)
 }
 
 Chip8topia::Chip8topia() {
-}
-
-Chip8topia::~Chip8topia() {
-}
-
-int Chip8topia::run() {
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
-        return 1;
+        exit(1);
 
         // Decide GL+GLSL versions
 #if defined(IMGUI_IMPL_OPENGL_ES2)
@@ -58,10 +53,10 @@ int Chip8topia::run() {
 #endif
 
     // Create window with graphics context
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "Dear ImGui GLFW+OpenGL3 example", nullptr, nullptr);
-    if (window == nullptr)
-        return 1;
-    glfwMakeContextCurrent(window);
+    m_window = glfwCreateWindow(1280, 720, "Dear ImGui GLFW+OpenGL3 example", nullptr, nullptr);
+    if (m_window == nullptr)
+        exit(1);
+    glfwMakeContextCurrent(m_window);
     glfwSwapInterval(1); // Enable vsync
 
     // Setup Dear ImGui context
@@ -88,7 +83,7 @@ int Chip8topia::run() {
     }
 
     // Setup Platform/Renderer backends
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplGlfw_InitForOpenGL(m_window, true);
 #ifdef __EMSCRIPTEN__
     ImGui_ImplGlfw_InstallEmscriptenCanvasResizeCallback("#canvas");
 #endif
@@ -110,11 +105,24 @@ int Chip8topia::run() {
     //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf", 15.0f);
     //ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, nullptr, io.Fonts->GetGlyphRangesJapanese());
     //IM_ASSERT(font != nullptr);
+}
 
+Chip8topia::~Chip8topia() {
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
+    glfwDestroyWindow(m_window);
+    glfwTerminate();
+}
+
+int Chip8topia::run() {
     // Our state
     bool show_demo_window = true;
     bool show_another_window = false;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
 
     // Main loop
 #ifdef __EMSCRIPTEN__
@@ -123,7 +131,7 @@ int Chip8topia::run() {
     io.IniFilename = nullptr;
     EMSCRIPTEN_MAINLOOP_BEGIN
 #else
-    while (!glfwWindowShouldClose(window))
+    while (!glfwWindowShouldClose(m_window))
 #endif
     {
         // Poll and handle events (inputs, window resize, etc.)
@@ -178,7 +186,7 @@ int Chip8topia::run() {
         // Rendering
         ImGui::Render();
         int display_w, display_h;
-        glfwGetFramebufferSize(window, &display_w, &display_h);
+        glfwGetFramebufferSize(m_window, &display_w, &display_h);
         glViewport(0, 0, display_w, display_h);
         glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
         glClear(GL_COLOR_BUFFER_BIT);
@@ -195,20 +203,35 @@ int Chip8topia::run() {
             glfwMakeContextCurrent(backup_current_context);
         }
 
-        glfwSwapBuffers(window);
+        glfwSwapBuffers(m_window);
     }
 #ifdef __EMSCRIPTEN__
     EMSCRIPTEN_MAINLOOP_END;
 #endif
-
-    // Cleanup
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
-
-    glfwDestroyWindow(window);
-    glfwTerminate();
-
     return 0;
 }
 
+auto Chip8topia::getOpenGLVendor() -> std::string_view {
+    return reinterpret_cast<const char*>(glGetString(GL_RENDERER));
+}
+
+auto Chip8topia::getOpenGLVersion() -> std::string_view {
+    return reinterpret_cast<const char*>(glGetString(GL_VERSION));
+}
+
+//auto Chip8topia::getGLSLVersion() -> std::string_view {
+//    return reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION));
+//}
+
+auto Chip8topia::getGLFWVersion() -> std::string {
+    return std::to_string(GLFW_VERSION_MAJOR) + "." + std::to_string(GLFW_VERSION_MINOR) + "." +
+           std::to_string(GLFW_VERSION_REVISION);
+}
+
+auto Chip8topia::getGladVersion() -> std::string_view {
+    return "0.1.36";
+}
+
+auto Chip8topia::getImGuiVersion() -> std::string {
+    return IMGUI_VERSION;
+}
