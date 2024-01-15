@@ -36,8 +36,8 @@ public:
 private:
     void handleInputs();
     void handleUi(float deltaTime);
-    void updateGame(float deltaTime);
-    void updateScreen();
+    void handleGameUpdate(float deltaTime);
+    void handleScreenUpdate();
 
 private:
     void toggleFullscreen();
@@ -48,5 +48,4 @@ private:
     GLFWwindow* m_window;
     Chip8Core m_chip8Core;
     Chip8topiaUi m_chip8topiaUi;
-
 };

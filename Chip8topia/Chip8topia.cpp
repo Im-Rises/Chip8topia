@@ -84,8 +84,8 @@ Chip8topia::Chip8topia() {
     ImGuiStyle& style = ImGui::GetStyle();
     if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {
-        style.WindowRounding = 0.0f;
-        style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+        style.WindowRounding = 0.0F;
+        style.Colors[ImGuiCol_WindowBg].w = 1.0F;
     }
 
     // Setup Platform/Renderer backends
@@ -153,8 +153,8 @@ auto Chip8topia::run() -> int {
 
         handleInputs();
         handleUi(deltaTime);
-        updateGame(deltaTime);
-        updateScreen();
+        handleGameUpdate(deltaTime);
+        handleScreenUpdate();
     }
 #ifdef __EMSCRIPTEN__
     EMSCRIPTEN_MAINLOOP_END;
@@ -181,11 +181,11 @@ void Chip8topia::handleUi(float deltaTime) {
     ImGui::Render();
 }
 
-void Chip8topia::updateGame(float deltaTime) {
+void Chip8topia::handleGameUpdate(float deltaTime) {
     //    m_chip8Core.update(deltaTime);
 }
 
-void Chip8topia::updateScreen() {
+void Chip8topia::handleScreenUpdate() {
     // todo: move this code ?
     const ImGuiIO& io = ImGui::GetIO();
     static constexpr ImVec4 clear_color = ImVec4(0.45F, 0.55F, 0.60F, 1.00F);
@@ -206,4 +206,19 @@ void Chip8topia::updateScreen() {
     }
 
     glfwSwapBuffers(m_window);
+}
+
+void Chip8topia::toggleFullscreen() {
+    // AUTO GENERATED CODE BY GITHUB COPILOT
+
+    //    if (m_fullscreen) {
+    //        glfwSetWindowMonitor(m_window, nullptr, m_windowedX, m_windowedY, m_windowedWidth, m_windowedHeight, 0);
+    //    } else {
+    //        glfwGetWindowPos(m_window, &m_windowedX, &m_windowedY);
+    //        glfwGetWindowSize(m_window, &m_windowedWidth, &m_windowedHeight);
+    //        GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+    //        const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+    //        glfwSetWindowMonitor(m_window, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
+    //    }
+    //    m_fullscreen = !m_fullscreen;
 }
