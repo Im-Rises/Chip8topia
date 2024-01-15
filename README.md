@@ -1,8 +1,15 @@
 # Chip8topia
 
+## TODO
+
+- [ ] Add glad init in Chip8topia.cpp
+- [ ] Code the Chip8Core
+- [ ] Link the code from Chip8Core to Chip8topiaDebugger and Chip8topiaUi
+
 Le code ImGui de debug Chip8 n'est pas intégré au Chip8Core pour des raisons de portabilité.
 On est pas sur un moteur de jeu, il est donc préferrable de laisser imgui dans des classes séparées et dans ces classes
 d'envoyer les données à afficher à imgui.
+<!--
 
 ```mermaid
 graph LR
@@ -30,10 +37,10 @@ graph LR
     end
     
     CD --> CPU
+
     CD --> RAM
     CD --> PPU
-    
-    
+
 ```
 
 %%ROM
@@ -52,3 +59,4 @@ RAM[RAM]
 ROM[ROM]
 PPU[PPU]
 
+-->

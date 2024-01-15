@@ -2,8 +2,8 @@
 
 #include <string_view>
 
-#include "Chip8Core/Chip8Core.h"
 #include "Chip8topiaUi/Chip8topiaUi.h"
+#include "Chip8Emulator/Chip8Emulator.h"
 
 struct GLFWwindow;
 
@@ -46,6 +46,6 @@ private:
 
 private:
     GLFWwindow* m_window;
-    Chip8Core m_chip8Core;
+    Chip8Emulator m_chip8Emulator;
     Chip8topiaUi m_chip8topiaUi;
 };

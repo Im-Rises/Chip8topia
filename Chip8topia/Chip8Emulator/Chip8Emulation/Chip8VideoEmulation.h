@@ -1,0 +1,15 @@
+//
+// Created by Quent on 15/01/2024.
+//
+
+#ifndef CHIP8TOPIA_CHIP8VIDEOEMULATION_H
+#define CHIP8TOPIA_CHIP8VIDEOEMULATION_H
+
+
+
+class Chip8VideoEmulation {
+};
+
+
+
+#endif // CHIP8TOPIA_CHIP8VIDEOEMULATION_H
