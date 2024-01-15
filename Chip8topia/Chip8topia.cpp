@@ -14,6 +14,7 @@
 #endif
 #include <GLFW/glfw3.h>
 #include <string>
+#include <chrono>
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
@@ -60,8 +61,8 @@ Chip8topia::Chip8topia() {
     if (m_window == nullptr)
         exit(1);
     glfwMakeContextCurrent(m_window);
-    glfwSwapInterval(1); // Enable vsync
-                         //    glfwSwapInterval(0); // Disable vsync
+    //    glfwSwapInterval(1); // Enable vsync
+    glfwSwapInterval(0); // Disable vsync
 
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
@@ -129,30 +130,30 @@ auto Chip8topia::getImGuiVersion() -> std::string {
     return IMGUI_VERSION;
 }
 
-int Chip8topia::run() {
+auto Chip8topia::run() -> int {
 #ifdef _WIN32
     timeBeginPeriod(1);
 #endif
 
-    bool show_demo_window = true;
-    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-
-    ImGuiIO& io = ImGui::GetIO();
-    (void)io;
-
-
 #ifdef __EMSCRIPTEN__
-    // For an Emscripten build we are disabling file-system access, so let's not attempt to do a fopen() of the imgui.ini file.
-    // You may manually call LoadIniSettingsFromMemory() to load settings from your own storage.
     io.IniFilename = nullptr;
     EMSCRIPTEN_MAINLOOP_BEGIN
 #else
+
+    auto lastTime = std::chrono::high_resolution_clock::now();
+    auto currentTime = std::chrono::high_resolution_clock::now();
+    float deltaTime = 0.0F;
+
     while (glfwWindowShouldClose(m_window) == 0)
 #endif
     {
+        currentTime = std::chrono::high_resolution_clock::now();
+        deltaTime = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - lastTime).count();
+        lastTime = currentTime;
+
         handleInputs();
-        handleUi(0.0F);
-        updateGame(0.0F);
+        handleUi(deltaTime);
+        updateGame(deltaTime);
         updateScreen();
     }
 #ifdef __EMSCRIPTEN__
@@ -181,12 +182,13 @@ void Chip8topia::handleUi(float deltaTime) {
 }
 
 void Chip8topia::updateGame(float deltaTime) {
+    //    m_chip8Core.update(deltaTime);
 }
 
 void Chip8topia::updateScreen() {
     // todo: move this code ?
     const ImGuiIO& io = ImGui::GetIO();
-    static constexpr ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+    static constexpr ImVec4 clear_color = ImVec4(0.45F, 0.55F, 0.60F, 1.00F);
 
     int display_w, display_h;
     glfwGetFramebufferSize(m_window, &display_w, &display_h);

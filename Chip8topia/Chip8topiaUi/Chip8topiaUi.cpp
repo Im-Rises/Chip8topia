@@ -75,7 +75,21 @@ void Chip8topiaUi::drawDesignMenu() {
 void Chip8topiaUi::drawAboutMenu() {
     if (ImGui::BeginMenu("About..."))
     {
-        m_showAboutPopup = true;
+        //        if (ImGui::IsItemClicked())
+        //        {
+        //            m_showAboutPopup = true;
+        //        }
+        //
+        //        if (ImGui::IsItemHovered())
+        //        {
+        //            ImGui::SetTooltip("About Chip8topia");
+        //        }
+
+        if (ImGui::MenuItem("About Chip8topia"))
+        {
+            m_showAboutPopup = true;
+        }
+
         ImGui::EndMenu();
     }
 }
@@ -93,25 +107,20 @@ void Chip8topiaUi::drawAboutPopUpWindow() {
         ImGui::Text("Version: %s", Chip8topia::PROJECT_VERSION);
         ImGui::NewLine();
 
-        ImGui::Text("Developed by: ");
-        ImGui::Text("%s", Chip8topia::PROJECT_AUTHOR);
+        ImGui::Text("Developed by:");
+        ImGui::Text(" - %s", Chip8topia::PROJECT_AUTHOR);
         ImGui::NewLine();
-        ImGui::Text("Github: %s", Chip8topia::PROJECT_LINK);
+        ImGui::Text("Github:");
+        ImGui::Text(" - %s", Chip8topia::PROJECT_LINK);
         ImGui::NewLine();
 
-        //        ImGui::Separator();
-        ImGui::Text("Build with: ");
-        ImGui::Text(" - OpenGL Vendor: %s", Chip8topia::getOpenGLVendor().data());
-        ImGui::Text(" - OpenGL Version: %s", Chip8topia::getOpenGLVersion().data());
-        ImGui::Text(" - GLFW Version: %s", Chip8topia::getGLFWVersion().data());
-        ImGui::Text(" - Glad Version: %s", Chip8topia::getGladVersion().data());
-        ImGui::Text(" - ImGui Version: %s", Chip8topia::getImGuiVersion().data());
-        ImGui::NewLine();
-        //        ImGui::Separator();
-
-        //        // Is this really necessary ?
-        //        if (ImGui::Button("Close"))
-        //        { ImGui::CloseCurrentPopup(); }
+        //        ImGui::Text("Libraries used: ");
+        //        ImGui::Text(" - OpenGL Vendor: %s", Chip8topia::getOpenGLVendor().data());
+        //        ImGui::Text(" - OpenGL Version: %s", Chip8topia::getOpenGLVersion().data());
+        //        ImGui::Text(" - GLFW Version: %s", Chip8topia::getGLFWVersion().data());
+        //        ImGui::Text(" - Glad Version: %s", Chip8topia::getGladVersion().data());
+        //        ImGui::Text(" - ImGui Version: %s", Chip8topia::getImGuiVersion().data());
+        //        ImGui::NewLine();
 
         ImGui::EndPopup();
     }

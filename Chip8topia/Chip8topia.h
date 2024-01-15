@@ -40,6 +40,11 @@ private:
     void updateScreen();
 
 private:
+    void toggleFullscreen();
+    void togglePause();
+    void toggleStep();
+
+private:
     GLFWwindow* m_window;
     Chip8Core m_chip8Core;
     Chip8topiaUi m_chip8topiaUi;
