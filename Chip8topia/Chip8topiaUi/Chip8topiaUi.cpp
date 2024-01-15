@@ -2,7 +2,6 @@
 
 #include <imgui/imgui.h>
 
-// Send the chip8core to the debugger or the chip8topia to the debugger
 #include "../Chip8Core/Chip8Core.h"
 #include "../Chip8topia.h"
 
@@ -16,9 +15,9 @@ void Chip8topiaUi::drawMainMenuBar() {
         drawFileMenu();
         drawViewMenu();
         drawDesignMenu();
-        drawToolsMenu();
-        drawAboutMenu();
+        //        drawToolsMenu();
         m_chip8topiaDebugger.drawDebuggerMenu();
+        drawAboutMenu();
 
         ImGui::EndMainMenuBar();
     }
@@ -61,34 +60,31 @@ void Chip8topiaUi::drawDesignMenu() {
         ImGui::EndMenu();
     }
 }
-void Chip8topiaUi::drawToolsMenu() {
-    if (ImGui::BeginMenu("Tools"))
-    {
-        if (ImGui::MenuItem("Debugger"))
-        {
-            //                m_chip8.setDebuggerMode(true);
-            // set a tooltip to show the window of each debugger tool
-        }
-        ImGui::EndMenu();
-    }
-}
+// void Chip8topiaUi::drawToolsMenu() {
+//     if (ImGui::BeginMenu("Tools"))
+//     {
+//         if (ImGui::MenuItem("Debugger"))
+//         {
+//             //                m_chip8.setDebuggerMode(true);
+//             // set a tooltip to show the window of each debugger tool
+//         }
+//         ImGui::EndMenu();
+//     }
+// }
 
 void Chip8topiaUi::drawAboutMenu() {
     if (ImGui::BeginMenu("About..."))
     {
-        if (ImGui::MenuItem("About %s ...", Chip8topia::PROJECT_NAME))
-        {
-            m_showAboutPopup = true;
-        }
+        m_showAboutPopup = true;
         ImGui::EndMenu();
     }
 }
 
 void Chip8topiaUi::drawAboutPopUpWindow() {
-    //    if (m_showAboutPopup)
-    //    {
-    //        ImGui::OpenPopup("About");
-    //    }
+    if (m_showAboutPopup)
+    {
+        ImGui::OpenPopup("About");
+    }
     if (ImGui::BeginPopupModal("About", &m_showAboutPopup,
             ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize |
                 ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse))
@@ -113,9 +109,9 @@ void Chip8topiaUi::drawAboutPopUpWindow() {
         ImGui::NewLine();
         //        ImGui::Separator();
 
-        // Is this really necessary ?
-        if (ImGui::Button("Close"))
-        { ImGui::CloseCurrentPopup(); }
+        //        // Is this really necessary ?
+        //        if (ImGui::Button("Close"))
+        //        { ImGui::CloseCurrentPopup(); }
 
         ImGui::EndPopup();
     }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chip8topiaDebugger.h"
+#include "Chip8topiaDebugger/Chip8topiaDebugger.h"
 
 class Chip8topiaUi {
 public:
@@ -12,7 +12,7 @@ private:
     void drawFileMenu();
     void drawViewMenu();
     void drawDesignMenu(); // Change background color and draw color
-    void drawToolsMenu();
+                           //    void drawToolsMenu();
     void drawAboutMenu();
 
     void drawAboutPopUpWindow();
