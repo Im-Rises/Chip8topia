@@ -1,15 +1,6 @@
-//
-// Created by Quent on 15/01/2024.
-//
+#pragma once
 
-#ifndef CHIP8TOPIA_CHIP8VIDEOEMULATION_H
-#define CHIP8TOPIA_CHIP8VIDEOEMULATION_H
-
-
+// Handle webgl and opengl screen drawing
 
 class Chip8VideoEmulation {
 };
-
-
-
-#endif // CHIP8TOPIA_CHIP8VIDEOEMULATION_H

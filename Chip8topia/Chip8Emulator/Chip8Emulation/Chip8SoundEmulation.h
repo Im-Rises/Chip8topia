@@ -1,15 +1,6 @@
-//
-// Created by Quent on 15/01/2024.
-//
+#pragma once
 
-#ifndef CHIP8TOPIA_CHIP8SOUNDEMULATION_H
-#define CHIP8TOPIA_CHIP8SOUNDEMULATION_H
-
-
+// Handle webaudio and openal sound drawing
 
 class Chip8SoundEmulation {
 };
-
-
-
-#endif // CHIP8TOPIA_CHIP8SOUNDEMULATION_H
