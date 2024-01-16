@@ -21,8 +21,8 @@ public:
     void clock();
 
 private:
-    void computeOpcode(uint16 opcode);
     uint16 fetchOpcode();
+    void computeOpcode(uint16 opcode);
 
     void clockTimers();
 
