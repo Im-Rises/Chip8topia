@@ -19,12 +19,54 @@ public:
 
 public:
     void clock();
+    void clockTimers();
 
 private:
     uint16 fetchOpcode();
     void computeOpcode(uint16 opcode);
 
-    void clockTimers();
+    void CLS();
+    void RET();
+    void SYS(uint16 address);
+
+    void JP(uint16 address);
+    void CALL(uint16 address);
+    void SE(uint8 Vx, uint8 byte);
+    void SNE(uint8 Vx, uint8 byte);
+    void SE(uint8 Vx, uint8 Vy);
+    void LD(uint8 Vx, uint8 byte);
+    void ADD(uint8 Vx, uint8 byte);
+
+    void LD(uint8 Vx, uint8 Vy);
+    void OR(uint8 Vx, uint8 Vy);
+    void AND(uint8 Vx, uint8 Vy);
+    void XOR(uint8 Vx, uint8 Vy);
+    void ADD(uint8 Vx, uint8 Vy);
+    void SUB(uint8 Vx, uint8 Vy);
+    void SHR(uint8 Vx, uint8 Vy);
+    void SUBN(uint8 Vx, uint8 Vy);
+    void SHL(uint8 Vx, uint8 Vy);
+
+    void SNE(uint8 Vx, uint8 Vy);
+    void LD(uint16 address);
+    void JP(uint8 V0, uint16 address);
+    void RND(uint8 Vx, uint8 byte);
+    void DRW(uint8 Vx, uint8 Vy, uint8 nibble);
+
+    void SKP(uint8 Vx);
+    void SKNP(uint8 Vx);
+
+    void LD(uint8 Vx, uint8 DT);
+    void LD(uint8 Vx);
+
+    void LD(uint8 DT, uint8 Vx);
+    void LD(uint8 ST, uint8 Vx);
+    void ADD(uint8 I, uint8 Vx);
+
+    void LD(uint8 F, uint8 Vx);
+    void LD(uint8 B, uint8 Vx);
+    void LD(uint8 I, uint8 Vx);
+    void LD(uint8 Vx, uint8 I);
 
 private:
     struct OpcodeDecoder {

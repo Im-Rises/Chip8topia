@@ -16,6 +16,17 @@ void Cpu::clock() {
     //    clockTimers();
 }
 
+void Cpu::clockTimers() {
+    if (gameTimer > 0)
+    {
+        gameTimer--;
+    }
+    if (audioTimer > 0)
+    {
+        audioTimer--;
+    }
+}
+
 uint16 Cpu::fetchOpcode() {
     const uint16 opcode = (m_memory[m_pc] << 8) | (m_memory[m_pc + 1]);
     m_pc += 2;
@@ -246,16 +257,5 @@ void Cpu::computeOpcode(uint16 opcode) {
         }
         break;
     }
-    }
-}
-
-void Cpu::clockTimers() {
-    if (gameTimer > 0)
-    {
-        gameTimer--;
-    }
-    if (audioTimer > 0)
-    {
-        audioTimer--;
     }
 }
