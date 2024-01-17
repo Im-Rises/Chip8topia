@@ -1,5 +1,7 @@
 # Chip8topia
 
+https://en.wikipedia.org/wiki/CHIP-8#Further_reading
+
 ## TODO
 
 - [ ] Add glad init in Chip8topia.cpp

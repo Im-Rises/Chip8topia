@@ -2,7 +2,6 @@
 
 #include <imgui/imgui.h>
 
-#include "../Chip8Core/Chip8Core.h"
 #include "../Chip8topia.h"
 
 void Chip8topiaUi::drawUi() {
@@ -32,15 +31,29 @@ void Chip8topiaUi::drawFileMenu() {
         { /* Do stuff */
             // Reset emulation and load rom to memory
         }
-        //            if (ImGui::MenuItem("Close", "Ctrl+W")) { my_tool_active = false; }
-        //            if (ImGui::MenuItem("Exit", "Alt+F4")) { glfwSetWindowShouldClose(window, true); }
+        if (ImGui::MenuItem("Exit", "Alt+F4"))
+        {
+            //            glfwSetWindowShouldClose(window, true);
+        }
         ImGui::EndMenu();
     }
 }
 void Chip8topiaUi::drawViewMenu() {
     if (ImGui::BeginMenu("View"))
     {
-        //            if (ImGui::MenuItem("FullScreen", "F11")) { toggleFullScreen(); }
+        if (ImGui::MenuItem("FullScreen", "F11"))
+        {
+            //            toggleFullScreen();
+        }
+        //        if (ImGui::MenuItem("Pause", "Space"))
+        //        {
+        ////            togglePause();
+        //        }
+        //        if (ImGui::MenuItem("Step", "S"))
+        //        {
+        ////            toggleStep();
+        //        }
+
         ImGui::EndMenu();
     }
 }

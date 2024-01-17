@@ -35,8 +35,8 @@ public:
 
 private:
     void handleInputs();
-    void handleUi(float deltaTime);
-    void handleGameUpdate(float deltaTime);
+    void handleUi(const float deltaTime);
+    void handleGameUpdate(const float deltaTime);
     void handleScreenUpdate();
 
 private:
