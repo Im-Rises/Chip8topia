@@ -295,36 +295,64 @@ void Cpu::computeOpcode(const uint16 opcode) {
     }
 }
 void Cpu::CLS() {
+    //    m_ppu->clearScreen();
 }
 void Cpu::RET() {
+    m_pc = m_stack[m_sp--];
 }
 void Cpu::SYS(const uint16 address) {
+    // This opcode is only used on the old computers on which Chip-8 was originally implemented.
+    // It is ignored by modern interpreters.
+    m_pc += 2;
 }
 void Cpu::JP(const uint16 address) {
+    m_pc = address;
 }
 void Cpu::CALL(const uint16 address) {
+    m_stack[++m_sp] = m_pc;
+    m_pc = address;
 }
 void Cpu::SE_Vx_byte(const uint8 x, const uint8 byte) {
+    if (m_V[x] == byte)
+    {
+        m_pc += 2;
+    }
 }
 void Cpu::SNE_Vx_byte(const uint8 x, const uint8 byte) {
+    if (m_V[x] != byte)
+    {
+        m_pc += 2;
+    }
 }
 void Cpu::SE_Vx_Vy(const uint8 x, const uint8 y) {
+    if (m_V[x] == m_V[y])
+    {
+        m_pc += 2;
+    }
 }
 void Cpu::LD_Vx_byte(const uint8 x, const uint8 byte) {
+    m_V[x] = byte;
 }
 void Cpu::ADD_Vx_byte(const uint8 x, const uint8 byte) {
+    m_V[x] += byte;
 }
 void Cpu::LD_Vx_Vy(const uint8 x, const uint8 y) {
+    m_V[x] = m_V[y];
 }
 void Cpu::OR_Vx_Vy(const uint8 x, const uint8 y) {
+    m_V[x] |= m_V[y];
 }
 void Cpu::AND_Vx_Vy(const uint8 x, const uint8 y) {
+    m_V[x] &= m_V[y];
 }
 void Cpu::XOR_Vx_Vy(const uint8 x, const uint8 y) {
+    m_V[x] ^= m_V[y];
 }
 void Cpu::ADD_Vx_Vy(const uint8 x, const uint8 y) {
+    m_V[x] += m_V[y];
 }
 void Cpu::SUB_Vx_Vy(const uint8 x, const uint8 y) {
+    m_V[x] -= m_V[y];
 }
 void Cpu::SHR_Vx_Vy(const uint8 x, const uint8 y) {
 }

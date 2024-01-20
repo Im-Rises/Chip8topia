@@ -2,6 +2,9 @@
 
 #include "binaryLib/binaryLib.h"
 #include <array>
+#include <memory>
+
+class Ppu;
 
 class Cpu {
 public:
@@ -73,4 +76,6 @@ private:
 
     uint8 gameTimer;
     uint8 audioTimer;
+
+    std::shared_ptr<Ppu> m_ppu;
 };
