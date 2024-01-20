@@ -193,19 +193,17 @@ void Chip8topia::handleGameUpdate(const float deltaTime) {
 
 void Chip8topia::handleScreenUpdate() {
     // todo: move this code ?
+    const ImGuiIO& io = ImGui::GetIO();
+    static constexpr ImVec4 clear_color = ImVec4(0.45F, 0.55F, 0.60F, 1.00F);
+
     if (!m_isFullScreen)
     {
         glfwGetWindowPos(m_window, &m_windowedPosX, &m_windowedPosY);
         glfwGetWindowSize(m_window, &m_windowedWidth, &m_windowedHeight);
     }
 
-    // todo: move this code ?
-    const ImGuiIO& io = ImGui::GetIO();
-    static constexpr ImVec4 clear_color = ImVec4(0.45F, 0.55F, 0.60F, 1.00F);
-
-    int display_w, display_h;
-    glfwGetFramebufferSize(m_window, &display_w, &display_h);
-    glViewport(0, 0, display_w, display_h);
+    glfwGetFramebufferSize(m_window, &m_currentWidth, &m_currentHeight);
+    glViewport(0, 0, m_currentWidth, m_currentHeight);
     glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
     glClear(GL_COLOR_BUFFER_BIT);
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -248,13 +246,6 @@ void Chip8topia::toggleFullScreen() {
 }
 
 void Chip8topia::getWindowedDimensions(int& width, int& height) const {
-    if (m_isFullScreen)
-    {
-        glfwGetWindowSize(m_window, &width, &height);
-    }
-    else
-    {
-        width = m_windowedWidth;
-        height = m_windowedHeight;
-    }
+    width = m_currentWidth;
+    height = m_currentHeight;
 }

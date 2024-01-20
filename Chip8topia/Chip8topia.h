@@ -50,6 +50,8 @@ private:
     Chip8topiaUi m_chip8topiaUi;
 
     bool m_isFullScreen = false;
+    int m_currentWidth = 1280;
+    int m_currentHeight = 720;
     int m_windowedWidth = 1280;
     int m_windowedHeight = 720;
     int m_windowedPosX = 0;
