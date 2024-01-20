@@ -163,7 +163,7 @@ void Cpu::computeOpcode(const uint16 opcode) {
         case 0xE: {
             // 8XYE - SHL Vx {, Vy}
             // Set Vx = Vx SHL 1.
-            SHL_Vx(nibble3); // TODO: Check if Vy is used
+            SHL_Vx(nibble3);
             break;
         }
         default:
@@ -433,7 +433,14 @@ void Cpu::LD_Vx_DT(const uint8 x) {
 }
 
 void Cpu::LD_Vx_K(const uint8 x) {
-    m_V[x] = m_input->waitForKeyPress(x);
+    if (m_input->isKeyPressed(x))
+    {
+        m_V[x] = x;
+    }
+    else
+    {
+        m_pc -= 2;
+    }
 }
 
 void Cpu::LD_DT_Vx(const uint8 x) {

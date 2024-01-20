@@ -13,5 +13,4 @@ public:
 
 public:
     [[nodiscard]] auto isKeyPressed(const uint8 Vx) const -> bool;
-    [[nodiscard]] auto waitForKeyPress(const uint8 x) -> bool;
 };
