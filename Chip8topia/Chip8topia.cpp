@@ -94,6 +94,8 @@ Chip8topia::Chip8topia() {
     ImGui_ImplGlfw_InstallEmscriptenCanvasResizeCallback("#canvas");
 #endif
     ImGui_ImplOpenGL3_Init(glsl_version);
+
+    m_chip8topiaUi.init(this);
 }
 
 Chip8topia::~Chip8topia() {
@@ -128,6 +130,40 @@ auto Chip8topia::getGladVersion() -> std::string_view {
 
 auto Chip8topia::getImGuiVersion() -> std::string {
     return IMGUI_VERSION;
+}
+
+void Chip8topia::toggleFullScreen() {
+    if (!m_isFullScreen)
+    {
+        int count;
+        GLFWmonitor** monitors = glfwGetMonitors(&count);
+        for (int i = 0; i < count; i++)
+        {
+            int x, y;
+            int width, height;
+            glfwGetMonitorWorkarea(monitors[i], &x, &y, &width, &height);
+
+            if (m_windowedPosX >= x && m_windowedPosX <= x + width && m_windowedPosY >= y && m_windowedPosY <= y + height)
+            {
+                glfwSetWindowMonitor(m_window, monitors[i], x, y, width, height, 0);
+                break;
+            }
+        }
+
+        //        GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+        //        const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+        //        glfwSetWindowMonitor(m_window, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
+    }
+    else
+    {
+        glfwSetWindowMonitor(m_window, nullptr, m_windowedPosX, m_windowedPosY, m_windowedWidth, m_windowedHeight, 0);
+    }
+
+    m_isFullScreen = !m_isFullScreen;
+}
+
+void Chip8topia::close() {
+    glfwSetWindowShouldClose(m_window, 1);
 }
 
 auto Chip8topia::run() -> int {
@@ -187,6 +223,13 @@ void Chip8topia::handleGameUpdate(const float deltaTime) {
 
 void Chip8topia::handleScreenUpdate() {
     // todo: move this code ?
+    if (!m_isFullScreen)
+    {
+        glfwGetWindowPos(m_window, &m_windowedPosX, &m_windowedPosY);
+        glfwGetWindowSize(m_window, &m_windowedWidth, &m_windowedHeight);
+    }
+
+    // todo: move this code ?
     const ImGuiIO& io = ImGui::GetIO();
     static constexpr ImVec4 clear_color = ImVec4(0.45F, 0.55F, 0.60F, 1.00F);
 
@@ -206,19 +249,4 @@ void Chip8topia::handleScreenUpdate() {
     }
 
     glfwSwapBuffers(m_window);
-}
-
-void Chip8topia::toggleFullscreen() {
-    // AUTO GENERATED CODE BY GITHUB COPILOT
-
-    //    if (m_fullscreen) {
-    //        glfwSetWindowMonitor(m_window, nullptr, m_windowedX, m_windowedY, m_windowedWidth, m_windowedHeight, 0);
-    //    } else {
-    //        glfwGetWindowPos(m_window, &m_windowedX, &m_windowedY);
-    //        glfwGetWindowSize(m_window, &m_windowedWidth, &m_windowedHeight);
-    //        GLFWmonitor* monitor = glfwGetPrimaryMonitor();
-    //        const GLFWvidmode* mode = glfwGetVideoMode(monitor);
-    //        glfwSetWindowMonitor(m_window, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
-    //    }
-    //    m_fullscreen = !m_fullscreen;
 }

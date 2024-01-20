@@ -4,12 +4,16 @@
 
 #include "../Chip8topia.h"
 
+void Chip8topiaUi::init(Chip8topia* chip8topia) {
+    m_chip8topia = chip8topia;
+}
+
 void Chip8topiaUi::drawUi() {
     drawMainMenuBar();
 }
 
 void Chip8topiaUi::drawMainMenuBar() {
-    if (ImGui::BeginMainMenuBar())
+    if (m_isMenuBarOpen && ImGui::BeginMainMenuBar())
     {
         drawFileMenu();
         drawViewMenu();
@@ -29,11 +33,12 @@ void Chip8topiaUi::drawFileMenu() {
     {
         if (ImGui::MenuItem("Open rom..", "Ctrl+O"))
         { /* Do stuff */
-            // Reset emulation and load rom to memory
+            // Reset emulation, open file explorer and search path to file to rom
+            // Get rom path and read it.
         }
         if (ImGui::MenuItem("Exit", "Alt+F4"))
         {
-            //            glfwSetWindowShouldClose(window, true);
+            m_chip8topia->close();
         }
         ImGui::EndMenu();
     }
@@ -43,16 +48,12 @@ void Chip8topiaUi::drawViewMenu() {
     {
         if (ImGui::MenuItem("FullScreen", "F11"))
         {
-            //            toggleFullScreen();
+            m_chip8topia->toggleFullScreen();
         }
-        //        if (ImGui::MenuItem("Pause", "Space"))
-        //        {
-        ////            togglePause();
-        //        }
-        //        if (ImGui::MenuItem("Step", "S"))
-        //        {
-        ////            toggleStep();
-        //        }
+        if (ImGui::MenuItem("Show/Hide MenuBar", "F12"))
+        {
+            m_isMenuBarOpen = !m_isMenuBarOpen;
+        }
 
         ImGui::EndMenu();
     }
