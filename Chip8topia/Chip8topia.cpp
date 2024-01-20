@@ -175,6 +175,8 @@ void Chip8topia::close() {
 
 void Chip8topia::handleInputs() {
     glfwPollEvents();
+
+    m_chip8topiaInputHandler.handleInputs();
 }
 
 void Chip8topia::handleUi(const float deltaTime) {
