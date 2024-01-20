@@ -1,10 +1,13 @@
 #pragma once
 
 #include "binaryLib/binaryLib.h"
+
+// TODO: Move to .cpp
 #include <array>
 #include <memory>
 
 class Ppu;
+class Input;
 
 class Cpu {
 public:
@@ -25,7 +28,7 @@ public:
     void clockTimers();
 
 private:
-    auto fetchOpcode() -> uint16;
+    [[nodiscard]] auto fetchOpcode() -> uint16;
     void computeOpcode(const uint16 opcode);
 
     inline void CLS();
@@ -44,9 +47,9 @@ private:
     inline void XOR_Vx_Vy(const uint8 x, const uint8 y);
     inline void ADD_Vx_Vy(const uint8 x, const uint8 y);
     inline void SUB_Vx_Vy(const uint8 x, const uint8 y);
-    inline void SHR_Vx_Vy(const uint8 x, const uint8 y); // TODO: Check if Vy is used
+    inline void SHR_Vx(const uint8 x);
     inline void SUBN_Vx_Vy(const uint8 x, const uint8 y);
-    inline void SHL_Vx_Vy(const uint8 x, const uint8 y); // TODO: Check if Vy is used
+    inline void SHL_Vx(const uint8 x);
     inline void SNE_Vx_Vy(const uint8 x, const uint8 y);
     inline void LD_I_addr(const uint16 address);
     inline void JP_V0_addr(const uint16 address);
@@ -74,8 +77,9 @@ private:
     std::array<uint8, 16> m_V;
     uint16 m_I;
 
-    uint8 gameTimer;
-    uint8 audioTimer;
+    uint8 m_gameTimer;
+    uint8 m_audioTimer;
 
     std::shared_ptr<Ppu> m_ppu;
+    std::shared_ptr<Input> m_input;
 };

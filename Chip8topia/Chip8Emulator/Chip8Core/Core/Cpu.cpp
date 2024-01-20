@@ -1,10 +1,15 @@
 #include "Cpu.h"
 
+#include <cassert>
+
+#include "Input.h"
+#include "Ppu.h"
+
 Cpu::Cpu() : m_pc(START_ADDRESS),
              m_sp(0),
              m_I(0),
-             gameTimer(0),
-             audioTimer(0) {
+             m_gameTimer(0),
+             m_audioTimer(0) {
     m_stack.fill(0);
     m_V.fill(0);
     m_memory.fill(0);
@@ -17,13 +22,13 @@ void Cpu::clock() {
 }
 
 void Cpu::clockTimers() {
-    if (gameTimer > 0)
+    if (m_gameTimer > 0)
     {
-        gameTimer--;
+        m_gameTimer--;
     }
-    if (audioTimer > 0)
+    if (m_audioTimer > 0)
     {
-        audioTimer--;
+        m_audioTimer--;
     }
 }
 
@@ -146,7 +151,7 @@ void Cpu::computeOpcode(const uint16 opcode) {
         case 0x6: {
             // 8XY6 - SHR Vx {, Vy}
             // Set Vx = Vx SHR 1.
-            SHR_Vx_Vy(nibble3, nibble2); // TODO: Check if Vy is used
+            SHR_Vx(nibble3);
             break;
         }
         case 0x7: {
@@ -158,7 +163,7 @@ void Cpu::computeOpcode(const uint16 opcode) {
         case 0xE: {
             // 8XYE - SHL Vx {, Vy}
             // Set Vx = Vx SHL 1.
-            SHL_Vx_Vy(nibble3, nibble2); // TODO: Check if Vy is used
+            SHL_Vx(nibble3); // TODO: Check if Vy is used
             break;
         }
         default:
@@ -295,100 +300,175 @@ void Cpu::computeOpcode(const uint16 opcode) {
     }
 }
 void Cpu::CLS() {
-    //    m_ppu->clearScreen();
+    m_ppu->clearScreen();
 }
+
 void Cpu::RET() {
     m_pc = m_stack[m_sp--];
 }
+
 void Cpu::SYS(const uint16 address) {
     // This opcode is only used on the old computers on which Chip-8 was originally implemented.
     // It is ignored by modern interpreters.
     m_pc += 2;
 }
+
 void Cpu::JP(const uint16 address) {
     m_pc = address;
 }
+
 void Cpu::CALL(const uint16 address) {
     m_stack[++m_sp] = m_pc;
     m_pc = address;
 }
+
 void Cpu::SE_Vx_byte(const uint8 x, const uint8 byte) {
     if (m_V[x] == byte)
     {
         m_pc += 2;
     }
 }
+
 void Cpu::SNE_Vx_byte(const uint8 x, const uint8 byte) {
     if (m_V[x] != byte)
     {
         m_pc += 2;
     }
 }
+
 void Cpu::SE_Vx_Vy(const uint8 x, const uint8 y) {
     if (m_V[x] == m_V[y])
     {
         m_pc += 2;
     }
 }
+
 void Cpu::LD_Vx_byte(const uint8 x, const uint8 byte) {
     m_V[x] = byte;
 }
+
 void Cpu::ADD_Vx_byte(const uint8 x, const uint8 byte) {
     m_V[x] += byte;
 }
+
 void Cpu::LD_Vx_Vy(const uint8 x, const uint8 y) {
     m_V[x] = m_V[y];
 }
+
 void Cpu::OR_Vx_Vy(const uint8 x, const uint8 y) {
     m_V[x] |= m_V[y];
 }
+
 void Cpu::AND_Vx_Vy(const uint8 x, const uint8 y) {
     m_V[x] &= m_V[y];
 }
+
 void Cpu::XOR_Vx_Vy(const uint8 x, const uint8 y) {
     m_V[x] ^= m_V[y];
 }
+
 void Cpu::ADD_Vx_Vy(const uint8 x, const uint8 y) {
     m_V[x] += m_V[y];
+    m_V[0xF] = static_cast<unsigned char>(m_V[x] > 0xFF);
 }
+
 void Cpu::SUB_Vx_Vy(const uint8 x, const uint8 y) {
     m_V[x] -= m_V[y];
 }
-void Cpu::SHR_Vx_Vy(const uint8 x, const uint8 y) {
+
+void Cpu::SHR_Vx(const uint8 x) {
+    m_V[x] >>= 1;
+    m_V[0xF] = m_V[x] & 0x1;
 }
+
 void Cpu::SUBN_Vx_Vy(const uint8 x, const uint8 y) {
+    m_V[x] = m_V[y] - m_V[x];
+    m_V[0xF] = m_V[x] & 0x1;
 }
-void Cpu::SHL_Vx_Vy(const uint8 x, const uint8 y) {
+
+void Cpu::SHL_Vx(const uint8 x) {
+    m_V[x] <<= 1;
+    m_V[0xF] = m_V[x] & 0x1;
 }
+
 void Cpu::SNE_Vx_Vy(const uint8 x, const uint8 y) {
+    if (m_V[x] != m_V[y])
+    {
+        m_pc += 2;
+    }
 }
+
 void Cpu::LD_I_addr(const uint16 address) {
+    m_I = address;
 }
+
 void Cpu::JP_V0_addr(const uint16 address) {
+    m_pc = m_V[0] + address;
 }
+
 void Cpu::RND_Vx_byte(const uint8 x, const uint8 byte) {
+    assert(1);
 }
+
 void Cpu::DRW_Vx_Vy_nibble(const uint8 x, const uint8 y, const uint8 nibble) {
+    m_ppu->drawSprite(m_V[x], m_V[y], nibble);
 }
+
 void Cpu::SKP_Vx(const uint8 x) {
+    if (m_input->isKeyPressed(m_V[x]))
+    {
+        m_pc += 2;
+    }
 }
+
 void Cpu::SKNP_Vx(const uint8 x) {
+    if (!m_input->isKeyPressed(m_V[x]))
+    {
+        m_pc += 2;
+    }
 }
+
 void Cpu::LD_Vx_DT(const uint8 x) {
+    m_V[x] = m_gameTimer;
 }
+
 void Cpu::LD_Vx_K(const uint8 x) {
+    m_V[x] = m_input->waitForKeyPress(x);
 }
+
 void Cpu::LD_DT_Vx(const uint8 x) {
+    m_gameTimer = m_V[x];
 }
+
 void Cpu::LD_ST_Vx(const uint8 x) {
+    m_audioTimer = m_V[x];
 }
+
 void Cpu::ADD_I_Vx(const uint8 x) {
+    m_I += m_V[x];
+    m_V[0xF] = static_cast<unsigned char>(m_I > 0xFFF);
 }
+
 void Cpu::LD_F_Vx(const uint8 x) {
+    m_I = m_V[x] * 5;
 }
+
 void Cpu::LD_B_Vx(const uint8 x) {
+    m_memory[m_I] = m_V[x] / 100;
+    m_memory[m_I + 1] = (m_V[x] / 10) % 10;
+    m_memory[m_I + 2] = (m_V[x] % 100) % 10;
 }
+
 void Cpu::LD_I_Vx(const uint8 x) {
+    for (int i = 0; i <= x; ++i)
+    {
+        m_memory[m_I + i] = m_V[i];
+    }
 }
+
 void Cpu::LD_Vx_I(const uint8 x) {
+    for (int i = 0; i <= x; ++i)
+    {
+        m_V[i] = m_memory[m_I + i];
+    }
 }
