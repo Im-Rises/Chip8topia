@@ -26,6 +26,7 @@ Checks: >
   -readability-isolate-declaration,
   -cppcoreguidelines-pro-bounds-constant-array-index,
   -cppcoreguidelines-pro-type-union-access,
+  -readability-avoid-const-params-in-decls,
 #  -modernize-use-trailing-return-type,
 #  -readability-named-parameter,
 

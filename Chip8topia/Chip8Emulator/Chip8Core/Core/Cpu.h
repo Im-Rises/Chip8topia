@@ -22,63 +22,46 @@ public:
     void clockTimers();
 
 private:
-    uint16 fetchOpcode();
-    void computeOpcode(uint16 opcode);
+    auto fetchOpcode() -> uint16;
+    void computeOpcode(const uint16 opcode);
 
-    void CLS();
-    void RET();
-    void SYS(uint16 address);
-
-    void JP(uint16 address);
-    void CALL(uint16 address);
-    void SE(uint8 Vx, uint8 byte);
-    void SNE(uint8 Vx, uint8 byte);
-    void SE(uint8 Vx, uint8 Vy);
-    void LD(uint8 Vx, uint8 byte);
-    void ADD(uint8 Vx, uint8 byte);
-
-    void LD(uint8 Vx, uint8 Vy);
-    void OR(uint8 Vx, uint8 Vy);
-    void AND(uint8 Vx, uint8 Vy);
-    void XOR(uint8 Vx, uint8 Vy);
-    void ADD(uint8 Vx, uint8 Vy);
-    void SUB(uint8 Vx, uint8 Vy);
-    void SHR(uint8 Vx, uint8 Vy);
-    void SUBN(uint8 Vx, uint8 Vy);
-    void SHL(uint8 Vx, uint8 Vy);
-
-    void SNE(uint8 Vx, uint8 Vy);
-    void LD(uint16 address);
-    void JP(uint8 V0, uint16 address);
-    void RND(uint8 Vx, uint8 byte);
-    void DRW(uint8 Vx, uint8 Vy, uint8 nibble);
-
-    void SKP(uint8 Vx);
-    void SKNP(uint8 Vx);
-
-    void LD(uint8 Vx, uint8 DT);
-    void LD(uint8 Vx);
-
-    void LD(uint8 DT, uint8 Vx);
-    void LD(uint8 ST, uint8 Vx);
-    void ADD(uint8 I, uint8 Vx);
-
-    void LD(uint8 F, uint8 Vx);
-    void LD(uint8 B, uint8 Vx);
-    void LD(uint8 I, uint8 Vx);
-    void LD(uint8 Vx, uint8 I);
+    inline void CLS();
+    inline void RET();
+    inline void SYS(const uint16 address);
+    inline void JP(const uint16 address);
+    inline void CALL(const uint16 address);
+    inline void SE_Vx_byte(const uint8 x, const uint8 byte);
+    inline void SNE_Vx_byte(const uint8 x, const uint8 byte);
+    inline void SE_Vx_Vy(const uint8 x, const uint8 y);
+    inline void LD_Vx_byte(const uint8 x, const uint8 byte);
+    inline void ADD_Vx_byte(const uint8 x, const uint8 byte);
+    inline void LD_Vx_Vy(const uint8 x, const uint8 y);
+    inline void OR_Vx_Vy(const uint8 x, const uint8 y);
+    inline void AND_Vx_Vy(const uint8 x, const uint8 y);
+    inline void XOR_Vx_Vy(const uint8 x, const uint8 y);
+    inline void ADD_Vx_Vy(const uint8 x, const uint8 y);
+    inline void SUB_Vx_Vy(const uint8 x, const uint8 y);
+    inline void SHR_Vx_Vy(const uint8 x, const uint8 y); // TODO: Check if Vy is used
+    inline void SUBN_Vx_Vy(const uint8 x, const uint8 y);
+    inline void SHL_Vx_Vy(const uint8 x, const uint8 y); // TODO: Check if Vy is used
+    inline void SNE_Vx_Vy(const uint8 x, const uint8 y);
+    inline void LD_I_addr(const uint16 address);
+    inline void JP_V0_addr(const uint16 address);
+    inline void RND_Vx_byte(const uint8 x, const uint8 byte);
+    inline void DRW_Vx_Vy_nibble(const uint8 x, const uint8 y, const uint8 nibble);
+    inline void SKP_Vx(const uint8 x);
+    inline void SKNP_Vx(const uint8 x);
+    inline void LD_Vx_DT(const uint8 x);
+    inline void LD_Vx_K(const uint8 x);
+    inline void LD_DT_Vx(const uint8 x);
+    inline void LD_ST_Vx(const uint8 x);
+    inline void ADD_I_Vx(const uint8 x);
+    inline void LD_F_Vx(const uint8 x);
+    inline void LD_B_Vx(const uint8 x);
+    inline void LD_I_Vx(const uint8 x);
+    inline void LD_Vx_I(const uint8 x);
 
 private:
-    struct OpcodeDecoder {
-        uint16 opcode;
-        uint16 id;
-    };
-
-    // Should I use a list of switch case instade of decoding the opcode by trying every possible opcode ?
-    std::array<OpcodeDecoder, 35> m_opcodeDecoders{
-
-    };
-
     std::array<uint8, 0x1000> m_memory;
     uint16 m_pc;
 

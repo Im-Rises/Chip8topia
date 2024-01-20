@@ -2,7 +2,6 @@
 
 #include <imgui/imgui.h>
 
-#include "../Chip8Core/Chip8Core.h"
 #include "../Chip8topia.h"
 
 void Chip8topiaUi::drawUi() {
@@ -40,7 +39,19 @@ void Chip8topiaUi::drawFileMenu() {
 void Chip8topiaUi::drawViewMenu() {
     if (ImGui::BeginMenu("View"))
     {
-        //            if (ImGui::MenuItem("FullScreen", "F11")) { toggleFullScreen(); }
+        if (ImGui::MenuItem("FullScreen", "F11"))
+        {
+//            toggleFullScreen();
+        }
+//        if (ImGui::MenuItem("Pause", "Space"))
+//        {
+////            togglePause();
+//        }
+//        if (ImGui::MenuItem("Step", "S"))
+//        {
+////            toggleStep();
+//        }
+
         ImGui::EndMenu();
     }
 }
