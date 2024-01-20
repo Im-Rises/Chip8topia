@@ -2,7 +2,6 @@
 
 #include "binaryLib/binaryLib.h"
 
-// TODO: Move to .cpp
 #include <array>
 #include <memory>
 
@@ -22,6 +21,9 @@ public:
     auto operator=(const Cpu& other) -> Cpu& = delete;
     auto operator=(Cpu&& other) -> Cpu& = delete;
     ~Cpu() = default;
+
+public:
+    void readRom(const uint8* rom, const size_t romSize); // Change to a std::array<uint8, 4096> rom
 
 public:
     void clock();

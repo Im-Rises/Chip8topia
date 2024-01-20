@@ -1,6 +1,6 @@
 #include "Cpu.h"
 
-#include <cassert>
+#include <random>
 
 #include "Input.h"
 #include "Ppu.h"
@@ -9,16 +9,22 @@ Cpu::Cpu() : m_pc(START_ADDRESS),
              m_sp(0),
              m_I(0),
              m_gameTimer(0),
-             m_audioTimer(0) {
-    m_stack.fill(0);
-    m_V.fill(0);
-    m_memory.fill(0);
+             m_audioTimer(0),
+             m_memory{},
+             m_V{},
+             m_stack{} {
+}
+
+void Cpu::readRom(const uint8* rom, const size_t romSize) {
+    for (int i = 0; i < romSize; ++i)
+    {
+        m_memory[0x200 + i] = rom[i];
+    }
 }
 
 void Cpu::clock() {
-    //    const uint16 opcode = fetchOpcode();
-    //    computeOpcode(opcode);
-    //    clockTimers();
+    computeOpcode(fetchOpcode());
+    clockTimers();
 }
 
 void Cpu::clockTimers() {
@@ -406,8 +412,20 @@ void Cpu::JP_V0_addr(const uint16 address) {
     m_pc = m_V[0] + address;
 }
 
+auto generateRandomNumber(int min, int max) -> int {
+    // TODO: Maybe move this to a separate class and stop initializing the random number generator every time
+
+    // Create a random number generator
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> distribution(min, max);
+
+    // Generate and return a random number within the specified range
+    return distribution(gen);
+}
+
 void Cpu::RND_Vx_byte(const uint8 x, const uint8 byte) {
-    assert(1);
+    m_V[x] = generateRandomNumber(0, 255) & byte;
 }
 
 void Cpu::DRW_Vx_Vy_nibble(const uint8 x, const uint8 y, const uint8 nibble) {

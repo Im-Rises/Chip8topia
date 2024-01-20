@@ -171,7 +171,7 @@ void Chip8topia::handleInputs() {
     glfwPollEvents();
 }
 
-void Chip8topia::handleUi(float deltaTime) {
+void Chip8topia::handleUi(const float deltaTime) {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
@@ -181,7 +181,7 @@ void Chip8topia::handleUi(float deltaTime) {
     ImGui::Render();
 }
 
-void Chip8topia::handleGameUpdate(float deltaTime) {
+void Chip8topia::handleGameUpdate(const float deltaTime) {
     m_chip8Emulator.update(deltaTime);
 }
 
