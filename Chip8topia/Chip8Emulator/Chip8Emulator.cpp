@@ -6,11 +6,6 @@ void Chip8Emulator::readRom(const uint8* rom, const size_t romSize) {
 }
 
 void Chip8Emulator::update(const float deltaTime) {
-    if (!m_isRomLoaded)
-    {
-        return;
-    }
-
     m_core.clock();
     m_videoEmulation.update(deltaTime);
     m_soundEmulation.update(deltaTime);

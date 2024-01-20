@@ -188,7 +188,10 @@ void Chip8topia::handleUi(const float deltaTime) {
 }
 
 void Chip8topia::handleGameUpdate(const float deltaTime) {
-    m_chip8Emulator.update(deltaTime);
+    //    if (m_chip8Emulator.GetIsRomLoaded())
+    //    {
+    //        m_chip8Emulator.update(deltaTime);
+    //    }
 }
 
 void Chip8topia::handleScreenUpdate() {
