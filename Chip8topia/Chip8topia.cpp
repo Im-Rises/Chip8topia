@@ -132,40 +132,6 @@ auto Chip8topia::getImGuiVersion() -> std::string {
     return IMGUI_VERSION;
 }
 
-void Chip8topia::toggleFullScreen() {
-    if (!m_isFullScreen)
-    {
-        int count;
-        GLFWmonitor** monitors = glfwGetMonitors(&count);
-        for (int i = 0; i < count; i++)
-        {
-            int x, y;
-            int width, height;
-            glfwGetMonitorWorkarea(monitors[i], &x, &y, &width, &height);
-
-            if (m_windowedPosX >= x && m_windowedPosX <= x + width && m_windowedPosY >= y && m_windowedPosY <= y + height)
-            {
-                glfwSetWindowMonitor(m_window, monitors[i], x, y, width, height, 0);
-                break;
-            }
-        }
-
-        //        GLFWmonitor* monitor = glfwGetPrimaryMonitor();
-        //        const GLFWvidmode* mode = glfwGetVideoMode(monitor);
-        //        glfwSetWindowMonitor(m_window, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
-    }
-    else
-    {
-        glfwSetWindowMonitor(m_window, nullptr, m_windowedPosX, m_windowedPosY, m_windowedWidth, m_windowedHeight, 0);
-    }
-
-    m_isFullScreen = !m_isFullScreen;
-}
-
-void Chip8topia::close() {
-    glfwSetWindowShouldClose(m_window, 1);
-}
-
 auto Chip8topia::run() -> int {
 #ifdef _WIN32
     timeBeginPeriod(1);
@@ -201,6 +167,10 @@ auto Chip8topia::run() -> int {
 #endif
 
     return 0;
+}
+
+void Chip8topia::close() {
+    glfwSetWindowShouldClose(m_window, 1);
 }
 
 void Chip8topia::handleInputs() {
@@ -249,4 +219,42 @@ void Chip8topia::handleScreenUpdate() {
     }
 
     glfwSwapBuffers(m_window);
+}
+
+void Chip8topia::toggleFullScreen() {
+    if (!m_isFullScreen)
+    {
+        int count;
+        GLFWmonitor** monitors = glfwGetMonitors(&count);
+        for (int i = 0; i < count; i++)
+        {
+            int x, y;
+            int width, height;
+            glfwGetMonitorWorkarea(monitors[i], &x, &y, &width, &height);
+
+            if (m_windowedPosX >= x && m_windowedPosX <= x + width && m_windowedPosY >= y && m_windowedPosY <= y + height)
+            {
+                glfwSetWindowMonitor(m_window, monitors[i], x, y, width, height, 0);
+                break;
+            }
+        }
+    }
+    else
+    {
+        glfwSetWindowMonitor(m_window, nullptr, m_windowedPosX, m_windowedPosY, m_windowedWidth, m_windowedHeight, 0);
+    }
+
+    m_isFullScreen = !m_isFullScreen;
+}
+
+void Chip8topia::getWindowedDimensions(int& width, int& height) const {
+    if (m_isFullScreen)
+    {
+        glfwGetWindowSize(m_window, &width, &height);
+    }
+    else
+    {
+        width = m_windowedWidth;
+        height = m_windowedHeight;
+    }
 }

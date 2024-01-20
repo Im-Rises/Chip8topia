@@ -31,16 +31,18 @@ public:
     static auto getImGuiVersion() -> std::string;
 
 public:
-    void toggleFullScreen();
-    void close();
-
     auto run() -> int;
+    void close();
 
 private:
     void handleInputs();
     void handleUi(const float deltaTime);
     void handleGameUpdate(const float deltaTime);
     void handleScreenUpdate();
+
+public:
+    void toggleFullScreen();
+    void getWindowedDimensions(int& width, int& height) const;
 
 private:
     GLFWwindow* m_window;
