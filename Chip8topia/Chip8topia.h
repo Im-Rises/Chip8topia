@@ -4,6 +4,7 @@
 
 #include "Chip8topiaUi/Chip8topiaUi.h"
 #include "Chip8Emulator/Chip8Emulator.h"
+#include "Chip8topiaInputHandler/Chip8topiaInputHandler.h"
 
 struct GLFWwindow;
 
@@ -48,6 +49,7 @@ private:
     GLFWwindow* m_window;
     Chip8Emulator m_chip8Emulator;
     Chip8topiaUi m_chip8topiaUi;
+    Chip8topiaInputHandler m_chip8topiaInputHandler;
 
     bool m_isFullScreen = false;
     int m_currentWidth = 1280;

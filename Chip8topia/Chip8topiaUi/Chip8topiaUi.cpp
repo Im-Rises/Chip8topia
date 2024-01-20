@@ -1,6 +1,10 @@
 #include "Chip8topiaUi.h"
 
 #include <imgui/imgui.h>
+#ifdef _WIN32
+#include <Windows.h>
+#include <commdlg.h>
+#endif
 
 #include "../Chip8topia.h"
 
@@ -32,9 +36,25 @@ void Chip8topiaUi::drawFileMenu() {
     if (ImGui::BeginMenu("File"))
     {
         if (ImGui::MenuItem("Open rom..", "Ctrl+O"))
-        { /* Do stuff */
+        {   /* Do stuff */
             // Reset emulation, open file explorer and search path to file to rom
             // Get rom path and read it.
+
+#ifdef _WIN32
+            OPENFILENAMEA ofile = { 0 };
+            char fpath[_MAX_PATH] = { 0 };
+
+            ofile.lStructSize = sizeof(ofile);
+            ofile.hwndOwner = GetActiveWindow();
+            ofile.lpstrFile = fpath;
+            ofile.nMaxFile = sizeof(fpath);
+
+            if (GetOpenFileNameA(&ofile))
+            {
+            }
+#elif __gnu_linux__
+// #error("Implement file explorer for linux, maybe use GTK")
+#endif
         }
         if (ImGui::MenuItem("Exit", "Alt+F4"))
         {

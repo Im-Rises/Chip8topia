@@ -3,7 +3,7 @@
 #include <string>
 #include <memory>
 
-#include "binaryLib/binaryLib.h"
+#include <binaryLib/binaryLib.h>
 
 #include "Core/Cpu.h"
 
@@ -19,6 +19,7 @@ public:
 public:
     void readRom(const uint8* rom, const size_t romSize);
     void clock();
+    void updateKey(const uint8 key, const bool pressed);
 
 private:
     Cpu m_cpu;

@@ -29,3 +29,7 @@ void Ppu::drawSprite(uint8 x, uint8 y, uint8 n) {
         }
     }
 }
+
+auto Ppu::getVideoMemory() const -> const std::array<uint8, 2048>& {
+    return m_videoMemory;
+}

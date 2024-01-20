@@ -2,7 +2,7 @@
 
 #include <array>
 
-#include "binaryLib/binaryLib.h"
+#include <binaryLib/binaryLib.h>
 
 class Ppu {
 public:
@@ -16,6 +16,8 @@ public:
 public:
     void clearScreen();
     void drawSprite(uint8 x, uint8 y, uint8 n);
+
+    [[nodiscard]] auto getVideoMemory() const -> const std::array<uint8, 2048>&;
 
 private:
     std::array<uint8, 2048> m_videoMemory{};

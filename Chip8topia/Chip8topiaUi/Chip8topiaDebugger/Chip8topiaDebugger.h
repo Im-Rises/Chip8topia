@@ -1,7 +1,8 @@
 #pragma once
 
-// Send the Chip8Core pointer/reference to the debugger so it can access the registers, memory, etc.
+#include <imgui/imgui_memory_editor.h>
 
+class Chip8Core;
 class Chip8topiaDebugger {
 public:
     Chip8topiaDebugger() = default;
@@ -16,10 +17,11 @@ public:
 
 private:
     void drawRegisters();
-    void drawMemory();
     void drawStack();
-
+    void drawMemory();
     void drawKeyboard();
-
     void drawDisassembler();
+
+private:
+    MemoryEditor m_memoryEditor;
 };

@@ -4,13 +4,15 @@ https://en.wikipedia.org/wiki/CHIP-8#Further_reading
 
 ## TODO
 
-- [ ] Add glad init in Chip8topia.cpp
+- [x] Add glad init in Chip8topia.cpp
 - [x] Code the Chip8Core
-- [ ] Link the code from Chip8Core to Chip8topiaDebugger and Chip8topiaUi
+- [x] Code the Chip8topiaUi
+- [ ] Code the Chip8topiaDebugger
+- [ ] Handle file open dialog for multiple platforms (Windows, Linux, Mac), maybe use a library like GTK
+- [ ] Add emulation video
+- [ ] Add emulation sound
+- [ ] Link emulator inputs and UI inputs
 
-Le code ImGui de debug Chip8 n'est pas intégré au Chip8Core pour des raisons de portabilité.
-On est pas sur un moteur de jeu, il est donc préferrable de laisser imgui dans des classes séparées et dans ces classes
-d'envoyer les données à afficher à imgui.
 <!--
 
 ```mermaid
