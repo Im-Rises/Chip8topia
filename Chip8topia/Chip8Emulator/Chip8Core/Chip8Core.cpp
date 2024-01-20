@@ -7,4 +7,5 @@ void Chip8Core::readRom(const uint8* rom, const size_t romSize) {
 }
 
 void Chip8Core::clock() {
+
 }

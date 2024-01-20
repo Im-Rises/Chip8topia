@@ -32,6 +32,7 @@ public:
 
 public:
     auto run() -> int;
+    void close();
 
 private:
     void handleInputs();
@@ -39,13 +40,20 @@ private:
     void handleGameUpdate(const float deltaTime);
     void handleScreenUpdate();
 
-private:
-    void toggleFullscreen();
-    void togglePause();
-    void toggleStep();
+public:
+    void toggleFullScreen();
+    void getWindowedDimensions(int& width, int& height) const;
 
 private:
     GLFWwindow* m_window;
     Chip8Emulator m_chip8Emulator;
     Chip8topiaUi m_chip8topiaUi;
+
+    bool m_isFullScreen = false;
+    int m_currentWidth = 1280;
+    int m_currentHeight = 720;
+    int m_windowedWidth = 1280;
+    int m_windowedHeight = 720;
+    int m_windowedPosX = 0;
+    int m_windowedPosY = 0;
 };

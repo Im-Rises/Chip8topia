@@ -5,7 +5,7 @@ https://en.wikipedia.org/wiki/CHIP-8#Further_reading
 ## TODO
 
 - [ ] Add glad init in Chip8topia.cpp
-- [ ] Code the Chip8Core
+- [x] Code the Chip8Core
 - [ ] Link the code from Chip8Core to Chip8topiaDebugger and Chip8topiaUi
 
 Le code ImGui de debug Chip8 n'est pas intégré au Chip8Core pour des raisons de portabilité.

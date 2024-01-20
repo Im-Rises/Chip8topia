@@ -94,6 +94,8 @@ Chip8topia::Chip8topia() {
     ImGui_ImplGlfw_InstallEmscriptenCanvasResizeCallback("#canvas");
 #endif
     ImGui_ImplOpenGL3_Init(glsl_version);
+
+    m_chip8topiaUi.init(this);
 }
 
 Chip8topia::~Chip8topia() {
@@ -167,6 +169,10 @@ auto Chip8topia::run() -> int {
     return 0;
 }
 
+void Chip8topia::close() {
+    glfwSetWindowShouldClose(m_window, 1);
+}
+
 void Chip8topia::handleInputs() {
     glfwPollEvents();
 }
@@ -190,9 +196,14 @@ void Chip8topia::handleScreenUpdate() {
     const ImGuiIO& io = ImGui::GetIO();
     static constexpr ImVec4 clear_color = ImVec4(0.45F, 0.55F, 0.60F, 1.00F);
 
-    int display_w, display_h;
-    glfwGetFramebufferSize(m_window, &display_w, &display_h);
-    glViewport(0, 0, display_w, display_h);
+    if (!m_isFullScreen)
+    {
+        glfwGetWindowPos(m_window, &m_windowedPosX, &m_windowedPosY);
+        glfwGetWindowSize(m_window, &m_windowedWidth, &m_windowedHeight);
+    }
+
+    glfwGetFramebufferSize(m_window, &m_currentWidth, &m_currentHeight);
+    glViewport(0, 0, m_currentWidth, m_currentHeight);
     glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
     glClear(GL_COLOR_BUFFER_BIT);
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -208,17 +219,33 @@ void Chip8topia::handleScreenUpdate() {
     glfwSwapBuffers(m_window);
 }
 
-void Chip8topia::toggleFullscreen() {
-    // AUTO GENERATED CODE BY GITHUB COPILOT
+void Chip8topia::toggleFullScreen() {
+    if (!m_isFullScreen)
+    {
+        int count;
+        GLFWmonitor** monitors = glfwGetMonitors(&count);
+        for (int i = 0; i < count; i++)
+        {
+            int x, y;
+            int width, height;
+            glfwGetMonitorWorkarea(monitors[i], &x, &y, &width, &height);
 
-    //    if (m_fullscreen) {
-    //        glfwSetWindowMonitor(m_window, nullptr, m_windowedX, m_windowedY, m_windowedWidth, m_windowedHeight, 0);
-    //    } else {
-    //        glfwGetWindowPos(m_window, &m_windowedX, &m_windowedY);
-    //        glfwGetWindowSize(m_window, &m_windowedWidth, &m_windowedHeight);
-    //        GLFWmonitor* monitor = glfwGetPrimaryMonitor();
-    //        const GLFWvidmode* mode = glfwGetVideoMode(monitor);
-    //        glfwSetWindowMonitor(m_window, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
-    //    }
-    //    m_fullscreen = !m_fullscreen;
+            if (m_windowedPosX >= x && m_windowedPosX <= x + width && m_windowedPosY >= y && m_windowedPosY <= y + height)
+            {
+                glfwSetWindowMonitor(m_window, monitors[i], x, y, width, height, 0);
+                break;
+            }
+        }
+    }
+    else
+    {
+        glfwSetWindowMonitor(m_window, nullptr, m_windowedPosX, m_windowedPosY, m_windowedWidth, m_windowedHeight, 0);
+    }
+
+    m_isFullScreen = !m_isFullScreen;
+}
+
+void Chip8topia::getWindowedDimensions(int& width, int& height) const {
+    width = m_currentWidth;
+    height = m_currentHeight;
 }

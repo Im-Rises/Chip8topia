@@ -6,12 +6,13 @@
 
 class Chip8Emulator {
 public:
-    void update(const float deltaTime);
-
     void readRom(const uint8* rom, const size_t romSize);
+    void update(const float deltaTime);
 
 private:
     Chip8Core m_core;
     Chip8VideoEmulation m_videoEmulation;
     Chip8SoundEmulation m_soundEmulation;
+
+    bool m_isRomLoaded = false;
 };

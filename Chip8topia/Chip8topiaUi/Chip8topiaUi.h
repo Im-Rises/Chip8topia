@@ -2,6 +2,7 @@
 
 #include "Chip8topiaDebugger/Chip8topiaDebugger.h"
 
+class Chip8topia;
 class Chip8topiaUi {
 public:
     Chip8topiaUi() = default;
@@ -12,6 +13,7 @@ public:
     ~Chip8topiaUi() = default;
 
 public:
+    void init(Chip8topia* chip8topia);
     void drawUi();
 
 private:
@@ -26,6 +28,9 @@ private:
     void drawAboutPopUpWindow();
 
 private:
-    bool m_showAboutPopup = false;
     Chip8topiaDebugger m_chip8topiaDebugger;
+    Chip8topia* m_chip8topia = nullptr;
+
+    bool m_showAboutPopup = false;
+    bool m_isMenuBarOpen = true;
 };
