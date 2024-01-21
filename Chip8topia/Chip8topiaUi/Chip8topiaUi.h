@@ -13,7 +13,7 @@ public:
     ~Chip8topiaUi() = default;
 
 public:
-    void init(Chip8topia* chip8topia);
+    void init(Chip8topia* chip8topia); // TODO: Maybe remove this init and pass the Chip8topia pointer in the constructor orpass directly the pointer/reference to the Chip8topia object in the drawUi() function
     void drawUi();
 
 private:

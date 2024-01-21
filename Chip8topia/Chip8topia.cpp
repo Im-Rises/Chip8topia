@@ -12,6 +12,7 @@
 #if defined(IMGUI_IMPL_OPENGL_ES2)
 #include <GLES2/gl2.h>
 #endif
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <string>
 #include <chrono>
@@ -63,6 +64,16 @@ Chip8topia::Chip8topia() {
     glfwMakeContextCurrent(m_window);
     //    glfwSwapInterval(1); // Enable vsync
     glfwSwapInterval(0); // Disable vsync
+
+#ifdef __EMSCRIPTEN__
+    // Initialize OpenGL loader
+    if (gladLoadGLES2Loader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)) == 0)
+        exit(1);
+#else
+    // Initialize OpenGL loader
+    if (gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)) == 0)
+        exit(1);
+#endif
 
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();

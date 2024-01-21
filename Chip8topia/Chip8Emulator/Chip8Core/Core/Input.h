@@ -1,6 +1,8 @@
 #pragma once
 
-#include "binaryLib/binaryLib.h"
+#include <array>
+
+#include <binaryLib/binaryLib.h>
 
 class Input {
 public:
@@ -13,4 +15,8 @@ public:
 
 public:
     [[nodiscard]] auto isKeyPressed(const uint8 Vx) const -> bool;
+    void updateKey(const uint8 key, const bool pressed);
+
+private:
+    std::array<uint8, 16> m_keys{};
 };
