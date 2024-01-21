@@ -1,10 +1,7 @@
 #include "Chip8topiaUi.h"
 
 #include <imgui/imgui.h>
-#ifdef _WIN32
-#include <Windows.h>
-#include <commdlg.h>
-#endif
+#include <ImGuiFileDialog/ImGuiFileDialog.h>
 
 #include "../Chip8topia.h"
 
@@ -24,6 +21,7 @@ void Chip8topiaUi::drawMainMenuBar() {
         drawDesignMenu();
         //        drawToolsMenu();
         m_chip8topiaDebugger.drawDebuggerMenu();
+        m_chip8topiaDebugger.drawDebuggerWindows();
         drawAboutMenu();
 
         ImGui::EndMainMenuBar();
@@ -36,31 +34,34 @@ void Chip8topiaUi::drawFileMenu() {
     if (ImGui::BeginMenu("File"))
     {
         if (ImGui::MenuItem("Open rom..", "Ctrl+O"))
-        {   /* Do stuff */
+        {
             // Reset emulation, open file explorer and search path to file to rom
             // Get rom path and read it.
 
-#ifdef _WIN32
-            OPENFILENAMEA ofile = { 0 };
-            char fpath[_MAX_PATH] = { 0 };
-
-            ofile.lStructSize = sizeof(ofile);
-            ofile.hwndOwner = GetActiveWindow();
-            ofile.lpstrFile = fpath;
-            ofile.nMaxFile = sizeof(fpath);
-
-            if (GetOpenFileNameA(&ofile))
-            {
-            }
-#elif __gnu_linux__
-// #error("Implement file explorer for linux, maybe use GTK")
-#endif
+            IGFD::FileDialogConfig config;
+            config.path = ".";
+            ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".cpp,.h,.hpp", config);
         }
         if (ImGui::MenuItem("Exit", "Alt+F4"))
         {
             m_chip8topia->close();
         }
+
         ImGui::EndMenu();
+    }
+
+    if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey"))
+    {
+        // action if OK
+        if (ImGuiFileDialog::Instance()->IsOk())
+        {
+            const std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+            const std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+            // action
+        }
+
+        // close
+        ImGuiFileDialog::Instance()->Close();
     }
 }
 void Chip8topiaUi::drawViewMenu() {
@@ -94,34 +95,23 @@ void Chip8topiaUi::drawDesignMenu() {
         ImGui::EndMenu();
     }
 }
-// void Chip8topiaUi::drawToolsMenu() {
-//     if (ImGui::BeginMenu("Tools"))
-//     {
-//         if (ImGui::MenuItem("Debugger"))
-//         {
-//             //                m_chip8.setDebuggerMode(true);
-//             // set a tooltip to show the window of each debugger tool
-//         }
-//         ImGui::EndMenu();
-//     }
-// }
 
 void Chip8topiaUi::drawAboutMenu() {
     if (ImGui::BeginMenu("About..."))
     {
-        //        if (ImGui::IsItemClicked())
-        //        {
-        //            m_showAboutPopup = true;
-        //        }
-        //
-        //        if (ImGui::IsItemHovered())
-        //        {
-        //            ImGui::SetTooltip("About Chip8topia");
-        //        }
-
         if (ImGui::MenuItem("About Chip8topia"))
         {
             m_showAboutPopup = true;
+        }
+
+        if (ImGui::MenuItem("About the Chip8"))
+        {
+            ImGui::OpenPopup("About the Chip8");
+        }
+
+        if (ImGui::MenuItem("About the project dependencies"))
+        {
+            ImGui::OpenPopup("About the project dependencies");
         }
 
         ImGui::EndMenu();
@@ -148,6 +138,22 @@ void Chip8topiaUi::drawAboutPopUpWindow() {
         ImGui::Text(" - %s", Chip8topia::PROJECT_LINK);
         ImGui::NewLine();
 
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopupModal("About the Chip8", nullptr,
+            ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize |
+                ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse))
+    {
+        ImGui::Text("The Chip8 is an interpreted programming language developed by Joseph Weisbecker in the 1970s.");
+        ImGui::Text("It was initially used on the COSMAC VIP and Telmac 1800 8-bit microcomputers to make game programming easier.");
+    }
+
+    if (ImGui::BeginPopupModal("About the project dependencies", nullptr,
+            ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize |
+                ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse))
+    {
+        ImGui::Text("The Chip8topia project uses the following dependencies:");
         //        ImGui::Text("Libraries used: ");
         //        ImGui::Text(" - OpenGL Vendor: %s", Chip8topia::getOpenGLVendor().data());
         //        ImGui::Text(" - OpenGL Version: %s", Chip8topia::getOpenGLVersion().data());
@@ -155,7 +161,5 @@ void Chip8topiaUi::drawAboutPopUpWindow() {
         //        ImGui::Text(" - Glad Version: %s", Chip8topia::getGladVersion().data());
         //        ImGui::Text(" - ImGui Version: %s", Chip8topia::getImGuiVersion().data());
         //        ImGui::NewLine();
-
-        ImGui::EndPopup();
     }
 }
