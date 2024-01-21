@@ -1,5 +1,7 @@
 #pragma once
 
+#include <imgui/imgui_memory_editor.h>
+
 class Chip8Core;
 class Chip8topiaDebugger {
 public:
@@ -15,10 +17,11 @@ public:
 
 private:
     void drawRegisters();
-    void drawMemory();
     void drawStack();
-
+    void drawMemory();
     void drawKeyboard();
-
     void drawDisassembler();
+
+private:
+    MemoryEditor m_memoryEditor;
 };
