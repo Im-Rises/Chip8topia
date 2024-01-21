@@ -1,5 +1,6 @@
 #pragma once
 
+#include <imgui/imgui.h>
 #include <imgui/imgui_memory_editor.h>
 
 class Chip8Core;
@@ -15,6 +16,8 @@ public:
 public:
     void drawDebuggerMenu();
 
+    void drawDebuggerWindows();
+
 private:
     void drawRegisters();
     void drawStack();
@@ -24,4 +27,10 @@ private:
 
 private:
     MemoryEditor m_memoryEditor;
+
+    bool m_isRegistersOpen = false;
+    bool m_isStackOpen = false;
+    bool m_isMemoryEditorOpen = false;
+    bool m_isKeyboardOpen = false;
+    bool m_isDisassemblerOpen = false;
 };

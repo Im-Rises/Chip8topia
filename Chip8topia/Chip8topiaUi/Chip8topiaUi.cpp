@@ -24,6 +24,7 @@ void Chip8topiaUi::drawMainMenuBar() {
         drawDesignMenu();
         //        drawToolsMenu();
         m_chip8topiaDebugger.drawDebuggerMenu();
+        m_chip8topiaDebugger.drawDebuggerWindows();
         drawAboutMenu();
 
         ImGui::EndMainMenuBar();
