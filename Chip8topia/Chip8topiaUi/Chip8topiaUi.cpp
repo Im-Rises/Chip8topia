@@ -2,10 +2,6 @@
 
 #include <imgui/imgui.h>
 #include <ImGuiFileDialog/ImGuiFileDialog.h>
-// #ifdef _WIN32
-// #include <Windows.h>
-// #include <commdlg.h>
-// #endif
 
 #include "../Chip8topia.h"
 
@@ -38,56 +34,34 @@ void Chip8topiaUi::drawFileMenu() {
     if (ImGui::BeginMenu("File"))
     {
         if (ImGui::MenuItem("Open rom..", "Ctrl+O"))
-        { /* Do stuff */
+        {
             // Reset emulation, open file explorer and search path to file to rom
             // Get rom path and read it.
 
-            // #ifdef _WIN32
-            //             OPENFILENAMEA ofile = { 0 };
-            //             char fpath[_MAX_PATH] = { 0 };
-            //
-            //             ofile.lStructSize = sizeof(ofile);
-            //             ofile.hwndOwner = GetActiveWindow();
-            //             ofile.lpstrFile = fpath;
-            //             ofile.nMaxFile = sizeof(fpath);
-            //
-            //             if (GetOpenFileNameA(&ofile))
-            //             {
-            //             }
-            // #elif __gnu_linux__
-            //// #error("Implement file explorer for linux, maybe use GTK")
-            // #endif
+            IGFD::FileDialogConfig config;
+            config.path = ".";
+            ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".cpp,.h,.hpp", config);
         }
         if (ImGui::MenuItem("Exit", "Alt+F4"))
         {
             m_chip8topia->close();
         }
 
-        ////////////////////////////
-        // open Dialog Simple
-        if (ImGui::Button("Open File Dialog"))
-        {
-            IGFD::FileDialogConfig config;
-            config.path = ".";
-            ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".cpp,.h,.hpp", config);
-        }
-        // display
-        if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey"))
-        {
-            // action if OK
-            if (ImGuiFileDialog::Instance()->IsOk())
-            {
-                std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
-                std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
-                // action
-            }
-
-            // close
-            ImGuiFileDialog::Instance()->Close();
-        }
-        ////////////////////////////
-
         ImGui::EndMenu();
+    }
+
+    if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey"))
+    {
+        // action if OK
+        if (ImGuiFileDialog::Instance()->IsOk())
+        {
+            const std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+            const std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+            // action
+        }
+
+        // close
+        ImGuiFileDialog::Instance()->Close();
     }
 }
 void Chip8topiaUi::drawViewMenu() {
@@ -121,34 +95,23 @@ void Chip8topiaUi::drawDesignMenu() {
         ImGui::EndMenu();
     }
 }
-// void Chip8topiaUi::drawToolsMenu() {
-//     if (ImGui::BeginMenu("Tools"))
-//     {
-//         if (ImGui::MenuItem("Debugger"))
-//         {
-//             //                m_chip8.setDebuggerMode(true);
-//             // set a tooltip to show the window of each debugger tool
-//         }
-//         ImGui::EndMenu();
-//     }
-// }
 
 void Chip8topiaUi::drawAboutMenu() {
     if (ImGui::BeginMenu("About..."))
     {
-        //        if (ImGui::IsItemClicked())
-        //        {
-        //            m_showAboutPopup = true;
-        //        }
-        //
-        //        if (ImGui::IsItemHovered())
-        //        {
-        //            ImGui::SetTooltip("About Chip8topia");
-        //        }
-
         if (ImGui::MenuItem("About Chip8topia"))
         {
             m_showAboutPopup = true;
+        }
+
+        if (ImGui::MenuItem("About the Chip8"))
+        {
+            ImGui::OpenPopup("About the Chip8");
+        }
+
+        if (ImGui::MenuItem("About the project dependencies"))
+        {
+            ImGui::OpenPopup("About the project dependencies");
         }
 
         ImGui::EndMenu();

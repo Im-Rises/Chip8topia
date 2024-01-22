@@ -21,8 +21,7 @@ private:
 
     void drawFileMenu();
     void drawViewMenu();
-    void drawDesignMenu(); // Change background color and draw color
-    //    void drawToolsMenu();
+    void drawDesignMenu();
     void drawAboutMenu();
 
     void drawAboutPopUpWindow();
