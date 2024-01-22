@@ -1,10 +1,19 @@
 #pragma once
 
 #include <imgui/imgui.h>
-#include <imgui/imgui_memory_editor.h>
+#include <imgui_memory_editor/imgui_memory_editor.h>
+#include <unordered_set>
 
 class Chip8Core;
 class Chip8topiaDebugger {
+    enum class DebuggerWindow {
+        Registers,
+        Stack,
+        MemoryEditor,
+        Keyboard,
+        Disassembler
+    };
+
 public:
     Chip8topiaDebugger() = default;
     Chip8topiaDebugger(const Chip8topiaDebugger&) = delete;
@@ -15,7 +24,6 @@ public:
 
 public:
     void drawDebuggerMenu();
-
     void drawDebuggerWindows();
 
 private:
@@ -27,6 +35,14 @@ private:
 
 private:
     MemoryEditor m_memoryEditor;
+
+    std::unordered_set<DebuggerWindow> m_openDebuggerWindows{
+        DebuggerWindow::Registers,
+        DebuggerWindow::Stack,
+        DebuggerWindow::MemoryEditor,
+        DebuggerWindow::Keyboard,
+        DebuggerWindow::Disassembler
+    };
 
     bool m_isRegistersOpen = false;
     bool m_isStackOpen = false;

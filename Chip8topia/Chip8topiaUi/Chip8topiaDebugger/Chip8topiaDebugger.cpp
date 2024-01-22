@@ -1,7 +1,6 @@
 #include "Chip8topiaDebugger.h"
 
 #include <binaryLib/binaryLib.h>
-#include <iostream>
 
 // #include "../../Chip8Emulator/Chip8Core/Chip8Core.h"
 
