@@ -138,6 +138,22 @@ void Chip8topiaUi::drawAboutPopUpWindow() {
         ImGui::Text(" - %s", Chip8topia::PROJECT_LINK);
         ImGui::NewLine();
 
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::BeginPopupModal("About the Chip8", nullptr,
+            ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize |
+                ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse))
+    {
+        ImGui::Text("The Chip8 is an interpreted programming language developed by Joseph Weisbecker in the 1970s.");
+        ImGui::Text("It was initially used on the COSMAC VIP and Telmac 1800 8-bit microcomputers to make game programming easier.");
+    }
+
+    if (ImGui::BeginPopupModal("About the project dependencies", nullptr,
+            ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize |
+                ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse))
+    {
+        ImGui::Text("The Chip8topia project uses the following dependencies:");
         //        ImGui::Text("Libraries used: ");
         //        ImGui::Text(" - OpenGL Vendor: %s", Chip8topia::getOpenGLVendor().data());
         //        ImGui::Text(" - OpenGL Version: %s", Chip8topia::getOpenGLVersion().data());
@@ -145,7 +161,5 @@ void Chip8topiaUi::drawAboutPopUpWindow() {
         //        ImGui::Text(" - Glad Version: %s", Chip8topia::getGladVersion().data());
         //        ImGui::Text(" - ImGui Version: %s", Chip8topia::getImGuiVersion().data());
         //        ImGui::NewLine();
-
-        ImGui::EndPopup();
     }
 }
