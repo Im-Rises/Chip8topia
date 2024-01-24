@@ -4,6 +4,15 @@
 #include <ImGuiFileDialog/ImGuiFileDialog.h>
 
 #include "../Chip8topia.h"
+#include "../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
+
+Chip8topiaUi::~Chip8topiaUi() {
+    Chip8topiaInputHandler::getInstance().m_F12KeyButtonPressedEvent.unsubscribe(this, &Chip8topiaUi::toggleMenuBar);
+}
+
+Chip8topiaUi::Chip8topiaUi() {
+    Chip8topiaInputHandler::getInstance().m_F12KeyButtonPressedEvent.subscribe(this, &Chip8topiaUi::toggleMenuBar);
+}
 
 void Chip8topiaUi::init(Chip8topia* chip8topia) {
     m_chip8topia = chip8topia;
@@ -20,8 +29,9 @@ void Chip8topiaUi::drawMainMenuBar() {
         drawViewMenu();
         drawDesignMenu();
         //        drawToolsMenu();
-        m_chip8topiaDebugger.drawDebuggerMenu();
-        m_chip8topiaDebugger.drawDebuggerWindows();
+        m_chip8topiaDebugger.drawDebugger();
+        //        m_chip8topiaDebugger.drawDebuggerMenu();
+        //        m_chip8topiaDebugger.drawDebuggerWindows();
         drawAboutMenu();
 
         ImGui::EndMainMenuBar();
@@ -73,7 +83,7 @@ void Chip8topiaUi::drawViewMenu() {
         }
         if (ImGui::MenuItem("Show/Hide MenuBar", "F12"))
         {
-            m_isMenuBarOpen = !m_isMenuBarOpen;
+            toggleMenuBar();
         }
 
         ImGui::EndMenu();
@@ -133,6 +143,8 @@ void Chip8topiaUi::drawAboutPopUpWindow() {
             Chip8topia::PROJECT_LINK);
     };
     drawAboutPopUpInternal(Chip8topia::PROJECT_NAME, ABOUT_CHIP8TOPIA);
+    //    drawAboutPopUpInternal("Chip8topia::PROJECT_NAME", ABOUT_CHIP8TOPIA);
+    //    drawAboutPopUpInternal("Chip8to", ABOUT_CHIP8TOPIA);
 
     //    static constexpr auto ABOUT_CHIP8 = []() {
     //        ImGui::Text(Chip8topia::PROJECT_EMULATION_CONSOLE_DESCRIPTION);
@@ -162,4 +174,8 @@ void Chip8topiaUi::drawAboutPopUpInternal(const std::string_view& popupName, con
         drawAboutPopUpContent();
         ImGui::EndPopup();
     }
+}
+
+void Chip8topiaUi::toggleMenuBar() {
+    m_isMenuBarOpen = !m_isMenuBarOpen;
 }

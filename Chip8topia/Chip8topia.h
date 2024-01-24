@@ -20,6 +20,8 @@ public:
         It was initially used on the COSMAC VIP and Telmac 1800 8-bit microcomputers in the mid-1970s.
         It was made to allow video games to be more easily programmed for said computers.)";
 
+    static constexpr bool VSYNC_ENABLED = false;
+
 public:
     Chip8topia();
     Chip8topia(const Chip8topia&) = delete;
@@ -59,8 +61,8 @@ private:
     bool m_isFullScreen = false;
     int m_currentWidth = 1280;
     int m_currentHeight = 720;
-    int m_windowedWidth = 1280;
-    int m_windowedHeight = 720;
+    int m_windowedWidth = m_currentWidth;
+    int m_windowedHeight = m_currentHeight;
     int m_windowedPosX = 0;
     int m_windowedPosY = 0;
 };

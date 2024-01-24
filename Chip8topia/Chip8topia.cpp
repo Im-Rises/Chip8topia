@@ -58,12 +58,13 @@ Chip8topia::Chip8topia() {
 #endif
 
     // Create window with graphics context
-    m_window = glfwCreateWindow(1280, 720, PROJECT_NAME, nullptr, nullptr);
+    m_window = glfwCreateWindow(m_currentWidth, m_currentHeight, PROJECT_NAME, nullptr, nullptr);
     if (m_window == nullptr)
         exit(1);
     glfwMakeContextCurrent(m_window);
     //    glfwSwapInterval(1); // Enable vsync
-    glfwSwapInterval(0); // Disable vsync
+    //    glfwSwapInterval(0); // Disable vsync
+    glfwSwapInterval(VSYNC_ENABLED);
 
 #ifdef __EMSCRIPTEN__
     // Initialize OpenGL loader
@@ -107,9 +108,15 @@ Chip8topia::Chip8topia() {
     ImGui_ImplOpenGL3_Init(glsl_version);
 
     m_chip8topiaUi.init(this);
+
+    m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.subscribe(this, &Chip8topia::close);
+    m_chip8topiaInputHandler.m_F11KeyButtonPressedEvent.subscribe(this, &Chip8topia::toggleFullScreen);
 }
 
 Chip8topia::~Chip8topia() {
+    m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.unsubscribe(this, &Chip8topia::close);
+    m_chip8topiaInputHandler.m_F11KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::toggleFullScreen);
+
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
@@ -187,8 +194,16 @@ void Chip8topia::close() {
 void Chip8topia::handleInputs() {
     glfwPollEvents();
 
+    // Mettre à jour pour gérer les front montant (true seulement si la touche vient d'être pressée)
+
     if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.trigger(true);
+        m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.trigger();
+
+    if (glfwGetKey(m_window, GLFW_KEY_F11) == GLFW_PRESS)
+        m_chip8topiaInputHandler.m_F11KeyButtonPressedEvent.trigger();
+
+    if (glfwGetKey(m_window, GLFW_KEY_F12) == GLFW_PRESS)
+        m_chip8topiaInputHandler.m_F12KeyButtonPressedEvent.trigger();
 }
 
 void Chip8topia::handleUi(const float deltaTime) {
@@ -239,6 +254,11 @@ void Chip8topia::handleScreenUpdate() {
 void Chip8topia::toggleFullScreen() {
     if (!m_isFullScreen)
     {
+        //        glfwGetWindowPos(m_window, &m_windowedPosX, &m_windowedPosY);
+        //        GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+        //        const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+        //        glfwSetWindowMonitor(m_window, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
+
         int count;
         GLFWmonitor** monitors = glfwGetMonitors(&count);
         for (int i = 0; i < count; i++)
@@ -249,7 +269,9 @@ void Chip8topia::toggleFullScreen() {
 
             if (m_windowedPosX >= x && m_windowedPosX <= x + width && m_windowedPosY >= y && m_windowedPosY <= y + height)
             {
-                glfwSetWindowMonitor(m_window, monitors[i], x, y, width, height, 0);
+                //                const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+                //                glfwSetWindowMonitor(m_window, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
+                glfwSetWindowMonitor(m_window, monitors[i], x, y, width, height, VSYNC_ENABLED);
                 break;
             }
         }
