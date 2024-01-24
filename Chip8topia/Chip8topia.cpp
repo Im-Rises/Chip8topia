@@ -187,7 +187,8 @@ void Chip8topia::close() {
 void Chip8topia::handleInputs() {
     glfwPollEvents();
 
-    m_chip8topiaInputHandler.handleInputs();
+    if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.trigger(true);
 }
 
 void Chip8topia::handleUi(const float deltaTime) {

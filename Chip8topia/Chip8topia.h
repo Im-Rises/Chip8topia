@@ -14,6 +14,11 @@ public:
     static constexpr auto PROJECT_VERSION = "0.0.1";
     static constexpr auto PROJECT_LINK = "https://github.com/Im-Rises/Chip8topia";
     static constexpr auto PROJECT_AUTHOR = "Im-Rises (Quentin Morel)";
+    static constexpr auto PROJECT_EMULATION_CONSOLE_NAME = "Chip8";
+    static constexpr auto PROJECT_EMULATION_CONSOLE_DESCRIPTION = R"(
+        "Chip8 is an interpreted programming language, developed by Joseph Weisbecker.
+        It was initially used on the COSMAC VIP and Telmac 1800 8-bit microcomputers in the mid-1970s.
+        It was made to allow video games to be more easily programmed for said computers.)";
 
 public:
     Chip8topia();
@@ -49,7 +54,7 @@ private:
     GLFWwindow* m_window;
     Chip8Emulator m_chip8Emulator;
     Chip8topiaUi m_chip8topiaUi;
-    Chip8topiaInputHandler m_chip8topiaInputHandler;
+    Chip8topiaInputHandler& m_chip8topiaInputHandler = Chip8topiaInputHandler::getInstance();
 
     bool m_isFullScreen = false;
     int m_currentWidth = 1280;
