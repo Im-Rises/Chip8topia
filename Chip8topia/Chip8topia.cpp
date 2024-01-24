@@ -107,6 +107,8 @@ Chip8topia::Chip8topia() {
     ImGui_ImplOpenGL3_Init(glsl_version);
 
     m_chip8topiaUi.init(this);
+
+    m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.subscribe(this, &Chip8topia::close);
 }
 
 Chip8topia::~Chip8topia() {
@@ -188,7 +190,7 @@ void Chip8topia::handleInputs() {
     glfwPollEvents();
 
     if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.trigger(true);
+        m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.trigger();
 }
 
 void Chip8topia::handleUi(const float deltaTime) {

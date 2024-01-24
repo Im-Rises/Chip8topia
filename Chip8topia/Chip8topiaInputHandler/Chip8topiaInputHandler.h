@@ -35,5 +35,5 @@ public:
     //    [[maybe_unused]] EventSystem<bool> m_KeyHeldEvent;
     //    [[maybe_unused]] EventSystem<bool> m_KeyRepeatedEvent;
 
-    [[maybe_unused]] EventSystem<bool> m_EscapeKeyButtonPressedEvent;
+    [[maybe_unused]] EventSystem<> m_EscapeKeyButtonPressedEvent;
 };
