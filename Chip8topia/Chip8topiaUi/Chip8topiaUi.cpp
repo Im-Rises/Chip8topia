@@ -99,67 +99,67 @@ void Chip8topiaUi::drawDesignMenu() {
 void Chip8topiaUi::drawAboutMenu() {
     if (ImGui::BeginMenu("About..."))
     {
-        if (ImGui::MenuItem("About Chip8topia"))
+        //        if (ImGui::MenuItem("Dependencies"))
+        //        {
+        //            ImGui::OpenPopup("Dependencies");
+        //        }
+
+        if (ImGui::MenuItem(Chip8topia::PROJECT_NAME))
         {
             m_showAboutPopup = true;
         }
 
-        if (ImGui::MenuItem("About the Chip8"))
-        {
-            ImGui::OpenPopup("About the Chip8");
-        }
-
-        if (ImGui::MenuItem("About the project dependencies"))
-        {
-            ImGui::OpenPopup("About the project dependencies");
-        }
+        //        if (ImGui::MenuItem(Chip8topia::PROJECT_EMULATION_CONSOLE_NAME))
+        //        {
+        //            ImGui::OpenPopup(Chip8topia::PROJECT_EMULATION_CONSOLE_NAME);
+        //        }
 
         ImGui::EndMenu();
     }
 }
 
 void Chip8topiaUi::drawAboutPopUpWindow() {
+    static constexpr auto ABOUT_CHIP8TOPIA = []() {
+        ImGui::TextColored(ImVec4(1.0F, 0.0F, 1.0F, 1.0F), Chip8topia::PROJECT_NAME);
+        ImGui::Text("Version: %s\n"
+                    "\n"
+                    "Developed by:\n "
+                    "- %s\n"
+                    "\n"
+                    "Github:\n"
+                    " - %s",
+            Chip8topia::PROJECT_VERSION,
+            Chip8topia::PROJECT_AUTHOR,
+            Chip8topia::PROJECT_LINK);
+    };
+    drawAboutPopUpInternal(Chip8topia::PROJECT_NAME, ABOUT_CHIP8TOPIA);
+
+    //    static constexpr auto ABOUT_CHIP8 = []() {
+    //        ImGui::Text(Chip8topia::PROJECT_EMULATION_CONSOLE_DESCRIPTION);
+    //    };
+    //    drawAboutPopUpInternal(Chip8topia::PROJECT_EMULATION_CONSOLE_NAME, ABOUT_CHIP8);
+
+    //    static constexpr auto aboutProjectDependencies = []() {
+    //        ImGui::Text("The Chip8topia project uses the following dependencies:");
+    //        ImGui::Text(" - OpenGL Vendor: %s", Chip8topia::getOpenGLVendor().data());
+    //        ImGui::Text(" - OpenGL Version: %s", Chip8topia::getOpenGLVersion().data());
+    //        ImGui::Text(" - GLFW Version: %s", Chip8topia::getGLFWVersion().data());
+    //        ImGui::Text(" - Glad Version: %s", Chip8topia::getGladVersion().data());
+    //        ImGui::Text(" - ImGui Version: %s", Chip8topia::getImGuiVersion().data());
+    //        ImGui::NewLine();
+    //    };
+    //    drawAboutPopUpInternal("Dependencies", aboutProjectDependencies);
+}
+void Chip8topiaUi::drawAboutPopUpInternal(const std::string_view& popupName, const std::function<void()>& drawAboutPopUpContent) {
     if (m_showAboutPopup)
     {
-        ImGui::OpenPopup("About");
+        ImGui::OpenPopup(popupName.data());
     }
-    if (ImGui::BeginPopupModal("About", &m_showAboutPopup,
+    if (ImGui::BeginPopupModal(popupName.data(), &m_showAboutPopup,
             ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize |
                 ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse))
     {
-        ImGui::TextColored(ImVec4(1.0F, 0.0F, 1.0F, 1.0F), Chip8topia::PROJECT_NAME);
-        ImGui::Text("Version: %s", Chip8topia::PROJECT_VERSION);
-        ImGui::NewLine();
-
-        ImGui::Text("Developed by:");
-        ImGui::Text(" - %s", Chip8topia::PROJECT_AUTHOR);
-        ImGui::NewLine();
-        ImGui::Text("Github:");
-        ImGui::Text(" - %s", Chip8topia::PROJECT_LINK);
-        ImGui::NewLine();
-
+        drawAboutPopUpContent();
         ImGui::EndPopup();
-    }
-
-    if (ImGui::BeginPopupModal("About the Chip8", nullptr,
-            ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize |
-                ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse))
-    {
-        ImGui::Text("The Chip8 is an interpreted programming language developed by Joseph Weisbecker in the 1970s.");
-        ImGui::Text("It was initially used on the COSMAC VIP and Telmac 1800 8-bit microcomputers to make game programming easier.");
-    }
-
-    if (ImGui::BeginPopupModal("About the project dependencies", nullptr,
-            ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize |
-                ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse))
-    {
-        ImGui::Text("The Chip8topia project uses the following dependencies:");
-        //        ImGui::Text("Libraries used: ");
-        //        ImGui::Text(" - OpenGL Vendor: %s", Chip8topia::getOpenGLVendor().data());
-        //        ImGui::Text(" - OpenGL Version: %s", Chip8topia::getOpenGLVersion().data());
-        //        ImGui::Text(" - GLFW Version: %s", Chip8topia::getGLFWVersion().data());
-        //        ImGui::Text(" - Glad Version: %s", Chip8topia::getGladVersion().data());
-        //        ImGui::Text(" - ImGui Version: %s", Chip8topia::getImGuiVersion().data());
-        //        ImGui::NewLine();
     }
 }

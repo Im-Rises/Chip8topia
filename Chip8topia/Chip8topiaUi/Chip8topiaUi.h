@@ -1,5 +1,8 @@
 #pragma once
 
+#include <functional>
+#include <string_view>
+
 #include "Chip8topiaDebugger/Chip8topiaDebugger.h"
 
 class Chip8topia;
@@ -25,6 +28,7 @@ private:
     void drawAboutMenu();
 
     void drawAboutPopUpWindow();
+    void drawAboutPopUpInternal(const std::string_view& popupName, const std::function<void()>& drawAboutPopUpContent);
 
 private:
     Chip8topiaDebugger m_chip8topiaDebugger;
