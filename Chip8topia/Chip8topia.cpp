@@ -194,6 +194,8 @@ void Chip8topia::close() {
 void Chip8topia::handleInputs() {
     glfwPollEvents();
 
+    // Mettre à jour pour gérer les front montant (true seulement si la touche vient d'être pressée)
+
     if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.trigger();
 

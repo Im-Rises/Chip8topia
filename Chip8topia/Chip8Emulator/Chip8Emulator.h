@@ -6,8 +6,24 @@
 
 class Chip8Emulator {
 public:
+    Chip8Emulator();
+    Chip8Emulator(const Chip8Emulator&) = delete;
+    Chip8Emulator(Chip8Emulator&&) = delete;
+    auto operator=(const Chip8Emulator&) -> Chip8Emulator& = delete;
+    auto operator=(Chip8Emulator&&) -> Chip8Emulator& = delete;
+    ~Chip8Emulator();
+
+public:
     void readRom(const uint8* rom, const size_t romSize);
     void update(const float deltaTime);
+
+private:
+    //    void updateCore(const float deltaTime);
+    //    void updateVideoEmulation();
+    //    void updateSoundEmulation();
+
+    void OnInput(const uint8 key, const bool isPressed);
+    //    void OnInput();
 
 private:
     Chip8Core m_core;

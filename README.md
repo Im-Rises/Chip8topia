@@ -5,10 +5,10 @@ https://en.wikipedia.org/wiki/CHIP-8#Further_reading
 ## TODO
 
 - [x] Add glad init in Chip8topia.cpp
+- [x] Add a file explorer to load roms
 - [x] Code the Chip8Core
 - [ ] Code the Chip8topiaUi
 - [ ] Code the Chip8topiaDebugger
-- [x] Add a file explorer to load roms
 - [ ] Handle file open dialog for multiple platforms (Windows, Linux, Mac), maybe use a library like GTK or WxWidgets
 - [ ] Add emulation video
 - [ ] Add emulation sound
