@@ -8,12 +8,12 @@
 class Chip8topia;
 class Chip8topiaUi {
 public:
-    Chip8topiaUi() = default;
+    Chip8topiaUi();
     Chip8topiaUi(const Chip8topiaUi&) = delete;
     Chip8topiaUi(Chip8topiaUi&&) = delete;
     auto operator=(const Chip8topiaUi&) -> Chip8topiaUi& = delete;
     auto operator=(Chip8topiaUi&&) -> Chip8topiaUi& = delete;
-    ~Chip8topiaUi() = default;
+    ~Chip8topiaUi();
 
 public:
     void init(Chip8topia* chip8topia); // TODO: Maybe remove this init and pass the Chip8topia pointer in the constructor orpass directly the pointer/reference to the Chip8topia object in the drawUi() function
@@ -30,10 +30,12 @@ private:
     void drawAboutPopUpWindow();
     void drawAboutPopUpInternal(const std::string_view& popupName, const std::function<void()>& drawAboutPopUpContent);
 
+    void toggleMenuBar();
+
 private:
     Chip8topiaDebugger m_chip8topiaDebugger;
     Chip8topia* m_chip8topia = nullptr;
 
-    bool m_showAboutPopup = false;
     bool m_isMenuBarOpen = true;
+    bool m_showAboutPopup = false;
 };

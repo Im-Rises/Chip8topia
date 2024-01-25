@@ -1,18 +1,25 @@
 #pragma once
 
 #include <Singleton/Singleton.hpp>
+
 #include "EventSystem/EventSystem.hpp"
 
-class Chip8topiaInputHandler : public Singleton<Chip8topiaInputHandler> {
+/*
+ * TODO: Replace code with a Singleton Registry
+ * */
+
+class Chip8topiaInputHandler final : public Singleton<Chip8topiaInputHandler> {
     friend class Singleton<Chip8topiaInputHandler>;
 
-public:
+protected:
     Chip8topiaInputHandler() = default;
+    ~Chip8topiaInputHandler() final = default;
+
+public:
     Chip8topiaInputHandler(const Chip8topiaInputHandler&) = delete;
     auto operator=(const Chip8topiaInputHandler&) -> Chip8topiaInputHandler& = delete;
     Chip8topiaInputHandler(Chip8topiaInputHandler&&) = delete;
     auto operator=(Chip8topiaInputHandler&&) -> Chip8topiaInputHandler& = delete;
-    ~Chip8topiaInputHandler() override = default;
 
 public:
     [[maybe_unused]] EventSystem<bool> m_LeftMouseButtonPressedEvent;
@@ -36,4 +43,6 @@ public:
     //    [[maybe_unused]] EventSystem<bool> m_KeyRepeatedEvent;
 
     [[maybe_unused]] EventSystem<> m_EscapeKeyButtonPressedEvent;
+    [[maybe_unused]] EventSystem<> m_F11KeyButtonPressedEvent;
+    [[maybe_unused]] EventSystem<> m_F12KeyButtonPressedEvent;
 };

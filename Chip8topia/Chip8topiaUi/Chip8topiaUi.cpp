@@ -4,6 +4,15 @@
 #include <ImGuiFileDialog/ImGuiFileDialog.h>
 
 #include "../Chip8topia.h"
+#include "../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
+
+Chip8topiaUi::~Chip8topiaUi() {
+    Chip8topiaInputHandler::getInstance().m_F12KeyButtonPressedEvent.unsubscribe(this, &Chip8topiaUi::toggleMenuBar);
+}
+
+Chip8topiaUi::Chip8topiaUi() {
+    Chip8topiaInputHandler::getInstance().m_F12KeyButtonPressedEvent.subscribe(this, &Chip8topiaUi::toggleMenuBar);
+}
 
 void Chip8topiaUi::init(Chip8topia* chip8topia) {
     m_chip8topia = chip8topia;
@@ -74,7 +83,7 @@ void Chip8topiaUi::drawViewMenu() {
         }
         if (ImGui::MenuItem("Show/Hide MenuBar", "F12"))
         {
-            m_isMenuBarOpen = !m_isMenuBarOpen;
+            toggleMenuBar();
         }
 
         ImGui::EndMenu();
@@ -165,4 +174,8 @@ void Chip8topiaUi::drawAboutPopUpInternal(const std::string_view& popupName, con
         drawAboutPopUpContent();
         ImGui::EndPopup();
     }
+}
+
+void Chip8topiaUi::toggleMenuBar() {
+    m_isMenuBarOpen = !m_isMenuBarOpen;
 }
