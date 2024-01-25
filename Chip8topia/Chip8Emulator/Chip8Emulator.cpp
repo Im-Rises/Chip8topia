@@ -7,9 +7,10 @@ void test(const uint8 key, const bool isPressed) {
 
 Chip8Emulator::Chip8Emulator() {
     //    MethodEventVarying<Chip8Emulator, int, double> test(this, &Chip8Emulator::OnInput);
-    //    Chip8topiaInputHandler::getInstance().m_GameInput.subscribe(&test);
-    //    Chip8topiaInputHandler::getInstance().m_GameInput.subscribe();
-    //    Chip8topiaInputHandler::getInstance().m_GameInput.trigger(0, true);
+    Chip8topiaInputHandler::getInstance().m_GameInput.subscribe(&test);
+    //    Chip8topiaInputHandler::getInstance().m_GameInput.subscribe(this, &Chip8Emulator::OnInput);
+    //    MethodEventVarying test2(this, &Chip8Emulator::OnInput);
+    Chip8topiaInputHandler::getInstance().m_GameInput.trigger(0, true);
 }
 
 Chip8Emulator::~Chip8Emulator() {
