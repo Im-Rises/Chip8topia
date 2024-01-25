@@ -8,18 +8,10 @@
 
 class Chip8Core;
 class Chip8topiaDebugger {
-    //    enum class DebuggerWindow {
-    //        Registers,
-    //        Stack,
-    //        MemoryEditor,
-    //        Keyboard,
-    //        Disassembler
-    //    };
-
     struct MenuItem {
         const char* name;
         bool isOpen;
-        std::function<void(const char* title, bool* p_open)> drawFunction;
+        std::function<void()> drawFunction;
 
         void drawMenuItem() {
             if (ImGui::MenuItem(name))
@@ -31,7 +23,11 @@ class Chip8topiaDebugger {
         void drawWindow() {
             if (isOpen)
             {
-                drawFunction(name, &isOpen);
+                if (ImGui::Begin(name, &isOpen))
+                {
+                    drawFunction();
+                    ImGui::End();
+                }
             }
         }
     };
@@ -45,12 +41,10 @@ public:
     ~Chip8topiaDebugger() = default;
 
 public:
-    //    void drawDebuggerMenu();
     void drawDebugger();
-    //    void drawDebuggerWindows();
 
 private:
-    void drawRegisters(const char* title, bool* p_open);
+    void drawRegisters();
     void drawStack();
     void drawMemory();
     void drawKeyboard();
@@ -59,26 +53,11 @@ private:
 private:
     MemoryEditor m_memoryEditor;
 
-    std::array<MenuItem, 1> m_menuItems = {
-        MenuItem{ "Registers", false, [this](const char* title, bool* p_open) { drawRegisters(title, p_open); }
-//        MenuItem{ "Stack", false, [this]() { drawStack(); } },
-//        MenuItem{ "Memory Editor", false, [this]() { drawMemory(); } },
-//        MenuItem{ "Keyboard", false, [this]() { drawKeyboard(); } },
-//        MenuItem{ "Disassembler", false, [this]() { drawDisassembler(); }
-        }
+    std::array<MenuItem, 5> m_menuItems = {
+        "Registers", false, [this]() { drawRegisters(); },
+        "Stack", false, [this]() { drawStack(); },
+        "Memory Editor", false, [this]() { drawMemory(); },
+        "Keyboard", false, [this]() { drawKeyboard(); },
+        "Disassembler", false, [this]() { drawDisassembler(); }
     };
-
-    //    std::unordered_set<DebuggerWindow> m_openDebuggerWindows{
-    //        DebuggerWindow::Registers,
-    //        DebuggerWindow::Stack,
-    //        DebuggerWindow::MemoryEditor,
-    //        DebuggerWindow::Keyboard,
-    //        DebuggerWindow::Disassembler
-    //    };
-    //
-    //    bool m_isRegistersOpen = false;
-    //    bool m_isStackOpen = false;
-    //    bool m_isMemoryEditorOpen = false;
-    //    bool m_isKeyboardOpen = false;
-    //    bool m_isDisassemblerOpen = false;
 };

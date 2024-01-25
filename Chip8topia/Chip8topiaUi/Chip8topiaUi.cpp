@@ -134,6 +134,8 @@ void Chip8topiaUi::drawAboutPopUpWindow() {
             Chip8topia::PROJECT_LINK);
     };
     drawAboutPopUpInternal(Chip8topia::PROJECT_NAME, ABOUT_CHIP8TOPIA);
+    //    drawAboutPopUpInternal("Chip8topia::PROJECT_NAME", ABOUT_CHIP8TOPIA);
+    //    drawAboutPopUpInternal("Chip8to", ABOUT_CHIP8TOPIA);
 
     //    static constexpr auto ABOUT_CHIP8 = []() {
     //        ImGui::Text(Chip8topia::PROJECT_EMULATION_CONSOLE_DESCRIPTION);

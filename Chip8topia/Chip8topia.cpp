@@ -58,7 +58,7 @@ Chip8topia::Chip8topia() {
 #endif
 
     // Create window with graphics context
-    m_window = glfwCreateWindow(1280, 720, PROJECT_NAME, nullptr, nullptr);
+    m_window = glfwCreateWindow(m_currentWidth, m_currentHeight, PROJECT_NAME, nullptr, nullptr);
     if (m_window == nullptr)
         exit(1);
     glfwMakeContextCurrent(m_window);

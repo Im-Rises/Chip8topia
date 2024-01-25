@@ -15,6 +15,7 @@ https://en.wikipedia.org/wiki/CHIP-8#Further_reading
 - [ ] Link emulator inputs and UI inputs
 - [ ] Améliorer code imgui des fenêtres avec un système qui contiendrait les enums des fenêtres à afficher, ensuite en
   allant dans un switch case pour chaque enum dans le tableau, on afficherait la fenêtre correspondante
+- [ ] Rajouter class ImGui (Créer une classe ImGuiMenuItemWindowList)
 
 <!--
 

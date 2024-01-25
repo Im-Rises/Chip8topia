@@ -12,34 +12,10 @@ void Chip8topiaDebugger::drawDebugger() {
             menuItem.drawMenuItem();
         }
 
-        //        if (ImGui::MenuItem("Registers"))
-        //        {
-        //            m_isRegistersOpen = !m_isRegistersOpen;
-        //        }
-        //
-        //        if (ImGui::MenuItem("Stack"))
-        //        {
-        //            m_isStackOpen = !m_isStackOpen;
-        //        }
-        //
-        //        if (ImGui::MenuItem("Memory Editor"))
-        //        {
-        //            m_isMemoryEditorOpen = !m_isMemoryEditorOpen;
-        //        }
-        //
-        //        if (ImGui::MenuItem("Keyboard"))
-        //        {
-        //            m_isKeyboardOpen = !m_isKeyboardOpen;
-        //        }
-        //
-        //        if (ImGui::MenuItem("Disassembler"))
-        //        {
-        //            m_isDisassemblerOpen = !m_isDisassemblerOpen;
-        //        }
-
         ImGui::EndMenu();
     }
 
+    // if chip8Core is running show window
     for (auto& menuItem : m_menuItems)
     {
         menuItem.drawWindow();
@@ -73,13 +49,8 @@ void Chip8topiaDebugger::drawDebugger() {
 //     //    }
 // }
 
-void Chip8topiaDebugger::drawRegisters(const char* title, bool* p_open) {
-    if (ImGui::Begin(title, p_open))
-    {
-        ImGui::End();
-    }
-    //    if (ImGui::Begin("Registers", &m_isRegistersOpen))
-    //    {
+void Chip8topiaDebugger::drawRegisters() {
+
     // Print PC register
     //        ImGui::Text("PC: %04X", m_cpu.getProgramCounter());
     //        ImGui::DragInt("PC", &m_cpu.getProgramCounter(), 1, 0, 0xFFFF);
@@ -102,13 +73,11 @@ void Chip8topiaDebugger::drawRegisters(const char* title, bool* p_open) {
     //           ImGui::Text("V%01X: %02X", i, m_cpu.getVRegister(i));
     // ImGui::DragInt("V%01X", &m_cpu.getVRegister(i), 1, 0, 0xFF);
     //       }
-    //        ImGui::End();
-    //    }
+
 }
 
 void Chip8topiaDebugger::drawStack() {
-    //    if (ImGui::Begin("Stack", &m_isStackOpen))
-    //    {
+
     // Print SP register
     //        ImGui::Text("SP: %02X", m_cpu.getStackPointer());
     //        ImGui::DragInt("SP", &m_cpu.getStackPointer(), 1, 0, 0xFF);
@@ -125,21 +94,17 @@ void Chip8topiaDebugger::drawStack() {
     //            ImGui::TableSetColumnIndex(1);
     //            ImGui::Text("0x%04X", m_cpu.getStack(i));
     //        }
-    //        ImGui::End();
-    //    }
+
 }
 
 void Chip8topiaDebugger::drawMemory() {
-    //    if (ImGui::Begin("Memory Editor", &m_isMemoryEditorOpen))
-    //    {
+
     //        m_memoryEditor.DrawWindow("Memory Editor", m_cpu.getMemory(), 0x1000);
-    //        ImGui::End();
-    //    }
+
 }
 
 void Chip8topiaDebugger::drawKeyboard() {
-    //    if (ImGui::Begin("Keyboard", &m_isKeyboardOpen))
-    //    {
+
     // Print Keyboard using a for loop in a table
     //        ImGui::Text("Keyboard");
     //        ImGui::BeginTable("Keyboard", 2);
@@ -151,12 +116,8 @@ void Chip8topiaDebugger::drawKeyboard() {
     //            ImGui::TableSetColumnIndex(1);
     //            ImGui::Text("0x%04X", m_cpu.getKeyboard(i));
     //        }
-    //        ImGui::End();
-    //    }
+
 }
 void Chip8topiaDebugger::drawDisassembler() {
-    //    if (ImGui::Begin("Disassembler", &m_isDisassemblerOpen))
-    //    {
-    //        ImGui::End();
-    //    }
+
 }
