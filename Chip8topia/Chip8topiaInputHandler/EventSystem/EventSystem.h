@@ -5,25 +5,25 @@
 #include <algorithm>
 
 #pragma region EqualityFunctions
-template <typename T>
-auto checkObjectEquality(T* t1, T* t2) -> bool {
-    return (t1 == t2);
-}
-
-template <typename T, typename U>
-auto checkObjectEquality(T* t1, U* t2) -> bool {
-    return false;
-}
-
-template <typename T, typename U, typename... Args>
-auto checkMethodEquality(void (T::*t1)(Args...), void (U::*t2)(Args...)) -> bool {
-    return false;
-}
-
-template <typename T, typename... Args>
-auto checkMethodEquality(void (T::*t1)(Args...), void (T::*t2)(Args...)) -> bool {
-    return (t1 == t2);
-}
+// template <typename T>
+// auto checkObjectEquality(T* t1, T* t2) -> bool {
+//     return (t1 == t2);
+// }
+//
+// template <typename T, typename U>
+// auto checkObjectEquality(T* t1, U* t2) -> bool {
+//     return false;
+// }
+//
+// template <typename T, typename U, typename... Args>
+// auto checkMethodEquality(void (T::*t1)(Args...), void (U::*t2)(Args...)) -> bool {
+//     return false;
+// }
+//
+// template <typename T, typename... Args>
+// auto checkMethodEquality(void (T::*t1)(Args...), void (T::*t2)(Args...)) -> bool {
+//     return (t1 == t2);
+// }
 #pragma endregion EqualityFunctions
 
 #pragma region Pointer definitions
@@ -56,9 +56,22 @@ public:
         (instance->*method)(args...);
     }
 
+    //    [[nodiscard]] auto operator==(const MethodEventVaryingBase<Args...>& other) const -> bool final {
+    //        return checkObjectEquality(instance, static_cast<const MethodEventVarying<T, Args...>&>(other).instance) &&
+    //               checkMethodEquality(method, static_cast<const MethodEventVarying<T, Args...>&>(other).method);
+    //    }
+
     [[nodiscard]] auto operator==(const MethodEventVaryingBase<Args...>& other) const -> bool final {
-        return checkObjectEquality(instance, static_cast<const MethodEventVarying<T, Args...>&>(other).instance) &&
-               checkMethodEquality(method, static_cast<const MethodEventVarying<T, Args...>&>(other).method);
+        //        if (std::is_same_v<T, std::remove_const_t<std::remove_reference_t<decltype(other)>>>)
+        if (std::is_convertible_v<decltype(other), MethodEventVarying<T, Args...>>)
+        {
+            auto otherCasted = static_cast<const MethodEventVarying<T, Args...>&>(other);
+            //            return checkObjectEquality(instance, otherCasted.instance) &&
+            //                   checkMethodEquality(method, otherCasted.method);
+            return instance == otherCasted.instance && method == otherCasted.method;
+        }
+
+        return true;
     }
 
     [[nodiscard]] auto operator==(const MethodEventVarying<T, Args...>& other) const -> bool {
@@ -165,6 +178,18 @@ public:
     void clear() {
         functionsList.clear();
         methodsList.clear();
+    }
+
+    [[nodiscard]] auto getFunctionCount() const -> size_t {
+        return functionsList.size();
+    }
+
+    [[nodiscard]] auto getMethodCount() const -> size_t {
+        return methodsList.size();
+    }
+
+    [[nodiscard]] auto getSubscriberCount() const -> size_t {
+        return getFunctionCount() + getMethodCount();
     }
 
 private:
