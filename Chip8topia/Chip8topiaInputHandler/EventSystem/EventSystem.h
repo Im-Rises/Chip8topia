@@ -1,10 +1,32 @@
 #pragma once
 
 #include <vector>
-#include <unordered_set>
 #include <memory>
 #include <algorithm>
 
+#pragma region EqualityFunctions
+template <typename T>
+auto checkObjectEquality(T* t1, T* t2) -> bool {
+    return (t1 == t2);
+}
+
+template <typename T, typename U>
+auto checkObjectEquality(T* t1, U* t2) -> bool {
+    return false;
+}
+
+template <typename T, typename U, typename... Args>
+auto checkMethodEquality(void (T::*t1)(Args...), void (U::*t2)(Args...)) -> bool {
+    return false;
+}
+
+template <typename T, typename... Args>
+auto checkMethodEquality(void (T::*t1)(Args...), void (T::*t2)(Args...)) -> bool {
+    return (t1 == t2);
+}
+#pragma endregion EqualityFunctions
+
+#pragma region Pointer definitions
 template <typename... Args>
 using FunctionPointer = void (*)(Args...);
 
@@ -13,11 +35,10 @@ class MethodEventVaryingBase {
 public:
     MethodEventVaryingBase() = default;
     MethodEventVaryingBase(const MethodEventVaryingBase&) = default;
-    MethodEventVaryingBase(MethodEventVaryingBase&&) = default;
-    virtual ~MethodEventVaryingBase() = default;
-
+    MethodEventVaryingBase(MethodEventVaryingBase&&) noexcept = default;
     auto operator=(const MethodEventVaryingBase&) -> MethodEventVaryingBase& = default;
-    auto operator=(MethodEventVaryingBase&&) -> MethodEventVaryingBase& = default;
+    auto operator=(MethodEventVaryingBase&&) noexcept -> MethodEventVaryingBase& = default;
+    virtual ~MethodEventVaryingBase() = default;
 
     virtual void operator()(Args... args) const = 0;
 
@@ -36,18 +57,21 @@ public:
     }
 
     [[nodiscard]] auto operator==(const MethodEventVaryingBase<Args...>& other) const -> bool final {
-        return operator==(static_cast<const MethodEventVarying<T>&>(other));
+        return checkObjectEquality(instance, static_cast<const MethodEventVarying<T, Args...>&>(other).instance) &&
+               checkMethodEquality(method, static_cast<const MethodEventVarying<T, Args...>&>(other).method);
     }
 
-    [[nodiscard]] auto operator==(const MethodEventVarying<T>& other) const -> bool {
-        return instance == other.instance && method == other.method;
+    [[nodiscard]] auto operator==(const MethodEventVarying<T, Args...>& other) const -> bool {
+        return checkObjectEquality(instance, other.instance) && checkMethodEquality(method, other.method);
     }
 
 private:
     T* instance;
     void (T::*method)(Args...);
 };
+#pragma endregion
 
+#pragma region EventSystem
 template <typename... Args>
 class EventSystem {
 public:
@@ -59,6 +83,7 @@ public:
     ~EventSystem() = default;
 
 public:
+#pragma region Functions
     auto subscribe(const FunctionPointer<Args...>& functionPointer) -> bool {
         auto it = std::find_if(functionsList.begin(), functionsList.end(), [&functionPointer](const auto& function) {
             return *function == functionPointer;
@@ -89,7 +114,9 @@ public:
     auto operator-=(const FunctionPointer<Args...>& functionPointer) -> bool {
         return unsubscribe(functionPointer);
     }
+#pragma endregion
 
+#pragma region Methods
     template <class T>
     auto subscribe(T* instance, void (T::*method)(Args...)) -> bool {
         auto it = std::find_if(methodsList.begin(), methodsList.end(), [instance, method](const auto& methodEvent) {
@@ -125,6 +152,7 @@ public:
     auto operator-=(const MethodEventVarying<T, Args...>& methodEvent) -> bool {
         return unsubscribe(methodEvent);
     }
+#pragma endregion
 
     auto trigger(Args... args) const -> void {
         for (const auto& function : functionsList)
@@ -138,3 +166,4 @@ private:
     std::vector<FunctionPointer<Args...>> functionsList;
     std::vector<std::unique_ptr<MethodEventVaryingBase<Args...>>> methodsList;
 };
+#pragma endregion
