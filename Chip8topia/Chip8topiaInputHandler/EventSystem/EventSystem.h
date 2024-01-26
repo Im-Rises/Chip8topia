@@ -162,6 +162,11 @@ public:
             (*method)(args...);
     }
 
+    void clear() {
+        functionsList.clear();
+        methodsList.clear();
+    }
+
 private:
     std::vector<FunctionPointer<Args...>> functionsList;
     std::vector<std::unique_ptr<MethodEventVaryingBase<Args...>>> methodsList;
