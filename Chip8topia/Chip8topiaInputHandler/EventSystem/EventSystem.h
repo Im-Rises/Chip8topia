@@ -30,6 +30,11 @@ public:
     using MethodPointer = void (T::*)(Args...);
 
     MethodEventVarying(T* instance, MethodPointer method) : instance(instance), method(method) {}
+    MethodEventVarying(const MethodEventVarying&) = default;
+    MethodEventVarying(MethodEventVarying&&) noexcept = default;
+    auto operator=(const MethodEventVarying&) -> MethodEventVarying& = default;
+    auto operator=(MethodEventVarying&&) noexcept -> MethodEventVarying& = default;
+    ~MethodEventVarying() = default;
 
     void operator()(Args... args) const final {
         (instance->*method)(args...);
@@ -61,9 +66,9 @@ class EventSystem {
 public:
     EventSystem() = default;
     EventSystem(const EventSystem&) = delete;
-    EventSystem(EventSystem&&) = delete;
+    EventSystem(EventSystem&&) noexcept = delete;
     auto operator=(const EventSystem&) -> EventSystem& = delete;
-    auto operator=(EventSystem&&) -> EventSystem& = delete;
+    auto operator=(EventSystem&&) noexcept -> EventSystem& = delete;
     ~EventSystem() = default;
 
 public:
@@ -76,7 +81,7 @@ public:
         if (it != functionsList.end())
             return false;
 
-        functionsList.push_back(FunctionPointer<Args...>(functionPointer));
+        functionsList.emplace_back(functionPointer);
         return true;
     }
     auto unsubscribe(const FunctionPointer<Args...>& functionPointer) -> bool {
@@ -110,7 +115,7 @@ public:
         if (it != methodsList.end())
             return false;
 
-        methodsList.push_back(std::make_unique<MethodEventVarying<T, Args...>>(instance, method));
+        methodsList.emplace_back(std::make_unique<MethodEventVarying<T, Args...>>(instance, method));
         return true;
     }
 
