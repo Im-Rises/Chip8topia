@@ -139,7 +139,6 @@ public:
 #pragma endregion
 
     auto subscribe(const std::function<void(Args...)>& function) -> bool {
-        //        static_assert(std::is_convertible_v<decltype(function), FunctionPointer<Args...>>, "Function must be convertible to FunctionPointer<Args...>");
         static_assert(false, "EventSystem: Don't send std::function to subscribe method. Use FunctionPointer instead.");
     }
 
