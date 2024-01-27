@@ -14,6 +14,7 @@ public:
     ~Input() = default;
 
 public:
+    void reset();
     [[nodiscard]] auto isKeyPressed(const uint8 Vx) const -> bool;
     void updateKey(const uint8 key, const bool pressed);
 

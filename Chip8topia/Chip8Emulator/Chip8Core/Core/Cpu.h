@@ -13,6 +13,7 @@ public:
     static constexpr uint16 START_ADDRESS = 0x200;
     static constexpr uint16 FONTSET_START_ADDRESS = 0x50;
     static constexpr uint16 FONTSET_SIZE = 80;
+    static constexpr uint16 CLOCK_FREQUENCY = 500;
 
 public:
     Cpu();
@@ -23,9 +24,8 @@ public:
     ~Cpu() = default;
 
 public:
+    void reset();
     void readRom(const uint8* rom, const size_t romSize); // Change to a std::array<uint8, 4096> rom
-
-public:
     void clock();
     void clockTimers();
 

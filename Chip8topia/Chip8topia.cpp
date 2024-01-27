@@ -193,10 +193,7 @@ void Chip8topia::handleUi(const float deltaTime) {
 }
 
 void Chip8topia::handleGameUpdate(const float deltaTime) {
-    if (m_chip8Emulator.getIsRomLoaded())
-    {
-        m_chip8Emulator.update(deltaTime);
-    }
+    m_chip8Emulator.update(deltaTime);
 }
 
 void Chip8topia::handleScreenUpdate() {

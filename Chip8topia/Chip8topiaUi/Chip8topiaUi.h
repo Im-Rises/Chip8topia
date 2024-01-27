@@ -35,7 +35,7 @@ private:
     void drawAboutPopUpInternal(const std::string_view& popupName, const std::function<void()>& drawAboutPopUpContent, bool& showAboutPopup);
 
     void openRomWindow();
-    void drawRomWindow();
+    void drawRomWindow(Chip8topia& chip8topia);
 
     void toggleMenuBar();
 

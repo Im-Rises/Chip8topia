@@ -20,6 +20,7 @@ public:
     void readRom(const uint8* rom, const size_t romSize);
     void clock();
     void updateKey(const uint8 key, const bool pressed);
+    void reset();
 
 private:
     Cpu m_cpu;
