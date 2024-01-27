@@ -230,11 +230,6 @@ void Chip8topia::handleScreenUpdate() {
 void Chip8topia::toggleFullScreen() {
     if (!m_isFullScreen)
     {
-        //        glfwGetWindowPos(m_window, &m_windowedPosX, &m_windowedPosY);
-        //        GLFWmonitor* monitor = glfwGetPrimaryMonitor();
-        //        const GLFWvidmode* mode = glfwGetVideoMode(monitor);
-        //        glfwSetWindowMonitor(m_window, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
-
         int count;
         GLFWmonitor** monitors = glfwGetMonitors(&count);
         for (int i = 0; i < count; i++)
@@ -245,9 +240,8 @@ void Chip8topia::toggleFullScreen() {
 
             if (m_windowedPosX >= x && m_windowedPosX <= x + width && m_windowedPosY >= y && m_windowedPosY <= y + height)
             {
-                //                const GLFWvidmode* mode = glfwGetVideoMode(monitor);
-                //                glfwSetWindowMonitor(m_window, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
-                glfwSetWindowMonitor(m_window, monitors[i], x, y, width, height, VSYNC_ENABLED);
+                const GLFWvidmode* mode = glfwGetVideoMode(monitors[i]);
+                glfwSetWindowMonitor(m_window, monitors[i], 0, 0, mode->width, mode->height, mode->refreshRate);
                 break;
             }
         }

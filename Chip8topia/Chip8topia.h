@@ -20,7 +20,7 @@ Chip8 is an interpreted programming language, developed by Joseph Weisbecker.
 It was initially used on the COSMAC VIP and Telmac 1800 8-bit microcomputers in the mid-1970s.
 It was made to allow video games to be more easily programmed for said computers.)";
 
-    static constexpr bool VSYNC_ENABLED = false;
+    static constexpr bool VSYNC_ENABLED = true;
 
 public:
     Chip8topia();
