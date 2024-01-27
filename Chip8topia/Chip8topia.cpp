@@ -194,7 +194,7 @@ void Chip8topia::close() {
 void Chip8topia::handleInputs() {
     glfwPollEvents();
 
-    // Mettre à jour pour gérer les front montant (true seulement si la touche vient d'être pressée)
+    // TODO: Mettre à jour pour gérer les front montant (true seulement si la touche vient d'être pressée)
 
     if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.trigger();
@@ -204,6 +204,9 @@ void Chip8topia::handleInputs() {
 
     if (glfwGetKey(m_window, GLFW_KEY_F12) == GLFW_PRESS)
         m_chip8topiaInputHandler.m_F12KeyButtonPressedEvent.trigger();
+
+    if (glfwGetKey(m_window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS && glfwGetKey(m_window, GLFW_KEY_O) == GLFW_PRESS)
+        m_chip8topiaInputHandler.m_CTRL_OKeyButtonPressedEvent.trigger();
 }
 
 void Chip8topia::handleUi(const float deltaTime) {
@@ -217,10 +220,10 @@ void Chip8topia::handleUi(const float deltaTime) {
 }
 
 void Chip8topia::handleGameUpdate(const float deltaTime) {
-    //    if (m_chip8Emulator.GetIsRomLoaded())
-    //    {
-    //        m_chip8Emulator.update(deltaTime);
-    //    }
+    if (m_chip8Emulator.getIsRomLoaded())
+    {
+        m_chip8Emulator.update(deltaTime);
+    }
 }
 
 void Chip8topia::handleScreenUpdate() {

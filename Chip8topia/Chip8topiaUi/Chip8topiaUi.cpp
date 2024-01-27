@@ -2,16 +2,18 @@
 
 #include <imgui/imgui.h>
 #include <ImGuiFileDialog/ImGuiFileDialog.h>
+#include <iostream>
 
 #include "../Chip8topia.h"
-#include "../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
 
 Chip8topiaUi::~Chip8topiaUi() {
     Chip8topiaInputHandler::getInstance().m_F12KeyButtonPressedEvent.unsubscribe(this, &Chip8topiaUi::toggleMenuBar);
+    Chip8topiaInputHandler::getInstance().m_CTRL_OKeyButtonPressedEvent.unsubscribe(this, &Chip8topiaUi::openRomWindow);
 }
 
 Chip8topiaUi::Chip8topiaUi() {
     Chip8topiaInputHandler::getInstance().m_F12KeyButtonPressedEvent.subscribe(this, &Chip8topiaUi::toggleMenuBar);
+    Chip8topiaInputHandler::getInstance().m_CTRL_OKeyButtonPressedEvent.subscribe(this, &Chip8topiaUi::openRomWindow);
 }
 
 void Chip8topiaUi::init(Chip8topia* chip8topia) {
@@ -38,6 +40,7 @@ void Chip8topiaUi::drawMainMenuBar() {
     }
 
     drawAboutPopUpWindow();
+    drawRomWindow();
 }
 
 void Chip8topiaUi::drawFileMenu() {
@@ -45,12 +48,7 @@ void Chip8topiaUi::drawFileMenu() {
     {
         if (ImGui::MenuItem("Open rom..", "Ctrl+O"))
         {
-            // Reset emulation, open file explorer and search path to file to rom
-            // Get rom path and read it.
-
-            IGFD::FileDialogConfig config;
-            config.path = ".";
-            ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".cpp,.h,.hpp", config);
+            openRomWindow();
         }
         if (ImGui::MenuItem("Exit", "Alt+F4"))
         {
@@ -178,4 +176,29 @@ void Chip8topiaUi::drawAboutPopUpInternal(const std::string_view& popupName, con
 
 void Chip8topiaUi::toggleMenuBar() {
     m_isMenuBarOpen = !m_isMenuBarOpen;
+}
+
+void Chip8topiaUi::drawRomWindow() {
+    if (ImGuiFileDialog::Instance()->Display(FILE_DIALOG_KEY))
+    {
+        std::cout << "Display" << std::endl;
+        // action if OK
+        if (ImGuiFileDialog::Instance()->IsOk())
+        {
+            std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+            std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+            // action
+        }
+
+        // close
+        ImGuiFileDialog::Instance()->Close();
+    }
+}
+
+void Chip8topiaUi::openRomWindow() {
+    // Reset emulation, open file explorer and search path to file to rom
+    // Get rom path and read it.
+    IGFD::FileDialogConfig config;
+    config.path = ".";
+    ImGuiFileDialog::Instance()->OpenDialog(FILE_DIALOG_KEY, "Choose File", CHIP8_ROM_FILE_EXTENSION, config);
 }
