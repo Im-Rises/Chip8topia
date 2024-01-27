@@ -17,13 +17,14 @@ public:
     void readRom(const uint8* rom, const size_t romSize);
     void update(const float deltaTime);
 
+    [[nodiscard]] auto getIsRomLoaded() const -> bool;
+
 private:
     //    void updateCore(const float deltaTime);
     //    void updateVideoEmulation();
     //    void updateSoundEmulation();
 
     void OnInput(const uint8 key, const bool isPressed);
-    //    void OnInput();
 
 private:
     Chip8Core m_core;

@@ -24,3 +24,7 @@ void Chip8Emulator::update(const float deltaTime) {
 void Chip8Emulator::OnInput(const uint8 key, const bool isPressed) {
     m_core.updateKey(key, isPressed);
 }
+
+auto Chip8Emulator::getIsRomLoaded() const -> bool {
+    return m_isRomLoaded;
+}

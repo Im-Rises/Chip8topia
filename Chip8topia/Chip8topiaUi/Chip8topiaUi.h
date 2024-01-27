@@ -7,6 +7,11 @@
 
 class Chip8topia;
 class Chip8topiaUi {
+private:
+    static constexpr auto CHIP8_ROM_FILE_EXTENSION = ".ch8";
+//    static constexpr auto FILE_DIALOG_KEY = "ChooseFileDlgKey";
+#define FILE_DIALOG_KEY "ChooseFileDlgKey"
+
 public:
     Chip8topiaUi();
     Chip8topiaUi(const Chip8topiaUi&) = delete;
@@ -30,6 +35,10 @@ private:
     void drawAboutPopUpWindow();
     void drawAboutPopUpInternal(const std::string_view& popupName, const std::function<void()>& drawAboutPopUpContent);
 
+    // TODO: Correct open dialog string name not working
+    void drawRomWindow();
+
+    void openRomWindow();
     void toggleMenuBar();
 
 private:

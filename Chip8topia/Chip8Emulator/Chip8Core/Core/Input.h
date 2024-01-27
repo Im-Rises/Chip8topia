@@ -18,5 +18,6 @@ public:
     void updateKey(const uint8 key, const bool pressed);
 
 private:
-    std::array<uint8, 16> m_keys{};
+    // TODO: Maybe use std::bitset instead?
+    std::array<bool, 16> m_keys{};
 };

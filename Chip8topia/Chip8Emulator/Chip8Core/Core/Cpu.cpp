@@ -18,7 +18,7 @@ Cpu::Cpu() : m_pc(START_ADDRESS),
 void Cpu::readRom(const uint8* rom, const size_t romSize) {
     for (int i = 0; i < romSize; ++i)
     {
-        m_memory[0x200 + i] = rom[i];
+        m_memory[START_ADDRESS + i] = rom[i];
     }
 }
 
