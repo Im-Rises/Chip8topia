@@ -66,9 +66,9 @@ class EventSystem {
 public:
     EventSystem() = default;
     EventSystem(const EventSystem&) = delete;
-    EventSystem(EventSystem&&) noexcept = delete;
+    EventSystem(EventSystem&&) = delete;
     auto operator=(const EventSystem&) -> EventSystem& = delete;
-    auto operator=(EventSystem&&) noexcept -> EventSystem& = delete;
+    auto operator=(EventSystem&&) -> EventSystem& = delete;
     ~EventSystem() = default;
 
 public:

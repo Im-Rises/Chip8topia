@@ -16,21 +16,17 @@ Chip8topiaUi::Chip8topiaUi() {
     Chip8topiaInputHandler::getInstance().m_CTRL_OKeyButtonPressedEvent.subscribe(this, &Chip8topiaUi::openRomWindow);
 }
 
-void Chip8topiaUi::init(Chip8topia* chip8topia) {
-    m_chip8topia = chip8topia;
+void Chip8topiaUi::drawUi(Chip8topia& chip8topia) {
+    drawMainMenuBar(chip8topia);
 }
 
-void Chip8topiaUi::drawUi() {
-    drawMainMenuBar();
-}
-
-void Chip8topiaUi::drawMainMenuBar() {
+void Chip8topiaUi::drawMainMenuBar(Chip8topia& chip8topia) {
     if (m_isMenuBarOpen && ImGui::BeginMainMenuBar())
     {
-        drawFileMenu();
-        drawViewMenu();
+        drawFileMenu(chip8topia);
+        drawViewMenu(chip8topia);
         drawDesignMenu();
-        m_chip8topiaDebugger.drawDebugger();
+        m_chip8topiaDebugger.drawDebugger(chip8topia.getChip8Emulator());
         drawAboutMenu();
 
         ImGui::EndMainMenuBar();
@@ -41,7 +37,7 @@ void Chip8topiaUi::drawMainMenuBar() {
     drawRomWindow();
 }
 
-void Chip8topiaUi::drawFileMenu() {
+void Chip8topiaUi::drawFileMenu(Chip8topia& chip8topia) {
     if (ImGui::BeginMenu("File"))
     {
         if (ImGui::MenuItem("Open rom..", "Ctrl+O"))
@@ -50,18 +46,18 @@ void Chip8topiaUi::drawFileMenu() {
         }
         if (ImGui::MenuItem("Exit", "Alt+F4"))
         {
-            m_chip8topia->close();
+            chip8topia.close();
         }
 
         ImGui::EndMenu();
     }
 }
-void Chip8topiaUi::drawViewMenu() {
+void Chip8topiaUi::drawViewMenu(Chip8topia& chip8topia) {
     if (ImGui::BeginMenu("View"))
     {
         if (ImGui::MenuItem("FullScreen", "F11"))
         {
-            m_chip8topia->toggleFullScreen();
+            chip8topia.toggleFullScreen();
         }
         if (ImGui::MenuItem("Show/Hide MenuBar", "F12"))
         {
@@ -125,6 +121,7 @@ void Chip8topiaUi::drawAboutChip8topiaPopUpWindow() {
 
 void Chip8topiaUi::drawAboutChip8PopUpWindow() {
     static constexpr auto ABOUT_CHIP8 = []() {
+        ImGui::TextColored(ImVec4(1.0F, 0.0F, 1.0F, 1.0F), Chip8topia::PROJECT_EMULATION_CONSOLE_NAME);
         ImGui::Text(Chip8topia::PROJECT_EMULATION_CONSOLE_DESCRIPTION);
     };
     drawAboutPopUpInternal(Chip8topia::PROJECT_EMULATION_CONSOLE_NAME, ABOUT_CHIP8, m_showAboutChip8Popup);

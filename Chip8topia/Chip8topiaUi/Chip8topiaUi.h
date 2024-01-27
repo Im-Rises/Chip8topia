@@ -10,7 +10,6 @@ class Chip8topiaUi {
 private:
     static constexpr auto CHIP8_ROM_FILE_EXTENSION = ".ch8";
     static constexpr auto FILE_DIALOG_NAME = "RomFileWindowDialog";
-    //     #define FILE_DIALOG_KEY "ChooseFileDlgKey"
 
 public:
     Chip8topiaUi();
@@ -21,14 +20,13 @@ public:
     ~Chip8topiaUi();
 
 public:
-    void init(Chip8topia* chip8topia); // TODO: Maybe remove this init and pass the Chip8topia pointer in the constructor orpass directly the pointer/reference to the Chip8topia object in the drawUi() function
-    void drawUi();
+    void drawUi(Chip8topia& chip8topia);
 
 private:
-    void drawMainMenuBar();
+    void drawMainMenuBar(Chip8topia& chip8topia);
 
-    void drawFileMenu();
-    void drawViewMenu();
+    void drawFileMenu(Chip8topia& chip8topia);
+    void drawViewMenu(Chip8topia& chip8topia);
     void drawDesignMenu();
     void drawAboutMenu();
 
@@ -43,7 +41,6 @@ private:
 
 private:
     Chip8topiaDebugger m_chip8topiaDebugger;
-    Chip8topia* m_chip8topia = nullptr;
 
     bool m_isMenuBarOpen = true;
     bool m_showAboutChip8topiaPopup = false;

@@ -6,7 +6,7 @@
 #include <functional>
 #include <array>
 
-class Chip8Core;
+class Chip8Emulator;
 class Chip8topiaDebugger {
     struct MenuItem {
         const char* name;
@@ -41,7 +41,7 @@ public:
     ~Chip8topiaDebugger() = default;
 
 public:
-    void drawDebugger();
+    void drawDebugger(Chip8Emulator& emulator);
 
 private:
     void drawRegisters();

@@ -107,8 +107,6 @@ Chip8topia::Chip8topia() {
 #endif
     ImGui_ImplOpenGL3_Init(glsl_version);
 
-    m_chip8topiaUi.init(this);
-
     m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.subscribe(this, &Chip8topia::close);
     m_chip8topiaInputHandler.m_F11KeyButtonPressedEvent.subscribe(this, &Chip8topia::toggleFullScreen);
 }
@@ -123,31 +121,6 @@ Chip8topia::~Chip8topia() {
 
     glfwDestroyWindow(m_window);
     glfwTerminate();
-}
-
-auto Chip8topia::getOpenGLVendor() -> std::string_view {
-    return reinterpret_cast<const char*>(glGetString(GL_RENDERER));
-}
-
-auto Chip8topia::getOpenGLVersion() -> std::string_view {
-    return reinterpret_cast<const char*>(glGetString(GL_VERSION));
-}
-
-// auto Chip8topia::getGLSLVersion() -> std::string_view {
-//     return reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION));
-// }
-
-auto Chip8topia::getGLFWVersion() -> std::string {
-    return std::to_string(GLFW_VERSION_MAJOR) + "." + std::to_string(GLFW_VERSION_MINOR) + "." +
-           std::to_string(GLFW_VERSION_REVISION);
-}
-
-auto Chip8topia::getGladVersion() -> std::string_view {
-    return "0.1.36";
-}
-
-auto Chip8topia::getImGuiVersion() -> std::string {
-    return IMGUI_VERSION;
 }
 
 auto Chip8topia::run() -> int {
@@ -214,7 +187,7 @@ void Chip8topia::handleUi(const float deltaTime) {
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    m_chip8topiaUi.drawUi();
+    m_chip8topiaUi.drawUi(*this);
 
     ImGui::Render();
 }
@@ -291,3 +264,32 @@ void Chip8topia::getWindowedDimensions(int& width, int& height) const {
     width = m_currentWidth;
     height = m_currentHeight;
 }
+
+auto Chip8topia::getChip8Emulator() -> Chip8Emulator& {
+    return m_chip8Emulator;
+}
+
+// auto Chip8topia::getOpenGLVendor() -> std::string_view {
+//     return reinterpret_cast<const char*>(glGetString(GL_RENDERER));
+// }
+//
+// auto Chip8topia::getOpenGLVersion() -> std::string_view {
+//     return reinterpret_cast<const char*>(glGetString(GL_VERSION));
+// }
+//
+//// auto Chip8topia::getGLSLVersion() -> std::string_view {
+////     return reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION));
+//// }
+//
+// auto Chip8topia::getGLFWVersion() -> std::string {
+//    return std::to_string(GLFW_VERSION_MAJOR) + "." + std::to_string(GLFW_VERSION_MINOR) + "." +
+//           std::to_string(GLFW_VERSION_REVISION);
+//}
+//
+// auto Chip8topia::getGladVersion() -> std::string_view {
+//    return "0.1.36";
+//}
+//
+// auto Chip8topia::getImGuiVersion() -> std::string {
+//    return IMGUI_VERSION;
+//}

@@ -1,10 +1,6 @@
 #include "Chip8topiaDebugger.h"
 
-#include <binaryLib/binaryLib.h>
-
-// #include "../../Chip8Emulator/Chip8Core/Chip8Core.h"
-
-void Chip8topiaDebugger::drawDebugger() {
+void Chip8topiaDebugger::drawDebugger(Chip8Emulator& emulator) {
     if (ImGui::BeginMenu("Debugger"))
     {
         for (auto& menuItem : m_menuItems)
@@ -15,39 +11,11 @@ void Chip8topiaDebugger::drawDebugger() {
         ImGui::EndMenu();
     }
 
-    // if chip8Core is running show window
     for (auto& menuItem : m_menuItems)
     {
         menuItem.drawWindow();
     }
 }
-
-// void Chip8topiaDebugger::drawDebuggerWindows() {
-//     //    if (m_isRegistersOpen)
-//     //    {
-//     //        drawRegisters();
-//     //    }
-//     //
-//     //    if (m_isStackOpen)
-//     //    {
-//     //        drawStack();
-//     //    }
-//     //
-//     //    if (m_isMemoryEditorOpen)
-//     //    {
-//     //        drawMemory();
-//     //    }
-//     //
-//     //    if (m_isKeyboardOpen)
-//     //    {
-//     //        drawKeyboard();
-//     //    }
-//     //
-//     //    if (m_isDisassemblerOpen)
-//     //    {
-//     //        drawDisassembler();
-//     //    }
-// }
 
 void Chip8topiaDebugger::drawRegisters() {
 
@@ -73,7 +41,6 @@ void Chip8topiaDebugger::drawRegisters() {
     //           ImGui::Text("V%01X: %02X", i, m_cpu.getVRegister(i));
     // ImGui::DragInt("V%01X", &m_cpu.getVRegister(i), 1, 0, 0xFF);
     //       }
-
 }
 
 void Chip8topiaDebugger::drawStack() {
@@ -94,13 +61,11 @@ void Chip8topiaDebugger::drawStack() {
     //            ImGui::TableSetColumnIndex(1);
     //            ImGui::Text("0x%04X", m_cpu.getStack(i));
     //        }
-
 }
 
 void Chip8topiaDebugger::drawMemory() {
 
     //        m_memoryEditor.DrawWindow("Memory Editor", m_cpu.getMemory(), 0x1000);
-
 }
 
 void Chip8topiaDebugger::drawKeyboard() {
@@ -116,8 +81,6 @@ void Chip8topiaDebugger::drawKeyboard() {
     //            ImGui::TableSetColumnIndex(1);
     //            ImGui::Text("0x%04X", m_cpu.getKeyboard(i));
     //        }
-
 }
 void Chip8topiaDebugger::drawDisassembler() {
-
 }
