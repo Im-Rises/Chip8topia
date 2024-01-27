@@ -16,34 +16,28 @@ Chip8topiaUi::Chip8topiaUi() {
     Chip8topiaInputHandler::getInstance().m_CTRL_OKeyButtonPressedEvent.subscribe(this, &Chip8topiaUi::openRomWindow);
 }
 
-void Chip8topiaUi::init(Chip8topia* chip8topia) {
-    m_chip8topia = chip8topia;
+void Chip8topiaUi::drawUi(Chip8topia& chip8topia) {
+    drawMainMenuBar(chip8topia);
 }
 
-void Chip8topiaUi::drawUi() {
-    drawMainMenuBar();
-}
-
-void Chip8topiaUi::drawMainMenuBar() {
+void Chip8topiaUi::drawMainMenuBar(Chip8topia& chip8topia) {
     if (m_isMenuBarOpen && ImGui::BeginMainMenuBar())
     {
-        drawFileMenu();
-        drawViewMenu();
+        drawFileMenu(chip8topia);
+        drawViewMenu(chip8topia);
         drawDesignMenu();
-        //        drawToolsMenu();
-        m_chip8topiaDebugger.drawDebugger();
-        //        m_chip8topiaDebugger.drawDebuggerMenu();
-        //        m_chip8topiaDebugger.drawDebuggerWindows();
+        m_chip8topiaDebugger.drawDebugger(chip8topia.getChip8Emulator());
         drawAboutMenu();
 
         ImGui::EndMainMenuBar();
     }
 
-    drawAboutPopUpWindow();
+    drawAboutChip8topiaPopUpWindow();
+    drawAboutChip8PopUpWindow();
     drawRomWindow();
 }
 
-void Chip8topiaUi::drawFileMenu() {
+void Chip8topiaUi::drawFileMenu(Chip8topia& chip8topia) {
     if (ImGui::BeginMenu("File"))
     {
         if (ImGui::MenuItem("Open rom..", "Ctrl+O"))
@@ -52,32 +46,18 @@ void Chip8topiaUi::drawFileMenu() {
         }
         if (ImGui::MenuItem("Exit", "Alt+F4"))
         {
-            m_chip8topia->close();
+            chip8topia.close();
         }
 
         ImGui::EndMenu();
     }
-
-    if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey"))
-    {
-        // action if OK
-        if (ImGuiFileDialog::Instance()->IsOk())
-        {
-            const std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
-            const std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
-            // action
-        }
-
-        // close
-        ImGuiFileDialog::Instance()->Close();
-    }
 }
-void Chip8topiaUi::drawViewMenu() {
+void Chip8topiaUi::drawViewMenu(Chip8topia& chip8topia) {
     if (ImGui::BeginMenu("View"))
     {
         if (ImGui::MenuItem("FullScreen", "F11"))
         {
-            m_chip8topia->toggleFullScreen();
+            chip8topia.toggleFullScreen();
         }
         if (ImGui::MenuItem("Show/Hide MenuBar", "F12"))
         {
@@ -87,6 +67,7 @@ void Chip8topiaUi::drawViewMenu() {
         ImGui::EndMenu();
     }
 }
+
 void Chip8topiaUi::drawDesignMenu() {
     if (ImGui::BeginMenu("Design"))
     {
@@ -107,26 +88,21 @@ void Chip8topiaUi::drawDesignMenu() {
 void Chip8topiaUi::drawAboutMenu() {
     if (ImGui::BeginMenu("About..."))
     {
-        //        if (ImGui::MenuItem("Dependencies"))
-        //        {
-        //            ImGui::OpenPopup("Dependencies");
-        //        }
-
         if (ImGui::MenuItem(Chip8topia::PROJECT_NAME))
         {
-            m_showAboutPopup = true;
+            m_showAboutChip8topiaPopup = true;
         }
 
-        //        if (ImGui::MenuItem(Chip8topia::PROJECT_EMULATION_CONSOLE_NAME))
-        //        {
-        //            ImGui::OpenPopup(Chip8topia::PROJECT_EMULATION_CONSOLE_NAME);
-        //        }
+        if (ImGui::MenuItem(Chip8topia::PROJECT_EMULATION_CONSOLE_NAME))
+        {
+            m_showAboutChip8Popup = true;
+        }
 
         ImGui::EndMenu();
     }
 }
 
-void Chip8topiaUi::drawAboutPopUpWindow() {
+void Chip8topiaUi::drawAboutChip8topiaPopUpWindow() {
     static constexpr auto ABOUT_CHIP8TOPIA = []() {
         ImGui::TextColored(ImVec4(1.0F, 0.0F, 1.0F, 1.0F), Chip8topia::PROJECT_NAME);
         ImGui::Text("Version: %s\n"
@@ -140,32 +116,23 @@ void Chip8topiaUi::drawAboutPopUpWindow() {
             Chip8topia::PROJECT_AUTHOR,
             Chip8topia::PROJECT_LINK);
     };
-    drawAboutPopUpInternal(Chip8topia::PROJECT_NAME, ABOUT_CHIP8TOPIA);
-    //    drawAboutPopUpInternal("Chip8topia::PROJECT_NAME", ABOUT_CHIP8TOPIA);
-    //    drawAboutPopUpInternal("Chip8to", ABOUT_CHIP8TOPIA);
-
-    //    static constexpr auto ABOUT_CHIP8 = []() {
-    //        ImGui::Text(Chip8topia::PROJECT_EMULATION_CONSOLE_DESCRIPTION);
-    //    };
-    //    drawAboutPopUpInternal(Chip8topia::PROJECT_EMULATION_CONSOLE_NAME, ABOUT_CHIP8);
-
-    //    static constexpr auto aboutProjectDependencies = []() {
-    //        ImGui::Text("The Chip8topia project uses the following dependencies:");
-    //        ImGui::Text(" - OpenGL Vendor: %s", Chip8topia::getOpenGLVendor().data());
-    //        ImGui::Text(" - OpenGL Version: %s", Chip8topia::getOpenGLVersion().data());
-    //        ImGui::Text(" - GLFW Version: %s", Chip8topia::getGLFWVersion().data());
-    //        ImGui::Text(" - Glad Version: %s", Chip8topia::getGladVersion().data());
-    //        ImGui::Text(" - ImGui Version: %s", Chip8topia::getImGuiVersion().data());
-    //        ImGui::NewLine();
-    //    };
-    //    drawAboutPopUpInternal("Dependencies", aboutProjectDependencies);
+    drawAboutPopUpInternal(Chip8topia::PROJECT_NAME, ABOUT_CHIP8TOPIA, m_showAboutChip8topiaPopup);
 }
-void Chip8topiaUi::drawAboutPopUpInternal(const std::string_view& popupName, const std::function<void()>& drawAboutPopUpContent) {
-    if (m_showAboutPopup)
+
+void Chip8topiaUi::drawAboutChip8PopUpWindow() {
+    static constexpr auto ABOUT_CHIP8 = []() {
+        ImGui::TextColored(ImVec4(1.0F, 0.0F, 1.0F, 1.0F), Chip8topia::PROJECT_EMULATION_CONSOLE_NAME);
+        ImGui::Text(Chip8topia::PROJECT_EMULATION_CONSOLE_DESCRIPTION);
+    };
+    drawAboutPopUpInternal(Chip8topia::PROJECT_EMULATION_CONSOLE_NAME, ABOUT_CHIP8, m_showAboutChip8Popup);
+}
+
+void Chip8topiaUi::drawAboutPopUpInternal(const std::string_view& popupName, const std::function<void()>& drawAboutPopUpContent, bool& showAboutPopup) {
+    if (showAboutPopup)
     {
         ImGui::OpenPopup(popupName.data());
     }
-    if (ImGui::BeginPopupModal(popupName.data(), &m_showAboutPopup,
+    if (ImGui::BeginPopupModal(popupName.data(), &showAboutPopup,
             ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize |
                 ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse))
     {
@@ -174,31 +141,26 @@ void Chip8topiaUi::drawAboutPopUpInternal(const std::string_view& popupName, con
     }
 }
 
-void Chip8topiaUi::toggleMenuBar() {
-    m_isMenuBarOpen = !m_isMenuBarOpen;
+void Chip8topiaUi::openRomWindow() {
+    IGFD::FileDialogConfig config;
+    config.path = ".";
+    ImGuiFileDialog::Instance()->OpenDialog(FILE_DIALOG_NAME, "Select a game rom", CHIP8_ROM_FILE_EXTENSION, config);
 }
 
 void Chip8topiaUi::drawRomWindow() {
-    if (ImGuiFileDialog::Instance()->Display(FILE_DIALOG_KEY))
+    if (ImGuiFileDialog::Instance()->Display(FILE_DIALOG_NAME))
     {
-        std::cout << "Display" << std::endl;
-        // action if OK
         if (ImGuiFileDialog::Instance()->IsOk())
         {
-            std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
-            std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
-            // action
+            std::cout << "Selected file: " << ImGuiFileDialog::Instance()->GetCurrentPath() << std::endl;
+            const std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+            //            m_chip8topia->loadRom(filePathName);
         }
 
-        // close
         ImGuiFileDialog::Instance()->Close();
     }
 }
 
-void Chip8topiaUi::openRomWindow() {
-    // Reset emulation, open file explorer and search path to file to rom
-    // Get rom path and read it.
-    IGFD::FileDialogConfig config;
-    config.path = ".";
-    ImGuiFileDialog::Instance()->OpenDialog(FILE_DIALOG_KEY, "Choose File", CHIP8_ROM_FILE_EXTENSION, config);
+void Chip8topiaUi::toggleMenuBar() {
+    m_isMenuBarOpen = !m_isMenuBarOpen;
 }

@@ -16,9 +16,9 @@ public:
     static constexpr auto PROJECT_AUTHOR = "Im-Rises (Quentin Morel)";
     static constexpr auto PROJECT_EMULATION_CONSOLE_NAME = "Chip8";
     static constexpr auto PROJECT_EMULATION_CONSOLE_DESCRIPTION = R"(
-        "Chip8 is an interpreted programming language, developed by Joseph Weisbecker.
-        It was initially used on the COSMAC VIP and Telmac 1800 8-bit microcomputers in the mid-1970s.
-        It was made to allow video games to be more easily programmed for said computers.)";
+Chip8 is an interpreted programming language, developed by Joseph Weisbecker.
+It was initially used on the COSMAC VIP and Telmac 1800 8-bit microcomputers in the mid-1970s.
+It was made to allow video games to be more easily programmed for said computers.)";
 
     static constexpr bool VSYNC_ENABLED = false;
 
@@ -29,14 +29,6 @@ public:
     Chip8topia(Chip8topia&&) = delete;
     auto operator=(Chip8topia&&) -> Chip8topia& = delete;
     ~Chip8topia();
-
-public:
-    static auto getOpenGLVendor() -> std::string_view;
-    static auto getOpenGLVersion() -> std::string_view;
-    //    static auto getGLSLVersion() -> std::string_view;
-    static auto getGLFWVersion() -> std::string;
-    static auto getGladVersion() -> std::string_view;
-    static auto getImGuiVersion() -> std::string;
 
 public:
     auto run() -> int;
@@ -50,7 +42,8 @@ private:
 
 public:
     void toggleFullScreen();
-    void getWindowedDimensions(int& width, int& height) const;
+    [[maybe_unused]] void getWindowedDimensions(int& width, int& height) const;
+    auto getChip8Emulator() -> Chip8Emulator&;
 
 private:
     GLFWwindow* m_window;
@@ -66,3 +59,11 @@ private:
     int m_windowedPosX = 0;
     int m_windowedPosY = 0;
 };
+
+// public:
+//     static auto getOpenGLVendor() -> std::string_view;
+//     static auto getOpenGLVersion() -> std::string_view;
+//     //    static auto getGLSLVersion() -> std::string_view;
+//     static auto getGLFWVersion() -> std::string;
+//     static auto getGladVersion() -> std::string_view;
+//     static auto getImGuiVersion() -> std::string;
