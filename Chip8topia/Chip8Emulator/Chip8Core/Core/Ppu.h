@@ -6,6 +6,13 @@
 
 class Ppu {
 public:
+    static constexpr size_t WIDTH = 64;
+    static constexpr size_t HEIGHT = 32;
+    static constexpr size_t CLOCK_FREQUENCY = 60;
+    static constexpr uint8 SPRITE_WIDTH = 8;
+    static constexpr uint8 SPRITE_HEIGHT = 15;
+
+public:
     Ppu() = default;
     Ppu(const Ppu&) = delete;
     Ppu(Ppu&&) = delete;
@@ -20,5 +27,5 @@ public:
     [[nodiscard]] auto getVideoMemory() const -> const std::array<uint8, 2048>&;
 
 private:
-    std::array<uint8, 2048> m_videoMemory{};
+    std::array<uint8, WIDTH * HEIGHT> m_videoMemory{};
 };

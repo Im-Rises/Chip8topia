@@ -34,7 +34,7 @@ void Chip8topiaUi::drawMainMenuBar(Chip8topia& chip8topia) {
 
     drawAboutChip8topiaPopUpWindow();
     drawAboutChip8PopUpWindow();
-    drawRomWindow();
+    drawRomWindow(chip8topia);
 }
 
 void Chip8topiaUi::drawFileMenu(Chip8topia& chip8topia) {
@@ -147,14 +147,13 @@ void Chip8topiaUi::openRomWindow() {
     ImGuiFileDialog::Instance()->OpenDialog(FILE_DIALOG_NAME, "Select a game rom", CHIP8_ROM_FILE_EXTENSION, config);
 }
 
-void Chip8topiaUi::drawRomWindow() {
+void Chip8topiaUi::drawRomWindow(Chip8topia& chip8topia) {
     if (ImGuiFileDialog::Instance()->Display(FILE_DIALOG_NAME))
     {
         if (ImGuiFileDialog::Instance()->IsOk())
         {
-            std::cout << "Selected file: " << ImGuiFileDialog::Instance()->GetCurrentPath() << std::endl;
             const std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
-            //            m_chip8topia->loadRom(filePathName);
+            chip8topia.getChip8Emulator().readRom(filePathName.data()); // TODO: use std::string_view or std::filesystem::path or std::string
         }
 
         ImGuiFileDialog::Instance()->Close();

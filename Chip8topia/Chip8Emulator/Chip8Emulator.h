@@ -3,6 +3,7 @@
 #include "Chip8Core/Chip8Core.h"
 #include "Chip8Emulation/Chip8VideoEmulation.h"
 #include "Chip8Emulation/Chip8SoundEmulation.h"
+#include "Chip8Emulation/Chip8RomLoader.h"
 
 class Chip8Emulator {
 public:
@@ -14,22 +15,24 @@ public:
     ~Chip8Emulator();
 
 public:
-    void readRom(const uint8* rom, const size_t romSize);
+    void readRom(const char* romPath);
     void update(const float deltaTime);
 
-    [[nodiscard]] auto getIsRomLoaded() const -> bool;
+    void toglleTurboMode();
+    void togglePause();
 
 private:
-    //    void updateCore(const float deltaTime);
-    //    void updateVideoEmulation();
-    //    void updateSoundEmulation();
-
     void OnInput(const uint8 key, const bool isPressed);
 
 private:
     Chip8Core m_core;
     Chip8VideoEmulation m_videoEmulation;
     Chip8SoundEmulation m_soundEmulation;
+    Chip8RomLoader m_romLoader;
 
     bool m_isRomLoaded = false;
+    bool m_isTurboMode = false;
+    bool m_isPaused = false;
+
+    float m_accumulator = 0.0F;
 };

@@ -10,21 +10,38 @@ Chip8Emulator::~Chip8Emulator() {
     Chip8topiaInputHandler::getInstance().m_GameInput.unsubscribe(this, &Chip8Emulator::OnInput);
 }
 
-void Chip8Emulator::readRom(const uint8* rom, const size_t romSize) {
-    m_core.readRom(rom, romSize);
+void Chip8Emulator::readRom(const char* romPath) {
+    //    m_core.readRom(rom, romSize);
     m_isRomLoaded = true;
 }
 
 void Chip8Emulator::update(const float deltaTime) {
-    m_core.clock();
-    m_videoEmulation.update(deltaTime);
-    m_soundEmulation.update(deltaTime);
+    if (!m_isRomLoaded || m_isPaused)
+    {
+        return;
+    }
+
+    m_accumulator += deltaTime;
+
+    //    if (m_isTurboMode || m_accumulator >= (1.0F / Ppu::CLOCK_FREQUENCY))
+    //    {
+    //        m_accumulator = 0.0F;
+    //
+    //        m_core.clock();
+    //
+    //        m_videoEmulation.update(deltaTime);
+    //        m_soundEmulation.update(deltaTime);
+    //    }
+}
+
+void Chip8Emulator::toglleTurboMode() {
+    m_isTurboMode = !m_isTurboMode;
+}
+
+void Chip8Emulator::togglePause() {
+    m_isPaused = !m_isPaused;
 }
 
 void Chip8Emulator::OnInput(const uint8 key, const bool isPressed) {
     m_core.updateKey(key, isPressed);
-}
-
-auto Chip8Emulator::getIsRomLoaded() const -> bool {
-    return m_isRomLoaded;
 }

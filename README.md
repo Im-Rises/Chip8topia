@@ -7,70 +7,21 @@ https://en.wikipedia.org/wiki/CHIP-8#Further_reading
 - [x] Add glad init in Chip8topia.cpp
 - [x] Add a file explorer to load roms
 - [x] Code the Chip8Core
-- [ ] Code the Chip8topiaUi
+- [x] Code the Chip8topiaUi
 - [ ] Code the Chip8topiaDebugger
-- [ ] Handle file open dialog for multiple platforms (Windows, Linux, Mac), maybe use a library like GTK or WxWidgets
+- [x] Handle file open dialog for multiple platforms (Windows, Linux, Mac), maybe use a library like GTK or WxWidgets
 - [ ] Add emulation video
 - [ ] Add emulation sound
-- [ ] Link emulator inputs and UI inputs
+- [x] Link emulator inputs and UI inputs
 - [ ] Améliorer code imgui des fenêtres avec un système qui contiendrait les enums des fenêtres à afficher, ensuite en
   allant dans un switch case pour chaque enum dans le tableau, on afficherait la fenêtre correspondante
 - [ ] Rajouter class ImGui (Créer une classe ImGuiMenuItemWindowList)
-- [ ] Faire une structure qui prend en paramètre un array seulement movable
-  Vous avez envoyé
-  Créer une classe ImGuiMenuItemWindowList
-
-<!--
-
-```mermaid
-graph LR
-
-    CD[Chip8topiaDebugger]
-    
-    Window
-    EngineLoop
-    
-    subgraph Chip8topia
-        subgraph Chip8Core
-            CPU
-            RAM
-            PPU
-        end
-        
-        subgraph Chip8topiaUi
-            CD
-            File
-            View
-            Design
-            Tools
-            About
-        end
-    end
-    
-    CD --> CPU
-
-    CD --> RAM
-    CD --> PPU
-
-```
-
-%%ROM
-
-%% C --> CC
-CC --> CPU
-CC --> RAM
-CC --> ROM
-CC --> PPU
-
-C[Chip8topia]
-
-CC[Chip8Core]
-CPU[CPU]
-RAM[RAM]
-ROM[ROM]
-PPU[PPU]
-
--->
+- [?] Faire une structure qui prend en paramètre un array seulement movable
+- [ ] Créer une classe ImGuiMenuItemWindowList
+- [ ] Finir le code de lecture de rom
+- [ ] Charger rom
+- [ ] Linker rom
+- [ ] Correct window size position for about window
 
 ## Dependencies
 

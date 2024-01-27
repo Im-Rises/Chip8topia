@@ -15,6 +15,17 @@ Cpu::Cpu() : m_pc(START_ADDRESS),
              m_stack{} {
 }
 
+void Cpu::reset() {
+    m_pc = START_ADDRESS;
+    m_sp = 0;
+    m_I = 0;
+    m_gameTimer = 0;
+    m_audioTimer = 0;
+    m_memory = {};
+    m_V = {};
+    m_stack = {};
+}
+
 void Cpu::readRom(const uint8* rom, const size_t romSize) {
     for (int i = 0; i < romSize; ++i)
     {
