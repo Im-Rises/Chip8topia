@@ -21,15 +21,15 @@ void Cpu::reset() {
     m_I = 0;
     m_gameTimer = 0;
     m_audioTimer = 0;
-    m_memory = {};
+    m_memory = {}; // TODO: Maybe for the ram we can reset everything except the rom location so it can be reloaded
     m_V = {};
     m_stack = {};
 }
 
-void Cpu::readRom(const uint8* rom, const size_t romSize) {
-    for (int i = 0; i < romSize; ++i)
+void Cpu::readRom(const std::vector<uint8>& rom) {
+    for (int i = 0; i < rom.size(); i++)
     {
-        m_memory[START_ADDRESS + i] = rom[i];
+        m_memory[START_ADDRESS + i] = rom[i]; // Crashing here due to rom size
     }
 }
 

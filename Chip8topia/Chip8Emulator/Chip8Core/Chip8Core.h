@@ -2,7 +2,7 @@
 
 #include <string>
 #include <memory>
-
+#include <vector>
 #include <binaryLib/binaryLib.h>
 
 #include "Core/Cpu.h"
@@ -17,7 +17,7 @@ public:
     ~Chip8Core() = default;
 
 public:
-    void readRom(const uint8* rom, const size_t romSize);
+    void readRom(const std::vector<uint8>& rom);
     void clock();
     void updateKey(const uint8 key, const bool pressed);
     void reset();

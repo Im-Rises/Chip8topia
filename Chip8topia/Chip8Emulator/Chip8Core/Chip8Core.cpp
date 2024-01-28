@@ -3,11 +3,14 @@
 #include "Core/Input.h"
 #include "Core/Ppu.h"
 
-Chip8Core::Chip8Core() : m_ppu(), m_input(), m_cpu() {
+Chip8Core::Chip8Core() : m_ppu(std::make_shared<Ppu>()),
+                         m_input(std::make_shared<Input>()),
+//                         m_cpu(m_ppu, m_input) {
+                         m_cpu() {
 }
 
-void Chip8Core::readRom(const uint8* rom, const size_t romSize) {
-    m_cpu.readRom(rom, romSize);
+void Chip8Core::readRom(const std::vector<uint8>& rom) {
+    m_cpu.readRom(rom);
 }
 
 void Chip8Core::clock() {

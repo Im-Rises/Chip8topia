@@ -3,8 +3,11 @@
 // TODO: Do check to verify that the rom is valid
 //  Read rom to a buffer
 
+// TODO: use std::move and std::forward and references
+
 #include <binaryLib/binaryLib.h>
 #include <vector>
+#include <string>
 
 class Chip8RomLoader {
 public:
@@ -16,13 +19,13 @@ public:
     ~Chip8RomLoader() = default;
 
 public:
-    auto loadRom(const char* romPath) -> std::vector<uint8>;
+    auto loadRom(const std::string& romPath) -> std::vector<uint8>;
 
 private:
-    auto readRom(const char* romPath) -> std::vector<uint8>;
-    auto checkRom(const std::vector<uint8>& rom) -> bool;
+    auto readRom(const std::string& romPath) -> std::vector<uint8>;
+    //    auto checkRom(const std::vector<uint8>& rom) -> bool;
 
-    void printRomInfo(const std::vector<uint8>& rom);
+    //    void printRomInfo(const std::vector<uint8>& rom);
 
 private:
     static constexpr size_t ROM_START = 0x200;

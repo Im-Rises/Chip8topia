@@ -4,6 +4,7 @@
 
 #include <array>
 #include <memory>
+#include <vector>
 
 class Ppu;
 class Input;
@@ -14,6 +15,9 @@ public:
     static constexpr uint16 FONTSET_START_ADDRESS = 0x50;
     static constexpr uint16 FONTSET_SIZE = 80;
     static constexpr uint16 CLOCK_FREQUENCY = 500;
+    static constexpr size_t MEMORY_SIZE = 0x1000;
+    static constexpr size_t REGISTER_SIZE = 16;
+    static constexpr size_t STACK_SIZE = 16;
 
 public:
     Cpu();
@@ -25,7 +29,7 @@ public:
 
 public:
     void reset();
-    void readRom(const uint8* rom, const size_t romSize); // Change to a std::array<uint8, 4096> rom
+    void readRom(const std::vector<uint8>& rom); // Change to a std::array<uint8, 4096> rom
     void clock();
     void clockTimers();
 
@@ -70,13 +74,13 @@ private:
     inline void LD_Vx_I(const uint8 x);
 
 private:
-    std::array<uint8, 0x1000> m_memory;
+    std::array<uint8, MEMORY_SIZE> m_memory;
     uint16 m_pc;
 
-    std::array<uint16, 16> m_stack;
+    std::array<uint16, STACK_SIZE> m_stack;
     uint8 m_sp;
 
-    std::array<uint8, 16> m_V;
+    std::array<uint8, REGISTER_SIZE> m_V;
     uint16 m_I;
 
     uint8 m_gameTimer;
