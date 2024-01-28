@@ -2,6 +2,8 @@
 
 https://en.wikipedia.org/wiki/CHIP-8#Further_reading
 
+http://devernay.free.fr/hacks/chip8/C8TECH10.HTM
+
 ## TODO
 
 - [x] Add glad init in Chip8topia.cpp
