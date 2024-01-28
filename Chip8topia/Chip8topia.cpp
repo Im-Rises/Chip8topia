@@ -14,8 +14,11 @@
 #endif
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <string>
 #include <chrono>
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb/stb_image.h>
+
+#include "res/chip8topiaIconResource.h"
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
@@ -106,6 +109,8 @@ Chip8topia::Chip8topia() {
     ImGui_ImplGlfw_InstallEmscriptenCanvasResizeCallback("#canvas");
 #endif
     ImGui_ImplOpenGL3_Init(glsl_version);
+
+    setWindowIcon();
 
     m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.subscribe(this, &Chip8topia::close);
     m_chip8topiaInputHandler.m_F11KeyButtonPressedEvent.subscribe(this, &Chip8topia::toggleFullScreen);
@@ -258,6 +263,16 @@ void Chip8topia::getWindowedDimensions(int& width, int& height) const {
 
 auto Chip8topia::getChip8Emulator() -> Chip8Emulator& {
     return m_chip8Emulator;
+}
+
+void Chip8topia::setWindowIcon() {
+    int chip8topiaIconWidth = 0, chip8topiaIconHeight = 0, channelsInFile = 0;
+    unsigned char* imagePixels = stbi_load_from_memory(CHIP8TOPIA_ICON_DATA, CHIP8TOPIA_ICON_DATA_LENGTH, &chip8topiaIconWidth, &chip8topiaIconHeight, &channelsInFile, 0);
+    GLFWimage images[1];
+    images[0].width = chip8topiaIconWidth;
+    images[0].height = chip8topiaIconHeight;
+    images[0].pixels = imagePixels;
+    glfwSetWindowIcon(m_window, 1, images);
 }
 
 // auto Chip8topia::getOpenGLVendor() -> std::string_view {
