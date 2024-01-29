@@ -113,11 +113,13 @@ Chip8topia::Chip8topia() {
     setWindowIcon();
 
     m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.subscribe(this, &Chip8topia::close);
+    m_chip8topiaInputHandler.m_F10KeyButtonPressedEvent.subscribe(this, &Chip8topia::toggleHyperSpeed);
     m_chip8topiaInputHandler.m_F11KeyButtonPressedEvent.subscribe(this, &Chip8topia::toggleFullScreen);
 }
 
 Chip8topia::~Chip8topia() {
     m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.unsubscribe(this, &Chip8topia::close);
+    m_chip8topiaInputHandler.m_F10KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::toggleHyperSpeed);
     m_chip8topiaInputHandler.m_F11KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::toggleFullScreen);
 
     ImGui_ImplOpenGL3_Shutdown();
@@ -176,6 +178,9 @@ void Chip8topia::handleInputs() {
 
     if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.trigger();
+
+    if (glfwGetKey(m_window, GLFW_KEY_F10) == GLFW_PRESS)
+        m_chip8topiaInputHandler.m_F10KeyButtonPressedEvent.trigger();
 
     if (glfwGetKey(m_window, GLFW_KEY_F11) == GLFW_PRESS)
         m_chip8topiaInputHandler.m_F11KeyButtonPressedEvent.trigger();
@@ -259,6 +264,11 @@ void Chip8topia::toggleFullScreen() {
 void Chip8topia::getWindowedDimensions(int& width, int& height) const {
     width = m_currentWidth;
     height = m_currentHeight;
+}
+
+void Chip8topia::toggleHyperSpeed() {
+    //    glfwSwapInterval(m_isHyperSpeed ? 1 : 0); // 0 = no vsync, 1 = vsync
+    glfwSwapInterval(0); // 0 = no vsync, 1 = vsync
 }
 
 auto Chip8topia::getChip8Emulator() -> Chip8Emulator& {

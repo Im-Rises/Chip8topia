@@ -5,6 +5,10 @@
 
 // TODO: use std::move and std::forward and references
 
+// TODO: use an exception to handle errors // #include <stdexcept>
+
+// TODO: use std::filesystem::path
+
 #include <binaryLib/binaryLib.h>
 #include <vector>
 #include <string>
@@ -22,12 +26,6 @@ public:
     auto loadRom(const std::string& romPath) -> std::vector<uint8>;
 
 private:
-    auto readRom(const std::string& romPath) -> std::vector<uint8>;
-    //    auto checkRom(const std::vector<uint8>& rom) -> bool;
-
-    //    void printRomInfo(const std::vector<uint8>& rom);
-
-private:
-    static constexpr size_t ROM_START = 0x200;
-    static constexpr size_t ROM_SIZE = 0x1000;
+    auto checkRomFileSize(std::ifstream& romFile) -> bool;
+    auto readRom(std::ifstream& romFile) -> std::vector<uint8>;
 };

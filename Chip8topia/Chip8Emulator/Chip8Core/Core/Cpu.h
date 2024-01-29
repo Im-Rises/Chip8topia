@@ -10,12 +10,13 @@ class Ppu;
 class Input;
 
 class Cpu {
-public:
+public: // TODO: Check to be sure between Machine cycle and Clock cycle
     static constexpr uint16 START_ADDRESS = 0x200;
     static constexpr uint16 FONTSET_START_ADDRESS = 0x50;
     static constexpr uint16 FONTSET_SIZE = 80;
     static constexpr uint16 CLOCK_FREQUENCY = 500;
     static constexpr size_t MEMORY_SIZE = 0x1000;
+    static constexpr size_t ROM_SIZE = MEMORY_SIZE - START_ADDRESS;
     static constexpr size_t REGISTER_SIZE = 16;
     static constexpr size_t STACK_SIZE = 16;
 
@@ -27,9 +28,12 @@ public:
     auto operator=(Cpu&& other) -> Cpu& = delete;
     ~Cpu() = default;
 
+    void setPpu(std::shared_ptr<Ppu> ppu);
+    void setInput(std::shared_ptr<Input> input);
+
 public:
     void reset();
-    void readRom(const std::vector<uint8>& rom); // Change to a std::array<uint8, 4096> rom
+    void readRom(const std::vector<uint8>& rom); // TODO: Maybe change to a std::array<uint8, 4096> rom
     void clock();
     void clockTimers();
 
