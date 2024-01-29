@@ -100,8 +100,8 @@ public:
         return true;
     }
 
-    //    // HACK: This is a workaround to force the impossibility of using std::function as a parameter
-    //    auto unsubscribe(const std::function<void(Args...)>& function) -> bool = delete;
+    // HACK: This is a workaround to force the impossibility of using std::function as a parameter
+    auto unsubscribe(const std::function<void(Args...)>& function) -> bool = delete;
 
     auto operator+=(const FunctionPointer<Args...>& functionPointer) -> bool {
         return subscribe(functionPointer);
