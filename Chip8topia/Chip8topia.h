@@ -41,9 +41,10 @@ private:
 
 public:
     void toggleFullScreen();
-    [[maybe_unused]] void getWindowedDimensions(int& width, int& height) const;
-    void toggleHyperSpeed();
+    void getWindowedDimensions(int& width, int& height) const;
+    void toggleTurboMode();
     auto getChip8Emulator() -> Chip8Emulator&;
+    [[nodiscard]] auto getIsTurboMode() const -> bool;
     void setWindowIcon();
     void setWindowTitle(const float fps);
 
@@ -54,7 +55,7 @@ private:
     Chip8topiaInputHandler& m_chip8topiaInputHandler = Chip8topiaInputHandler::getInstance();
 
     bool m_isFullScreen = false;
-    bool m_isHyperSpeed = false;
+    bool m_isTurboMode = false;
     int m_currentWidth = 1280;
     int m_currentHeight = 720;
     int m_windowedWidth = m_currentWidth;

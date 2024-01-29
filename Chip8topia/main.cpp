@@ -1,4 +1,5 @@
 #include <iostream>
+
 #include "Chip8topia.h"
 
 auto main(int argc, char* argv[]) -> int {

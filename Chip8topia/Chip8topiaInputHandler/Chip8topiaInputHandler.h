@@ -27,16 +27,23 @@ public:
 public:
     void update(GLFWwindow* window);
 
-    void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+    static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 public:
+    [[maybe_unused]] EventSystem<> m_CTRL_OKeyButtonPressedEvent;
+
     [[maybe_unused]] EventSystem<> m_EscapeKeyButtonPressedEvent;
+
+    [[maybe_unused]] EventSystem<> m_PKeyButtonPressedEvent;
+
+    [[maybe_unused]] EventSystem<> m_F9KeyButtonPressedEvent;
     [[maybe_unused]] EventSystem<> m_F10KeyButtonPressedEvent;
     [[maybe_unused]] EventSystem<> m_F11KeyButtonPressedEvent;
     [[maybe_unused]] EventSystem<> m_F12KeyButtonPressedEvent;
-    [[maybe_unused]] EventSystem<> m_CTRL_OKeyButtonPressedEvent;
 
     [[maybe_unused]] EventSystem<const uint8, const bool> m_GameInput;
+
+    //TODO: Replace by CallbackSystem we don't several subscribes
 
 private:
 };

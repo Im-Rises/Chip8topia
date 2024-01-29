@@ -26,8 +26,9 @@ private:
     void drawMainMenuBar(Chip8topia& chip8topia);
 
     void drawFileMenu(Chip8topia& chip8topia);
+    void drawEngineEmulationMenu(Chip8topia& chip8topia);
     void drawViewMenu(Chip8topia& chip8topia);
-    void drawDesignMenu();
+    void drawVideoMenu();
     void drawAboutMenu();
 
     void drawAboutChip8topiaPopUpWindow();

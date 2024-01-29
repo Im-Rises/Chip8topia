@@ -21,6 +21,8 @@ public:
     void toglleTurboMode();
     void togglePause();
 
+    [[nodiscard]] auto getIsTurbomode() const -> bool;
+
 private:
     void OnInput(const uint8 key, const bool isPressed);
 

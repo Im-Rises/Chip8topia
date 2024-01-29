@@ -2,6 +2,8 @@
 
 #include <glfw/glfw3.h>
 
+#include "../Chip8topia.h"
+
 void Chip8topiaInputHandler::update(GLFWwindow* window) {
     glfwPollEvents();
 
@@ -52,22 +54,36 @@ void Chip8topiaInputHandler::update(GLFWwindow* window) {
     //        m_GameInput.trigger(0xC, false);
 }
 void Chip8topiaInputHandler::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    auto& inputHandler = Chip8topiaInputHandler::getInstance();
+
     switch (key)
     {
-//        // Use key callback instead of polling for all UI input
-//        if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-//            m_EscapeKeyButtonPressedEvent.trigger();
-//
-//        if (glfwGetKey(window, GLFW_KEY_F10) == GLFW_PRESS)
-//            m_F10KeyButtonPressedEvent.trigger();
-//
-//        if (glfwGetKey(window, GLFW_KEY_F11) == GLFW_PRESS)
-//            m_F11KeyButtonPressedEvent.trigger();
-//
-//        if (glfwGetKey(window, GLFW_KEY_F12) == GLFW_PRESS)
-//            m_F12KeyButtonPressedEvent.trigger();
-//
-//        if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
-//            m_CTRL_OKeyButtonPressedEvent.trigger();
+    case GLFW_KEY_ESCAPE:
+        if (action == GLFW_PRESS)
+            inputHandler.m_EscapeKeyButtonPressedEvent.trigger();
+        break;
+    case GLFW_KEY_P:
+        if (action == GLFW_PRESS)
+            inputHandler.m_PKeyButtonPressedEvent.trigger();
+        break;
+    case GLFW_KEY_F9:
+        if (action == GLFW_PRESS)
+            inputHandler.m_F9KeyButtonPressedEvent.trigger();
+        break;
+    case GLFW_KEY_F10:
+        if (action == GLFW_PRESS)
+            inputHandler.m_F10KeyButtonPressedEvent.trigger();
+        break;
+    case GLFW_KEY_F11:
+        if (action == GLFW_PRESS)
+            inputHandler.m_F11KeyButtonPressedEvent.trigger();
+        break;
+    case GLFW_KEY_F12:
+        if (action == GLFW_PRESS)
+            inputHandler.m_F12KeyButtonPressedEvent.trigger();
+        break;
+
+        //        if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
+        //            m_CTRL_OKeyButtonPressedEvent.trigger();
     }
 }
