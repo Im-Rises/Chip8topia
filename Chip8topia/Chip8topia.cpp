@@ -14,10 +14,8 @@
 #endif
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <chrono>
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
-#include <string>
 #include <format>
 
 #include "res/chip8topiaIconResource.h"
@@ -80,6 +78,7 @@ Chip8topia::Chip8topia() {
     // Set window callbacks
     glfwSetWindowUserPointer(m_window, this);
     glfwSetDropCallback(m_window, drop_callback);
+    glfwSetKeyCallback(m_window, Chip8topiaInputHandler::key_callback);
 
 #ifdef __EMSCRIPTEN__
     // Initialize OpenGL loader
@@ -153,7 +152,7 @@ auto Chip8topia::run() -> int {
 #else
 
     auto lastTime = std::chrono::high_resolution_clock::now();
-    auto currentTime = std::chrono::high_resolution_clock::now();
+    auto currentTime = lastTime;
     float deltaTime = 0.0F;
 
     while (glfwWindowShouldClose(m_window) == 0)
@@ -262,12 +261,16 @@ void Chip8topia::getWindowedDimensions(int& width, int& height) const {
 }
 
 void Chip8topia::toggleHyperSpeed() {
-    //    glfwSwapInterval(m_isHyperSpeed ? 1 : 0); // 0 = no vsync, 1 = vsync
-    glfwSwapInterval(0); // 0 = no vsync, 1 = vsync
+    glfwSwapInterval(m_isHyperSpeed ? 1 : 0); // 0 = no vsync, 1 = vsync
+    m_isHyperSpeed = !m_isHyperSpeed;
 }
 
 auto Chip8topia::getChip8Emulator() -> Chip8Emulator& {
     return m_chip8Emulator;
+}
+
+auto Chip8topia::isHyperSpeedEnabled() const -> bool {
+    return m_isHyperSpeed;
 }
 
 void Chip8topia::setWindowIcon() {

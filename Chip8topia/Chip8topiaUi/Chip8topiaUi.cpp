@@ -2,6 +2,7 @@
 
 #include <imgui/imgui.h>
 #include <ImGuiFileDialog/ImGuiFileDialog.h>
+#include <format>
 
 #include "../Chip8topia.h"
 
@@ -23,8 +24,9 @@ void Chip8topiaUi::drawMainMenuBar(Chip8topia& chip8topia) {
     if (m_isMenuBarOpen && ImGui::BeginMainMenuBar())
     {
         drawFileMenu(chip8topia);
+        drawEngineEmulationMenu(chip8topia);
         drawViewMenu(chip8topia);
-        drawDesignMenu();
+        drawVideoMenu();
         m_chip8topiaDebugger.drawDebugger(chip8topia.getChip8Emulator());
         drawAboutMenu();
 
@@ -51,9 +53,28 @@ void Chip8topiaUi::drawFileMenu(Chip8topia& chip8topia) {
         ImGui::EndMenu();
     }
 }
+
+void Chip8topiaUi::drawEngineEmulationMenu(Chip8topia& chip8topia) {
+    if (ImGui::BeginMenu("Engine/Emulation"))
+    {
+        if (ImGui::MenuItem(std::format("Toggle Engine hyper speed : {}", chip8topia.isHyperSpeedEnabled() ? "ON" : "OFF").c_str(), "F8"))
+        {
+            chip8topia.toggleHyperSpeed();
+        }
+
+        // chip8topia.getChip8Emulator()
+        if (ImGui::MenuItem("Toggle emulation hyper speed : ", "F9"))
+        {
+        }
+
+        ImGui::EndMenu();
+    }
+}
+
 void Chip8topiaUi::drawViewMenu(Chip8topia& chip8topia) {
     if (ImGui::BeginMenu("View"))
     {
+        // TODO: Use macro for F11 text and key setup in InputManager
         if (ImGui::MenuItem("FullScreen", "F11"))
         {
             chip8topia.toggleFullScreen();
@@ -67,8 +88,8 @@ void Chip8topiaUi::drawViewMenu(Chip8topia& chip8topia) {
     }
 }
 
-void Chip8topiaUi::drawDesignMenu() {
-    if (ImGui::BeginMenu("Design"))
+void Chip8topiaUi::drawVideoMenu() {
+    if (ImGui::BeginMenu("Video"))
     {
         if (ImGui::MenuItem("Background color"))
         {

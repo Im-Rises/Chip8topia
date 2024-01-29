@@ -44,6 +44,7 @@ public:
     [[maybe_unused]] void getWindowedDimensions(int& width, int& height) const;
     void toggleHyperSpeed();
     auto getChip8Emulator() -> Chip8Emulator&;
+    auto isHyperSpeedEnabled() const -> bool;
     void setWindowIcon();
     void setWindowTitle(const float fps);
 
