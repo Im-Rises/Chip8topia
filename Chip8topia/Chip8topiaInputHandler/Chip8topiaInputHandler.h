@@ -24,6 +24,7 @@ public:
 
 public:
     [[maybe_unused]] EventSystem<> m_EscapeKeyButtonPressedEvent;
+    [[maybe_unused]] EventSystem<> m_F10KeyButtonPressedEvent;
     [[maybe_unused]] EventSystem<> m_F11KeyButtonPressedEvent;
     [[maybe_unused]] EventSystem<> m_F12KeyButtonPressedEvent;
     [[maybe_unused]] EventSystem<> m_CTRL_OKeyButtonPressedEvent;

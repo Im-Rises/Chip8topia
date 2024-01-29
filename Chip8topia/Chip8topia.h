@@ -7,7 +7,6 @@
 #include "Chip8topiaInputHandler/Chip8topiaInputHandler.h"
 
 struct GLFWwindow;
-
 class Chip8topia {
 public:
     static constexpr auto PROJECT_NAME = "Chip8topia";
@@ -43,6 +42,7 @@ private:
 public:
     void toggleFullScreen();
     [[maybe_unused]] void getWindowedDimensions(int& width, int& height) const;
+    void toggleHyperSpeed();
     auto getChip8Emulator() -> Chip8Emulator&;
     void setWindowIcon();
 
@@ -53,6 +53,7 @@ private:
     Chip8topiaInputHandler& m_chip8topiaInputHandler = Chip8topiaInputHandler::getInstance();
 
     bool m_isFullScreen = false;
+    bool m_isHyperSpeed = false;
     int m_currentWidth = 1280;
     int m_currentHeight = 720;
     int m_windowedWidth = m_currentWidth;

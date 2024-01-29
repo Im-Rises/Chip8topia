@@ -1,6 +1,7 @@
 #include "Cpu.h"
 
 #include <random>
+#include <iostream>
 
 #include "Input.h"
 #include "Ppu.h"
@@ -13,6 +14,13 @@ Cpu::Cpu() : m_pc(START_ADDRESS),
              m_memory{},
              m_V{},
              m_stack{} {
+}
+
+void Cpu::setPpu(std::shared_ptr<Ppu> ppu) {
+    m_ppu = ppu;
+}
+void Cpu::setInput(std::shared_ptr<Input> input) {
+    m_input = input;
 }
 
 void Cpu::reset() {
@@ -51,6 +59,7 @@ void Cpu::clockTimers() {
 
 auto Cpu::fetchOpcode() -> uint16 {
     const uint16 opcode = (m_memory[m_pc] << 8) | (m_memory[m_pc + 1]);
+    std::cout << "Opcode: " << std::hex << opcode << std::endl;
     m_pc += 2;
     return opcode;
 }
