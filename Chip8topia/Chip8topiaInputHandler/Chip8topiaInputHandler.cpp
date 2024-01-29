@@ -55,12 +55,20 @@ void Chip8topiaInputHandler::update(GLFWwindow* window) {
 }
 void Chip8topiaInputHandler::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
     auto& inputHandler = Chip8topiaInputHandler::getInstance();
-    
+
     switch (key)
     {
     case GLFW_KEY_ESCAPE:
         if (action == GLFW_PRESS)
             inputHandler.m_EscapeKeyButtonPressedEvent.trigger();
+        break;
+    case GLFW_KEY_P:
+        if (action == GLFW_PRESS)
+            inputHandler.m_PKeyButtonPressedEvent.trigger();
+        break;
+    case GLFW_KEY_F9:
+        if (action == GLFW_PRESS)
+            inputHandler.m_F9KeyButtonPressedEvent.trigger();
         break;
     case GLFW_KEY_F10:
         if (action == GLFW_PRESS)

@@ -57,14 +57,14 @@ void Chip8topiaUi::drawFileMenu(Chip8topia& chip8topia) {
 void Chip8topiaUi::drawEngineEmulationMenu(Chip8topia& chip8topia) {
     if (ImGui::BeginMenu("Engine/Emulation"))
     {
-        if (ImGui::MenuItem(std::format("Toggle Engine hyper speed : {}", chip8topia.isHyperSpeedEnabled() ? "ON" : "OFF").c_str(), "F8"))
+        if (ImGui::MenuItem(std::format("Toggle Engine turbo mode : {}", chip8topia.getIsTurboMode() ? "ON" : "OFF").c_str(), "F9"))
         {
-            chip8topia.toggleHyperSpeed();
+            chip8topia.toggleTurboMode();
         }
 
-        // chip8topia.getChip8Emulator()
-        if (ImGui::MenuItem("Toggle emulation hyper speed : ", "F9"))
+        if (ImGui::MenuItem(std::format("Toggle Emulation turbo mode : {}", chip8topia.getChip8Emulator().getIsTurbomode() ? "ON" : "OFF").c_str(), "F10"))
         {
+            chip8topia.getChip8Emulator().toglleTurboMode();
         }
 
         ImGui::EndMenu();

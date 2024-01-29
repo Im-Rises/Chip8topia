@@ -25,7 +25,7 @@ public:
 };
 
 template <class T, typename... Args>
-class MethodEventVarying : public MethodEventVaryingBase<Args...> {
+class MethodEventVarying final : public MethodEventVaryingBase<Args...> {
 public:
     using MethodPointer = void (T::*)(Args...);
 

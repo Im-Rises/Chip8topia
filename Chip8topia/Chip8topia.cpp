@@ -73,7 +73,7 @@ Chip8topia::Chip8topia() {
     if (m_window == nullptr)
         exit(1);
     glfwMakeContextCurrent(m_window);
-    glfwSwapInterval(m_isHyperSpeed ? 0 : 1); // 0 = no vsync, 1 = vsync
+    glfwSwapInterval(m_isTurboMode ? 0 : 1); // 0 = no vsync, 1 = vsync
 
     // Set window callbacks
     glfwSetWindowUserPointer(m_window, this);
@@ -124,13 +124,13 @@ Chip8topia::Chip8topia() {
     setWindowIcon();
 
     m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.subscribe(this, &Chip8topia::close);
-    m_chip8topiaInputHandler.m_F10KeyButtonPressedEvent.subscribe(this, &Chip8topia::toggleHyperSpeed);
+    m_chip8topiaInputHandler.m_F9KeyButtonPressedEvent.subscribe(this, &Chip8topia::toggleTurboMode);
     m_chip8topiaInputHandler.m_F11KeyButtonPressedEvent.subscribe(this, &Chip8topia::toggleFullScreen);
 }
 
 Chip8topia::~Chip8topia() {
     m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.unsubscribe(this, &Chip8topia::close);
-    m_chip8topiaInputHandler.m_F10KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::toggleHyperSpeed);
+    m_chip8topiaInputHandler.m_F9KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::toggleTurboMode);
     m_chip8topiaInputHandler.m_F11KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::toggleFullScreen);
 
     ImGui_ImplOpenGL3_Shutdown();
@@ -260,17 +260,17 @@ void Chip8topia::getWindowedDimensions(int& width, int& height) const {
     height = m_currentHeight;
 }
 
-void Chip8topia::toggleHyperSpeed() {
-    glfwSwapInterval(m_isHyperSpeed ? 1 : 0); // 0 = no vsync, 1 = vsync
-    m_isHyperSpeed = !m_isHyperSpeed;
+void Chip8topia::toggleTurboMode() {
+    glfwSwapInterval(m_isTurboMode ? 1 : 0); // 0 = no vsync, 1 = vsync
+    m_isTurboMode = !m_isTurboMode;
 }
 
 auto Chip8topia::getChip8Emulator() -> Chip8Emulator& {
     return m_chip8Emulator;
 }
 
-auto Chip8topia::isHyperSpeedEnabled() const -> bool {
-    return m_isHyperSpeed;
+auto Chip8topia::getIsTurboMode() const -> bool {
+    return m_isTurboMode;
 }
 
 void Chip8topia::setWindowIcon() {
