@@ -84,6 +84,10 @@ public:
         functionsList.emplace_back(functionPointer);
         return true;
     }
+
+    // HACK: This is a workaround to force the impossibility of using std::function as a parameter
+    auto subscribe(const std::function<void(Args...)>& function) -> bool = delete;
+
     auto unsubscribe(const FunctionPointer<Args...>& functionPointer) -> bool {
         auto it = std::remove_if(functionsList.begin(), functionsList.end(), [&functionPointer](const auto& function) {
             return *function == functionPointer;
@@ -95,6 +99,9 @@ public:
         functionsList.erase(it);
         return true;
     }
+
+    //    // HACK: This is a workaround to force the impossibility of using std::function as a parameter
+    //    auto unsubscribe(const std::function<void(Args...)>& function) -> bool = delete;
 
     auto operator+=(const FunctionPointer<Args...>& functionPointer) -> bool {
         return subscribe(functionPointer);
@@ -142,8 +149,6 @@ public:
         return unsubscribe(methodEvent);
     }
 #pragma endregion
-
-    auto subscribe(const std::function<void(Args...)>& function) -> bool = delete;
 
     auto trigger(Args... args) const -> void {
         for (const auto& function : functionsList)
