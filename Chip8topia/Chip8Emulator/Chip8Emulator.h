@@ -15,7 +15,7 @@ public:
     ~Chip8Emulator();
 
 public:
-    void readRom(const std::string& romPath);
+    void loadRom(const std::string& romPath);
     void update(const float deltaTime);
 
     void toglleTurboMode();

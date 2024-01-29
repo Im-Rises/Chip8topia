@@ -17,6 +17,8 @@
 #include <chrono>
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
+#include <string>
+#include <format>
 
 #include "res/chip8topiaIconResource.h"
 
@@ -30,6 +32,14 @@
 
 static void glfw_error_callback(int error, const char* description) {
     fprintf(stderr, "GLFW Error %d: %s\n", error, description);
+}
+
+void drop_callback(GLFWwindow* window, int count, const char** paths) {
+    (void)count;
+    static constexpr int INDEX = 0;
+    const char* path = paths[INDEX];
+    auto* engine = reinterpret_cast<Chip8topia*>(glfwGetWindowUserPointer(window));
+    engine->getChip8Emulator().loadRom(path);
 }
 
 Chip8topia::Chip8topia() {
@@ -65,9 +75,11 @@ Chip8topia::Chip8topia() {
     if (m_window == nullptr)
         exit(1);
     glfwMakeContextCurrent(m_window);
-    //    glfwSwapInterval(1); // Enable vsync
-    //    glfwSwapInterval(0); // Disable vsync
-    glfwSwapInterval(VSYNC_ENABLED);
+    glfwSwapInterval(m_isHyperSpeed ? 0 : 1); // 0 = no vsync, 1 = vsync
+
+    // Set window callbacks
+    glfwSetWindowUserPointer(m_window, this);
+    glfwSetDropCallback(m_window, drop_callback);
 
 #ifdef __EMSCRIPTEN__
     // Initialize OpenGL loader
@@ -106,7 +118,7 @@ Chip8topia::Chip8topia() {
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(m_window, true);
 #ifdef __EMSCRIPTEN__
-    ImGui_ImplGlfw_InstallEmscriptenCanvasResizeCallback("#canvas");
+    ImGui_ImplGlfw_InstallEmscriptenCanvasResizeCallback("WEB_CANVAS_ID");
 #endif
     ImGui_ImplOpenGL3_Init(glsl_version);
 
@@ -172,34 +184,17 @@ void Chip8topia::close() {
 }
 
 void Chip8topia::handleInputs() {
-    glfwPollEvents();
-
-    // TODO: Mettre à jour pour gérer les front montant (true seulement si la touche vient d'être pressée)
-
-    if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.trigger();
-
-    if (glfwGetKey(m_window, GLFW_KEY_F10) == GLFW_PRESS)
-        m_chip8topiaInputHandler.m_F10KeyButtonPressedEvent.trigger();
-
-    if (glfwGetKey(m_window, GLFW_KEY_F11) == GLFW_PRESS)
-        m_chip8topiaInputHandler.m_F11KeyButtonPressedEvent.trigger();
-
-    if (glfwGetKey(m_window, GLFW_KEY_F12) == GLFW_PRESS)
-        m_chip8topiaInputHandler.m_F12KeyButtonPressedEvent.trigger();
-
-    if (glfwGetKey(m_window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS && glfwGetKey(m_window, GLFW_KEY_O) == GLFW_PRESS)
-        m_chip8topiaInputHandler.m_CTRL_OKeyButtonPressedEvent.trigger();
+    m_chip8topiaInputHandler.update(m_window);
 }
 
 void Chip8topia::handleUi(const float deltaTime) {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
-
     m_chip8topiaUi.drawUi(*this);
-
     ImGui::Render();
+
+    setWindowTitle(1.0F / deltaTime);
 }
 
 void Chip8topia::handleGameUpdate(const float deltaTime) {
@@ -283,6 +278,11 @@ void Chip8topia::setWindowIcon() {
     images[0].height = chip8topiaIconHeight;
     images[0].pixels = imagePixels;
     glfwSetWindowIcon(m_window, 1, images);
+}
+
+void Chip8topia::setWindowTitle(const float fps) {
+    //    m_chip8Emulator.getRomName();// TODO: Add rom name to window title
+    glfwSetWindowTitle(m_window, std::format("{} - {:.2f} fps", PROJECT_NAME, fps).c_str());
 }
 
 // auto Chip8topia::getOpenGLVendor() -> std::string_view {

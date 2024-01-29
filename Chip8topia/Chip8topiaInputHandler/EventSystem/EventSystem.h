@@ -143,9 +143,7 @@ public:
     }
 #pragma endregion
 
-    auto subscribe(const std::function<void(Args...)>& function) -> bool {
-        static_assert(false, "EventSystem: Don't send std::function to subscribe method. Use FunctionPointer instead.");
-    }
+    auto subscribe(const std::function<void(Args...)>& function) -> bool = delete;
 
     auto trigger(Args... args) const -> void {
         for (const auto& function : functionsList)
