@@ -172,24 +172,7 @@ void Chip8topia::close() {
 }
 
 void Chip8topia::handleInputs() {
-    glfwPollEvents();
-
-    // TODO: Mettre à jour pour gérer les front montant (true seulement si la touche vient d'être pressée)
-
-    if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.trigger();
-
-    if (glfwGetKey(m_window, GLFW_KEY_F10) == GLFW_PRESS)
-        m_chip8topiaInputHandler.m_F10KeyButtonPressedEvent.trigger();
-
-    if (glfwGetKey(m_window, GLFW_KEY_F11) == GLFW_PRESS)
-        m_chip8topiaInputHandler.m_F11KeyButtonPressedEvent.trigger();
-
-    if (glfwGetKey(m_window, GLFW_KEY_F12) == GLFW_PRESS)
-        m_chip8topiaInputHandler.m_F12KeyButtonPressedEvent.trigger();
-
-    if (glfwGetKey(m_window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS && glfwGetKey(m_window, GLFW_KEY_O) == GLFW_PRESS)
-        m_chip8topiaInputHandler.m_CTRL_OKeyButtonPressedEvent.trigger();
+    m_chip8topiaInputHandler.update(m_window);
 }
 
 void Chip8topia::handleUi(const float deltaTime) {
