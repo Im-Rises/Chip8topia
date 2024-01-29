@@ -11,7 +11,7 @@ Chip8Emulator::~Chip8Emulator() {
     Chip8topiaInputHandler::getInstance().m_GameInput.unsubscribe(this, &Chip8Emulator::OnInput);
 }
 
-void Chip8Emulator::readRom(const std::string& romPath) {
+void Chip8Emulator::loadRom(const std::string& romPath) {
     m_core.reset();
     m_core.readRom(m_romLoader.loadRom(romPath));
     m_isRomLoaded = true;

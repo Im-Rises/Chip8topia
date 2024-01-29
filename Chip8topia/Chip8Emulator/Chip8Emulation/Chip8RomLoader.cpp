@@ -9,6 +9,13 @@ auto Chip8RomLoader::loadRom(const std::string& romPath) -> std::vector<uint8> {
     checkRomFileSize(romFile);
     std::vector<uint8> romData = readRom(romFile);
     romFile.close();
+
+    // TODO: Add std::filesystem::file_size() to checkRomFileSize() and file exists check
+    //    std::filesystem::path filePath = "path/to/file.txt";
+    //    if (std::filesystem::exists(filePath)) {
+    //        std::cout << "File size: " << std::filesystem::file_size(filePath) << " bytes\n";
+    //    }
+
     return romData;
 }
 
