@@ -67,6 +67,31 @@ void Chip8topiaUi::drawEngineEmulationMenu(Chip8topia& chip8topia) {
             chip8topia.getChip8Emulator().toglleTurboMode();
         }
 
+        if (ImGui::MenuItem("Pause"))
+        {
+        }
+
+        // TODO: Move this code in the Debugger with the disassembly or put it here too
+        //
+        //         if (ImGui::MenuItem("Resume"))
+        //         {
+        //
+        //         }
+        //
+        //         if (ImGui::MenuItem("Break"))
+        //         {
+        //
+        //         }
+        //
+        //         if (ImGui::MenuItem("Step"))
+        //         {
+        //
+        //         }
+
+        if (ImGui::MenuItem("Restart"))
+        {
+        }
+
         ImGui::EndMenu();
     }
 }
