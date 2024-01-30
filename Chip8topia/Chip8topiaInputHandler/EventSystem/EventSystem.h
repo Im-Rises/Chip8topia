@@ -40,18 +40,27 @@ public:
     }
 
     [[nodiscard]] auto operator==(const MethodEventVaryingBase<Args...>& other) const -> bool final {
-        if (std::is_convertible_v<decltype(other), MethodEventVarying<T, Args...>>)
+        if (auto otherCasted = dynamic_cast<const MethodEventVarying<T, Args...>*>(&other))
         {
-            auto otherCasted = static_cast<const MethodEventVarying<T, Args...>&>(other);
-            return m_instance == otherCasted.m_instance && m_method == otherCasted.m_method;
+            return (m_instance == otherCasted->m_instance) && (m_method == otherCasted->m_method);
         }
 
-        return true;
+        return false;
     }
 
-    [[nodiscard]] auto operator==(const MethodEventVarying<T, Args...>& other) const -> bool {
-        return checkObjectEquality(m_instance, other.m_instance) && checkMethodEquality(m_method, other.m_method);
-    }
+    //    [[nodiscard]] auto operator==(const MethodEventVaryingBase<Args...>& other) const -> bool final {
+    //        if (std::is_convertible_v<decltype(other), MethodEventVarying<T, Args...>>)
+    //        {
+    //            auto otherCasted = static_cast<const MethodEventVarying<T, Args...>&>(other);
+    //            return m_instance == otherCasted.m_instance && m_method == otherCasted.m_method;
+    //        }
+    //
+    //        return true;
+    //    }
+    //
+    //    [[nodiscard]] auto operator==(const MethodEventVarying<T, Args...>& other) const -> bool {
+    //        return checkObjectEquality(m_instance, other.m_instance) && checkMethodEquality(m_method, other.m_method);
+    //    }
 
 private:
     T* m_instance;
