@@ -28,7 +28,7 @@ class MethodEventVarying final : public MethodEventVaryingBase<Args...> {
 public:
     using MethodPointer = void (T::*)(Args...);
 
-    MethodEventVarying(T* instance, MethodPointer method) : instance(instance), method(method) {}
+    MethodEventVarying(T* instance, MethodPointer method) : m_instance(instance), m_method(method) {}
     MethodEventVarying(const MethodEventVarying&) = default;
     MethodEventVarying(MethodEventVarying&&) noexcept = default;
     auto operator=(const MethodEventVarying&) -> MethodEventVarying& = default;
@@ -36,26 +36,26 @@ public:
     ~MethodEventVarying() = default;
 
     void operator()(Args... args) const final {
-        (instance->*method)(args...);
+        (m_instance->*m_method)(args...);
     }
 
     [[nodiscard]] auto operator==(const MethodEventVaryingBase<Args...>& other) const -> bool final {
         if (std::is_convertible_v<decltype(other), MethodEventVarying<T, Args...>>)
         {
             auto otherCasted = static_cast<const MethodEventVarying<T, Args...>&>(other);
-            return instance == otherCasted.instance && method == otherCasted.method;
+            return m_instance == otherCasted.m_instance && m_method == otherCasted.m_method;
         }
 
         return true;
     }
 
     [[nodiscard]] auto operator==(const MethodEventVarying<T, Args...>& other) const -> bool {
-        return checkObjectEquality(instance, other.instance) && checkMethodEquality(method, other.method);
+        return checkObjectEquality(m_instance, other.m_instance) && checkMethodEquality(m_method, other.m_method);
     }
 
 private:
-    T* instance;
-    void (T::*method)(Args...);
+    T* m_instance;
+    void (T::*m_method)(Args...);
 };
 
 
@@ -72,14 +72,14 @@ public:
 public:
 #pragma region Functions
     auto subscribe(const FunctionPointer<Args...>& functionPointer) -> bool {
-        auto it = std::find_if(functionsList.begin(), functionsList.end(), [&functionPointer](const auto& function) {
+        auto it = std::find_if(m_functionsList.begin(), m_functionsList.end(), [&functionPointer](const auto& function) {
             return *function == functionPointer;
         });
 
-        if (it != functionsList.end())
+        if (it != m_functionsList.end())
             return false;
 
-        functionsList.emplace_back(functionPointer);
+        m_functionsList.emplace_back(functionPointer);
         return true;
     }
 
@@ -87,14 +87,14 @@ public:
     auto subscribe(const std::function<void(Args...)>& function) -> bool = delete;
 
     auto unsubscribe(const FunctionPointer<Args...>& functionPointer) -> bool {
-        auto it = std::remove_if(functionsList.begin(), functionsList.end(), [&functionPointer](const auto& function) {
+        auto it = std::remove_if(m_functionsList.begin(), m_functionsList.end(), [&functionPointer](const auto& function) {
             return *function == functionPointer;
         });
 
-        if (it == functionsList.end())
+        if (it == m_functionsList.end())
             return false;
 
-        functionsList.erase(it);
+        m_functionsList.erase(it);
         return true;
     }
 
@@ -113,27 +113,27 @@ public:
 #pragma region Methods
     template <class T>
     auto subscribe(T* instance, void (T::*method)(Args...)) -> bool {
-        auto it = std::find_if(methodsList.begin(), methodsList.end(), [instance, method](const auto& methodEvent) {
+        auto it = std::find_if(m_methodsList.begin(), m_methodsList.end(), [instance, method](const auto& methodEvent) {
             return *methodEvent == MethodEventVarying<T, Args...>(instance, method);
         });
 
-        if (it != methodsList.end())
+        if (it != m_methodsList.end())
             return false;
 
-        methodsList.emplace_back(std::make_unique<MethodEventVarying<T, Args...>>(instance, method));
+        m_methodsList.emplace_back(std::make_unique<MethodEventVarying<T, Args...>>(instance, method));
         return true;
     }
 
     template <class T>
     auto unsubscribe(T* instance, void (T::*method)(Args...)) -> bool {
-        auto it = std::remove_if(methodsList.begin(), methodsList.end(), [instance, method](const auto& methodEvent) {
+        auto it = std::remove_if(m_methodsList.begin(), m_methodsList.end(), [instance, method](const auto& methodEvent) {
             return *methodEvent == MethodEventVarying<T, Args...>(instance, method);
         });
 
-        if (it == methodsList.end())
+        if (it == m_methodsList.end())
             return false;
 
-        methodsList.erase(it);
+        m_methodsList.erase(it);
         return true;
     }
 
@@ -149,24 +149,24 @@ public:
 #pragma endregion
 
     auto trigger(Args... args) const -> void {
-        for (const auto& function : functionsList)
+        for (const auto& function : m_functionsList)
             (*function)(args...);
 
-        for (const auto& method : methodsList)
+        for (const auto& method : m_methodsList)
             (*method)(args...);
     }
 
     void clear() {
-        functionsList.clear();
-        methodsList.clear();
+        m_functionsList.clear();
+        m_methodsList.clear();
     }
 
     [[nodiscard]] auto getFunctionCount() const -> size_t {
-        return functionsList.size();
+        return m_functionsList.size();
     }
 
     [[nodiscard]] auto getMethodCount() const -> size_t {
-        return methodsList.size();
+        return m_methodsList.size();
     }
 
     [[nodiscard]] auto getSubscriberCount() const -> size_t {
@@ -174,6 +174,6 @@ public:
     }
 
 private:
-    std::vector<FunctionPointer<Args...>> functionsList;
-    std::vector<std::unique_ptr<MethodEventVaryingBase<Args...>>> methodsList;
+    std::vector<FunctionPointer<Args...>> m_functionsList;
+    std::vector<std::unique_ptr<MethodEventVaryingBase<Args...>>> m_methodsList;
 };
