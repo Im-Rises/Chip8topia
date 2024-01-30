@@ -41,7 +41,7 @@ private:
 
 public:
     void toggleFullScreen();
-    [[maybe_unused]] void getWindowedDimensions(int& width, int& height) const;
+    void getWindowedDimensions(int& width, int& height) const;
     void toggleTurboMode();
     auto getChip8Emulator() -> Chip8Emulator&;
     [[nodiscard]] auto getIsTurboMode() const -> bool;
