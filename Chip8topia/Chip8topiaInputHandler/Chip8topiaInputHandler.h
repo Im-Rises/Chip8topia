@@ -4,6 +4,7 @@
 #include <binaryLib/binaryLib.h>
 
 #include "SubscriberEventSystem/MultiSubscriberEvent.h"
+#include "SubscriberEventSystem/SingleSubscriberEvent.h"
 
 /*
  * TODO: Replace code with a Singleton Registry
@@ -32,14 +33,13 @@ public:
 public:
     [[maybe_unused]] MultiSubscriberEvent<> m_CTRL_OKeyButtonPressedEvent;
 
-    [[maybe_unused]] MultiSubscriberEvent<> m_EscapeKeyButtonPressedEvent;
-
     [[maybe_unused]] MultiSubscriberEvent<> m_PKeyButtonPressedEvent;
 
-    [[maybe_unused]] MultiSubscriberEvent<> m_F9KeyButtonPressedEvent;
-    [[maybe_unused]] MultiSubscriberEvent<> m_F10KeyButtonPressedEvent;
-    [[maybe_unused]] MultiSubscriberEvent<> m_F11KeyButtonPressedEvent;
-    [[maybe_unused]] MultiSubscriberEvent<> m_F12KeyButtonPressedEvent;
+    [[maybe_unused]] SingleSubscriberEvent<> m_EscapeKeyButtonPressedEvent;
+    [[maybe_unused]] SingleSubscriberEvent<> m_F9KeyButtonPressedEvent;
+    [[maybe_unused]] SingleSubscriberEvent<> m_F10KeyButtonPressedEvent;
+    [[maybe_unused]] SingleSubscriberEvent<> m_F11KeyButtonPressedEvent;
+    [[maybe_unused]] SingleSubscriberEvent<> m_F12KeyButtonPressedEvent;
 
     [[maybe_unused]] MultiSubscriberEvent<const uint8, const bool> m_GameInput;
 

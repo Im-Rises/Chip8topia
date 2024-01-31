@@ -22,6 +22,7 @@ public:
             return false;
 
         m_functionMethodPointer = std::make_unique<MethodEventVarying<T, Args...>>(instance, method);
+        return true;
     }
 
     template <class T, class U>
