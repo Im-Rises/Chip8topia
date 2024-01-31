@@ -3,14 +3,14 @@
 #include "SubscriberEventBase.h"
 
 template <typename... Args>
-class SingleSubscriberEvent {
+class SingleSubscriberEvent final : public SubscriberEventBase<Args...> {
 public:
     SingleSubscriberEvent() = default;
     SingleSubscriberEvent(const SingleSubscriberEvent&) = delete;
     SingleSubscriberEvent(SingleSubscriberEvent&&) = delete;
     auto operator=(const SingleSubscriberEvent&) -> SingleSubscriberEvent& = delete;
     auto operator=(SingleSubscriberEvent&&) -> SingleSubscriberEvent& = delete;
-    ~SingleSubscriberEvent() = default;
+    ~SingleSubscriberEvent() final = default;
 
 public:
 #pragma region Method

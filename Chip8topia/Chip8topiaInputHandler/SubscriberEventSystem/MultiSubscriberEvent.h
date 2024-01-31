@@ -3,14 +3,14 @@
 #include "SubscriberEventBase.h"
 
 template <typename... Args>
-class MultiSubscriberEvent {
+class MultiSubscriberEvent final : public SubscriberEventBase<Args...> {
 public:
     MultiSubscriberEvent() = default;
     MultiSubscriberEvent(const MultiSubscriberEvent&) = delete;
     MultiSubscriberEvent(MultiSubscriberEvent&&) = delete;
     auto operator=(const MultiSubscriberEvent&) -> MultiSubscriberEvent& = delete;
     auto operator=(MultiSubscriberEvent&&) -> MultiSubscriberEvent& = delete;
-    ~MultiSubscriberEvent() = default;
+    ~MultiSubscriberEvent() final = default;
 
 public:
 #pragma region Method
@@ -91,11 +91,11 @@ public:
         return m_functionMethodPointers.size();
     }
 
-    void clear() {
+    void clear() final {
         m_functionMethodPointers.clear();
     }
 
-    auto trigger(Args... args) const -> void {
+    void trigger(Args... args) const final {
         for (const auto& methodFunctionPointer : m_functionMethodPointers)
             (*methodFunctionPointer)(args...);
     }

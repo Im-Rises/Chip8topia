@@ -85,6 +85,7 @@ private:
     FunctionPointer<> m_function;
 };
 
+template <typename... Args>
 class SubscriberEventBase {
 public:
     SubscriberEventBase() = default;
@@ -94,9 +95,7 @@ public:
     auto operator=(SubscriberEventBase&&) noexcept -> SubscriberEventBase& = default;
     virtual ~SubscriberEventBase() = default;
 
-    [[nodiscard]] virtual auto operator==(const SubscriberEventBase& other) const -> bool = 0;
-
+public:
     virtual void clear() = 0;
-
-    virtual void trigger() = 0;
+    virtual void trigger(Args... args) const = 0;
 };
