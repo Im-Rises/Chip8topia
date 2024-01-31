@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../CallbackEventDefinitions/CallbackEventDefinitions.h"
+#include "SubscriberEventBase.h"
 
 template <typename... Args>
 class MultiSubscriberEvent {
