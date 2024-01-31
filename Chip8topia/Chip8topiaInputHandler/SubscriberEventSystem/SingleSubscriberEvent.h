@@ -1,36 +1,31 @@
 #pragma once
 
-#include "../CallbackEventDefinitions/CallbackEventDefinitions.h"
+#include "SubscriberEventBase.h"
 
-template<typename... Args>
+template <typename... Args>
 class SingleSubscriberEvent {
 public:
     SingleSubscriberEvent() = default;
-
-    SingleSubscriberEvent(const SingleSubscriberEvent &) = delete;
-
-    SingleSubscriberEvent(SingleSubscriberEvent &&) = delete;
-
-    auto operator=(const SingleSubscriberEvent &) -> SingleSubscriberEvent & = delete;
-
-    auto operator=(SingleSubscriberEvent &&) -> SingleSubscriberEvent & = delete;
-
+    SingleSubscriberEvent(const SingleSubscriberEvent&) = delete;
+    SingleSubscriberEvent(SingleSubscriberEvent&&) = delete;
+    auto operator=(const SingleSubscriberEvent&) -> SingleSubscriberEvent& = delete;
+    auto operator=(SingleSubscriberEvent&&) -> SingleSubscriberEvent& = delete;
     ~SingleSubscriberEvent() = default;
 
 public:
 #pragma region Method
 
     // We use two template arguments to handle the case where we register a method from the parent of the class with a child class instance
-    template<class T, class U>
-    auto subscribe(U *instance, void (T::*method)(Args...)) -> bool {
+    template <class T, class U>
+    auto subscribe(U* instance, void (T::*method)(Args...)) -> bool {
         if (m_functionMethodPointer != nullptr)
             return false;
 
         m_functionMethodPointer = std::make_unique<MethodEventVarying<T, Args...>>(instance, method);
     }
 
-    template<class T, class U>
-    auto unsubscribe(U *instance, void (T::*method)(Args...)) -> bool {
+    template <class T, class U>
+    auto unsubscribe(U* instance, void (T::*method)(Args...)) -> bool {
         if (m_functionMethodPointer == nullptr)
             return false;
 
@@ -41,17 +36,17 @@ public:
         return true;
     }
 
-    template<class T>
-    auto operator+=(const MethodEventVarying<T, Args...> &methodEvent) -> bool {
+    template <class T>
+    auto operator+=(const MethodEventVarying<T, Args...>& methodEvent) -> bool {
         return subscribe(methodEvent);
     }
 
-    template<class T>
-    auto operator-=(const MethodEventVarying<T, Args...> &methodEvent) -> bool {
+    template <class T>
+    auto operator-=(const MethodEventVarying<T, Args...>& methodEvent) -> bool {
         return unsubscribe(methodEvent);
     }
 
-    template<class T>
+    template <class T>
     auto isRegistered(const MethodEventVarying<T, Args...>& methodEvent) const -> bool {
         if (const auto* methodEventVarying = dynamic_cast<const MethodEventVarying<Args...>*>(&methodEvent))
             return *m_functionMethodPointer == *methodEventVarying;
@@ -89,7 +84,7 @@ public:
         return unsubscribe(function);
     }
 
-    template<class T>
+    template <class T>
     auto isRegistered(FunctionPointer<Args...> function) const -> bool {
         if (const auto* functionEventVarying = dynamic_cast<const FunctionEventVarying<T, Args...>*>(&function))
             return *m_functionMethodPointer == *functionEventVarying;
