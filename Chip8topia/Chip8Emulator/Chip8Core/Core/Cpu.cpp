@@ -1,7 +1,7 @@
 #include "Cpu.h"
 
 #include <random>
-#include <iostream>
+#include <utility>
 
 #include "Input.h"
 #include "Ppu.h"
@@ -10,17 +10,18 @@ Cpu::Cpu() : m_pc(START_ADDRESS),
              m_sp(0),
              m_I(0),
              m_gameTimer(0),
-             m_audioTimer(0),
+             m_soundTimer(0),
              m_memory{},
              m_V{},
              m_stack{} {
 }
 
 void Cpu::setPpu(std::shared_ptr<Ppu> ppu) {
-    m_ppu = ppu;
+    m_ppu = std::move(ppu);
 }
+
 void Cpu::setInput(std::shared_ptr<Input> input) {
-    m_input = input;
+    m_input = std::move(input);
 }
 
 void Cpu::reset() {
@@ -28,7 +29,7 @@ void Cpu::reset() {
     m_sp = 0;
     m_I = 0;
     m_gameTimer = 0;
-    m_audioTimer = 0;
+    m_soundTimer = 0;
     m_memory = {}; // TODO: Maybe for the ram we can reset everything except the rom location so it can be reloaded
     m_V = {};
     m_stack = {};
@@ -51,15 +52,14 @@ void Cpu::clockTimers() {
     {
         m_gameTimer--;
     }
-    if (m_audioTimer > 0)
+    if (m_soundTimer > 0)
     {
-        m_audioTimer--;
+        m_soundTimer--;
     }
 }
 
 auto Cpu::fetchOpcode() -> uint16 {
     const uint16 opcode = (m_memory[m_pc] << 8) | (m_memory[m_pc + 1]);
-    std::cout << "Opcode: " << std::hex << opcode << std::endl;
     m_pc += 2;
     return opcode;
 }
@@ -333,7 +333,7 @@ void Cpu::RET() {
     m_pc = m_stack[m_sp--];
 }
 
-void Cpu::SYS(const uint16 address) {
+void Cpu::SYS(const uint16 /*address*/) {
     // This opcode is only used on the old computers on which Chip-8 was originally implemented.
     // It is ignored by modern interpreters.
     m_pc += 2;
@@ -486,7 +486,7 @@ void Cpu::LD_DT_Vx(const uint8 x) {
 }
 
 void Cpu::LD_ST_Vx(const uint8 x) {
-    m_audioTimer = m_V[x];
+    m_soundTimer = m_V[x];
 }
 
 void Cpu::ADD_I_Vx(const uint8 x) {

@@ -17,7 +17,7 @@ public: // TODO: Check to be sure between Machine cycle and Clock cycle
     static constexpr uint16 CLOCK_FREQUENCY = 500;
     static constexpr size_t MEMORY_SIZE = 0x1000;
     static constexpr size_t ROM_SIZE = MEMORY_SIZE - START_ADDRESS;
-    static constexpr size_t REGISTER_SIZE = 16;
+    static constexpr size_t REGISTER_V_SIZE = 16;
     static constexpr size_t STACK_SIZE = 16;
 
 public:
@@ -77,6 +77,19 @@ private:
     inline void LD_I_Vx(const uint8 x);
     inline void LD_Vx_I(const uint8 x);
 
+public:
+    auto getMemory() -> std::array<uint8, MEMORY_SIZE>& { return m_memory; }
+    auto getPc() -> uint16& { return m_pc; }
+
+    auto getStack() -> std::array<uint16, STACK_SIZE>& { return m_stack; }
+    auto getSp() -> uint8& { return m_sp; }
+
+    auto getV() -> std::array<uint8, REGISTER_V_SIZE>& { return m_V; }
+    auto getI() -> uint16& { return m_I; }
+
+    auto getGameTimer() -> uint8& { return m_gameTimer; }
+    auto getSoundTimer() -> uint8& { return m_soundTimer; }
+
 private:
     std::array<uint8, MEMORY_SIZE> m_memory;
     uint16 m_pc;
@@ -84,11 +97,11 @@ private:
     std::array<uint16, STACK_SIZE> m_stack;
     uint8 m_sp;
 
-    std::array<uint8, REGISTER_SIZE> m_V;
+    std::array<uint8, REGISTER_V_SIZE> m_V;
     uint16 m_I;
 
     uint8 m_gameTimer;
-    uint8 m_audioTimer;
+    uint8 m_soundTimer;
 
     std::shared_ptr<Ppu> m_ppu;
     std::shared_ptr<Input> m_input;

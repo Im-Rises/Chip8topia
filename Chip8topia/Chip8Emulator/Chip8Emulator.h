@@ -18,10 +18,11 @@ public:
     void loadRom(const std::string& romPath);
     void update(const float deltaTime);
 
-    void toglleTurboMode();
+    void toggleTurboMode();
     void togglePause();
 
-    [[nodiscard]] auto getIsTurbomode() const -> bool;
+    [[nodiscard]] auto getIsTurboMode() const -> bool;
+    [[nodiscard]] auto getChip8Core() -> Chip8Core*;
 
 private:
     void OnInput(const uint8 key, const bool isPressed);
@@ -29,7 +30,7 @@ private:
 private:
     Chip8Core m_core;
     Chip8VideoEmulation m_videoEmulation;
-    Chip8SoundEmulation m_soundEmulation;
+    //    Chip8SoundEmulation m_soundEmulation;
     Chip8RomLoader m_romLoader;
 
     bool m_isRomLoaded = false;

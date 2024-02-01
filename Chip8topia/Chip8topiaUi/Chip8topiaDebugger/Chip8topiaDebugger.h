@@ -2,30 +2,33 @@
 
 #include <imgui/imgui.h>
 #include <imgui_memory_editor/imgui_memory_editor.h>
-#include <unordered_set>
 #include <functional>
 #include <array>
 
+#include "../../Chip8Emulator/Chip8Emulator.h"
+#include "../../Chip8Emulator/Chip8Core/Chip8Core.h"
+
 class Chip8Emulator;
 class Chip8topiaDebugger {
+    template <typename... Args>
     struct MenuItem {
-        const char* name;
-        bool isOpen;
-        std::function<void()> drawFunction;
+        const char* m_name;
+        bool m_isOpen;
+        std::function<void(Args*...)> m_drawFunction;
 
         void drawMenuItem() {
-            if (ImGui::MenuItem(name))
+            if (ImGui::MenuItem(m_name))
             {
-                isOpen = !isOpen;
+                m_isOpen = !m_isOpen;
             }
         }
 
-        void drawWindow() {
-            if (isOpen)
+        void drawWindow(Args*... args) {
+            if (m_isOpen)
             {
-                if (ImGui::Begin(name, &isOpen))
+                if (ImGui::Begin(m_name, &m_isOpen))
                 {
-                    drawFunction();
+                    m_drawFunction(args...);
                     ImGui::End();
                 }
             }
@@ -44,20 +47,20 @@ public:
     void drawDebugger(Chip8Emulator& emulator);
 
 private:
-    void drawRegisters();
-    void drawStack();
-    void drawMemory();
-    void drawKeyboard();
-    void drawDisassembler();
+    void drawRegisters(Chip8Core* chip8);
+    void drawStack(Chip8Core* chip8);
+    void drawMemory(Chip8Core* chip8);
+    void drawKeyboard(Chip8Core* chip8);
+    void drawDisassembler(Chip8Core* chip8);
 
 private:
     MemoryEditor m_memoryEditor;
 
-    std::array<MenuItem, 5> m_menuItems = {
-        "Registers", false, [this]() { drawRegisters(); },
-        "Stack", false, [this]() { drawStack(); },
-        "Memory Editor", false, [this]() { drawMemory(); },
-        "Keyboard", false, [this]() { drawKeyboard(); },
-        "Disassembler", false, [this]() { drawDisassembler(); }
+    std::array<MenuItem<Chip8Core>, 5> m_menuItems = {
+        "Registers", false, [this](Chip8Core* chip8) { drawRegisters(chip8); },
+        "Stack", false, [this](Chip8Core* chip8) { drawStack(chip8); },
+        "Memory Editor", false, [this](Chip8Core* chip8) { drawMemory(chip8); },
+        "Keyboard", false, [this](Chip8Core* chip8) { drawKeyboard(chip8); },
+        "Disassembler", false, [this](Chip8Core* chip8) { drawDisassembler(chip8); }
     };
 };

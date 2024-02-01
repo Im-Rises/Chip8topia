@@ -22,6 +22,11 @@ public:
     void updateKey(const uint8 key, const bool pressed);
     void reset();
 
+public:
+    auto getCpu() -> Cpu&;
+    auto getPpu() -> std::shared_ptr<Ppu>;
+    auto getInput() -> std::shared_ptr<Input>;
+
 private:
     Cpu m_cpu;
     std::shared_ptr<Ppu> m_ppu;

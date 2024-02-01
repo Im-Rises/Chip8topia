@@ -61,11 +61,11 @@ Chip8topia::Chip8topia() {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);           // Required on Mac
 #else
     // GL 3.0 + GLSL 130
-    const char* glsl_version = "#version 130";
+    const char* glsl_version = "#version 330";
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-//    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // 3.2+ only
-//    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);           // 3.0+ only
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // 3.2+ only
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);           // 3.0+ only
 #endif
 
     // Create window with graphics context
@@ -79,6 +79,9 @@ Chip8topia::Chip8topia() {
     glfwSetWindowUserPointer(m_window, this);
     glfwSetDropCallback(m_window, drop_callback);
     glfwSetKeyCallback(m_window, Chip8topiaInputHandler::key_callback);
+
+    // Center window
+    centerWindow(); // TODO: Check if doesn't cause problems on Emscripten
 
 #ifdef __EMSCRIPTEN__
     // Initialize OpenGL loader
@@ -142,6 +145,8 @@ Chip8topia::~Chip8topia() {
 }
 
 auto Chip8topia::run() -> int {
+    m_chip8Emulator = std::make_unique<Chip8Emulator>();
+    m_chip8topiaUi = std::make_unique<Chip8topiaUi>();
 #ifdef _WIN32
     timeBeginPeriod(1);
 #endif
@@ -190,20 +195,20 @@ void Chip8topia::handleUi(const float deltaTime) {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
-    m_chip8topiaUi.drawUi(*this);
+    m_chip8topiaUi->drawUi(*this);
     ImGui::Render();
 
     setWindowTitle(1.0F / deltaTime);
 }
 
 void Chip8topia::handleGameUpdate(const float deltaTime) {
-    m_chip8Emulator.update(deltaTime);
+    m_chip8Emulator->update(deltaTime);
 }
 
 void Chip8topia::handleScreenUpdate() {
     // todo: move this code ?
     const ImGuiIO& io = ImGui::GetIO();
-    static constexpr ImVec4 clear_color = ImVec4(0.45F, 0.55F, 0.60F, 1.00F);
+    static constexpr ImVec4 CLEAR_COLOR = ImVec4(0.45F, 0.55F, 0.60F, 1.00F);
 
     if (!m_isFullScreen)
     {
@@ -213,8 +218,11 @@ void Chip8topia::handleScreenUpdate() {
 
     glfwGetFramebufferSize(m_window, &m_currentWidth, &m_currentHeight);
     glViewport(0, 0, m_currentWidth, m_currentHeight);
-    glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
+    glClearColor(CLEAR_COLOR.x * CLEAR_COLOR.w, CLEAR_COLOR.y * CLEAR_COLOR.w, CLEAR_COLOR.z * CLEAR_COLOR.w, CLEAR_COLOR.w);
     glClear(GL_COLOR_BUFFER_BIT);
+
+
+
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
     if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
@@ -226,6 +234,24 @@ void Chip8topia::handleScreenUpdate() {
     }
 
     glfwSwapBuffers(m_window);
+}
+
+void Chip8topia::centerWindow() {
+    // TODO: Mix code from toggleFullScreen and centerWindow to avoid code duplication for the window area location calculation
+    int count;
+    GLFWmonitor** monitors = glfwGetMonitors(&count);
+    for (int i = 0; i < count; i++)
+    {
+        int x, y;
+        int width, height;
+        glfwGetMonitorWorkarea(monitors[i], &x, &y, &width, &height);
+
+        if (m_windowedPosX >= x && m_windowedPosX <= x + width && m_windowedPosY >= y && m_windowedPosY <= y + height)
+        {
+            glfwSetWindowPos(m_window, x + (width - m_windowedWidth) / 2, y + (height - m_windowedHeight) / 2);
+            break;
+        }
+    }
 }
 
 void Chip8topia::toggleFullScreen() {
@@ -266,7 +292,7 @@ void Chip8topia::toggleTurboMode() {
 }
 
 auto Chip8topia::getChip8Emulator() -> Chip8Emulator& {
-    return m_chip8Emulator;
+    return *m_chip8Emulator;
 }
 
 auto Chip8topia::getIsTurboMode() const -> bool {
@@ -275,40 +301,16 @@ auto Chip8topia::getIsTurboMode() const -> bool {
 
 void Chip8topia::setWindowIcon() {
     int chip8topiaIconWidth = 0, chip8topiaIconHeight = 0, channelsInFile = 0;
-    unsigned char* imagePixels = stbi_load_from_memory(CHIP8TOPIA_ICON_DATA, CHIP8TOPIA_ICON_DATA_LENGTH, &chip8topiaIconWidth, &chip8topiaIconHeight, &channelsInFile, 0);
-    GLFWimage images[1];
-    images[0].width = chip8topiaIconWidth;
-    images[0].height = chip8topiaIconHeight;
-    images[0].pixels = imagePixels;
-    glfwSetWindowIcon(m_window, 1, images);
+    unsigned char* imagePixels = stbi_load_from_memory(CHIP8TOPIA_ICON_DATA.data(), static_cast<int>(CHIP8TOPIA_ICON_DATA.size()), &chip8topiaIconWidth, &chip8topiaIconHeight, &channelsInFile, 0);
+    GLFWimage images;
+    images.width = chip8topiaIconWidth;
+    images.height = chip8topiaIconHeight;
+    images.pixels = imagePixels;
+    glfwSetWindowIcon(m_window, 1, &images);
+    stbi_image_free(imagePixels);
 }
 
 void Chip8topia::setWindowTitle(const float fps) {
     //    m_chip8Emulator.getRomName();// TODO: Add rom name to window title
     glfwSetWindowTitle(m_window, std::format("{} - {:.2f} fps", PROJECT_NAME, fps).c_str());
 }
-
-// auto Chip8topia::getOpenGLVendor() -> std::string_view {
-//     return reinterpret_cast<const char*>(glGetString(GL_RENDERER));
-// }
-//
-// auto Chip8topia::getOpenGLVersion() -> std::string_view {
-//     return reinterpret_cast<const char*>(glGetString(GL_VERSION));
-// }
-//
-//// auto Chip8topia::getGLSLVersion() -> std::string_view {
-////     return reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION));
-//// }
-//
-// auto Chip8topia::getGLFWVersion() -> std::string {
-//    return std::to_string(GLFW_VERSION_MAJOR) + "." + std::to_string(GLFW_VERSION_MINOR) + "." +
-//           std::to_string(GLFW_VERSION_REVISION);
-//}
-//
-// auto Chip8topia::getGladVersion() -> std::string_view {
-//    return "0.1.36";
-//}
-//
-// auto Chip8topia::getImGuiVersion() -> std::string {
-//    return IMGUI_VERSION;
-//}
