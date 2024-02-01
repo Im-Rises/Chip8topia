@@ -1,5 +1,8 @@
 #include "Chip8topiaDebugger.h"
 
+#include "../../Chip8Emulator/Chip8Core/Core/Cpu.h"
+#include "../../Chip8Emulator/Chip8Core/Core/Input.h"
+
 void Chip8topiaDebugger::drawDebugger(Chip8Emulator& emulator) {
     if (ImGui::BeginMenu("Debugger"))
     {
@@ -13,74 +16,74 @@ void Chip8topiaDebugger::drawDebugger(Chip8Emulator& emulator) {
 
     for (auto& menuItem : m_menuItems)
     {
-        menuItem.drawWindow();
+        menuItem.drawWindow(emulator.getChip8Core());
     }
 }
 
-void Chip8topiaDebugger::drawRegisters() {
+void Chip8topiaDebugger::drawRegisters(Chip8Core* chip8) {
+    Cpu& cpu = chip8->getCpu();
 
-    // Print PC register
-    //        ImGui::Text("PC: %04X", m_cpu.getProgramCounter());
-    //        ImGui::DragInt("PC", &m_cpu.getProgramCounter(), 1, 0, 0xFFFF);
+    ImGui::Text("PC: %04X", cpu.getPc());
+    //    ImGui::DragInt("PC", &cpu.getPc(), 1, 0, 0xFFFF);
 
-    // Print I register
-    //        ImGui::Text("I: %04X", m_cpu.getIRegister());
-    //        ImGui::DragInt("I", &m_cpu.getIRegister(), 1, 0, 0xFFFF);
+    ImGui::Text("I: %04X", cpu.getI());
+    //    ImGui::DragInt("I", &cpu.getI(), 1, 0, 0xFFFF);
 
-    // Print Game Timer
-    //        ImGui::Text("Game Timer: %02X", m_cpu.getGameTimer());
-    //        ImGui::DragInt("Game Timer", &m_cpu.getGameTimer(), 1, 0, 0xFF);
+    ImGui::Text("Game Timer: %02X", cpu.getGameTimer());
+    //    ImGui::DragInt("Game Timer", &cpu.getGameTimer(), 1, 0, 0xFF);
 
-    // Print Sound Timer
-    //        ImGui::Text("Sound Timer: %02X", m_cpu.getSoundTimer());
-    //        ImGui::DragInt("Sound Timer", &m_cpu.getSoundTimer(), 1, 0, 0xFF);
+    ImGui::Text("Sound Timer: %02X", cpu.getAudioTimer());
+    //    ImGui::DragInt("Sound Timer", &cpu.getAudioTimer(), 1, 0, 0xFF);
 
-    // Print V register using a for loop
-    //       for (auto i = 0; i < 16; ++i)
-    //       {
-    //           ImGui::Text("V%01X: %02X", i, m_cpu.getVRegister(i));
-    // ImGui::DragInt("V%01X", &m_cpu.getVRegister(i), 1, 0, 0xFF);
-    //       }
+    for (auto i = 0; i < 16; ++i)
+    {
+        ImGui::Text("V%01X: %02X", i, cpu.getV()[i]);
+        //        ImGui::DragInt("V%01X", &cpu.getV()[i], 1, 0, 0xFF);
+    }
 }
 
-void Chip8topiaDebugger::drawStack() {
+void Chip8topiaDebugger::drawStack(Chip8Core* chip8) {
+    Cpu& cpu = chip8->getCpu();
 
-    // Print SP register
-    //        ImGui::Text("SP: %02X", m_cpu.getStackPointer());
-    //        ImGui::DragInt("SP", &m_cpu.getStackPointer(), 1, 0, 0xFF);
-    //
+    ImGui::Text("SP: %02X", cpu.getSp());
+    //    ImGui::DragInt("SP", &cpu.getSp(), 1, 0, 0xFF);
 
-    // Print Stack using a for loop in a table
-    //        ImGui::Text("Stack");
-    //        ImGui::BeginTable("Stack", 2);
-    //        for (auto i = 0; i < 16; ++i)
-    //        {
-    //            ImGui::TableNextRow();
-    //            ImGui::TableSetColumnIndex(0);
-    //            ImGui::Text("SP: %02X", i);
-    //            ImGui::TableSetColumnIndex(1);
-    //            ImGui::Text("0x%04X", m_cpu.getStack(i));
-    //        }
+
+    ImGui::Text("Stack");
+    ImGui::BeginTable("Stack", 2);
+    for (auto i = 0; i < 16; ++i)
+    {
+        ImGui::TableNextRow();
+        ImGui::TableSetColumnIndex(0);
+        ImGui::Text("SP: %02X", i);
+        ImGui::TableSetColumnIndex(1);
+        ImGui::Text("0x%04X", cpu.getStack()[i]);
+    }
+
+    ImGui::EndTable();
 }
 
-void Chip8topiaDebugger::drawMemory() {
-
-    //        m_memoryEditor.DrawWindow("Memory Editor", m_cpu.getMemory(), 0x1000);
+void Chip8topiaDebugger::drawMemory(Chip8Core* chip8) {
+    m_memoryEditor.DrawWindow("Memory Editor", &chip8->getCpu().getMemory(), Cpu::MEMORY_SIZE);
 }
 
-void Chip8topiaDebugger::drawKeyboard() {
+void Chip8topiaDebugger::drawKeyboard(Chip8Core* chip8) {
+    ImGui::Text("Keyboard");
+    ImGui::BeginTable("Keyboard", 2);
+    for (auto i = 0; i < Input::KEY_COUNT; i++)
+    {
+        ImGui::TableNextRow();
+        ImGui::TableSetColumnIndex(0);
+        ImGui::Text("Key: %02X", i);
+        ImGui::TableSetColumnIndex(1);
+        ImGui::Text("0x%04X", chip8->getInput()->isKeyPressed(i) ? 1 : 0);
+    }
 
-    // Print Keyboard using a for loop in a table
-    //        ImGui::Text("Keyboard");
-    //        ImGui::BeginTable("Keyboard", 2);
-    //        for (auto i = 0; i < 16; ++i)
-    //        {
-    //            ImGui::TableNextRow();
-    //            ImGui::TableSetColumnIndex(0);
-    //            ImGui::Text("Key: %02X", i);
-    //            ImGui::TableSetColumnIndex(1);
-    //            ImGui::Text("0x%04X", m_cpu.getKeyboard(i));
-    //        }
+    ImGui::EndTable();
 }
-void Chip8topiaDebugger::drawDisassembler() {
+
+void Chip8topiaDebugger::drawDisassembler(Chip8Core* chip8) {
+    //    Disassembler disassembler;
+    //    disassembler.disassemble(chip8->getCpu().m_Memory, chip8->getCpu().m_pc);
+    //    disassembler.drawDisassembly();
 }

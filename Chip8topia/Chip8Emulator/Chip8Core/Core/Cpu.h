@@ -77,6 +77,19 @@ private:
     inline void LD_I_Vx(const uint8 x);
     inline void LD_Vx_I(const uint8 x);
 
+public:
+    auto getMemory() -> std::array<uint8, MEMORY_SIZE>& { return m_memory; }
+    auto getPc() -> uint16& { return m_pc; }
+
+    auto getStack() -> std::array<uint16, STACK_SIZE>& { return m_stack; }
+    auto getSp() -> uint8& { return m_sp; }
+
+    auto getV() -> std::array<uint8, REGISTER_SIZE>& { return m_V; }
+    auto getI() -> uint16& { return m_I; }
+
+    auto getGameTimer() -> uint8& { return m_gameTimer; }
+    auto getAudioTimer() -> uint8& { return m_audioTimer; }
+
 private:
     std::array<uint8, MEMORY_SIZE> m_memory;
     uint16 m_pc;

@@ -7,7 +7,9 @@
 void Chip8topiaInputHandler::update(GLFWwindow* window) {
     glfwPollEvents();
 
-    // Use game key in game loop update
+    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
+        m_CTRL_OKeyButtonPressedEvent.trigger();
+
     //    if (key == GLFW_KEY_1 && action == GLFW_PRESS)
     //        m_GameInput.trigger(0x1, true);
     //    if (key == GLFW_KEY_2 && action == GLFW_PRESS)
@@ -82,8 +84,5 @@ void Chip8topiaInputHandler::key_callback(GLFWwindow* window, int key, int scanc
         if (action == GLFW_PRESS)
             inputHandler.m_F12KeyButtonPressedEvent.trigger();
         break;
-
-        //        if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
-        //            m_CTRL_OKeyButtonPressedEvent.trigger();
     }
 }

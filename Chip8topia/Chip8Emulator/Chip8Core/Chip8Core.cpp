@@ -27,3 +27,15 @@ void Chip8Core::reset() {
     m_ppu->clearScreen();
     m_input->reset();
 }
+
+auto Chip8Core::getCpu() -> Cpu& {
+    return m_cpu;
+}
+
+auto Chip8Core::getPpu() -> std::shared_ptr<Ppu> {
+    return m_ppu;
+}
+
+auto Chip8Core::getInput() -> std::shared_ptr<Input> {
+    return m_input;
+}

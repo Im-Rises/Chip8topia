@@ -6,6 +6,9 @@
 
 class Input {
 public:
+    static constexpr auto KEY_COUNT = 16;
+
+public:
     Input() = default;
     Input(const Input&) = delete;
     Input(Input&&) = delete;
@@ -20,5 +23,5 @@ public:
 
 private:
     // TODO: Maybe use std::bitset instead?
-    std::array<bool, 16> m_keys{};
+    std::array<bool, KEY_COUNT> m_keys{};
 };

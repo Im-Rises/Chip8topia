@@ -29,13 +29,13 @@ void Chip8Emulator::update(const float deltaTime) {
 
     m_accumulator += deltaTime;
 
-    if (m_isTurboMode || m_accumulator >= 1.0F / Ppu::CLOCK_FREQUENCY)
-    {
-        m_accumulator = 0.0F;
-        m_core.clock();
-        //        m_videoEmulation.update(deltaTime);
-        //        m_soundEmulation.update(deltaTime);
-    }
+    //    if (m_isTurboMode || m_accumulator >= 1.0F / Ppu::CLOCK_FREQUENCY)
+    //    {
+    m_accumulator = 0.0F;
+    m_core.clock();
+    //    m_videoEmulation.update();
+    //        m_soundEmulation.update(deltaTime);
+    //    }
 }
 
 void Chip8Emulator::toglleTurboMode() {
@@ -48,6 +48,10 @@ void Chip8Emulator::togglePause() {
 
 auto Chip8Emulator::getIsTurbomode() const -> bool {
     return m_isTurboMode;
+}
+
+auto Chip8Emulator::getChip8Core() -> Chip8Core* {
+    return &m_core;
 }
 
 void Chip8Emulator::OnInput(const uint8 key, const bool isPressed) {

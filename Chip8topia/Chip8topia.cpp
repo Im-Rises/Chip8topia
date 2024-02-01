@@ -80,6 +80,9 @@ Chip8topia::Chip8topia() {
     glfwSetDropCallback(m_window, drop_callback);
     glfwSetKeyCallback(m_window, Chip8topiaInputHandler::key_callback);
 
+    // Center window
+    centerWindow(); // TODO: Check if doesn't cause problems on Emscripten
+
 #ifdef __EMSCRIPTEN__
     // Initialize OpenGL loader
     if (gladLoadGLES2Loader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)) == 0)
@@ -226,6 +229,24 @@ void Chip8topia::handleScreenUpdate() {
     }
 
     glfwSwapBuffers(m_window);
+}
+
+void Chip8topia::centerWindow() {
+    // TODO: Mix code from toggleFullScreen and centerWindow to avoid code duplication for the window area location calculation
+    int count;
+    GLFWmonitor** monitors = glfwGetMonitors(&count);
+    for (int i = 0; i < count; i++)
+    {
+        int x, y;
+        int width, height;
+        glfwGetMonitorWorkarea(monitors[i], &x, &y, &width, &height);
+
+        if (m_windowedPosX >= x && m_windowedPosX <= x + width && m_windowedPosY >= y && m_windowedPosY <= y + height)
+        {
+            glfwSetWindowPos(m_window, x + (width - m_windowedWidth) / 2, y + (height - m_windowedHeight) / 2);
+            break;
+        }
+    }
 }
 
 void Chip8topia::toggleFullScreen() {

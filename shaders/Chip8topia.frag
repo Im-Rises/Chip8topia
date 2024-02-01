@@ -1,10 +1,31 @@
-#version 430 core
+#version 300 es
 
-in vec3 v_color;
-
-out vec4 o_fragColor;
+out vec4 FragColor;
 
 void main()
 {
-    o_fragColor = vec4(v_color, 1.0f);
+    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
 }
+
+//precision highp float;
+//
+//in vec2 v_texcoord;
+//uniform sampler2D u_texture;
+//uniform vec4 u_backgroundColor;
+//uniform vec4 u_foregroundColor;
+//out vec4 o_outColor;
+//
+//void main() {
+//    vec4 color = texture(u_texture, v_texcoord);
+//
+//    if (color.rgb == vec3(0.0))
+//    {
+//        color = u_backgroundColor;
+//    }
+//    else
+//    {
+//        color = u_foregroundColor;
+//    }
+//
+//    o_outColor = color;
+//}

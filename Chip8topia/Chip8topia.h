@@ -40,6 +40,7 @@ private:
     void handleScreenUpdate();
 
 public:
+    void centerWindow();
     void toggleFullScreen();
     void getWindowedDimensions(int& width, int& height) const;
     void toggleTurboMode();

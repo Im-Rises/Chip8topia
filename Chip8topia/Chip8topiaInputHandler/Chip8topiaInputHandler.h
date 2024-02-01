@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Singleton/Singleton.h"
 #include <binaryLib/binaryLib.h>
+#include <Singleton/Singleton.h>
 
 #include "SubscriberEventSystem/MultiSubscriberEvent.h"
 #include "SubscriberEventSystem/SingleSubscriberEvent.h"
@@ -27,23 +27,20 @@ public:
 
 public:
     void update(GLFWwindow* window);
-
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 public:
-    [[maybe_unused]] MultiSubscriberEvent<> m_CTRL_OKeyButtonPressedEvent;
-
-    [[maybe_unused]] MultiSubscriberEvent<> m_PKeyButtonPressedEvent;
-
+    // UI Events
     [[maybe_unused]] SingleSubscriberEvent<> m_EscapeKeyButtonPressedEvent;
     [[maybe_unused]] SingleSubscriberEvent<> m_F9KeyButtonPressedEvent;
     [[maybe_unused]] SingleSubscriberEvent<> m_F10KeyButtonPressedEvent;
     [[maybe_unused]] SingleSubscriberEvent<> m_F11KeyButtonPressedEvent;
     [[maybe_unused]] SingleSubscriberEvent<> m_F12KeyButtonPressedEvent;
+    [[maybe_unused]] SingleSubscriberEvent<> m_CTRL_OKeyButtonPressedEvent;
 
+    // Game Events
+    [[maybe_unused]] MultiSubscriberEvent<> m_PKeyButtonPressedEvent;
     [[maybe_unused]] MultiSubscriberEvent<const uint8, const bool> m_GameInput;
-
-    // TODO: Replace by CallbackSystem we don't several subscribes
 
 private:
 };

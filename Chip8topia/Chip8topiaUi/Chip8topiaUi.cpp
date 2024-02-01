@@ -108,6 +108,10 @@ void Chip8topiaUi::drawViewMenu(Chip8topia& chip8topia) {
         {
             toggleMenuBar();
         }
+        if (ImGui::MenuItem("Center window"))
+        {
+            chip8topia.centerWindow();
+        }
 
         ImGui::EndMenu();
     }
