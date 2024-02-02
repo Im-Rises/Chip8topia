@@ -124,11 +124,15 @@ void Chip8topiaUi::drawVideoMenu() {
         {
             //                m_chip8.setDebuggerMode(true);
             // set a tooltip to show the window of each debugger tool
+            //            ImVec4 backgroundColor = ImVec4(1.0F, 0.0F, 1.0F, 1.0F);
+            //            std::array<float, 4> backgroundColor = {};
+            //            ImGui::ColorPicker4("Background color", backgroundColor.data());
         }
         if (ImGui::MenuItem("Draw color"))
         {
             //                m_chip8.setDebuggerMode(true);
             // set a tooltip to show the window of each debugger tool
+            //            ImGui::ColorPicker4("Draw color", nullptr);
         }
         ImGui::EndMenu();
     }
@@ -154,7 +158,7 @@ void Chip8topiaUi::drawAboutMenu() {
 void Chip8topiaUi::drawAboutChip8topiaPopUpWindow() {
     static constexpr auto ABOUT_CHIP8TOPIA = []() {
         ImGui::TextColored(ImVec4(1.0F, 0.0F, 1.0F, 1.0F), Chip8topia::PROJECT_NAME);
-        ImGui::Text("Version: %s\n"
+        ImGui::Text("Version: %s\n" // TODO: Use R"("")"; string type
                     "\n"
                     "Developed by:\n "
                     "- %s\n"
@@ -183,7 +187,7 @@ void Chip8topiaUi::drawAboutPopUpInternal(const std::string_view& popupName, con
     }
     if (ImGui::BeginPopupModal(popupName.data(), &showAboutPopup,
             ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize |
-                ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse))
+                ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings))
     {
         drawAboutPopUpContent();
         ImGui::EndPopup();

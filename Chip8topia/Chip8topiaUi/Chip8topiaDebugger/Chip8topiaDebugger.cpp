@@ -1,6 +1,5 @@
 #include "Chip8topiaDebugger.h"
 
-#include "../../Chip8Emulator/Chip8Core/Core/Cpu.h"
 #include "../../Chip8Emulator/Chip8Core/Core/Input.h"
 
 void Chip8topiaDebugger::drawDebugger(Chip8Emulator& emulator) {
@@ -23,41 +22,55 @@ void Chip8topiaDebugger::drawDebugger(Chip8Emulator& emulator) {
 void Chip8topiaDebugger::drawRegisters(Chip8Core* chip8) {
     Cpu& cpu = chip8->getCpu();
 
-    ImGui::Text("PC: %04X", cpu.getPc());
-    //    ImGui::DragInt("PC", &cpu.getPc(), 1, 0, 0xFFFF);
+    //    ImGui::Indent( 10.0f );
+    //    ImGui::AlignTextToFramePadding();
+    //    ImGui::PushItemWidth(30.0f);
 
-    ImGui::Text("I: %04X", cpu.getI());
-    //    ImGui::DragInt("I", &cpu.getI(), 1, 0, 0xFFFF);
+    ImGui::Text("PC:");
+    ImGui::SameLine();
+    ImGui::InputScalar("##PC", ImGuiDataType_U16, &cpu.getPc(), nullptr, nullptr, "%04X", ImGuiInputTextFlags_CharsHexadecimal);
 
-    ImGui::Text("Game Timer: %02X", cpu.getGameTimer());
-    //    ImGui::DragInt("Game Timer", &cpu.getGameTimer(), 1, 0, 0xFF);
+    ImGui::Text(" I:");
+    ImGui::SameLine();
+    ImGui::InputScalar("##I", ImGuiDataType_U16, &cpu.getI(), nullptr, nullptr, "%04X", ImGuiInputTextFlags_CharsHexadecimal);
 
-    ImGui::Text("Sound Timer: %02X", cpu.getAudioTimer());
-    //    ImGui::DragInt("Sound Timer", &cpu.getAudioTimer(), 1, 0, 0xFF);
-
-    for (auto i = 0; i < 16; ++i)
+    for (auto i = 0; i < Cpu::REGISTER_V_SIZE; i++)
     {
-        ImGui::Text("V%01X: %02X", i, cpu.getV()[i]);
-        //        ImGui::DragInt("V%01X", &cpu.getV()[i], 1, 0, 0xFF);
+        ImGui::Text("V:");
+        ImGui::SameLine();
+        ImGui::InputScalar("##V", ImGuiDataType_U8, &cpu.getV()[i], nullptr, nullptr, "%02X", ImGuiInputTextFlags_CharsHexadecimal);
     }
+
+    ImGui::Text("Game Timer:");
+    ImGui::SameLine();
+    ImGui::InputScalar("##GameTimer", ImGuiDataType_U8, &cpu.getGameTimer(), nullptr, nullptr, "%02X", ImGuiInputTextFlags_CharsHexadecimal);
+
+    ImGui::Text("Sound Timer:");
+    ImGui::SameLine();
+    ImGui::InputScalar("##SoundTimer", ImGuiDataType_U8, &cpu.getSoundTimer(), nullptr, nullptr, "%02X", ImGuiInputTextFlags_CharsHexadecimal);
 }
 
 void Chip8topiaDebugger::drawStack(Chip8Core* chip8) {
     Cpu& cpu = chip8->getCpu();
 
-    ImGui::Text("SP: %02X", cpu.getSp());
-    //    ImGui::DragInt("SP", &cpu.getSp(), 1, 0, 0xFF);
+    ImGui::Text("SP:");
+    ImGui::SameLine();
+    ImGui::InputScalar("##SP", ImGuiDataType_U8, &cpu.getSp(), nullptr, nullptr, "%02X", ImGuiInputTextFlags_CharsHexadecimal);
 
 
     ImGui::Text("Stack");
-    ImGui::BeginTable("Stack", 2);
+    ImGui::BeginTable("Stack", 3);
     for (auto i = 0; i < 16; ++i)
     {
+        //        ImGui::PushID(i);
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
         ImGui::Text("SP: %02X", i);
         ImGui::TableSetColumnIndex(1);
         ImGui::Text("0x%04X", cpu.getStack()[i]);
+        ImGui::TableSetColumnIndex(2);
+        ImGui::InputScalar("##Stack", ImGuiDataType_U16, &cpu.getStack()[i], nullptr, nullptr, "%04X", ImGuiInputTextFlags_CharsHexadecimal);
+        //        ImGui::PopID();
     }
 
     ImGui::EndTable();
@@ -69,7 +82,7 @@ void Chip8topiaDebugger::drawMemory(Chip8Core* chip8) {
 
 void Chip8topiaDebugger::drawKeyboard(Chip8Core* chip8) {
     ImGui::Text("Keyboard");
-    ImGui::BeginTable("Keyboard", 2);
+    ImGui::BeginTable("Keyboard", 3);
     for (auto i = 0; i < Input::KEY_COUNT; i++)
     {
         ImGui::TableNextRow();
@@ -77,12 +90,21 @@ void Chip8topiaDebugger::drawKeyboard(Chip8Core* chip8) {
         ImGui::Text("Key: %02X", i);
         ImGui::TableSetColumnIndex(1);
         ImGui::Text("0x%04X", chip8->getInput()->isKeyPressed(i) ? 1 : 0);
+        ImGui::TableSetColumnIndex(2);
+        ImGui::Button("Toggle Key");
+        if (ImGui::IsItemClicked())
+        {
+            // TODO: Toggle key
+            // chip8->getInput()->updateKey(i, true);
+        }
     }
 
     ImGui::EndTable();
 }
 
 void Chip8topiaDebugger::drawDisassembler(Chip8Core* chip8) {
+    // TODO: Implement disassembler
+
     //    Disassembler disassembler;
     //    disassembler.disassemble(chip8->getCpu().m_Memory, chip8->getCpu().m_pc);
     //    disassembler.drawDisassembly();

@@ -40,6 +40,7 @@ private:
     void handleScreenUpdate();
 
 public:
+    //        int getCurrentMonitorWorkArea(int& x, int& y, int& width, int& height) const;
     void centerWindow();
     void toggleFullScreen();
     void getWindowedDimensions(int& width, int& height) const;
@@ -51,8 +52,8 @@ public:
 
 private:
     GLFWwindow* m_window;
-    Chip8Emulator m_chip8Emulator;
-    Chip8topiaUi m_chip8topiaUi;
+    Chip8Emulator m_chip8Emulator; // TODO: Change to be initialized once the gameloop is started
+    Chip8topiaUi m_chip8topiaUi;   // TODO: Change to be initialized once the gameloop is started
     Chip8topiaInputHandler& m_chip8topiaInputHandler = Chip8topiaInputHandler::getInstance();
 
     bool m_isFullScreen = false;

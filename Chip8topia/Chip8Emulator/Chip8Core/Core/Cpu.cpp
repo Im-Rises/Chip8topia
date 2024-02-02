@@ -10,7 +10,7 @@ Cpu::Cpu() : m_pc(START_ADDRESS),
              m_sp(0),
              m_I(0),
              m_gameTimer(0),
-             m_audioTimer(0),
+             m_soundTimer(0),
              m_memory{},
              m_V{},
              m_stack{} {
@@ -28,7 +28,7 @@ void Cpu::reset() {
     m_sp = 0;
     m_I = 0;
     m_gameTimer = 0;
-    m_audioTimer = 0;
+    m_soundTimer = 0;
     m_memory = {}; // TODO: Maybe for the ram we can reset everything except the rom location so it can be reloaded
     m_V = {};
     m_stack = {};
@@ -51,9 +51,9 @@ void Cpu::clockTimers() {
     {
         m_gameTimer--;
     }
-    if (m_audioTimer > 0)
+    if (m_soundTimer > 0)
     {
-        m_audioTimer--;
+        m_soundTimer--;
     }
 }
 
@@ -485,7 +485,7 @@ void Cpu::LD_DT_Vx(const uint8 x) {
 }
 
 void Cpu::LD_ST_Vx(const uint8 x) {
-    m_audioTimer = m_V[x];
+    m_soundTimer = m_V[x];
 }
 
 void Cpu::ADD_I_Vx(const uint8 x) {
