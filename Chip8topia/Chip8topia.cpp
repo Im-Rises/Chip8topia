@@ -192,13 +192,13 @@ void Chip8topia::handleInputs() {
 }
 
 void Chip8topia::handleUi(const float deltaTime) {
+    setWindowTitle(1.0F / deltaTime);
+
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
     m_chip8topiaUi->drawUi(*this);
     ImGui::Render();
-
-    setWindowTitle(1.0F / deltaTime);
 }
 
 void Chip8topia::handleGameUpdate(const float deltaTime) {
@@ -221,7 +221,8 @@ void Chip8topia::handleScreenUpdate() {
     glClearColor(CLEAR_COLOR.x * CLEAR_COLOR.w, CLEAR_COLOR.y * CLEAR_COLOR.w, CLEAR_COLOR.z * CLEAR_COLOR.w, CLEAR_COLOR.w);
     glClear(GL_COLOR_BUFFER_BIT);
 
-
+    // TODO: This function maybe should be called elsewhere
+    m_chip8Emulator->render();
 
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -281,22 +282,9 @@ void Chip8topia::toggleFullScreen() {
     m_isFullScreen = !m_isFullScreen;
 }
 
-void Chip8topia::getWindowedDimensions(int& width, int& height) const {
-    width = m_currentWidth;
-    height = m_currentHeight;
-}
-
 void Chip8topia::toggleTurboMode() {
     glfwSwapInterval(m_isTurboMode ? 1 : 0); // 0 = no vsync, 1 = vsync
     m_isTurboMode = !m_isTurboMode;
-}
-
-auto Chip8topia::getChip8Emulator() -> Chip8Emulator& {
-    return *m_chip8Emulator;
-}
-
-auto Chip8topia::getIsTurboMode() const -> bool {
-    return m_isTurboMode;
 }
 
 void Chip8topia::setWindowIcon() {
@@ -313,4 +301,12 @@ void Chip8topia::setWindowIcon() {
 void Chip8topia::setWindowTitle(const float fps) {
     //    m_chip8Emulator.getRomName();// TODO: Add rom name to window title
     glfwSetWindowTitle(m_window, std::format("{} - {:.2f} fps", PROJECT_NAME, fps).c_str());
+}
+
+auto Chip8topia::getChip8Emulator() -> Chip8Emulator& {
+    return *m_chip8Emulator;
+}
+
+auto Chip8topia::getIsTurboMode() const -> bool {
+    return m_isTurboMode;
 }

@@ -17,6 +17,7 @@ public:
 public:
     void loadRom(const std::string& romPath);
     void update(const float deltaTime);
+    void render();
 
     void toggleTurboMode();
     void togglePause();

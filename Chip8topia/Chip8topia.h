@@ -40,16 +40,24 @@ private:
     void handleScreenUpdate();
 
 public:
-    //        int getCurrentMonitorWorkArea(int& x, int& y, int& width, int& height) const;
     void centerWindow();
+
     void toggleFullScreen();
-    void getWindowedDimensions(int& width, int& height) const;
     void toggleTurboMode();
-    auto getChip8Emulator() -> Chip8Emulator&;
-    [[nodiscard]] auto getIsTurboMode() const -> bool;
+
     void setWindowIcon();
     void setWindowTitle(const float fps);
 
+    [[nodiscard]] auto getChip8Emulator() -> Chip8Emulator&;
+    [[nodiscard]] auto getIsTurboMode() const -> bool;
+
+    // public:
+    //     static auto getOpenGLVendor() -> std::string_view;
+    //     static auto getOpenGLVersion() -> std::string_view;
+    //     //    static auto getGLSLVersion() -> std::string_view;
+    //     static auto getGLFWVersion() -> std::string;
+    //     static auto getGladVersion() -> std::string_view;
+    //     static auto getImGuiVersion() -> std::string;
     // auto Chip8topia::getOpenGLVendor() -> std::string_view {
     //     return reinterpret_cast<const char*>(glGetString(GL_RENDERER));
     // }
@@ -91,11 +99,3 @@ private:
     int m_windowedPosX = 0;
     int m_windowedPosY = 0;
 };
-
-// public:
-//     static auto getOpenGLVendor() -> std::string_view;
-//     static auto getOpenGLVersion() -> std::string_view;
-//     //    static auto getGLSLVersion() -> std::string_view;
-//     static auto getGLFWVersion() -> std::string;
-//     static auto getGladVersion() -> std::string_view;
-//     static auto getImGuiVersion() -> std::string;
