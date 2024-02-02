@@ -6,13 +6,13 @@
 Chip8Emulator::Chip8Emulator() {
     Chip8topiaInputHandler::getInstance().m_GameInput.subscribe(this, &Chip8Emulator::OnInput);
     Chip8topiaInputHandler::getInstance().m_PKeyButtonPressedEvent.subscribe(this, &Chip8Emulator::togglePause);
-    Chip8topiaInputHandler::getInstance().m_F10KeyButtonPressedEvent.subscribe(this, &Chip8Emulator::toglleTurboMode);
+    Chip8topiaInputHandler::getInstance().m_F10KeyButtonPressedEvent.subscribe(this, &Chip8Emulator::toggleTurboMode);
 }
 
 Chip8Emulator::~Chip8Emulator() {
     Chip8topiaInputHandler::getInstance().m_GameInput.unsubscribe(this, &Chip8Emulator::OnInput);
     Chip8topiaInputHandler::getInstance().m_PKeyButtonPressedEvent.unsubscribe(this, &Chip8Emulator::togglePause);
-    Chip8topiaInputHandler::getInstance().m_F10KeyButtonPressedEvent.unsubscribe(this, &Chip8Emulator::toglleTurboMode);
+    Chip8topiaInputHandler::getInstance().m_F10KeyButtonPressedEvent.unsubscribe(this, &Chip8Emulator::toggleTurboMode);
 }
 
 void Chip8Emulator::loadRom(const std::string& romPath) {
@@ -33,12 +33,12 @@ void Chip8Emulator::update(const float deltaTime) {
     //    {
     m_accumulator = 0.0F;
     m_core.clock();
-    //    m_videoEmulation.update();
+    m_videoEmulation.update();
     //        m_soundEmulation.update(deltaTime);
     //    }
 }
 
-void Chip8Emulator::toglleTurboMode() {
+void Chip8Emulator::toggleTurboMode() {
     m_isTurboMode = !m_isTurboMode;
 }
 
@@ -46,7 +46,7 @@ void Chip8Emulator::togglePause() {
     m_isPaused = !m_isPaused;
 }
 
-auto Chip8Emulator::getIsTurbomode() const -> bool {
+auto Chip8Emulator::getIsTurboMode() const -> bool {
     return m_isTurboMode;
 }
 

@@ -62,9 +62,9 @@ void Chip8topiaUi::drawEngineEmulationMenu(Chip8topia& chip8topia) {
             chip8topia.toggleTurboMode();
         }
 
-        if (ImGui::MenuItem(std::format("Toggle Emulation turbo mode : {}", chip8topia.getChip8Emulator().getIsTurbomode() ? "ON" : "OFF").c_str(), "F10"))
+        if (ImGui::MenuItem(std::format("Toggle Emulation turbo mode : {}", chip8topia.getChip8Emulator().getIsTurboMode() ? "ON" : "OFF").c_str(), "F10"))
         {
-            chip8topia.getChip8Emulator().toglleTurboMode();
+            chip8topia.getChip8Emulator().toggleTurboMode();
         }
 
         if (ImGui::MenuItem("Pause"))
