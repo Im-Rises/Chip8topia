@@ -22,10 +22,10 @@ void Chip8Emulator::loadRom(const std::string& romPath) {
 }
 
 void Chip8Emulator::update(const float deltaTime) {
-    //    if (!m_isRomLoaded || m_isPaused)
-    //    {
-    //        return;
-    //    }
+    if (!m_isRomLoaded || m_isPaused)
+    {
+        return;
+    }
 
     m_accumulator += deltaTime;
 
@@ -33,9 +33,12 @@ void Chip8Emulator::update(const float deltaTime) {
     //    {
     m_accumulator = 0.0F;
     //    m_core.clock();
-    m_videoEmulation.update();
     //        m_soundEmulation.update(deltaTime);
     //    }
+}
+
+void Chip8Emulator::render() {
+    m_videoEmulation.update();
 }
 
 void Chip8Emulator::toggleTurboMode() {
