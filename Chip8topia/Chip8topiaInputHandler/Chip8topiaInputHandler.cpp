@@ -2,9 +2,7 @@
 
 #include <glfw/glfw3.h>
 
-#include "../Chip8topia.h"
-
-void Chip8topiaInputHandler::update(GLFWwindow* window) {
+void Chip8topiaInputHandler::update(GLFWwindow* window) const {
     glfwPollEvents();
 
     if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
@@ -55,7 +53,7 @@ void Chip8topiaInputHandler::update(GLFWwindow* window) {
     //    if (key == GLFW_KEY_4 && action == GLFW_RELEASE)
     //        m_GameInput.trigger(0xC, false);
 }
-void Chip8topiaInputHandler::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+void Chip8topiaInputHandler::key_callback(GLFWwindow* /*window*/, int key, int /*scancode*/, int action, int /*mods*/) {
     auto& inputHandler = Chip8topiaInputHandler::getInstance();
 
     switch (key)

@@ -1,7 +1,7 @@
 #include "Cpu.h"
 
 #include <random>
-#include <iostream>
+#include <utility>
 
 #include "Input.h"
 #include "Ppu.h"
@@ -17,10 +17,11 @@ Cpu::Cpu() : m_pc(START_ADDRESS),
 }
 
 void Cpu::setPpu(std::shared_ptr<Ppu> ppu) {
-    m_ppu = ppu;
+    m_ppu = std::move(ppu);
 }
+
 void Cpu::setInput(std::shared_ptr<Input> input) {
-    m_input = input;
+    m_input = std::move(input);
 }
 
 void Cpu::reset() {
@@ -332,7 +333,7 @@ void Cpu::RET() {
     m_pc = m_stack[m_sp--];
 }
 
-void Cpu::SYS(const uint16 address) {
+void Cpu::SYS(const uint16 /*address*/) {
     // This opcode is only used on the old computers on which Chip-8 was originally implemented.
     // It is ignored by modern interpreters.
     m_pc += 2;

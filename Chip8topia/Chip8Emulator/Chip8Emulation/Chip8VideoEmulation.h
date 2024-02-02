@@ -22,12 +22,12 @@ private:
         -1.0F, 1.0F, 0.0F,  // top left
     };
 
-    struct Color {
-        float r;
-        float g;
-        float b;
-        float a;
-    };
+    //    struct Color {
+    //        float r;
+    //        float g;
+    //        float b;
+    //        float a;
+    //    };
 
 public:
     Chip8VideoEmulation();
@@ -46,6 +46,6 @@ private:
 
     Shader m_shader;
 
-    Color m_backgroundColor = { 0.0F, 0.0F, 0.0F, 1.0F };
-    Color m_foregroundColor = { 1.0F, 1.0F, 1.0F, 1.0F };
+    //    Color m_backgroundColor = { 0.0F, 0.0F, 0.0F, 1.0F };
+    //    Color m_foregroundColor = { 1.0F, 1.0F, 1.0F, 1.0F };
 };

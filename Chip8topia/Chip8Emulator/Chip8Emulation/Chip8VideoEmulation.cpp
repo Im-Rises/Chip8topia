@@ -2,7 +2,7 @@
 
 #include <glad/glad.h>
 
-Chip8VideoEmulation::Chip8VideoEmulation() : m_shader(VERTEX_SHADER_PATH, FRAGMENT_SHADER_PATH) {
+Chip8VideoEmulation::Chip8VideoEmulation() : m_VAO(0), m_VBO(0), m_shader(VERTEX_SHADER_PATH, FRAGMENT_SHADER_PATH) {
     glGenVertexArrays(1, &m_VAO);
     glGenBuffers(1, &m_VBO);
     glBindVertexArray(m_VAO);
@@ -21,5 +21,5 @@ Chip8VideoEmulation::Chip8VideoEmulation() : m_shader(VERTEX_SHADER_PATH, FRAGME
 void Chip8VideoEmulation::update() {
     m_shader.use();
     glBindVertexArray(m_VAO);
-    glDrawArrays(GL_TRIANGLES, 0, VERTICES.size() / 3);
+    glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(VERTICES.size() / 3));
 }

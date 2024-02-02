@@ -50,10 +50,36 @@ public:
     void setWindowIcon();
     void setWindowTitle(const float fps);
 
+    // auto Chip8topia::getOpenGLVendor() -> std::string_view {
+    //     return reinterpret_cast<const char*>(glGetString(GL_RENDERER));
+    // }
+    //
+    // auto Chip8topia::getOpenGLVersion() -> std::string_view {
+    //     return reinterpret_cast<const char*>(glGetString(GL_VERSION));
+    // }
+    //
+    //// auto Chip8topia::getGLSLVersion() -> std::string_view {
+    ////     return reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION));
+    //// }
+    //
+    // auto Chip8topia::getGLFWVersion() -> std::string {
+    //    return std::to_string(GLFW_VERSION_MAJOR) + "." + std::to_string(GLFW_VERSION_MINOR) + "." +
+    //           std::to_string(GLFW_VERSION_REVISION);
+    //}
+    //
+    // auto Chip8topia::getGladVersion() -> std::string_view {
+    //    return "0.1.36";
+    //}
+    //
+    // auto Chip8topia::getImGuiVersion() -> std::string {
+    //    return IMGUI_VERSION;
+    //}
+    
+
 private:
     GLFWwindow* m_window;
-    Chip8Emulator m_chip8Emulator; // TODO: Change to be initialized once the gameloop is started
-    Chip8topiaUi m_chip8topiaUi;   // TODO: Change to be initialized once the gameloop is started
+    std::unique_ptr<Chip8Emulator> m_chip8Emulator; // TODO: Change to be initialized once the gameloop is started
+    std::unique_ptr<Chip8topiaUi> m_chip8topiaUi;   // TODO: Change to be initialized once the gameloop is started
     Chip8topiaInputHandler& m_chip8topiaInputHandler = Chip8topiaInputHandler::getInstance();
 
     bool m_isFullScreen = false;

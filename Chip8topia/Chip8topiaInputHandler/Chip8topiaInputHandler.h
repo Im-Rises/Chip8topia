@@ -26,7 +26,7 @@ public:
     auto operator=(Chip8topiaInputHandler&&) -> Chip8topiaInputHandler& = delete;
 
 public:
-    void update(GLFWwindow* window);
+    void update(GLFWwindow* window) const;
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 public:

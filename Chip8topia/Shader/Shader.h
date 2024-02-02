@@ -30,5 +30,5 @@ public:
     [[maybe_unused]] void setVec4(const std::string& name, float x, float y, float z, float w) const;
 
 private:
-    unsigned int ID;
+    unsigned int m_ID;
 };
