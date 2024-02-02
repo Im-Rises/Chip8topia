@@ -51,38 +51,12 @@ public:
     [[nodiscard]] auto getChip8Emulator() -> Chip8Emulator&;
     [[nodiscard]] auto getIsTurboMode() const -> bool;
 
-    // public:
-    //     static auto getOpenGLVendor() -> std::string_view;
-    //     static auto getOpenGLVersion() -> std::string_view;
-    //     //    static auto getGLSLVersion() -> std::string_view;
-    //     static auto getGLFWVersion() -> std::string;
-    //     static auto getGladVersion() -> std::string_view;
-    //     static auto getImGuiVersion() -> std::string;
-    // auto Chip8topia::getOpenGLVendor() -> std::string_view {
-    //     return reinterpret_cast<const char*>(glGetString(GL_RENDERER));
-    // }
-    //
-    // auto Chip8topia::getOpenGLVersion() -> std::string_view {
-    //     return reinterpret_cast<const char*>(glGetString(GL_VERSION));
-    // }
-    //
-    //// auto Chip8topia::getGLSLVersion() -> std::string_view {
-    ////     return reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION));
-    //// }
-    //
-    // auto Chip8topia::getGLFWVersion() -> std::string {
-    //    return std::to_string(GLFW_VERSION_MAJOR) + "." + std::to_string(GLFW_VERSION_MINOR) + "." +
-    //           std::to_string(GLFW_VERSION_REVISION);
-    //}
-    //
-    // auto Chip8topia::getGladVersion() -> std::string_view {
-    //    return "0.1.36";
-    //}
-    //
-    // auto Chip8topia::getImGuiVersion() -> std::string {
-    //    return IMGUI_VERSION;
-    //}
-
+    static auto getOpenGLVendor() -> std::string_view;
+    static auto getOpenGLVersion() -> std::string_view;
+    static auto getGLSLVersion() -> std::string_view;
+    static auto getGLFWVersion() -> std::string;
+    static auto getGladVersion() -> std::string_view;
+    static auto getImGuiVersion() -> std::string;
 
 private:
     GLFWwindow* m_window;
