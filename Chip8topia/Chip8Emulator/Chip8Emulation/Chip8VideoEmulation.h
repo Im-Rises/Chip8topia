@@ -11,7 +11,7 @@ private:
     static constexpr auto VERTEX_SHADER_PATH = "shaders/Chip8topia.vert";
     static constexpr auto FRAGMENT_SHADER_PATH = "shaders/Chip8topia.frag";
 
-    static constexpr std::array<float, 32> VERTICES = {
+    static constexpr std::array<float, 18> VERTICES = {
         // first triangle
         1.0F, 1.0F, 0.0F,  // top right
         1.0F, -1.0F, 0.0F, // bottom right
