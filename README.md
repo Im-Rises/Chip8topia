@@ -17,9 +17,14 @@ http://devernay.free.fr/hacks/chip8/C8TECH10.HTM
 - [x] Charger rom
 - [x] Linker rom
 - [x] Correct window size position for about window
-- [ ] Add emulation video
-- [ ] Add emulation sound
+- [x] Add emulation video
 - [ ] Add disassembly
+- [ ] Correct collision detection
+- [ ] Add vcpkg support for dependencies
+- [ ] Add emulation sound
+- [ ] Implement WebAssembly support
+- [ ] Add base files to the .data of emscripten to be able to load all the roms from the web
+- [ ] Add a file input to load roms from the web
 - [ ] Créer une classe ImGuiMenuItemWindowList. Améliorer code imgui des fenêtres avec un système qui contiendrait les
   enums des fenêtres à afficher, ensuite en
   allant dans un switch case pour chaque enum dans le tableau, on afficherait la fenêtre correspondante. Rajouter class
