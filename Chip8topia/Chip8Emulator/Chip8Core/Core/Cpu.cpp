@@ -449,7 +449,7 @@ void Cpu::RND_Vx_byte(const uint8 x, const uint8 byte) {
 }
 
 void Cpu::DRW_Vx_Vy_nibble(const uint8 x, const uint8 y, const uint8 n) {
-    m_ppu->drawSprite(m_V[x], m_V[y], n, m_memory, m_I);
+    m_V[0xF] = static_cast<unsigned char>(m_ppu->drawSprite(m_V[x], m_V[y], n, m_memory, m_I));
 }
 
 void Cpu::SKP_Vx(const uint8 x) {
