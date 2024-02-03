@@ -33,6 +33,7 @@ void Chip8topiaUi::drawMainMenuBar(Chip8topia& chip8topia) {
         ImGui::EndMainMenuBar();
     }
 
+    drawVideoWindow(chip8topia);
     drawAboutChip8topiaPopUpWindow();
     drawAboutChip8PopUpWindow();
     drawRomWindow(chip8topia);
@@ -57,12 +58,12 @@ void Chip8topiaUi::drawFileMenu(Chip8topia& chip8topia) {
 void Chip8topiaUi::drawEngineEmulationMenu(Chip8topia& chip8topia) {
     if (ImGui::BeginMenu("Engine/Emulation"))
     {
-        if (ImGui::MenuItem(std::format("Toggle Engine turbo mode : {}", chip8topia.getIsTurboMode() ? "ON" : "OFF").c_str(), "F9"))
+        if (ImGui::MenuItem(std::format("Toggle Engine turbo mode : {}", chip8topia.getIsTurboMode() ? "ON " : "OFF").c_str(), "F9"))
         {
             chip8topia.toggleTurboMode();
         }
 
-        if (ImGui::MenuItem(std::format("Toggle Emulation turbo mode : {}", chip8topia.getChip8Emulator().getIsTurboMode() ? "ON" : "OFF").c_str(), "F10"))
+        if (ImGui::MenuItem(std::format("Toggle Emulation turbo mode : {}", chip8topia.getChip8Emulator().getIsTurboMode() ? "ON " : "OFF").c_str(), "F10"))
         {
             chip8topia.getChip8Emulator().toggleTurboMode();
         }
@@ -122,17 +123,11 @@ void Chip8topiaUi::drawVideoMenu() {
     {
         if (ImGui::MenuItem("Background color"))
         {
-            //                m_chip8.setDebuggerMode(true);
-            // set a tooltip to show the window of each debugger tool
-            //            ImVec4 backgroundColor = ImVec4(1.0F, 0.0F, 1.0F, 1.0F);
-            //            std::array<float, 4> backgroundColor = {};
-            //            ImGui::ColorPicker4("Background color", backgroundColor.data());
+            m_showBackgroundColor = !m_showBackgroundColor;
         }
         if (ImGui::MenuItem("Draw color"))
         {
-            //                m_chip8.setDebuggerMode(true);
-            // set a tooltip to show the window of each debugger tool
-            //            ImGui::ColorPicker4("Draw color", nullptr);
+            m_showForegroundColor = !m_showForegroundColor;
         }
         ImGui::EndMenu();
     }
@@ -152,6 +147,22 @@ void Chip8topiaUi::drawAboutMenu() {
         }
 
         ImGui::EndMenu();
+    }
+}
+
+void Chip8topiaUi::drawVideoWindow(Chip8topia& chip8topia) {
+    if (m_showBackgroundColor)
+    {
+        ImGui::Begin("Background color", &m_showBackgroundColor);
+        ImGui::ColorPicker4("Background color", reinterpret_cast<float*>(&chip8topia.getChip8Emulator().getChip8VideoEmulation().getBackgroundColor()));
+        ImGui::End();
+    }
+
+    if (m_showForegroundColor)
+    {
+        ImGui::Begin("Draw color", &m_showForegroundColor);
+        ImGui::ColorPicker4("Draw color", reinterpret_cast<float*>(&chip8topia.getChip8Emulator().getChip8VideoEmulation().getForegroundColor()));
+        ImGui::End();
     }
 }
 

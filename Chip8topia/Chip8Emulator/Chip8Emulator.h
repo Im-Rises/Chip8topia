@@ -24,6 +24,7 @@ public:
 
     [[nodiscard]] auto getIsTurboMode() const -> bool;
     [[nodiscard]] auto getChip8Core() -> Chip8Core*;
+    [[nodiscard]] auto getChip8VideoEmulation() -> Chip8VideoEmulation&;
 
 private:
     void OnInput(const uint8 key, const bool isPressed);
