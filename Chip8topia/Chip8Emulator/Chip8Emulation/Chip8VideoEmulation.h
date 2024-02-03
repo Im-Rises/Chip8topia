@@ -5,6 +5,7 @@
 #include <array>
 
 #include "../../Shader/Shader.h"
+#include "../Chip8Core/Core/Ppu.h"
 
 class Chip8VideoEmulation {
 private:
@@ -38,11 +39,13 @@ public:
     ~Chip8VideoEmulation() = default;
 
 public:
+    void createTexture(const std::array<uint8, Ppu::WIDTH * Ppu::HEIGHT>& videoMemory);
     void update();
 
 private:
     unsigned int m_VAO;
     unsigned int m_VBO;
+    unsigned int m_texture;
 
     Shader m_shader;
 

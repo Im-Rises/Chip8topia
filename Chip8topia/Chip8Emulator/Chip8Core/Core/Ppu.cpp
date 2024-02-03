@@ -23,7 +23,7 @@ void Ppu::drawSprite(uint8 x, uint8 y, uint8 n) {
                 }
                 else
                 {
-                    m_videoMemory[i + j] = 1;
+                    m_videoMemory[i + j] = 255;
                 }
             }
         }
