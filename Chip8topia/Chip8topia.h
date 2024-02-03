@@ -61,7 +61,7 @@ public:
 private:
     GLFWwindow* m_window;
     std::unique_ptr<Chip8Emulator> m_chip8Emulator; // TODO: Change to be initialized once the game loop is started
-    std::unique_ptr<Chip8topiaUi> m_chip8topiaUi;   // TODO: Change to be initialized once the game loop is started
+    Chip8topiaUi m_chip8topiaUi;                    // TODO: Change to be initialized once the game loop is started
     Chip8topiaInputHandler& m_chip8topiaInputHandler = Chip8topiaInputHandler::getInstance();
 
     bool m_isFullScreen = false;

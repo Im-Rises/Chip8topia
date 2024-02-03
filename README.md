@@ -10,20 +10,21 @@ http://devernay.free.fr/hacks/chip8/C8TECH10.HTM
 - [x] Add a file explorer to load roms
 - [x] Code the Chip8Core
 - [x] Code the Chip8topiaUi
-- [ ] Code the Chip8topiaDebugger
+- [x] Code the Chip8topiaDebugger
 - [x] Handle file open dialog for multiple platforms (Windows, Linux, Mac), maybe use a library like GTK or WxWidgets
+- [x] Link emulator inputs and UI inputs
+- [x] Finir le code de lecture de rom
+- [x] Charger rom
+- [x] Linker rom
+- [x] Correct window size position for about window
 - [ ] Add emulation video
 - [ ] Add emulation sound
-- [x] Link emulator inputs and UI inputs
-- [ ] Améliorer code imgui des fenêtres avec un système qui contiendrait les enums des fenêtres à afficher, ensuite en
-  allant dans un switch case pour chaque enum dans le tableau, on afficherait la fenêtre correspondante
-- [ ] Rajouter class ImGui (Créer une classe ImGuiMenuItemWindowList)
-- [?] Faire une structure qui prend en paramètre un array seulement movable
-- [ ] Créer une classe ImGuiMenuItemWindowList
-- [ ] Finir le code de lecture de rom
-- [ ] Charger rom
-- [ ] Linker rom
-- [ ] Correct window size position for about window
+- [ ] Add disassembly
+- [ ] Créer une classe ImGuiMenuItemWindowList. Améliorer code imgui des fenêtres avec un système qui contiendrait les
+  enums des fenêtres à afficher, ensuite en
+  allant dans un switch case pour chaque enum dans le tableau, on afficherait la fenêtre correspondante. Rajouter class
+  ImGui (Créer une classe ImGuiMenuItemWindowList). Faire une structure qui prend en paramètre un array seulement
+  movable
 
 ## Dependencies
 

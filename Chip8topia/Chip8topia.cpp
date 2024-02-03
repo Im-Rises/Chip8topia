@@ -146,7 +146,6 @@ Chip8topia::~Chip8topia() {
 
 auto Chip8topia::run() -> int {
     m_chip8Emulator = std::make_unique<Chip8Emulator>();
-    m_chip8topiaUi = std::make_unique<Chip8topiaUi>();
 #ifdef _WIN32
     timeBeginPeriod(1);
 #endif
@@ -197,7 +196,7 @@ void Chip8topia::handleUi(const float deltaTime) {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
-    m_chip8topiaUi->drawUi(*this);
+    m_chip8topiaUi.drawUi(*this);
     ImGui::Render();
 }
 
@@ -206,7 +205,7 @@ void Chip8topia::handleGameUpdate(const float deltaTime) {
 }
 
 void Chip8topia::handleScreenUpdate() {
-    // todo: move this code ?
+    // TODO: move this code ?
     const ImGuiIO& io = ImGui::GetIO();
     static constexpr ImVec4 CLEAR_COLOR = ImVec4(0.45F, 0.55F, 0.60F, 1.00F);
 

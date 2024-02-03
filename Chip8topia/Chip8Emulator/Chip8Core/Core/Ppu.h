@@ -3,6 +3,7 @@
 #include <array>
 
 #include <binaryLib/binaryLib.h>
+#include "Cpu.h"
 
 class Ppu {
 public:
@@ -10,7 +11,7 @@ public:
     static constexpr size_t HEIGHT = 32;
     static constexpr size_t CLOCK_FREQUENCY = 60;
     static constexpr uint8 SPRITE_WIDTH = 8;
-    static constexpr uint8 SPRITE_HEIGHT = 15;
+    //    static constexpr uint8 SPRITE_HEIGHT = 15;
 
 public:
     Ppu() = default;
@@ -22,8 +23,7 @@ public:
 
 public:
     void clearScreen();
-    void drawSprite(uint8 x, uint8 y, uint8 n);
-
+    void drawSprite(uint8 x, uint8 y, uint8 n, const std::array<uint8, Cpu::MEMORY_SIZE>& memory, uint16 I_reg); // TODO: Remove the use of std::vector and create a shared memory object
     [[nodiscard]] auto getVideoMemory() const -> const std::array<uint8, 2048>&;
 
 private:

@@ -5,6 +5,7 @@
 #include <array>
 
 #include "../../Shader/Shader.h"
+#include "../Chip8Core/Core/Ppu.h"
 
 class Chip8VideoEmulation {
 private:
@@ -22,12 +23,12 @@ private:
         -1.0F, 1.0F, 0.0F,  // top left
     };
 
-    //    struct Color {
-    //        float r;
-    //        float g;
-    //        float b;
-    //        float a;
-    //    };
+    struct Color {
+        float r;
+        float g;
+        float b;
+        float a;
+    };
 
 public:
     Chip8VideoEmulation();
@@ -38,14 +39,16 @@ public:
     ~Chip8VideoEmulation() = default;
 
 public:
+    void createTexture(const std::array<uint8, Ppu::WIDTH * Ppu::HEIGHT>& videoMemory);
     void update();
 
 private:
     unsigned int m_VAO;
     unsigned int m_VBO;
+    unsigned int m_texture;
 
     Shader m_shader;
 
-    //    Color m_backgroundColor = { 0.0F, 0.0F, 0.0F, 1.0F };
-    //    Color m_foregroundColor = { 1.0F, 1.0F, 1.0F, 1.0F };
+    Color m_backgroundColor = { 0.0F, 0.0F, 0.0F, 1.0F };
+    Color m_foregroundColor = { 1.0F, 1.0F, 1.0F, 1.0F };
 };
