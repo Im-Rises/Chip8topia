@@ -49,3 +49,11 @@ void Chip8VideoEmulation::update() {
     glBindTexture(GL_TEXTURE_2D, 0);
     glBindVertexArray(0);
 }
+
+auto Chip8VideoEmulation::getBackgroundColor() -> Chip8VideoEmulation::Color& {
+    return m_backgroundColor;
+}
+
+auto Chip8VideoEmulation::getForegroundColor() -> Chip8VideoEmulation::Color& {
+    return m_foregroundColor;
+}

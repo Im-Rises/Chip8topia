@@ -31,6 +31,8 @@ private:
     void drawVideoMenu();
     void drawAboutMenu();
 
+    void drawVideoWindow(Chip8topia& chip8topia);
+
     void drawAboutChip8topiaPopUpWindow();
     void drawAboutChip8PopUpWindow();
     void drawAboutPopUpInternal(const std::string_view& popupName, const std::function<void()>& drawAboutPopUpContent, bool& showAboutPopup);
@@ -46,4 +48,7 @@ private:
     bool m_isMenuBarOpen = true;
     bool m_showAboutChip8topiaPopup = false;
     bool m_showAboutChip8Popup = false;
+
+    bool m_showBackgroundColor = false;
+    bool m_showForegroundColor = false;
 };

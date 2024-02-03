@@ -65,6 +65,7 @@ auto Cpu::fetchOpcode() -> uint16 {
 }
 
 void Cpu::computeOpcode(const uint16 opcode) {
+    // TODO: Make the switch case smaller by deleting comments and writing like this: case 0x0: CLS(); break;
     const uint8 nibble4 = (opcode & 0xF000) >> 12;
     const uint8 nibble3 = (opcode & 0x0F00) >> 8;
     const uint8 nibble2 = (opcode & 0x00F0) >> 4;
@@ -505,14 +506,14 @@ void Cpu::LD_B_Vx(const uint8 x) {
 }
 
 void Cpu::LD_I_Vx(const uint8 x) {
-    for (int i = 0; i <= x; ++i)
+    for (int i = 0; i <= x; i++)
     {
         m_memory[m_I + i] = m_V[i];
     }
 }
 
 void Cpu::LD_Vx_I(const uint8 x) {
-    for (int i = 0; i <= x; ++i)
+    for (int i = 0; i <= x; i++)
     {
         m_V[i] = m_memory[m_I + i];
     }

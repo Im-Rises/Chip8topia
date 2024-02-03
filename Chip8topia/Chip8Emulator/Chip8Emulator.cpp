@@ -58,6 +58,10 @@ auto Chip8Emulator::getChip8Core() -> Chip8Core* {
     return &m_core;
 }
 
+auto Chip8Emulator::getChip8VideoEmulation() -> Chip8VideoEmulation& {
+    return m_videoEmulation;
+}
+
 void Chip8Emulator::OnInput(const uint8 key, const bool isPressed) {
     m_core.updateKey(key, isPressed);
 }

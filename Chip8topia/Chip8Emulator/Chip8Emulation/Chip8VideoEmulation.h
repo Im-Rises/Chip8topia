@@ -42,6 +42,10 @@ public:
     void createTexture(const std::array<uint8, Ppu::WIDTH * Ppu::HEIGHT>& videoMemory);
     void update();
 
+    // TODO: Change to not use get as a setter
+    auto getBackgroundColor() -> Color&;
+    auto getForegroundColor() -> Color&;
+
 private:
     unsigned int m_VAO;
     unsigned int m_VBO;
