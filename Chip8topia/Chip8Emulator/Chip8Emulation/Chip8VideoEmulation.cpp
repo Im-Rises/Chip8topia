@@ -43,6 +43,8 @@ void Chip8VideoEmulation::update() {
     glBindVertexArray(m_VAO);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_texture);
+    m_shader.setVec4("u_backgroundColor", m_backgroundColor.r, m_backgroundColor.g, m_backgroundColor.b, m_backgroundColor.a);
+    m_shader.setVec4("u_foregroundColor", m_foregroundColor.r, m_foregroundColor.g, m_foregroundColor.b, m_foregroundColor.a);
     glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(VERTICES.size() / 3));
     glBindTexture(GL_TEXTURE_2D, 0);
     glBindVertexArray(0);
