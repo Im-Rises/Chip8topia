@@ -5,6 +5,7 @@ void Ppu::clearScreen() {
 }
 
 auto Ppu::drawSprite(uint8 x, uint8 y, uint8 n, const std::array<uint8, Cpu::MEMORY_SIZE>& memory, uint16 I_reg) -> bool {
+    // TODO: Check this code
     bool collision = false;
 
     for (auto i = 0; i < n; ++i)

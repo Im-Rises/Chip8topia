@@ -18,6 +18,8 @@ http://devernay.free.fr/hacks/chip8/C8TECH10.HTM
 - [x] Linker rom
 - [x] Correct window size position for about window
 - [x] Add emulation video
+- [ ] Check all the carry and borrow flags in the opcodes
+- [ ] Create a class Memory with the memory and the value of 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F
 - [ ] Add disassembly
 - [ ] Correct collision detection
 - [ ] Add vcpkg support for dependencies
