@@ -261,11 +261,11 @@ void Cpu::XOR_Vx_Vy(const uint8 x, const uint8 y) {
 
 void Cpu::ADD_Vx_Vy(const uint8 x, const uint8 y) {
     m_V[x] += m_V[y];
-    m_V[0xF] = static_cast<unsigned char>(m_V[x] < m_V[y]);
+    m_V[0xF] = static_cast<uint8>(m_V[x] < m_V[y]);
 }
 
 void Cpu::SUB_Vx_Vy(const uint8 x, const uint8 y) {
-    m_V[0xF] = static_cast<unsigned char>(m_V[x] > m_V[y]);
+    m_V[0xF] = static_cast<uint8>(m_V[x] > m_V[y]);
     m_V[x] -= m_V[y];
 }
 
@@ -279,7 +279,7 @@ void Cpu::SHR_Vx_Vy(const uint8 x, const uint8 y) {
 }
 
 void Cpu::SUBN_Vx_Vy(const uint8 x, const uint8 y) {
-    m_V[0xF] = static_cast<unsigned char>(m_V[y] > m_V[x]);
+    m_V[0xF] = static_cast<uint8>(m_V[y] > m_V[x]);
     m_V[x] = m_V[y] - m_V[x];
 }
 
@@ -324,7 +324,7 @@ void Cpu::RND_Vx_nn(const uint8 x, const uint8 nn) {
 }
 
 void Cpu::DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) {
-    m_V[0xF] = static_cast<unsigned char>(m_ppu->drawSprite(m_V[x], m_V[y], n, m_memory, m_I));
+    m_V[0xF] = static_cast<uint8>(m_ppu->drawSprite(m_V[x], m_V[y], n, m_memory, m_I));
 }
 
 void Cpu::SKP_Vx(const uint8 x) {
@@ -366,7 +366,7 @@ void Cpu::LD_ST_Vx(const uint8 x) {
 
 void Cpu::ADD_I_Vx(const uint8 x) {
     m_I += m_V[x];
-    m_V[0xF] = static_cast<unsigned char>(m_I < m_V[x]);
+    m_V[0xF] = static_cast<uint8>(m_I < m_V[x]);
 }
 
 void Cpu::LD_F_Vx(const uint8 x) {

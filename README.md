@@ -26,6 +26,7 @@ http://devernay.free.fr/hacks/chip8/C8TECH10.HTM
 - [ ] Create a class Memory with the memory and the value of 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F
 - [ ] Add disassembly
 - [ ] Correct collision detection
+- [ ] Correct fps calculation
 - [ ] Add vcpkg support for dependencies
 - [ ] Add emulation sound
 - [ ] Implement WebAssembly support
