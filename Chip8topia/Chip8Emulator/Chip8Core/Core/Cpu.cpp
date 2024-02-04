@@ -2,13 +2,12 @@
 
 #include <random>
 #include <utility>
-#include <iostream>
 
 #include "Input.h"
 #include "Ppu.h"
 
 Cpu::Cpu() : m_pc(START_ADDRESS),
-             m_sp(0),
+             m_sp(0), // TODO: Changed the base value from 0 to 0x1000
              m_I(0),
              m_gameTimer(0),
              m_soundTimer(0),
@@ -87,34 +86,13 @@ void Cpu::computeOpcode(const uint16 opcode) {
         }
         break;
     }
-    case 0x1: {
-        JP(opcode & 0x0FFF); // 1NNN
-        break;
-    }
-    case 0x2: {
-        CALL(opcode & 0x0FFF); // 2NNN
-        break;
-    }
-    case 0x3: {
-        SE_Vx_nn(nibble3, opcode & 0x00FF); // 3XNN
-        break;
-    }
-    case 0x4: {
-        SNE_Vx_nn(nibble3, opcode & 0x00FF); // 4XNN
-        break;
-    }
-    case 0x5: {
-        SE_Vx_Vy(nibble3, nibble2); // 5XY0
-        break;
-    }
-    case 0x6: {
-        LD_Vx_nn(nibble3, opcode & 0x00FF); // 6XNN
-        break;
-    }
-    case 0x7: {
-        ADD_Vx_nn(nibble3, opcode & 0x00FF); // 7XNN
-        break;
-    }
+    case 0x1: JP(opcode & 0x0FFF); break;                 // 1NNN
+    case 0x2: CALL(opcode & 0x0FFF); break;               // 2NNN
+    case 0x3: SE_Vx_nn(nibble3, opcode & 0x00FF); break;  // 3XNN
+    case 0x4: SNE_Vx_nn(nibble3, opcode & 0x00FF); break; // 4XNN
+    case 0x5: SE_Vx_Vy(nibble3, nibble2); break;          // 5XY0
+    case 0x6: LD_Vx_nn(nibble3, opcode & 0x00FF); break;  // 6XNN
+    case 0x7: ADD_Vx_nn(nibble3, opcode & 0x00FF); break; // 7XNN
     case 0x8: {
         switch (nibble1)
         {
@@ -131,26 +109,11 @@ void Cpu::computeOpcode(const uint16 opcode) {
         }
         break;
     }
-    case 0x9: {
-        SNE_Vx_Vy(nibble3, nibble2); // 9XY0
-        break;
-    }
-    case 0xA: {
-        LD_I_addr(opcode & 0x0FFF); // ANNN
-        break;
-    }
-    case 0xB: {
-        JP_V0_addr(opcode & 0x0FFF); // BNNN
-        break;
-    }
-    case 0xC: {
-        RND_Vx_nn(nibble3, opcode & 0x00FF); // CXNN
-        break;
-    }
-    case 0xD: {
-        DRW_Vx_Vy_n(nibble3, nibble2, nibble1); // DXYN
-        break;
-    }
+    case 0x9: SNE_Vx_Vy(nibble3, nibble2); break;            // 9XY0
+    case 0xA: LD_I_addr(opcode & 0x0FFF); break;             // ANNN
+    case 0xB: JP_V0_addr(opcode & 0x0FFF); break;            // BNNN
+    case 0xC: RND_Vx_nn(nibble3, opcode & 0x00FF); break;    // CXNN
+    case 0xD: DRW_Vx_Vy_n(nibble3, nibble2, nibble1); break; // DXYN
     case 0xE: {
         switch (nibble1)
         {
@@ -265,31 +228,27 @@ void Cpu::ADD_Vx_Vy(const uint8 x, const uint8 y) {
 }
 
 void Cpu::SUB_Vx_Vy(const uint8 x, const uint8 y) {
-    m_V[0xF] = static_cast<uint8>(m_V[x] > m_V[y]);
+    const auto flag = static_cast<uint8>(m_V[x] >= m_V[y]);
     m_V[x] -= m_V[y];
+    m_V[0xF] = flag;
 }
 
 void Cpu::SHR_Vx_Vy(const uint8 x, const uint8 y) {
-    m_V[x] = m_V[y];
-    m_V[0xF] = m_V[x] & 0x1;
-    m_V[x] >>= 1;
-
-    //    m_V[0xF] = m_V[x] & 0x1;
-    //    m_V[x] >>= 1;
+    const uint8 flag = m_V[y] & 0x1;
+    m_V[x] = m_V[y] >> 1;
+    m_V[0xF] = flag;
 }
 
 void Cpu::SUBN_Vx_Vy(const uint8 x, const uint8 y) {
-    m_V[0xF] = static_cast<uint8>(m_V[y] > m_V[x]);
+    const auto flag = static_cast<uint8>(m_V[y] >= m_V[x]);
     m_V[x] = m_V[y] - m_V[x];
+    m_V[0xF] = flag;
 }
 
 void Cpu::SHL_Vx_Vy(const uint8 x, const uint8 y) {
-    m_V[x] = m_V[y];
-    m_V[0xF] = (m_V[x] >> 7) & 0x1;
-    m_V[x] <<= 1;
-
-    //    m_V[0xF] = (m_V[x] >> 7) & 0x1;
-    //    m_V[x] <<= 1;
+    const uint8 flag = m_V[x] & 0x80;
+    m_V[x] = m_V[y] << 1;
+    m_V[0xF] = flag;
 }
 
 void Cpu::SNE_Vx_Vy(const uint8 x, const uint8 y) {
