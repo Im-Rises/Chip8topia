@@ -12,7 +12,6 @@ class Input;
 class Cpu {
 public: // TODO: Check to be sure between Machine cycle and Clock cycle
     static constexpr uint16 START_ADDRESS = 0x200;
-    static constexpr uint16 FONTSET_START_ADDRESS = 0x50;
     static constexpr uint16 CLOCK_FREQUENCY = 500;
     static constexpr size_t MEMORY_SIZE = 0x1000;
     static constexpr size_t ROM_SIZE = MEMORY_SIZE - START_ADDRESS;
@@ -37,8 +36,6 @@ public: // TODO: Check to be sure between Machine cycle and Clock cycle
         0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
         0xF0, 0x80, 0xF0, 0x80, 0x80  // F
     };
-
-    static constexpr uint16 FONTSET_CHAR_SIZE = 5;
 
 public:
     Cpu();
@@ -66,11 +63,11 @@ private:
     inline void SYS(const uint16 address);
     inline void JP(const uint16 address);
     inline void CALL(const uint16 address);
-    inline void SE_Vx_byte(const uint8 x, const uint8 byte);
-    inline void SNE_Vx_byte(const uint8 x, const uint8 byte);
+    inline void SE_Vx_nn(const uint8 x, const uint8 nn);
+    inline void SNE_Vx_nn(const uint8 x, const uint8 nn);
     inline void SE_Vx_Vy(const uint8 x, const uint8 y);
-    inline void LD_Vx_byte(const uint8 x, const uint8 byte);
-    inline void ADD_Vx_byte(const uint8 x, const uint8 byte);
+    inline void LD_Vx_nn(const uint8 x, const uint8 nn);
+    inline void ADD_Vx_nn(const uint8 x, const uint8 nn);
     inline void LD_Vx_Vy(const uint8 x, const uint8 y);
     inline void OR_Vx_Vy(const uint8 x, const uint8 y);
     inline void AND_Vx_Vy(const uint8 x, const uint8 y);
@@ -83,8 +80,8 @@ private:
     inline void SNE_Vx_Vy(const uint8 x, const uint8 y);
     inline void LD_I_addr(const uint16 address);
     inline void JP_V0_addr(const uint16 address);
-    inline void RND_Vx_byte(const uint8 x, const uint8 byte);
-    inline void DRW_Vx_Vy_nibble(const uint8 x, const uint8 y, const uint8 nibble);
+    inline void RND_Vx_nn(const uint8 x, const uint8 nn);
+    inline void DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n);
     inline void SKP_Vx(const uint8 x);
     inline void SKNP_Vx(const uint8 x);
     inline void LD_Vx_DT(const uint8 x);

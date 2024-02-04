@@ -96,11 +96,11 @@ void Cpu::computeOpcode(const uint16 opcode) {
         break;
     }
     case 0x3: {
-        SE_Vx_byte(nibble3, opcode & 0x00FF); // 3XNN
+        SE_Vx_nn(nibble3, opcode & 0x00FF); // 3XNN
         break;
     }
     case 0x4: {
-        SNE_Vx_byte(nibble3, opcode & 0x00FF); // 4XNN
+        SNE_Vx_nn(nibble3, opcode & 0x00FF); // 4XNN
         break;
     }
     case 0x5: {
@@ -108,11 +108,11 @@ void Cpu::computeOpcode(const uint16 opcode) {
         break;
     }
     case 0x6: {
-        LD_Vx_byte(nibble3, opcode & 0x00FF); // 6XNN
+        LD_Vx_nn(nibble3, opcode & 0x00FF); // 6XNN
         break;
     }
     case 0x7: {
-        ADD_Vx_byte(nibble3, opcode & 0x00FF); // 7XNN
+        ADD_Vx_nn(nibble3, opcode & 0x00FF); // 7XNN
         break;
     }
     case 0x8: {
@@ -144,11 +144,11 @@ void Cpu::computeOpcode(const uint16 opcode) {
         break;
     }
     case 0xC: {
-        RND_Vx_byte(nibble3, opcode & 0x00FF); // CXNN
+        RND_Vx_nn(nibble3, opcode & 0x00FF); // CXNN
         break;
     }
     case 0xD: {
-        DRW_Vx_Vy_nibble(nibble3, nibble2, nibble1); // DXYN
+        DRW_Vx_Vy_n(nibble3, nibble2, nibble1); // DXYN
         break;
     }
     case 0xE: {
@@ -190,6 +190,7 @@ void Cpu::computeOpcode(const uint16 opcode) {
     }
     }
 }
+
 void Cpu::CLS() {
     m_ppu->clearScreen();
 }
@@ -213,15 +214,15 @@ void Cpu::CALL(const uint16 address) {
     m_pc = address;
 }
 
-void Cpu::SE_Vx_byte(const uint8 x, const uint8 byte) {
-    if (m_V[x] == byte)
+void Cpu::SE_Vx_nn(const uint8 x, const uint8 nn) {
+    if (m_V[x] == nn)
     {
         m_pc += 2;
     }
 }
 
-void Cpu::SNE_Vx_byte(const uint8 x, const uint8 byte) {
-    if (m_V[x] != byte)
+void Cpu::SNE_Vx_nn(const uint8 x, const uint8 nn) {
+    if (m_V[x] != nn)
     {
         m_pc += 2;
     }
@@ -234,12 +235,12 @@ void Cpu::SE_Vx_Vy(const uint8 x, const uint8 y) {
     }
 }
 
-void Cpu::LD_Vx_byte(const uint8 x, const uint8 byte) {
-    m_V[x] = byte;
+void Cpu::LD_Vx_nn(const uint8 x, const uint8 nn) {
+    m_V[x] = nn;
 }
 
-void Cpu::ADD_Vx_byte(const uint8 x, const uint8 byte) {
-    m_V[x] += byte;
+void Cpu::ADD_Vx_nn(const uint8 x, const uint8 nn) {
+    m_V[x] += nn;
 }
 
 void Cpu::LD_Vx_Vy(const uint8 x, const uint8 y) {
@@ -259,9 +260,8 @@ void Cpu::XOR_Vx_Vy(const uint8 x, const uint8 y) {
 }
 
 void Cpu::ADD_Vx_Vy(const uint8 x, const uint8 y) {
-    m_V[x] += m_V[y]; // TODO: check for overflow
-    //    m_V[0xF] = static_cast<unsigned char>(m_V[x] < m_V[y]); // ERROR: Found here (corrected) wrong comparison for carry
-    //    m_V[0xF] = static_cast<unsigned char>(m_V[x] > (0xFF - m_V[y])); // ERROR: Found here (corrected) wrong comparison for carry
+    m_V[x] += m_V[y];
+    m_V[0xF] = static_cast<unsigned char>(m_V[x] < m_V[y]); // ERROR: Found here (corrected) wrong comparison for carry
 }
 
 void Cpu::SUB_Vx_Vy(const uint8 x, const uint8 y) {
@@ -313,11 +313,11 @@ auto generateRandomNumber(int min, int max) -> int {
     return distribution(gen);
 }
 
-void Cpu::RND_Vx_byte(const uint8 x, const uint8 byte) {
-    m_V[x] = generateRandomNumber(0, 255) & byte; // TODO: Check the value can reach 0 to 255 inclusive
+void Cpu::RND_Vx_nn(const uint8 x, const uint8 nn) {
+    m_V[x] = generateRandomNumber(0, 255) & nn; // TODO: Check the value can reach 0 to 255 inclusive
 }
 
-void Cpu::DRW_Vx_Vy_nibble(const uint8 x, const uint8 y, const uint8 n) {
+void Cpu::DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) {
     m_V[0xF] = static_cast<unsigned char>(m_ppu->drawSprite(m_V[x], m_V[y], n, m_memory, m_I));
 }
 
