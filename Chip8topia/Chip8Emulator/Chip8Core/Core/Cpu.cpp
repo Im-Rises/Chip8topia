@@ -47,7 +47,6 @@ void Cpu::readRom(const std::vector<uint8>& rom) {
 
 void Cpu::clock() {
     computeOpcode(fetchOpcode());
-    clockTimers();
 }
 
 void Cpu::clockTimers() {
@@ -152,7 +151,7 @@ void Cpu::computeOpcode(const uint16 opcode) {
         break;
     }
     case 0xE: {
-        switch (nibble1) // ERROR: Found here (corrected)
+        switch (nibble1)
         {
         case 0xE: SKP_Vx(nibble3); break;  // EX9E
         case 0x1: SKNP_Vx(nibble3); break; // EXA1
@@ -167,7 +166,7 @@ void Cpu::computeOpcode(const uint16 opcode) {
             switch (nibble1)
             {
             case 0x7: LD_Vx_DT(nibble3); break; // FX07
-            case 0xA: LD_Vx_K(nibble3); break;  // FX0A
+            case 0xA: LD_Vx_x(nibble3); break;  // FX0A
             default: break;
             }
             break;
@@ -196,7 +195,7 @@ void Cpu::CLS() {
 }
 
 void Cpu::RET() {
-    m_pc = m_stack[m_sp--]; // ERROR: Found here
+    m_pc = m_stack[m_sp--];
 }
 
 void Cpu::SYS(const uint16 /*address*/) {
@@ -210,7 +209,7 @@ void Cpu::JP(const uint16 address) {
 }
 
 void Cpu::CALL(const uint16 address) {
-    m_stack[++m_sp] = m_pc; // ERROR: Found here
+    m_stack[++m_sp] = m_pc;
     m_pc = address;
 }
 
@@ -261,27 +260,25 @@ void Cpu::XOR_Vx_Vy(const uint8 x, const uint8 y) {
 
 void Cpu::ADD_Vx_Vy(const uint8 x, const uint8 y) {
     m_V[x] += m_V[y];
-    m_V[0xF] = static_cast<unsigned char>(m_V[x] < m_V[y]); // ERROR: Found here (corrected) wrong comparison for carry
+    m_V[0xF] = static_cast<unsigned char>(m_V[x] < m_V[y]);
 }
 
 void Cpu::SUB_Vx_Vy(const uint8 x, const uint8 y) {
-    m_V[0xF] = static_cast<unsigned char>(m_V[x] > m_V[y]); // ERROR: Found here (corrected) wrong comparison for borrow
+    m_V[0xF] = static_cast<unsigned char>(m_V[x] > m_V[y]);
     m_V[x] -= m_V[y];
 }
 
 void Cpu::SHR_Vx(const uint8 x) {
-    m_V[0xF] = m_V[x] & 0x1; // ERROR: Found here (corrected) inversion of the operation
+    m_V[0xF] = m_V[x] & 0x1;
     m_V[x] >>= 1;
 }
 
 void Cpu::SUBN_Vx_Vy(const uint8 x, const uint8 y) {
-    // ERROR: Found here (corrected) wrong comparison for borrow and inversion of the operation
     m_V[0xF] = static_cast<unsigned char>(m_V[y] > m_V[x]);
     m_V[x] = m_V[y] - m_V[x];
 }
 
 void Cpu::SHL_Vx(const uint8 x) {
-    //    m_V[0xF] = m_V[x] & 0x1; // ERROR: Found here (corrected) inversion of the operation and wrong operation for the carry
     m_V[0xF] = (m_V[x] >> 7) & 0x1;
     m_V[x] <<= 1;
 }
@@ -339,7 +336,7 @@ void Cpu::LD_Vx_DT(const uint8 x) {
     m_V[x] = m_gameTimer;
 }
 
-void Cpu::LD_Vx_K(const uint8 x) {
+void Cpu::LD_Vx_x(const uint8 x) {
     if (m_input->isKeyPressed(x))
     {
         m_V[x] = x;
@@ -359,7 +356,7 @@ void Cpu::LD_ST_Vx(const uint8 x) {
 }
 
 void Cpu::ADD_I_Vx(const uint8 x) {
-    m_I += m_V[x]; // ERROR: Found here (corrected) wrong operation
+    m_I += m_V[x];
     m_V[0xF] = static_cast<unsigned char>(m_I < m_V[x]);
 }
 

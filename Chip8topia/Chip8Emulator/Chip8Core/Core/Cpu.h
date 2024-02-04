@@ -85,7 +85,7 @@ private:
     inline void SKP_Vx(const uint8 x);
     inline void SKNP_Vx(const uint8 x);
     inline void LD_Vx_DT(const uint8 x);
-    inline void LD_Vx_K(const uint8 x);
+    inline void LD_Vx_x(const uint8 x);
     inline void LD_DT_Vx(const uint8 x);
     inline void LD_ST_Vx(const uint8 x);
     inline void ADD_I_Vx(const uint8 x);
