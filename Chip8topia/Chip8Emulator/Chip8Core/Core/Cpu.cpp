@@ -196,7 +196,7 @@ void Cpu::CLS() {
 }
 
 void Cpu::RET() {
-    m_pc = m_stack[m_sp--];
+    m_pc = m_stack[--m_sp];
 }
 
 void Cpu::SYS(const uint16 /*address*/) {
@@ -210,7 +210,7 @@ void Cpu::JP(const uint16 address) {
 }
 
 void Cpu::CALL(const uint16 address) {
-    m_stack[++m_sp] = m_pc;
+    m_stack[m_sp++] = m_pc;
     m_pc = address;
 }
 

@@ -58,6 +58,10 @@ public:
     static auto getGladVersion() -> std::string_view;
     static auto getImGuiVersion() -> std::string;
 
+#ifndef NDEBUG
+    void loadDebugRom();
+#endif
+
 private:
     GLFWwindow* m_window;
     std::unique_ptr<Chip8Emulator> m_chip8Emulator; // TODO: Change to be initialized once the game loop is started

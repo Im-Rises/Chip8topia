@@ -58,6 +58,12 @@ void Chip8topiaInputHandler::key_callback(GLFWwindow* /*window*/, int key, int /
 
     switch (key)
     {
+#ifndef NDEBUG
+    case GLFW_KEY_1:
+        if (action == GLFW_PRESS)
+            inputHandler.m_LoadDebugRomKeyButtonPressedEvent.trigger();
+        break;
+#endif
     case GLFW_KEY_ESCAPE:
         if (action == GLFW_PRESS)
             inputHandler.m_EscapeKeyButtonPressedEvent.trigger();

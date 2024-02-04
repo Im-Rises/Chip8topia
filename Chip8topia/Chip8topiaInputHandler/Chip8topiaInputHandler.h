@@ -38,6 +38,10 @@ public:
     [[maybe_unused]] SingleSubscriberEvent<> m_F12KeyButtonPressedEvent;
     [[maybe_unused]] SingleSubscriberEvent<> m_CTRL_OKeyButtonPressedEvent;
 
+#ifndef NDEBUG
+    [[maybe_unused]] SingleSubscriberEvent<> m_LoadDebugRomKeyButtonPressedEvent; // TODO: Find a better name and button for it
+#endif
+
     // Game Events
     [[maybe_unused]] MultiSubscriberEvent<> m_PKeyButtonPressedEvent;
     [[maybe_unused]] MultiSubscriberEvent<const uint8, const bool> m_GameInput;
