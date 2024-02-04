@@ -75,9 +75,9 @@ private:
     inline void XOR_Vx_Vy(const uint8 x, const uint8 y);
     inline void ADD_Vx_Vy(const uint8 x, const uint8 y);
     inline void SUB_Vx_Vy(const uint8 x, const uint8 y);
-    inline void SHR_Vx(const uint8 x);
+    inline void SHR_Vx_Vy(const uint8 x, const uint8 y);
     inline void SUBN_Vx_Vy(const uint8 x, const uint8 y);
-    inline void SHL_Vx(const uint8 x);
+    inline void SHL_Vx_Vy(const uint8 x, const uint8 y);
     inline void SNE_Vx_Vy(const uint8 x, const uint8 y);
     inline void LD_I_addr(const uint16 address);
     inline void JP_V0_addr(const uint16 address);

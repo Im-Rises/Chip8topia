@@ -124,9 +124,9 @@ void Cpu::computeOpcode(const uint16 opcode) {
         case 0x3: XOR_Vx_Vy(nibble3, nibble2); break;  // 8XY3
         case 0x4: ADD_Vx_Vy(nibble3, nibble2); break;  // 8XY4
         case 0x5: SUB_Vx_Vy(nibble3, nibble2); break;  // 8XY5
-        case 0x6: SHR_Vx(nibble3); break;              // 8XY6
+        case 0x6: SHR_Vx_Vy(nibble3, nibble2); break;  // 8XY6
         case 0x7: SUBN_Vx_Vy(nibble3, nibble2); break; // 8XY7
-        case 0xE: SHL_Vx(nibble3); break;              // 8XYE
+        case 0xE: SHL_Vx_Vy(nibble3, nibble2); break;  // 8XYE
         default: break;
         }
         break;
@@ -269,9 +269,13 @@ void Cpu::SUB_Vx_Vy(const uint8 x, const uint8 y) {
     m_V[x] -= m_V[y];
 }
 
-void Cpu::SHR_Vx(const uint8 x) {
+void Cpu::SHR_Vx_Vy(const uint8 x, const uint8 y) {
+    m_V[x] = m_V[y];
     m_V[0xF] = m_V[x] & 0x1;
     m_V[x] >>= 1;
+
+    //    m_V[0xF] = m_V[x] & 0x1;
+    //    m_V[x] >>= 1;
 }
 
 void Cpu::SUBN_Vx_Vy(const uint8 x, const uint8 y) {
@@ -279,9 +283,13 @@ void Cpu::SUBN_Vx_Vy(const uint8 x, const uint8 y) {
     m_V[x] = m_V[y] - m_V[x];
 }
 
-void Cpu::SHL_Vx(const uint8 x) {
+void Cpu::SHL_Vx_Vy(const uint8 x, const uint8 y) {
+    m_V[x] = m_V[y];
     m_V[0xF] = (m_V[x] >> 7) & 0x1;
     m_V[x] <<= 1;
+
+    //    m_V[0xF] = (m_V[x] >> 7) & 0x1;
+    //    m_V[x] <<= 1;
 }
 
 void Cpu::SNE_Vx_Vy(const uint8 x, const uint8 y) {
