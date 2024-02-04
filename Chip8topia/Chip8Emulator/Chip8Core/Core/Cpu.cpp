@@ -2,6 +2,7 @@
 
 #include <random>
 #include <utility>
+#include <iostream>
 
 #include "Input.h"
 #include "Ppu.h"
