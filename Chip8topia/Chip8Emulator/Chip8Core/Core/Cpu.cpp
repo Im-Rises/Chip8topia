@@ -246,7 +246,7 @@ void Cpu::SUBN_Vx_Vy(const uint8 x, const uint8 y) {
 }
 
 void Cpu::SHL_Vx_Vy(const uint8 x, const uint8 y) {
-    const uint8 flag = m_V[x] & 0x80;
+    const uint8 flag = (m_V[x] & 0x80) >> 7;
     m_V[x] = m_V[y] << 1;
     m_V[0xF] = flag;
 }
