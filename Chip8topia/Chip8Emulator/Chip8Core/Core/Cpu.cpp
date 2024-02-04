@@ -240,7 +240,7 @@ void Cpu::SHR_Vx_Vy(const uint8 x, const uint8 y) {
 }
 
 void Cpu::SUBN_Vx_Vy(const uint8 x, const uint8 y) {
-    const auto flag = static_cast<uint8>(m_V[y] > m_V[x]);
+    const auto flag = static_cast<uint8>(m_V[y] >= m_V[x]);
     m_V[x] = m_V[y] - m_V[x];
     m_V[0xF] = flag;
 }
