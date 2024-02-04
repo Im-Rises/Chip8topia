@@ -129,12 +129,18 @@ Chip8topia::Chip8topia() {
     m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.subscribe(this, &Chip8topia::close);
     m_chip8topiaInputHandler.m_F9KeyButtonPressedEvent.subscribe(this, &Chip8topia::toggleTurboMode);
     m_chip8topiaInputHandler.m_F11KeyButtonPressedEvent.subscribe(this, &Chip8topia::toggleFullScreen);
+#ifndef NDEBUG
+    m_chip8topiaInputHandler.m_LoadDebugRomKeyButtonPressedEvent.subscribe(this, &Chip8topia::loadDebugRom);
+#endif
 }
 
 Chip8topia::~Chip8topia() {
     m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.unsubscribe(this, &Chip8topia::close);
     m_chip8topiaInputHandler.m_F9KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::toggleTurboMode);
     m_chip8topiaInputHandler.m_F11KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::toggleFullScreen);
+#ifndef NDEBUG
+    m_chip8topiaInputHandler.m_LoadDebugRomKeyButtonPressedEvent.unsubscribe(this, &Chip8topia::loadDebugRom);
+#endif
 
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
@@ -333,4 +339,8 @@ auto Chip8topia::getGladVersion() -> std::string_view {
 
 auto Chip8topia::getImGuiVersion() -> std::string {
     return IMGUI_VERSION;
+}
+
+void Chip8topia::loadDebugRom() {
+    m_chip8Emulator->loadRom("trash/4-flags.ch8");
 }

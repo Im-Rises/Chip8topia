@@ -18,12 +18,15 @@ http://devernay.free.fr/hacks/chip8/C8TECH10.HTM
 - [x] Linker rom
 - [x] Correct window size position for about window
 - [x] Add emulation video
+- [x] Add emulation speed
+- [x] Add fast rom load in debug mode
+- [x] Corriger le sp qui pointe à 1 au lieu de 0 quand on push et pas de valeur dans la pile à 0 mais à 1 oui.
+- [x] Ajouter la synchronisation entre écran et cpu avec les timers audio et gameplay qui sont synchronisés avec le cpu
 - [ ] Check all the carry and borrow flags in the opcodes
-- [ ] Corriger le sp qui pointe à 1 au lieu de 0 quand on push et pas de valeur dans la pile à 0 mais à 1 oui.
-- [ ] Ajouter la synchronisation entre écran et cpu avec les timers audio et gameplay qui sont synchronisés avec le cpu
 - [ ] Create a class Memory with the memory and the value of 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F
 - [ ] Add disassembly
 - [ ] Correct collision detection
+- [ ] Correct fps calculation
 - [ ] Add vcpkg support for dependencies
 - [ ] Add emulation sound
 - [ ] Implement WebAssembly support
