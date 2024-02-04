@@ -2,6 +2,7 @@
 
 #include <random>
 #include <utility>
+#include <iostream>
 
 #include "Input.h"
 #include "Ppu.h"
@@ -14,6 +15,8 @@ Cpu::Cpu() : m_pc(START_ADDRESS),
              m_memory{},
              m_V{},
              m_stack{} {
+
+    std::copy(FONTSET.begin(), FONTSET.end(), m_memory.begin());
 }
 
 void Cpu::setPpu(std::shared_ptr<Ppu> ppu) {
@@ -31,6 +34,7 @@ void Cpu::reset() {
     m_gameTimer = 0;
     m_soundTimer = 0;
     m_memory = {}; // TODO: Maybe for the ram we can reset everything except the rom location so it can be reloaded
+    std::copy(FONTSET.begin(), FONTSET.end(), m_memory.begin());
     m_V = {};
     m_stack = {};
 }
@@ -38,13 +42,12 @@ void Cpu::reset() {
 void Cpu::readRom(const std::vector<uint8>& rom) {
     for (int i = 0; i < rom.size(); i++)
     {
-        m_memory[START_ADDRESS + i] = rom[i]; // Crashing here due to rom size
+        m_memory[START_ADDRESS + i] = rom[i];
     }
 }
 
 void Cpu::clock() {
     computeOpcode(fetchOpcode());
-    clockTimers();
 }
 
 void Cpu::clockTimers() {
@@ -52,6 +55,7 @@ void Cpu::clockTimers() {
     {
         m_gameTimer--;
     }
+
     if (m_soundTimer > 0)
     {
         m_soundTimer--;
@@ -92,11 +96,11 @@ void Cpu::computeOpcode(const uint16 opcode) {
         break;
     }
     case 0x3: {
-        SE_Vx_byte(nibble3, opcode & 0x00FF); // 3XNN
+        SE_Vx_nn(nibble3, opcode & 0x00FF); // 3XNN
         break;
     }
     case 0x4: {
-        SNE_Vx_byte(nibble3, opcode & 0x00FF); // 4XNN
+        SNE_Vx_nn(nibble3, opcode & 0x00FF); // 4XNN
         break;
     }
     case 0x5: {
@@ -104,11 +108,11 @@ void Cpu::computeOpcode(const uint16 opcode) {
         break;
     }
     case 0x6: {
-        LD_Vx_byte(nibble3, opcode & 0x00FF); // 6XNN
+        LD_Vx_nn(nibble3, opcode & 0x00FF); // 6XNN
         break;
     }
     case 0x7: {
-        ADD_Vx_byte(nibble3, opcode & 0x00FF); // 7XNN
+        ADD_Vx_nn(nibble3, opcode & 0x00FF); // 7XNN
         break;
     }
     case 0x8: {
@@ -140,15 +144,15 @@ void Cpu::computeOpcode(const uint16 opcode) {
         break;
     }
     case 0xC: {
-        RND_Vx_byte(nibble3, opcode & 0x00FF); // CXNN
+        RND_Vx_nn(nibble3, opcode & 0x00FF); // CXNN
         break;
     }
     case 0xD: {
-        DRW_Vx_Vy_nibble(nibble3, nibble2, nibble1); // DXYN
+        DRW_Vx_Vy_n(nibble3, nibble2, nibble1); // DXYN
         break;
     }
     case 0xE: {
-        switch (nibble1) // ERROR: Found here (corrected)
+        switch (nibble1)
         {
         case 0xE: SKP_Vx(nibble3); break;  // EX9E
         case 0x1: SKNP_Vx(nibble3); break; // EXA1
@@ -163,7 +167,7 @@ void Cpu::computeOpcode(const uint16 opcode) {
             switch (nibble1)
             {
             case 0x7: LD_Vx_DT(nibble3); break; // FX07
-            case 0xA: LD_Vx_K(nibble3); break;  // FX0A
+            case 0xA: LD_Vx_x(nibble3); break;  // FX0A
             default: break;
             }
             break;
@@ -186,6 +190,7 @@ void Cpu::computeOpcode(const uint16 opcode) {
     }
     }
 }
+
 void Cpu::CLS() {
     m_ppu->clearScreen();
 }
@@ -209,15 +214,15 @@ void Cpu::CALL(const uint16 address) {
     m_pc = address;
 }
 
-void Cpu::SE_Vx_byte(const uint8 x, const uint8 byte) {
-    if (m_V[x] == byte)
+void Cpu::SE_Vx_nn(const uint8 x, const uint8 nn) {
+    if (m_V[x] == nn)
     {
         m_pc += 2;
     }
 }
 
-void Cpu::SNE_Vx_byte(const uint8 x, const uint8 byte) {
-    if (m_V[x] != byte)
+void Cpu::SNE_Vx_nn(const uint8 x, const uint8 nn) {
+    if (m_V[x] != nn)
     {
         m_pc += 2;
     }
@@ -230,12 +235,12 @@ void Cpu::SE_Vx_Vy(const uint8 x, const uint8 y) {
     }
 }
 
-void Cpu::LD_Vx_byte(const uint8 x, const uint8 byte) {
-    m_V[x] = byte;
+void Cpu::LD_Vx_nn(const uint8 x, const uint8 nn) {
+    m_V[x] = nn;
 }
 
-void Cpu::ADD_Vx_byte(const uint8 x, const uint8 byte) {
-    m_V[x] += byte;
+void Cpu::ADD_Vx_nn(const uint8 x, const uint8 nn) {
+    m_V[x] += nn;
 }
 
 void Cpu::LD_Vx_Vy(const uint8 x, const uint8 y) {
@@ -256,26 +261,27 @@ void Cpu::XOR_Vx_Vy(const uint8 x, const uint8 y) {
 
 void Cpu::ADD_Vx_Vy(const uint8 x, const uint8 y) {
     m_V[x] += m_V[y];
-    m_V[0xF] = static_cast<unsigned char>(m_V[x] > 0xFF);
+    m_V[0xF] = static_cast<unsigned char>(m_V[x] < m_V[y]);
 }
 
 void Cpu::SUB_Vx_Vy(const uint8 x, const uint8 y) {
+    m_V[0xF] = static_cast<unsigned char>(m_V[x] > m_V[y]);
     m_V[x] -= m_V[y];
 }
 
 void Cpu::SHR_Vx(const uint8 x) {
-    m_V[x] >>= 1;
     m_V[0xF] = m_V[x] & 0x1;
+    m_V[x] >>= 1;
 }
 
 void Cpu::SUBN_Vx_Vy(const uint8 x, const uint8 y) {
+    m_V[0xF] = static_cast<unsigned char>(m_V[y] > m_V[x]);
     m_V[x] = m_V[y] - m_V[x];
-    m_V[0xF] = m_V[x] & 0x1;
 }
 
 void Cpu::SHL_Vx(const uint8 x) {
+    m_V[0xF] = (m_V[x] >> 7) & 0x1;
     m_V[x] <<= 1;
-    m_V[0xF] = m_V[x] & 0x1;
 }
 
 void Cpu::SNE_Vx_Vy(const uint8 x, const uint8 y) {
@@ -305,11 +311,11 @@ auto generateRandomNumber(int min, int max) -> int {
     return distribution(gen);
 }
 
-void Cpu::RND_Vx_byte(const uint8 x, const uint8 byte) {
-    m_V[x] = generateRandomNumber(0, 255) & byte;
+void Cpu::RND_Vx_nn(const uint8 x, const uint8 nn) {
+    m_V[x] = generateRandomNumber(0, 255) & nn; // TODO: Check the value can reach 0 to 255 inclusive
 }
 
-void Cpu::DRW_Vx_Vy_nibble(const uint8 x, const uint8 y, const uint8 n) {
+void Cpu::DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) {
     m_V[0xF] = static_cast<unsigned char>(m_ppu->drawSprite(m_V[x], m_V[y], n, m_memory, m_I));
 }
 
@@ -331,7 +337,7 @@ void Cpu::LD_Vx_DT(const uint8 x) {
     m_V[x] = m_gameTimer;
 }
 
-void Cpu::LD_Vx_K(const uint8 x) {
+void Cpu::LD_Vx_x(const uint8 x) {
     if (m_input->isKeyPressed(x))
     {
         m_V[x] = x;
@@ -352,7 +358,7 @@ void Cpu::LD_ST_Vx(const uint8 x) {
 
 void Cpu::ADD_I_Vx(const uint8 x) {
     m_I += m_V[x];
-    m_V[0xF] = static_cast<unsigned char>(m_I > 0xFFF);
+    m_V[0xF] = static_cast<unsigned char>(m_I < m_V[x]);
 }
 
 void Cpu::LD_F_Vx(const uint8 x) {
@@ -360,6 +366,7 @@ void Cpu::LD_F_Vx(const uint8 x) {
 }
 
 void Cpu::LD_B_Vx(const uint8 x) {
+    // TODO: Is this correct?
     m_memory[m_I] = m_V[x] / 100;
     m_memory[m_I + 1] = (m_V[x] / 10) % 10;
     m_memory[m_I + 2] = (m_V[x] % 100) % 10;

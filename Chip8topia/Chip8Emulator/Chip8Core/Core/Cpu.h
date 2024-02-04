@@ -12,13 +12,31 @@ class Input;
 class Cpu {
 public: // TODO: Check to be sure between Machine cycle and Clock cycle
     static constexpr uint16 START_ADDRESS = 0x200;
-    static constexpr uint16 FONTSET_START_ADDRESS = 0x50;
-    static constexpr uint16 FONTSET_SIZE = 80;
-    static constexpr uint16 CLOCK_FREQUENCY = 500;
+    static constexpr uint16 CLOCK_FREQUENCY = 600; // 500Hz normally
+    static constexpr uint16 TIMERS_FREQUENCY = 60; // 60Hz normally
     static constexpr size_t MEMORY_SIZE = 0x1000;
     static constexpr size_t ROM_SIZE = MEMORY_SIZE - START_ADDRESS;
     static constexpr size_t REGISTER_V_SIZE = 16;
     static constexpr size_t STACK_SIZE = 16;
+
+    static constexpr std::array<uint8, 80> FONTSET = {
+        0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
+        0x20, 0x60, 0x20, 0x20, 0x70, // 1
+        0xF0, 0x10, 0xF0, 0x80, 0xF0, // 2
+        0xF0, 0x10, 0xF0, 0x10, 0xF0, // 3
+        0x90, 0x90, 0xF0, 0x10, 0x10, // 4
+        0xF0, 0x80, 0xF0, 0x10, 0xF0, // 5
+        0xF0, 0x80, 0xF0, 0x90, 0xF0, // 6
+        0xF0, 0x10, 0x20, 0x40, 0x40, // 7
+        0xF0, 0x90, 0xF0, 0x90, 0xF0, // 8
+        0xF0, 0x90, 0xF0, 0x10, 0xF0, // 9
+        0xF0, 0x90, 0xF0, 0x90, 0x90, // A
+        0xE0, 0x90, 0xE0, 0x90, 0xE0, // B
+        0xF0, 0x80, 0x80, 0x80, 0xF0, // C
+        0xE0, 0x90, 0x90, 0x90, 0xE0, // D
+        0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
+        0xF0, 0x80, 0xF0, 0x80, 0x80  // F
+    };
 
 public:
     Cpu();
@@ -46,11 +64,11 @@ private:
     inline void SYS(const uint16 address);
     inline void JP(const uint16 address);
     inline void CALL(const uint16 address);
-    inline void SE_Vx_byte(const uint8 x, const uint8 byte);
-    inline void SNE_Vx_byte(const uint8 x, const uint8 byte);
+    inline void SE_Vx_nn(const uint8 x, const uint8 nn);
+    inline void SNE_Vx_nn(const uint8 x, const uint8 nn);
     inline void SE_Vx_Vy(const uint8 x, const uint8 y);
-    inline void LD_Vx_byte(const uint8 x, const uint8 byte);
-    inline void ADD_Vx_byte(const uint8 x, const uint8 byte);
+    inline void LD_Vx_nn(const uint8 x, const uint8 nn);
+    inline void ADD_Vx_nn(const uint8 x, const uint8 nn);
     inline void LD_Vx_Vy(const uint8 x, const uint8 y);
     inline void OR_Vx_Vy(const uint8 x, const uint8 y);
     inline void AND_Vx_Vy(const uint8 x, const uint8 y);
@@ -63,12 +81,12 @@ private:
     inline void SNE_Vx_Vy(const uint8 x, const uint8 y);
     inline void LD_I_addr(const uint16 address);
     inline void JP_V0_addr(const uint16 address);
-    inline void RND_Vx_byte(const uint8 x, const uint8 byte);
-    inline void DRW_Vx_Vy_nibble(const uint8 x, const uint8 y, const uint8 nibble);
+    inline void RND_Vx_nn(const uint8 x, const uint8 nn);
+    inline void DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n);
     inline void SKP_Vx(const uint8 x);
     inline void SKNP_Vx(const uint8 x);
     inline void LD_Vx_DT(const uint8 x);
-    inline void LD_Vx_K(const uint8 x);
+    inline void LD_Vx_x(const uint8 x);
     inline void LD_DT_Vx(const uint8 x);
     inline void LD_ST_Vx(const uint8 x);
     inline void ADD_I_Vx(const uint8 x);

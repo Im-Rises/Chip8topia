@@ -14,7 +14,12 @@ void Chip8Core::readRom(const std::vector<uint8>& rom) {
 }
 
 void Chip8Core::clock() {
-    m_cpu.clock();
+    for (int i = 0; i < Cpu::CLOCK_FREQUENCY / Cpu::TIMERS_FREQUENCY; i++)
+    {
+        m_cpu.clock();
+    }
+
+    m_cpu.clockTimers();
 }
 
 void Chip8Core::updateKey(const uint8 key, const bool pressed) {
