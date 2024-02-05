@@ -127,19 +127,21 @@ Chip8topia::Chip8topia() {
     setWindowIcon();
 
     m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.subscribe(this, &Chip8topia::close);
-    m_chip8topiaInputHandler.m_F9KeyButtonPressedEvent.subscribe(this, &Chip8topia::toggleTurboMode);
+    m_chip8topiaInputHandler.m_F2KeyButtonPressedEvent.subscribe(this, &Chip8topia::toggleTurboMode);
+    m_chip8topiaInputHandler.m_F10KeyButtonPressedEvent.subscribe(this, &Chip8topia::centerWindow);
     m_chip8topiaInputHandler.m_F11KeyButtonPressedEvent.subscribe(this, &Chip8topia::toggleFullScreen);
 #ifndef NDEBUG
-    m_chip8topiaInputHandler.m_LoadDebugRomKeyButtonPressedEvent.subscribe(this, &Chip8topia::loadDebugRom);
+    m_chip8topiaInputHandler.m_F12KeyDebugButtonPressedEvent.subscribe(this, &Chip8topia::loadDebugRom);
 #endif
 }
 
 Chip8topia::~Chip8topia() {
     m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.unsubscribe(this, &Chip8topia::close);
-    m_chip8topiaInputHandler.m_F9KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::toggleTurboMode);
+    m_chip8topiaInputHandler.m_F2KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::toggleTurboMode);
+    m_chip8topiaInputHandler.m_F10KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::centerWindow);
     m_chip8topiaInputHandler.m_F11KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::toggleFullScreen);
 #ifndef NDEBUG
-    m_chip8topiaInputHandler.m_LoadDebugRomKeyButtonPressedEvent.unsubscribe(this, &Chip8topia::loadDebugRom);
+    m_chip8topiaInputHandler.m_F12KeyDebugButtonPressedEvent.unsubscribe(this, &Chip8topia::loadDebugRom);
 #endif
 
     ImGui_ImplOpenGL3_Shutdown();

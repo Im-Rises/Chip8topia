@@ -6,13 +6,13 @@
 Chip8Emulator::Chip8Emulator() {
     Chip8topiaInputHandler::getInstance().m_GameInput.subscribe(this, &Chip8Emulator::OnInput);
     Chip8topiaInputHandler::getInstance().m_PKeyButtonPressedEvent.subscribe(this, &Chip8Emulator::togglePause);
-    Chip8topiaInputHandler::getInstance().m_F10KeyButtonPressedEvent.subscribe(this, &Chip8Emulator::toggleTurboMode);
+    Chip8topiaInputHandler::getInstance().m_F3KeyButtonPressedEvent.subscribe(this, &Chip8Emulator::toggleTurboMode);
 }
 
 Chip8Emulator::~Chip8Emulator() {
     Chip8topiaInputHandler::getInstance().m_GameInput.unsubscribe(this, &Chip8Emulator::OnInput);
     Chip8topiaInputHandler::getInstance().m_PKeyButtonPressedEvent.unsubscribe(this, &Chip8Emulator::togglePause);
-    Chip8topiaInputHandler::getInstance().m_F10KeyButtonPressedEvent.unsubscribe(this, &Chip8Emulator::toggleTurboMode);
+    Chip8topiaInputHandler::getInstance().m_F3KeyButtonPressedEvent.unsubscribe(this, &Chip8Emulator::toggleTurboMode);
 }
 
 void Chip8Emulator::restart() {
