@@ -2,6 +2,7 @@
 
 // TODO: Handle webgl and opengl screen drawing
 
+#include <glad/glad.h>
 #include <array>
 
 #include "../../Shader/Shader.h"
@@ -24,10 +25,10 @@ private:
     };
 
     struct Color {
-        float r;
-        float g;
-        float b;
-        float a;
+        GLfloat m_r;
+        GLfloat m_g;
+        GLfloat m_b;
+        GLfloat m_a;
     };
 
 public:
@@ -47,12 +48,21 @@ public:
     auto getForegroundColor() -> Color&;
 
 private:
-    unsigned int m_VAO;
-    unsigned int m_VBO;
-    unsigned int m_texture;
+    GLuint m_VAO;
+    GLuint m_VBO;
+    GLuint m_texture;
 
     Shader m_shader;
 
-    Color m_backgroundColor = { 0.0F, 0.0F, 0.0F, 1.0F };
-    Color m_foregroundColor = { 1.0F, 1.0F, 1.0F, 1.0F };
+    //    Color m_backgroundColor = { 0.0F, 0.0F, 0.0F, 1.0F };
+    //    Color m_backgroundColor = { 0.0F, 0.0F, 0.0F, 1.0F };
+
+    Color m_backgroundColor = { 0.3F, 0.3F, 0.3F, 1.0F };
+    Color m_foregroundColor = { 0.8F, 0.8F, 0.8F, 1.0F };
+
+    //    Color m_backgroundColor = { 0.0F, 0.5F, 0.5F, 1.0F };
+    //    Color m_foregroundColor = { 1.0F, 0.84F, 0.35F, 1.0F };
+
+    //    Color m_backgroundColor = { 0.45F, 0.55F, 0.60F, 1.00F };
+    //    Color m_foregroundColor = { 0.8, 0.8, 0.8, 1.0F };
 };

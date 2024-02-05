@@ -15,10 +15,27 @@ Chip8Emulator::~Chip8Emulator() {
     Chip8topiaInputHandler::getInstance().m_F10KeyButtonPressedEvent.unsubscribe(this, &Chip8Emulator::toggleTurboMode);
 }
 
-void Chip8Emulator::loadRom(const std::string& romPath) {
+void Chip8Emulator::restart() {
+    // TODO: Handle code to not reset memory where the rom is loaded
     m_core.reset();
-    m_core.readRom(m_romLoader.loadRom(romPath));
-    m_isRomLoaded = true;
+    //    m_isRomLoaded = false;
+    //    m_isTurboMode = false;
+    m_isPaused = false;
+    m_accumulator = 0.0F;
+}
+
+void Chip8Emulator::loadRom(const std::string& romPath) {
+    try
+    {
+        m_core.reset();
+        m_core.readRom(Chip8RomLoader::loadRom(romPath));
+        m_isRomLoaded = true;
+    }
+    catch (const std::exception& e)
+    {
+        m_isRomLoaded = false;
+        throw e;
+    }
 }
 
 void Chip8Emulator::update(const float deltaTime) {
@@ -38,7 +55,7 @@ void Chip8Emulator::update(const float deltaTime) {
 }
 
 void Chip8Emulator::render() {
-    m_videoEmulation.createTexture(m_core.getPpu()->getVideoMemory());
+    m_videoEmulation.createTexture(m_core.getPpu()->getVideoMemory()); // TODO:Maybe call this function only when the video memory has changed so when the corresponding opcode is called (make a trap for the opcode)
     m_videoEmulation.update();
 }
 
@@ -52,6 +69,10 @@ void Chip8Emulator::togglePause() {
 
 auto Chip8Emulator::getIsTurboMode() const -> bool {
     return m_isTurboMode;
+}
+
+auto Chip8Emulator::getIsPaused() const -> bool {
+    return m_isPaused;
 }
 
 auto Chip8Emulator::getChip8Core() -> Chip8Core* {

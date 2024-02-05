@@ -1,29 +1,37 @@
 #include "Chip8RomLoader.h"
 
 #include <fstream>
+#include <filesystem>
 
 #include "../Chip8Core/Core/Cpu.h"
 
 auto Chip8RomLoader::loadRom(const std::string& romPath) -> std::vector<uint8> {
+    if (!checkFileExists(romPath))
+    {
+        throw std::runtime_error("File does not exist");
+    }
+
+    // TODO: Check if rom size is between 0 and 4096
+    //    if (!checkRomFileSize(romPath))
+    //    {
+    //        throw std::runtime_error("File size is not valid");
+    //    }
+
     std::ifstream romFile(romPath, std::ios::binary);
-    checkRomFileSize(romFile);
     std::vector<uint8> romData = readRom(romFile);
     romFile.close();
-
-    // TODO: Add std::filesystem::file_size() to checkRomFileSize() and file exists check
-    //    std::filesystem::path filePath = "path/to/file.txt";
-    //    if (std::filesystem::exists(filePath)) {
-    //        std::cout << "File size: " << std::filesystem::file_size(filePath) << " bytes\n";
-    //    }
 
     return romData;
 }
 
-auto Chip8RomLoader::checkRomFileSize(std::ifstream& romFile) -> bool {
-    romFile.seekg(0, std::ios::end);
-    const auto fileSize = romFile.tellg();
-    romFile.seekg(0, std::ios::beg);
-    return fileSize == Cpu::ROM_SIZE;
+auto Chip8RomLoader::checkFileExists(const std::string& romPath) -> bool {
+    const std::filesystem::path filePath = romPath;
+    return std::filesystem::exists(filePath);
+}
+
+auto Chip8RomLoader::checkRomFileSize(const std::string& romPath) -> bool {
+    const std::filesystem::path filePath = romPath;
+    return std::filesystem::file_size(filePath) == Cpu::ROM_SIZE;
 }
 
 auto Chip8RomLoader::readRom(std::ifstream& romFile) -> std::vector<uint8> {

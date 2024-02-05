@@ -7,7 +7,7 @@
 #include "Ppu.h"
 
 Cpu::Cpu() : m_pc(START_ADDRESS),
-             m_sp(0), // TODO: Changed the base value from 0 to 0x1000
+             m_sp(0),
              m_I(0),
              m_gameTimer(0),
              m_soundTimer(0),
@@ -68,8 +68,8 @@ auto Cpu::fetchOpcode() -> uint16 {
 }
 
 void Cpu::computeOpcode(const uint16 opcode) {
-    // TODO: Make the switch case smaller by deleting comments and writing like this: case 0x0: CLS(); break;
-    // TODO: Add except on wrong opcode
+    // TODO: Maybe add a security when reaching an unknown opcode
+
     const uint8 nibble4 = (opcode & 0xF000) >> 12;
     const uint8 nibble3 = (opcode & 0x0F00) >> 8;
     const uint8 nibble2 = (opcode & 0x00F0) >> 4;
@@ -105,7 +105,7 @@ void Cpu::computeOpcode(const uint16 opcode) {
         case 0x6: SHR_Vx_Vy(nibble3, nibble2); break;  // 8XY6
         case 0x7: SUBN_Vx_Vy(nibble3, nibble2); break; // 8XY7
         case 0xE: SHL_Vx_Vy(nibble3, nibble2); break;  // 8XYE
-        default: break;
+        default: /* Invalid opcode */ break;
         }
         break;
     }
@@ -119,7 +119,7 @@ void Cpu::computeOpcode(const uint16 opcode) {
         {
         case 0xE: SKP_Vx(nibble3); break;  // EX9E
         case 0x1: SKNP_Vx(nibble3); break; // EXA1
-        default: break;
+        default: /* Invalid opcode */ break;
         }
         break;
     }
@@ -147,7 +147,7 @@ void Cpu::computeOpcode(const uint16 opcode) {
         case 0x3: LD_B_Vx(nibble3); break; // FX33
         case 0x5: LD_I_Vx(nibble3); break; // FX55
         case 0x6: LD_Vx_I(nibble3); break; // FX65
-        default: break;
+        default: /* Invalid opcode */ break;
         }
         break;
     }
@@ -333,7 +333,6 @@ void Cpu::LD_F_Vx(const uint8 x) {
 }
 
 void Cpu::LD_B_Vx(const uint8 x) {
-    // TODO: Is this correct?
     m_memory[m_I] = m_V[x] / 100;
     m_memory[m_I + 1] = (m_V[x] / 10) % 10;
     m_memory[m_I + 2] = (m_V[x] % 100) % 10;

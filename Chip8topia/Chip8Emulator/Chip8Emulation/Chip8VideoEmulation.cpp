@@ -1,7 +1,5 @@
 #include "Chip8VideoEmulation.h"
 
-#include <glad/glad.h>
-
 Chip8VideoEmulation::Chip8VideoEmulation() : m_VAO(0), m_VBO(0), m_shader(VERTEX_SHADER_PATH, FRAGMENT_SHADER_PATH) {
     // Setup main shader data
     glGenVertexArrays(1, &m_VAO);
@@ -43,8 +41,8 @@ void Chip8VideoEmulation::update() {
     glBindVertexArray(m_VAO);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_texture);
-    m_shader.setVec4("u_backgroundColor", m_backgroundColor.r, m_backgroundColor.g, m_backgroundColor.b, m_backgroundColor.a);
-    m_shader.setVec4("u_foregroundColor", m_foregroundColor.r, m_foregroundColor.g, m_foregroundColor.b, m_foregroundColor.a);
+    m_shader.setVec4("u_backgroundColor", m_backgroundColor.m_r, m_backgroundColor.m_g, m_backgroundColor.m_b, m_backgroundColor.m_a);
+    m_shader.setVec4("u_foregroundColor", m_foregroundColor.m_r, m_foregroundColor.m_g, m_foregroundColor.m_b, m_foregroundColor.m_a);
     glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(VERTICES.size() / 3));
     glBindTexture(GL_TEXTURE_2D, 0);
     glBindVertexArray(0);
