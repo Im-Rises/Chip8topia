@@ -6,11 +6,6 @@
 #include "SubscriberEventSystem/MultiSubscriberEvent.h"
 #include "SubscriberEventSystem/SingleSubscriberEvent.h"
 
-/*
- * TODO: Replace code with a Singleton Registry
- * TODO: replace with a std::array to handle key up and key down
- * */
-
 struct GLFWwindow;
 class Chip8topiaInputHandler final : public Singleton<Chip8topiaInputHandler> {
     friend class Singleton<Chip8topiaInputHandler>;

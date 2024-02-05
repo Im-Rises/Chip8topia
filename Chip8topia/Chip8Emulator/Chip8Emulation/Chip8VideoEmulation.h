@@ -1,6 +1,6 @@
 #pragma once
 
-// TODO: Handle webgl and opengl screen drawing
+// TODO: Handle webgl now
 
 #include <glad/glad.h>
 #include <array>

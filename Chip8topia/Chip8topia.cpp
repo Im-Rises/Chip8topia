@@ -33,11 +33,13 @@ static void glfw_error_callback(int error, const char* description) {
 }
 
 void drop_callback(GLFWwindow* window, int count, const char** paths) {
+    // TODO: Handle crash when loading file with invalid extension
     (void)count;
     static constexpr int INDEX = 0;
     const char* path = paths[INDEX];
     auto* engine = reinterpret_cast<Chip8topia*>(glfwGetWindowUserPointer(window));
     engine->getChip8Emulator().loadRom(path);
+    //    engine->getChip8Emulator().getChip8Core()->getInput()->updateKey(0x0, 1);
 }
 
 Chip8topia::Chip8topia() {
@@ -213,9 +215,8 @@ void Chip8topia::handleGameUpdate(const float deltaTime) {
 }
 
 void Chip8topia::handleScreenUpdate() {
-    // TODO: move this code ?
     const ImGuiIO& io = ImGui::GetIO();
-    static constexpr ImVec4 CLEAR_COLOR = ImVec4(0.45F, 0.55F, 0.60F, 1.00F);
+    static constexpr ImVec4 CLEAR_COLOR = ImVec4(0.45F, 0.55F, 0.60F, 1.00F); // TODO: Declare as a member ? (even through it doesn't change anything because currently not seen by the user)
 
     if (!m_isFullScreen)
     {
@@ -228,7 +229,6 @@ void Chip8topia::handleScreenUpdate() {
     glClearColor(CLEAR_COLOR.x * CLEAR_COLOR.w, CLEAR_COLOR.y * CLEAR_COLOR.w, CLEAR_COLOR.z * CLEAR_COLOR.w, CLEAR_COLOR.w);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // TODO: This function maybe should be called elsewhere
     m_chip8Emulator->render();
 
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -344,5 +344,5 @@ auto Chip8topia::getImGuiVersion() -> std::string {
 }
 
 void Chip8topia::loadDebugRom() {
-    m_chip8Emulator->loadRom("trash/4-flags.ch8");
+    m_chip8Emulator->loadRom("trash/5-quirks.ch8");
 }

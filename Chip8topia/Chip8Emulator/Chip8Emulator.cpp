@@ -55,7 +55,7 @@ void Chip8Emulator::update(const float deltaTime) {
 }
 
 void Chip8Emulator::render() {
-    m_videoEmulation.createTexture(m_core.getPpu()->getVideoMemory()); // TODO:Maybe call this function only when the video memory has changed so when the corresponding opcode is called (make a trap for the opcode)
+    m_videoEmulation.createTexture(m_core.getPpu()->getVideoMemory()); // TODO: Maybe call this function only when the video memory has changed so when the corresponding opcode is called (make a trap for the opcode)
     m_videoEmulation.update();
 }
 

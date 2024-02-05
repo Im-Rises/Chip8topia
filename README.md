@@ -32,9 +32,15 @@ https://github.com/Timendus/chip8-test-suite
 - [x] Correct collision detection
 - [x] Correct the Ppu issues not rendering correctly (never clear the screen previously, everything was drawn on top of
   each other)
-- [ ] Add inputs to the emulator
+- [x] Add a file explorer to load roms
+- [x] Add inputs to the emulator
+- [ ] understand and correct the test roms from 5-quirks
+- [ ] Add inline in the functions declarations of the opcodes (maybe not necessary)
+- [ ] Add a way to change the frequency of the emulator
+- [ ] Add a way to change the used version of the chip8
 - [ ] Create a class Memory with the memory and the value of 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F
 - [ ] Add disassembly
+- [ ] Improve the input response by using direct state read rather than callbacks
 - [ ] Correct fps calculation
 - [ ] Add vcpkg support for dependencies
 - [ ] Add emulation sound

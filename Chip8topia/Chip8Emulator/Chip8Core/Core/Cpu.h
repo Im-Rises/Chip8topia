@@ -10,7 +10,7 @@ class Ppu;
 class Input;
 
 class Cpu {
-public: // TODO: Check to be sure between Machine cycle and Clock cycle
+public:
     static constexpr uint16 START_ADDRESS = 0x200;
     static constexpr uint16 CLOCK_FREQUENCY = 600; // 500Hz normally
     static constexpr uint16 TIMERS_FREQUENCY = 60; // 60Hz normally
