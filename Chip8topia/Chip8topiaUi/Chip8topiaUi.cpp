@@ -68,29 +68,28 @@ void Chip8topiaUi::drawEngineEmulationMenu(Chip8topia& chip8topia) {
             chip8topia.getChip8Emulator().toggleTurboMode();
         }
 
-        if (ImGui::MenuItem("Pause"))
+        if (ImGui::MenuItem(chip8topia.getChip8Emulator().getIsPaused() ? "Resume" : "Pause", "F8"))
         {
+            chip8topia.getChip8Emulator().togglePause();
         }
 
         // TODO: Move this code in the Debugger with the disassembly or put it here too
-        //
-        //         if (ImGui::MenuItem("Resume"))
-        //         {
-        //
-        //         }
-        //
-        //         if (ImGui::MenuItem("Break"))
-        //         {
-        //
-        //         }
-        //
-        //         if (ImGui::MenuItem("Step"))
-        //         {
-        //
-        //         }
+
+        if (ImGui::MenuItem("Resume"))
+        {
+        }
+
+        if (ImGui::MenuItem("Break"))
+        {
+        }
+
+        if (ImGui::MenuItem("Step"))
+        {
+        }
 
         if (ImGui::MenuItem("Restart"))
         {
+            chip8topia.getChip8Emulator().restart();
         }
 
         ImGui::EndMenu();
@@ -100,7 +99,7 @@ void Chip8topiaUi::drawEngineEmulationMenu(Chip8topia& chip8topia) {
 void Chip8topiaUi::drawViewMenu(Chip8topia& chip8topia) {
     if (ImGui::BeginMenu("View"))
     {
-        // TODO: Use macro for F11 text and key setup in InputManager
+        // TODO: Create a dictonary of the keys and the name of the menu item with the event, to be sure to call the right event
         if (ImGui::MenuItem("FullScreen", "F11"))
         {
             chip8topia.toggleFullScreen();

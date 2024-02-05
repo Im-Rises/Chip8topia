@@ -15,7 +15,9 @@ public:
     ~Chip8Emulator();
 
 public:
+    void restart();
     void loadRom(const std::string& romPath);
+
     void update(const float deltaTime);
     void render();
 
@@ -23,6 +25,7 @@ public:
     void togglePause();
 
     [[nodiscard]] auto getIsTurboMode() const -> bool;
+    [[nodiscard]] auto getIsPaused() const -> bool;
     [[nodiscard]] auto getChip8Core() -> Chip8Core*;
     [[nodiscard]] auto getChip8VideoEmulation() -> Chip8VideoEmulation&;
 
@@ -33,7 +36,7 @@ private:
     Chip8Core m_core;
     Chip8VideoEmulation m_videoEmulation;
     //    Chip8SoundEmulation m_soundEmulation;
-    Chip8RomLoader m_romLoader;
+    //    Chip8RomLoader m_romLoader;
 
     bool m_isRomLoaded = false;
     bool m_isTurboMode = false;

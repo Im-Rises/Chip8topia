@@ -1,13 +1,6 @@
 #pragma once
 
-// TODO: Do check to verify that the rom is valid
-//  Read rom to a buffer
-
-// TODO: use std::move and std::forward and references
-
 // TODO: use an exception to handle errors // #include <stdexcept>
-
-// TODO: use std::filesystem::path
 
 #include <binaryLib/binaryLib.h>
 #include <vector>
@@ -23,9 +16,10 @@ public:
     ~Chip8RomLoader() = default;
 
 public:
-    auto loadRom(const std::string& romPath) -> std::vector<uint8>;
+    static auto loadRom(const std::string& romPath) -> std::vector<uint8>;
 
 private:
-    auto checkRomFileSize(std::ifstream& romFile) -> bool;
-    auto readRom(std::ifstream& romFile) -> std::vector<uint8>;
+    static auto checkFileExists(const std::string& romPath) -> bool;
+    static auto checkRomFileSize(const std::string& romPath) -> bool;
+    static auto readRom(std::ifstream& romFile) -> std::vector<uint8>;
 };
