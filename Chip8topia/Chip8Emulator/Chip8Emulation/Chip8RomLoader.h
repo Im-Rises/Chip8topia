@@ -1,7 +1,5 @@
 #pragma once
 
-// TODO: use an exception to handle errors // #include <stdexcept>
-
 #include <binaryLib/binaryLib.h>
 #include <vector>
 #include <string>
@@ -15,7 +13,7 @@ public:
     auto operator=(Chip8RomLoader&&) -> Chip8RomLoader& = delete;
     ~Chip8RomLoader() = default;
 
-public: // TODO: Add throw(std::runtime_error);
+public:
     static auto loadRom(const std::string& romPath) -> std::vector<uint8>;
 
 private:

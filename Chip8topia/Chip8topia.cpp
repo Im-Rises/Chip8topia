@@ -213,9 +213,8 @@ void Chip8topia::handleGameUpdate(const float deltaTime) {
 }
 
 void Chip8topia::handleScreenUpdate() {
-    // TODO: move this code ?
     const ImGuiIO& io = ImGui::GetIO();
-    static constexpr ImVec4 CLEAR_COLOR = ImVec4(0.45F, 0.55F, 0.60F, 1.00F);
+    static constexpr ImVec4 CLEAR_COLOR = ImVec4(0.45F, 0.55F, 0.60F, 1.00F); // TODO: Declare as a member ? (even through it doesn't change anything because currently not seen by the user)
 
     if (!m_isFullScreen)
     {
@@ -228,7 +227,6 @@ void Chip8topia::handleScreenUpdate() {
     glClearColor(CLEAR_COLOR.x * CLEAR_COLOR.w, CLEAR_COLOR.y * CLEAR_COLOR.w, CLEAR_COLOR.z * CLEAR_COLOR.w, CLEAR_COLOR.w);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // TODO: This function maybe should be called elsewhere
     m_chip8Emulator->render();
 
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <array>
-
 #include <binaryLib/binaryLib.h>
 
 class Input {

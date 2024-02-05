@@ -81,6 +81,7 @@ void Chip8topiaDebugger::drawMemory(Chip8Core* chip8) {
 }
 
 void Chip8topiaDebugger::drawKeyboard(Chip8Core* chip8) {
+    // TODO: Change design to be like the real keyboard of the chip8
     ImGui::Text("Keyboard");
     ImGui::BeginTable("Keyboard", 3);
     for (auto i = 0; i < Input::KEY_COUNT; i++)
@@ -94,9 +95,12 @@ void Chip8topiaDebugger::drawKeyboard(Chip8Core* chip8) {
         ImGui::Button("Toggle Key");
         if (ImGui::IsItemClicked())
         {
-            // TODO: Toggle key
-            // chip8->getInput()->updateKey(i, true);
+            chip8->getInput()->updateKey(i, !chip8->getInput()->isKeyPressed(i));
         }
+        //        if (ImGui::IsItemReleased())
+        //        {
+        //            chip8->getInput()->updateKey(i, false);
+        //        }
     }
 
     ImGui::EndTable();
