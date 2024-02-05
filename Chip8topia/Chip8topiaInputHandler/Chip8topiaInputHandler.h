@@ -30,20 +30,21 @@ public:
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 public:
-    // UI Events
-    [[maybe_unused]] SingleSubscriberEvent<> m_EscapeKeyButtonPressedEvent;
-    [[maybe_unused]] SingleSubscriberEvent<> m_F9KeyButtonPressedEvent;
+    [[maybe_unused]] SingleSubscriberEvent<> m_F1KeyButtonPressedEvent;
+    [[maybe_unused]] SingleSubscriberEvent<> m_F2KeyButtonPressedEvent;
+    [[maybe_unused]] SingleSubscriberEvent<> m_F3KeyButtonPressedEvent;
     [[maybe_unused]] SingleSubscriberEvent<> m_F10KeyButtonPressedEvent;
     [[maybe_unused]] SingleSubscriberEvent<> m_F11KeyButtonPressedEvent;
-    [[maybe_unused]] SingleSubscriberEvent<> m_F12KeyButtonPressedEvent;
-    [[maybe_unused]] SingleSubscriberEvent<> m_CTRL_OKeyButtonPressedEvent;
-
 #ifndef NDEBUG
-    [[maybe_unused]] SingleSubscriberEvent<> m_LoadDebugRomKeyButtonPressedEvent; // TODO: Find a better name and button for it
+    [[maybe_unused]] SingleSubscriberEvent<> m_F12KeyDebugButtonPressedEvent;
 #endif
 
-    // Game Events
+    [[maybe_unused]] SingleSubscriberEvent<> m_CTRL_OKeyButtonPressedEvent;
+
+    [[maybe_unused]] SingleSubscriberEvent<> m_EscapeKeyButtonPressedEvent;
+
     [[maybe_unused]] MultiSubscriberEvent<> m_PKeyButtonPressedEvent;
+
     [[maybe_unused]] MultiSubscriberEvent<const uint8, const bool> m_GameInput;
 
 private:

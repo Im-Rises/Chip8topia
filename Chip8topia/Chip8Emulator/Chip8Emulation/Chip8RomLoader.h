@@ -15,7 +15,7 @@ public:
     auto operator=(Chip8RomLoader&&) -> Chip8RomLoader& = delete;
     ~Chip8RomLoader() = default;
 
-public:
+public: // TODO: Add throw(std::runtime_error);
     static auto loadRom(const std::string& romPath) -> std::vector<uint8>;
 
 private:
