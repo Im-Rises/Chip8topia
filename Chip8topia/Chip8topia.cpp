@@ -33,6 +33,7 @@ static void glfw_error_callback(int error, const char* description) {
 }
 
 void drop_callback(GLFWwindow* window, int count, const char** paths) {
+    // TODO: Handle crash when loading file with invalid extension
     (void)count;
     static constexpr int INDEX = 0;
     const char* path = paths[INDEX];
