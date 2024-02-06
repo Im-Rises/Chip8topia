@@ -16,14 +16,14 @@ auto Ppu::drawSprite(uint8 x, uint8 y, uint8 n, const std::array<uint8, Cpu::MEM
             {
                 const auto index = (x + j) % WIDTH + ((y + i) % HEIGHT) * WIDTH;
 
-                if (m_videoMemory[index] == 255)
+                if (m_videoMemory[index] == PIXEL_ON)
                 {
-                    m_videoMemory[index] = 0;
+                    m_videoMemory[index] = PIXEL_OFF;
                     collision = true;
                 }
                 else
                 {
-                    m_videoMemory[index] = 255;
+                    m_videoMemory[index] = PIXEL_ON;
                 }
             }
         }

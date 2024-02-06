@@ -57,10 +57,10 @@ private:
     MemoryEditor m_memoryEditor;
 
     std::array<MenuItem<Chip8Core>, 5> m_menuItems = {
-        "Registers", false, [this](Chip8Core* chip8) { drawRegisters(chip8); },
-        "Stack", false, [this](Chip8Core* chip8) { drawStack(chip8); },
-        "Memory Editor", false, [this](Chip8Core* chip8) { drawMemory(chip8); },
-        "Keyboard", false, [this](Chip8Core* chip8) { drawKeyboard(chip8); },
-        "Disassembler", false, [this](Chip8Core* chip8) { drawDisassembler(chip8); }
+        "Registers", true, [this](Chip8Core* chip8) { drawRegisters(chip8); },
+        "Stack", true, [this](Chip8Core* chip8) { drawStack(chip8); },
+        "Memory Editor", true, [this](Chip8Core* chip8) { drawMemory(chip8); },
+        "Keyboard", true, [this](Chip8Core* chip8) { drawKeyboard(chip8); },
+        "Disassembler", true, [this](Chip8Core* chip8) { drawDisassembler(chip8); }
     };
 };

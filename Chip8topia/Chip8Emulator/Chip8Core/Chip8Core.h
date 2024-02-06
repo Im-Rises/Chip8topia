@@ -8,6 +8,7 @@
 #include "Core/Cpu.h"
 
 class Chip8Core {
+public:
     static constexpr unsigned int SCREEN_AND_TIMERS_FREQUENCY = 60;
 
 public:

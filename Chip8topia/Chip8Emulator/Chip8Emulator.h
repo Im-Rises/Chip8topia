@@ -39,7 +39,7 @@ private:
     //    Chip8RomLoader m_romLoader;
 
     bool m_isRomLoaded = false;
-    bool m_isTurboMode = false;
+    bool m_isTurboMode = false; // TODO: Correct the turbo mode
     bool m_isPaused = false;
 
     float m_accumulator = 0.0F;

@@ -41,11 +41,14 @@ private:
     void drawRomWindow(Chip8topia& chip8topia);
 
     void toggleMenuBar();
+    void toggleWindowsVisibility(); // TODO: Add a way to hide all the windows at once
 
 private:
     Chip8topiaDebugger m_chip8topiaDebugger;
 
     bool m_isMenuBarOpen = true;
+    bool m_windowsVisible = true;
+
     bool m_showAboutChip8topiaPopup = false;
     bool m_showAboutChip8Popup = false;
 
