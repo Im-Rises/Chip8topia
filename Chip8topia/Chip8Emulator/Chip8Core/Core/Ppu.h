@@ -9,7 +9,7 @@ class Ppu {
 public:
     static constexpr size_t WIDTH = 64;
     static constexpr size_t HEIGHT = 32;
-    static constexpr size_t CLOCK_FREQUENCY = 60;
+    //    static constexpr size_t CLOCK_FREQUENCY = 60;
     static constexpr uint8 SPRITE_WIDTH = 8;
     //    static constexpr uint8 SPRITE_HEIGHT = 15;
 
@@ -27,5 +27,8 @@ public:
     [[nodiscard]] auto getVideoMemory() const -> const std::array<uint8, 2048>&;
 
 private:
+    static constexpr uint8 PIXEL_ON = 1;
+    static constexpr uint8 PIXEL_OFF = 0;
+
     std::array<uint8, WIDTH * HEIGHT> m_videoMemory{};
 };

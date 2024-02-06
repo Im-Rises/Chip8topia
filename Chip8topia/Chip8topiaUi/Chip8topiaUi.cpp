@@ -21,6 +21,8 @@ void Chip8topiaUi::drawUi(Chip8topia& chip8topia) {
 }
 
 void Chip8topiaUi::drawMainMenuBar(Chip8topia& chip8topia) {
+    // TODO: Correct UI to still display the window when the menu bar is hidden
+    // TODO: Add a hide all windows button
     if (m_isMenuBarOpen && ImGui::BeginMainMenuBar())
     {
         drawFileMenu(chip8topia);
@@ -31,6 +33,10 @@ void Chip8topiaUi::drawMainMenuBar(Chip8topia& chip8topia) {
         drawAboutMenu();
 
         ImGui::EndMainMenuBar();
+    }
+
+    if (m_windowsVisible)
+    {
     }
 
     drawVideoWindow(chip8topia);
@@ -227,4 +233,8 @@ void Chip8topiaUi::drawRomWindow(Chip8topia& chip8topia) {
 
 void Chip8topiaUi::toggleMenuBar() {
     m_isMenuBarOpen = !m_isMenuBarOpen;
+}
+
+void Chip8topiaUi::toggleWindowsVisibility() {
+    m_windowsVisible = !m_windowsVisible;
 }

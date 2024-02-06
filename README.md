@@ -10,6 +10,12 @@ https://www.laurencescotford.net/2020/07/19/chip-8-on-the-cosmac-vip-arithmetic-
 
 https://github.com/Timendus/chip8-test-suite
 
+https://www.laurencescotford.net/2020/07/19/chip-8-on-the-cosmac-vip-drawing-sprites/
+
+https://chip8.gulrak.net/
+
+https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
+
 ## TODO
 
 - [x] Add glad init in Chip8topia.cpp
@@ -34,6 +40,10 @@ https://github.com/Timendus/chip8-test-suite
   each other)
 - [x] Add a file explorer to load roms
 - [x] Add inputs to the emulator
+- [x] Throttle the emulator to 60fps
+- [ ] Add Ppu clipping
+- [ ] Add a way to hide all windows
+- [ ] Prevent hiding the main bar to also hide the windows
 - [ ] understand and correct the test roms from 5-quirks
 - [ ] Add inline in the functions declarations of the opcodes (maybe not necessary)
 - [ ] Add a way to change the frequency of the emulator
@@ -48,6 +58,7 @@ https://github.com/Timendus/chip8-test-suite
 - [ ] Add base files to the .data of emscripten to be able to load all the roms from the web
 - [ ] Add a file input to load roms from the web
 - [ ] Make frequency adjustable
+- [ ] Add emulation for the SuperChip8 and the XO-Chip ?
 - [ ] Créer une classe ImGuiMenuItemWindowList. Améliorer code imgui des fenêtres avec un système qui contiendrait les
   enums des fenêtres à afficher, ensuite en
   allant dans un switch case pour chaque enum dans le tableau, on afficherait la fenêtre correspondante. Rajouter class

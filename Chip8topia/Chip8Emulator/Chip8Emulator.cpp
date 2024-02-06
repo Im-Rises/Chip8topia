@@ -46,12 +46,12 @@ void Chip8Emulator::update(const float deltaTime) {
 
     m_accumulator += deltaTime;
 
-    //    if (m_isTurboMode || m_accumulator >= 1.0F / Ppu::CLOCK_FREQUENCY)
-    //    {
-    m_accumulator = 0.0F;
-    m_core.clock();
-    //        m_soundEmulation.update(deltaTime);
-    //    }
+    if (m_isTurboMode || m_accumulator >= 1.0F / Chip8Core::SCREEN_AND_TIMERS_FREQUENCY)
+    {
+        m_accumulator = 0.0F;
+        m_core.clock();
+        //        m_soundEmulation.update(deltaTime);
+    }
 }
 
 void Chip8Emulator::render() {
