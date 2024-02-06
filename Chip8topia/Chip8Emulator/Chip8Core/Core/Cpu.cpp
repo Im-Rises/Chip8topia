@@ -346,6 +346,7 @@ void Cpu::LD_I_Vx(const uint8 x) {
     {
         m_memory[m_I + i] = m_V[i];
     }
+    m_I += x + 1;
 }
 
 void Cpu::LD_Vx_I(const uint8 x) {
@@ -353,4 +354,5 @@ void Cpu::LD_Vx_I(const uint8 x) {
     {
         m_V[i] = m_memory[m_I + i];
     }
+    m_I += x + 1;
 }
