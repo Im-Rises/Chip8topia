@@ -212,14 +212,17 @@ void Cpu::LD_Vx_Vy(const uint8 x, const uint8 y) {
 
 void Cpu::OR_Vx_Vy(const uint8 x, const uint8 y) {
     m_V[x] |= m_V[y];
+    m_V[0xF] = 0;
 }
 
 void Cpu::AND_Vx_Vy(const uint8 x, const uint8 y) {
     m_V[x] &= m_V[y];
+    m_V[0xF] = 0;
 }
 
 void Cpu::XOR_Vx_Vy(const uint8 x, const uint8 y) {
     m_V[x] ^= m_V[y];
+    m_V[0xF] = 0;
 }
 
 void Cpu::ADD_Vx_Vy(const uint8 x, const uint8 y) {
