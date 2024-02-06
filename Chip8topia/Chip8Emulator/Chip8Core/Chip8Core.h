@@ -8,6 +8,8 @@
 #include "Core/Cpu.h"
 
 class Chip8Core {
+    static constexpr unsigned int SCREEN_AND_TIMERS_FREQUENCY = 60;
+
 public:
     Chip8Core();
     Chip8Core(const Chip8Core&) = delete;
@@ -31,4 +33,6 @@ private:
     Cpu m_cpu;
     std::shared_ptr<Ppu> m_ppu;
     std::shared_ptr<Input> m_input;
+
+    unsigned int m_clockCounter;
 };

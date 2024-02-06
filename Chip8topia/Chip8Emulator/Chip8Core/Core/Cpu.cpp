@@ -13,8 +13,9 @@ Cpu::Cpu() : m_pc(START_ADDRESS),
              m_soundTimer(0),
              m_memory{},
              m_V{},
-             m_stack{} {
-
+             m_stack{},
+             m_isHalted(false),
+             m_requestDisableHalt(false) {
     std::copy(FONTSET.begin(), FONTSET.end(), m_memory.begin());
 }
 
@@ -286,6 +287,20 @@ void Cpu::RND_Vx_nn(const uint8 x, const uint8 nn) {
 }
 
 void Cpu::DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) {
+    m_isHalted = true;
+
+    if (m_requestDisableHalt)
+    {
+        m_isHalted = false;
+        m_requestDisableHalt = false;
+    }
+
+    if (m_isHalted)
+    {
+        m_pc -= 2;
+        return;
+    }
+
     m_V[0xF] = static_cast<uint8>(m_ppu->drawSprite(m_V[x], m_V[y], n, m_memory, m_I));
 }
 
