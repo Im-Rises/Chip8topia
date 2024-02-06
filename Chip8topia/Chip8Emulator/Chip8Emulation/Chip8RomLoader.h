@@ -4,6 +4,8 @@
 #include <vector>
 #include <string>
 
+// TODO: Change this class to be used also for drag and drop so move it elsewhere and add it to Chip8topia
+
 class Chip8RomLoader {
 public:
     Chip8RomLoader() = default;

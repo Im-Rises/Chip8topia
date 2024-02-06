@@ -39,6 +39,7 @@ void drop_callback(GLFWwindow* window, int count, const char** paths) {
     const char* path = paths[INDEX];
     auto* engine = reinterpret_cast<Chip8topia*>(glfwGetWindowUserPointer(window));
     engine->getChip8Emulator().loadRom(path);
+    //    engine->getChip8Emulator().getChip8Core()->getInput()->updateKey(0x0, 1);
 }
 
 Chip8topia::Chip8topia() {
@@ -343,5 +344,5 @@ auto Chip8topia::getImGuiVersion() -> std::string {
 }
 
 void Chip8topia::loadDebugRom() {
-    m_chip8Emulator->loadRom("trash/4-flags.ch8");
+    m_chip8Emulator->loadRom("trash/5-quirks.ch8");
 }
