@@ -13,7 +13,6 @@ class Cpu {
 public:
     static constexpr uint16 START_ADDRESS = 0x200;
     static constexpr uint16 CLOCK_FREQUENCY = 600; // 500Hz normally
-    static constexpr uint16 TIMERS_FREQUENCY = 60; // 60Hz normally
     static constexpr size_t MEMORY_SIZE = 0x1000;
     static constexpr size_t ROM_SIZE = MEMORY_SIZE - START_ADDRESS;
     static constexpr size_t REGISTER_V_SIZE = 16;
@@ -54,6 +53,7 @@ public:
     void readRom(const std::vector<uint8>& rom); // TODO: Maybe change to a std::array<uint8, 4096> rom
     void clock();
     void clockTimers();
+    void requestDisableHalt() { m_requestDisableHalt = true; }
 
 private:
     [[nodiscard]] auto fetchOpcode() -> uint16;
@@ -123,4 +123,7 @@ private:
 
     std::shared_ptr<Ppu> m_ppu;
     std::shared_ptr<Input> m_input;
+
+    bool m_isHalted;
+    bool m_requestDisableHalt;
 };
