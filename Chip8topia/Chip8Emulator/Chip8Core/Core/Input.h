@@ -1,6 +1,6 @@
 #pragma once
 
-#include <array>
+#include <bitset>
 #include <binaryLib/binaryLib.h>
 
 class Input {
@@ -17,10 +17,10 @@ public:
 
 public:
     void reset();
+    [[nodiscard]] auto isAnyKeyPressed() const -> bool;
     [[nodiscard]] auto isKeyPressed(const uint8 Vx) const -> bool;
     void updateKey(const uint8 key, const bool pressed);
 
 private:
-    // TODO: Maybe use std::bitset instead?
-    std::array<bool, KEY_COUNT> m_keys{};
+    std::bitset<KEY_COUNT> m_pressedKeys{};
 };

@@ -40,7 +40,7 @@ public:
     ~Chip8VideoEmulation() = default;
 
 public:
-    void createTexture(const std::array<uint8, Ppu::WIDTH * Ppu::HEIGHT>& videoMemory);
+    void updateTexture(const std::array<uint8, Ppu::WIDTH * Ppu::HEIGHT>& videoMemory);
     void update();
 
     // TODO: Change to not use get as a setter

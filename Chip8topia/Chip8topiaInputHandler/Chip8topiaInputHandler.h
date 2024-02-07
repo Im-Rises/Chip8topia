@@ -25,6 +25,9 @@ public:
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 public:
+    /*
+     * UI Input
+     * */
     [[maybe_unused]] SingleSubscriberEvent<> m_F1KeyButtonPressedEvent;
     [[maybe_unused]] SingleSubscriberEvent<> m_F2KeyButtonPressedEvent;
     [[maybe_unused]] SingleSubscriberEvent<> m_F3KeyButtonPressedEvent;
@@ -37,10 +40,12 @@ public:
     [[maybe_unused]] SingleSubscriberEvent<> m_CTRL_OKeyButtonPressedEvent;
 
     [[maybe_unused]] SingleSubscriberEvent<> m_EscapeKeyButtonPressedEvent;
-
     [[maybe_unused]] MultiSubscriberEvent<> m_PKeyButtonPressedEvent;
 
-    [[maybe_unused]] MultiSubscriberEvent<const uint8, const bool> m_GameInput;
+    /*
+     * Game Input
+     * */
+    [[maybe_unused]] SingleSubscriberEvent<const uint8, const bool> m_GameInput;
 
 private:
 };
