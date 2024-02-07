@@ -52,15 +52,15 @@ git submodule update --init --recursive
 - [x] understand and correct the test roms from 5-quirks
 - [x] Add inline in the functions declarations of the opcodes (maybe not necessary)
 - [x] Add vcpkg support for dependencies
+- [x] Correct fps calculation
+- [x] Correct the emulation turbo mode (deleted currently)
 - [ ] Improve the input response by using direct state read rather than callbacks
+- [ ] Add disassembly
 - [ ] Add a way to change the used version of the chip8
 - [ ] Add a way to change the frequency of the emulator
-- Faire une fenêtre imgui quand on démarre pour sélectionner la version de chip8
-- Faire héritage cpp pour cpu et pour selection et peut être Chip8Core
+- [ ] Faire une fenêtre imgui quand on démarre pour sélectionner la version de chip8
+- [ ] Faire héritage cpp pour cpu et pour selection et peut être Chip8Core
 - [ ] Create a class Memory with the memory and the value of 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F
-- [ ] Add disassembly
-- [ ] Correct the emulation turbo mode
-- [ ] Correct fps calculation
 - [ ] Add emulation sound
 - [ ] Implement WebAssembly support
 - [ ] Add base files to the .data of emscripten to be able to load all the roms from the web

@@ -65,4 +65,9 @@ private:
 
     //    Color m_backgroundColor = { 0.45F, 0.55F, 0.60F, 1.00F };
     //    Color m_foregroundColor = { 0.8, 0.8, 0.8, 1.0F };
+
+    /*
+     * FG #2AF8C9FF
+     * BG #1E46A3FF
+     * */
 };

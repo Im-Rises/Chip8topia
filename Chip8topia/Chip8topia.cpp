@@ -169,6 +169,9 @@ auto Chip8topia::run() -> int {
     auto currentTime = lastTime;
     float deltaTime = 0.0F;
 
+    float frameCounter = 0.0F;
+    float elapsedTimeAccumulator = 0.0F;
+
     while (glfwWindowShouldClose(m_window) == 0)
 #endif
     {
@@ -180,6 +183,15 @@ auto Chip8topia::run() -> int {
         handleUi(deltaTime);
         handleGameUpdate(deltaTime);
         handleScreenUpdate();
+
+        frameCounter++;
+        elapsedTimeAccumulator += deltaTime;
+        if (elapsedTimeAccumulator >= 1.0F)
+        {
+            setWindowTitle(frameCounter / elapsedTimeAccumulator);
+            frameCounter = 0;
+            elapsedTimeAccumulator = 0.0F;
+        }
     }
 #ifdef __EMSCRIPTEN__
     EMSCRIPTEN_MAINLOOP_END;
@@ -201,8 +213,6 @@ void Chip8topia::handleInputs() {
 }
 
 void Chip8topia::handleUi(const float deltaTime) {
-    setWindowTitle(1.0F / deltaTime);
-
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
