@@ -5,8 +5,8 @@
 #endif
 
 #include <imgui/imgui.h>
-#include <imgui/imgui_impl_glfw.h>
-#include <imgui/imgui_impl_opengl3.h>
+#include <imgui/backends/imgui_impl_glfw.h>
+#include <imgui/backends/imgui_impl_opengl3.h>
 #include <cstdio>
 #define GL_SILENCE_DEPRECATION
 #if defined(IMGUI_IMPL_OPENGL_ES2)
@@ -15,7 +15,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #define STB_IMAGE_IMPLEMENTATION
-#include <stb/stb_image.h>
+#include <stb_image.h>
 #include <format>
 
 #include "res/chip8topiaIconResource.h"
