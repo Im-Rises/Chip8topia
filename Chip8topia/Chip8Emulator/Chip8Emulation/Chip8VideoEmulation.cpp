@@ -30,7 +30,7 @@ Chip8VideoEmulation::Chip8VideoEmulation() : m_VAO(0), m_VBO(0), m_shader(VERTEX
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void Chip8VideoEmulation::createTexture(const std::array<uint8, Ppu::WIDTH * Ppu::HEIGHT>& videoMemory) {
+void Chip8VideoEmulation::updateTexture(const std::array<uint8, Ppu::WIDTH * Ppu::HEIGHT>& videoMemory) {
     glBindTexture(GL_TEXTURE_2D, m_texture);
     glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, Ppu::WIDTH, Ppu::HEIGHT, GL_RED, GL_UNSIGNED_BYTE, videoMemory.data());
     glBindTexture(GL_TEXTURE_2D, 0);

@@ -323,7 +323,7 @@ void Cpu::LD_Vx_DT(const uint8 x) {
 }
 
 void Cpu::LD_Vx_x(const uint8 x) {
-    if (m_input->isKeyPressed(x))
+    if (m_input->isAnyKeyPressed())
     {
         m_V[x] = x;
     }

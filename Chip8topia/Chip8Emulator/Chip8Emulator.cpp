@@ -1,18 +1,15 @@
 #include "Chip8Emulator.h"
 
 #include "../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
-#include "Chip8Core/Core/Ppu.h"
 
 Chip8Emulator::Chip8Emulator() {
     Chip8topiaInputHandler::getInstance().m_GameInput.subscribe(this, &Chip8Emulator::OnInput);
     Chip8topiaInputHandler::getInstance().m_PKeyButtonPressedEvent.subscribe(this, &Chip8Emulator::togglePause);
-    Chip8topiaInputHandler::getInstance().m_F3KeyButtonPressedEvent.subscribe(this, &Chip8Emulator::toggleTurboMode);
 }
 
 Chip8Emulator::~Chip8Emulator() {
     Chip8topiaInputHandler::getInstance().m_GameInput.unsubscribe(this, &Chip8Emulator::OnInput);
     Chip8topiaInputHandler::getInstance().m_PKeyButtonPressedEvent.unsubscribe(this, &Chip8Emulator::togglePause);
-    Chip8topiaInputHandler::getInstance().m_F3KeyButtonPressedEvent.unsubscribe(this, &Chip8Emulator::toggleTurboMode);
 }
 
 void Chip8Emulator::restart() {
@@ -55,20 +52,16 @@ void Chip8Emulator::update(const float deltaTime) {
 }
 
 void Chip8Emulator::render() {
-    m_videoEmulation.createTexture(m_core.getPpu()->getVideoMemory()); // TODO: Maybe call this function only when the video memory has changed so when the corresponding opcode is called (make a trap for the opcode)
+    m_videoEmulation.updateTexture(m_core.getPpu()->getVideoMemory()); // TODO: Maybe call this function only when the video memory has changed so when the corresponding opcode is called (make a trap for the opcode)
     m_videoEmulation.update();
-}
-
-void Chip8Emulator::toggleTurboMode() {
-    m_isTurboMode = !m_isTurboMode;
 }
 
 void Chip8Emulator::togglePause() {
     m_isPaused = !m_isPaused;
 }
 
-auto Chip8Emulator::getIsTurboMode() const -> bool {
-    return m_isTurboMode;
+void Chip8Emulator::setIsTurboMode(const bool isTurboMode) {
+    m_isTurboMode = isTurboMode;
 }
 
 auto Chip8Emulator::getIsPaused() const -> bool {
