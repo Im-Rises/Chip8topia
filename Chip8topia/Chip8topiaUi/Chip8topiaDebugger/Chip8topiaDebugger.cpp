@@ -2,7 +2,7 @@
 
 #include "../../Chip8Emulator/Chip8Core/Core/Input.h"
 
-void Chip8topiaDebugger::drawDebugger(Chip8Emulator& emulator) {
+void Chip8topiaDebugger::drawDebuggerMenu() {
     if (ImGui::BeginMenu("Debugger"))
     {
         for (auto& menuItem : m_menuItems)
@@ -12,7 +12,9 @@ void Chip8topiaDebugger::drawDebugger(Chip8Emulator& emulator) {
 
         ImGui::EndMenu();
     }
+}
 
+void Chip8topiaDebugger::drawDebuggerWindows(Chip8Emulator& emulator) {
     for (auto& menuItem : m_menuItems)
     {
         menuItem.drawWindow(emulator.getChip8Core());

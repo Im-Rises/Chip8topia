@@ -129,7 +129,7 @@ Chip8topia::Chip8topia() {
     setWindowIcon();
 
     m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.subscribe(this, &Chip8topia::close);
-    m_chip8topiaInputHandler.m_F2KeyButtonPressedEvent.subscribe(this, &Chip8topia::toggleTurboMode);
+    m_chip8topiaInputHandler.m_F3KeyButtonPressedEvent.subscribe(this, &Chip8topia::toggleTurboMode);
     m_chip8topiaInputHandler.m_F10KeyButtonPressedEvent.subscribe(this, &Chip8topia::centerWindow);
     m_chip8topiaInputHandler.m_F11KeyButtonPressedEvent.subscribe(this, &Chip8topia::toggleFullScreen);
 #ifndef NDEBUG
@@ -139,7 +139,7 @@ Chip8topia::Chip8topia() {
 
 Chip8topia::~Chip8topia() {
     m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.unsubscribe(this, &Chip8topia::close);
-    m_chip8topiaInputHandler.m_F2KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::toggleTurboMode);
+    m_chip8topiaInputHandler.m_F3KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::toggleTurboMode);
     m_chip8topiaInputHandler.m_F10KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::centerWindow);
     m_chip8topiaInputHandler.m_F11KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::toggleFullScreen);
 #ifndef NDEBUG
@@ -169,6 +169,9 @@ auto Chip8topia::run() -> int {
     auto currentTime = lastTime;
     float deltaTime = 0.0F;
 
+    float frameCounter = 0.0F;
+    float elapsedTimeAccumulator = 0.0F;
+
     while (glfwWindowShouldClose(m_window) == 0)
 #endif
     {
@@ -180,6 +183,15 @@ auto Chip8topia::run() -> int {
         handleUi(deltaTime);
         handleGameUpdate(deltaTime);
         handleScreenUpdate();
+
+        frameCounter++;
+        elapsedTimeAccumulator += deltaTime;
+        if (elapsedTimeAccumulator >= 1.0F)
+        {
+            setWindowTitle(frameCounter / elapsedTimeAccumulator);
+            frameCounter = 0;
+            elapsedTimeAccumulator = 0.0F;
+        }
     }
 #ifdef __EMSCRIPTEN__
     EMSCRIPTEN_MAINLOOP_END;
@@ -201,8 +213,6 @@ void Chip8topia::handleInputs() {
 }
 
 void Chip8topia::handleUi(const float deltaTime) {
-    setWindowTitle(1.0F / deltaTime);
-
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();

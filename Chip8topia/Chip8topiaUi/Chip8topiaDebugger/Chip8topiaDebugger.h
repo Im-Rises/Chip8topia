@@ -1,7 +1,7 @@
 #pragma once
 
 #include <imgui/imgui.h>
-#include <imgui_club/imgui_memory_editor/imgui_memory_editor.h> //TODO: Change to not write imgui_club
+#include <imgui_memory_editor/imgui_memory_editor.h>
 #include <functional>
 #include <array>
 
@@ -44,7 +44,8 @@ public:
     ~Chip8topiaDebugger() = default;
 
 public:
-    void drawDebugger(Chip8Emulator& emulator);
+    void drawDebuggerMenu();
+    void drawDebuggerWindows(Chip8Emulator& emulator);
 
 private:
     void drawRegisters(Chip8Core* chip8);
