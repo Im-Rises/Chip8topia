@@ -44,7 +44,8 @@ public:
     ~Chip8topiaDebugger() = default;
 
 public:
-    void drawDebugger(Chip8Emulator& emulator);
+    void drawDebuggerMenu();
+    void drawDebuggerWindows(Chip8Emulator& emulator);
 
 private:
     void drawRegisters(Chip8Core* chip8);

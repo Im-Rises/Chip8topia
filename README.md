@@ -16,6 +16,11 @@ https://chip8.gulrak.net/
 
 https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 
+```bash
+git submodule update --remote
+git submodule update --init --recursive
+```
+
 ## TODO
 
 - [x] Add glad init in Chip8topia.cpp
@@ -41,23 +46,25 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [x] Add a file explorer to load roms
 - [x] Add inputs to the emulator
 - [x] Throttle the emulator to 60fps
-- [ ] Add Ppu clipping
-- [ ] Add a way to hide all windows
-- [ ] Prevent hiding the main bar to also hide the windows
-- [ ] understand and correct the test roms from 5-quirks
-- [ ] Add inline in the functions declarations of the opcodes (maybe not necessary)
-- [ ] Add a way to change the frequency of the emulator
+- [x] Add Ppu clipping
+- [x] Add a way to hide all windows
+- [x] Prevent hiding the main bar to also hide the windows
+- [x] understand and correct the test roms from 5-quirks
+- [x] Add inline in the functions declarations of the opcodes (maybe not necessary)
+- [x] Add vcpkg support for dependencies
+- [ ] Improve the input response by using direct state read rather than callbacks
 - [ ] Add a way to change the used version of the chip8
+- [ ] Add a way to change the frequency of the emulator
+- Faire une fenêtre imgui quand on démarre pour sélectionner la version de chip8
+- Faire héritage cpp pour cpu et pour selection et peut être Chip8Core
 - [ ] Create a class Memory with the memory and the value of 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F
 - [ ] Add disassembly
-- [ ] Improve the input response by using direct state read rather than callbacks
+- [ ] Correct the emulation turbo mode
 - [ ] Correct fps calculation
-- [ ] Add vcpkg support for dependencies
 - [ ] Add emulation sound
 - [ ] Implement WebAssembly support
 - [ ] Add base files to the .data of emscripten to be able to load all the roms from the web
 - [ ] Add a file input to load roms from the web
-- [ ] Make frequency adjustable
 - [ ] Add emulation for the SuperChip8 and the XO-Chip ?
 - [ ] Créer une classe ImGuiMenuItemWindowList. Améliorer code imgui des fenêtres avec un système qui contiendrait les
   enums des fenêtres à afficher, ensuite en

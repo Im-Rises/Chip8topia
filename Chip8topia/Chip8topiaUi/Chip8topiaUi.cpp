@@ -7,12 +7,14 @@
 #include "../Chip8topia.h"
 
 Chip8topiaUi::Chip8topiaUi() {
-    Chip8topiaInputHandler::getInstance().m_F1KeyButtonPressedEvent.subscribe(this, &Chip8topiaUi::toggleMenuBar);
+    Chip8topiaInputHandler::getInstance().m_F1KeyButtonPressedEvent.subscribe(this, &Chip8topiaUi::toggleMenuBarVisibility);
+    Chip8topiaInputHandler::getInstance().m_F2KeyButtonPressedEvent.subscribe(this, &Chip8topiaUi::toggleWindowsVisibility);
     Chip8topiaInputHandler::getInstance().m_CTRL_OKeyButtonPressedEvent.subscribe(this, &Chip8topiaUi::openRomWindow);
 }
 
 Chip8topiaUi::~Chip8topiaUi() {
-    Chip8topiaInputHandler::getInstance().m_F1KeyButtonPressedEvent.unsubscribe(this, &Chip8topiaUi::toggleMenuBar);
+    Chip8topiaInputHandler::getInstance().m_F1KeyButtonPressedEvent.unsubscribe(this, &Chip8topiaUi::toggleMenuBarVisibility);
+    Chip8topiaInputHandler::getInstance().m_F2KeyButtonPressedEvent.unsubscribe(this, &Chip8topiaUi::toggleWindowsVisibility);
     Chip8topiaInputHandler::getInstance().m_CTRL_OKeyButtonPressedEvent.unsubscribe(this, &Chip8topiaUi::openRomWindow);
 }
 
@@ -29,7 +31,7 @@ void Chip8topiaUi::drawMainMenuBar(Chip8topia& chip8topia) {
         drawViewMenu(chip8topia);
         drawEngineEmulationMenu(chip8topia);
         drawVideoMenu();
-        m_chip8topiaDebugger.drawDebugger(chip8topia.getChip8Emulator());
+        m_chip8topiaDebugger.drawDebuggerMenu();
         drawAboutMenu();
 
         ImGui::EndMainMenuBar();
@@ -37,12 +39,13 @@ void Chip8topiaUi::drawMainMenuBar(Chip8topia& chip8topia) {
 
     if (m_windowsVisible)
     {
+        m_chip8topiaDebugger.drawDebuggerWindows(chip8topia.getChip8Emulator());
+        drawVideoWindow(chip8topia);
     }
 
-    drawVideoWindow(chip8topia);
+    drawRomWindow(chip8topia);
     drawAboutChip8topiaPopUpWindow();
     drawAboutChip8PopUpWindow();
-    drawRomWindow(chip8topia);
 }
 
 void Chip8topiaUi::drawFileMenu(Chip8topia& chip8topia) {
@@ -64,15 +67,15 @@ void Chip8topiaUi::drawFileMenu(Chip8topia& chip8topia) {
 void Chip8topiaUi::drawEngineEmulationMenu(Chip8topia& chip8topia) {
     if (ImGui::BeginMenu("Engine/Emulation"))
     {
-        if (ImGui::MenuItem(std::format("Toggle Engine turbo mode : {}", chip8topia.getIsTurboMode() ? "ON " : "OFF").c_str(), "F2"))
+        if (ImGui::MenuItem(std::format("Toggle Engine turbo mode : {}", chip8topia.getIsTurboMode() ? "ON " : "OFF").c_str(), "F3"))
         {
             chip8topia.toggleTurboMode();
         }
 
-        if (ImGui::MenuItem(std::format("Toggle Emulation turbo mode : {}", chip8topia.getChip8Emulator().getIsTurboMode() ? "ON " : "OFF").c_str(), "F3"))
-        {
-            chip8topia.getChip8Emulator().toggleTurboMode();
-        }
+//        if (ImGui::MenuItem(std::format("Toggle Emulation turbo mode : {}", chip8topia.getChip8Emulator().getIsTurboMode() ? "ON " : "OFF").c_str(), "F3"))
+//        {
+//            chip8topia.getChip8Emulator().toggleTurboMode();
+//        }
 
         if (ImGui::MenuItem(chip8topia.getChip8Emulator().getIsPaused() ? "Resume" : "Pause", "F"))
         {
@@ -106,9 +109,14 @@ void Chip8topiaUi::drawViewMenu(Chip8topia& chip8topia) {
     if (ImGui::BeginMenu("View"))
     {
         // TODO: Create a dictonary of the keys and the name of the menu item with the event, to be sure to call the right event
-        if (ImGui::MenuItem("Show/Hide MenuBar", "F1"))
+        if (ImGui::MenuItem("Show/Hide MenuBar", "F1", &m_isMenuBarOpen))
         {
-            toggleMenuBar();
+//            toggleMenuBarVisibility();
+        }
+
+        if (ImGui::MenuItem("Show/Hide Windows", "F2", &m_windowsVisible))
+        {
+//            toggleWindowsVisibility();
         }
 
         if (ImGui::MenuItem("Center window", "F10"))
@@ -231,7 +239,7 @@ void Chip8topiaUi::drawRomWindow(Chip8topia& chip8topia) {
     }
 }
 
-void Chip8topiaUi::toggleMenuBar() {
+void Chip8topiaUi::toggleMenuBarVisibility() {
     m_isMenuBarOpen = !m_isMenuBarOpen;
 }
 
