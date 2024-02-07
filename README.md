@@ -54,18 +54,19 @@ git submodule update --init --recursive
 - [x] Add vcpkg support for dependencies
 - [x] Correct fps calculation
 - [x] Correct the emulation turbo mode (deleted currently)
-- [ ] Improve the input response by using direct state read rather than callbacks
+- [x] Improve the input response by using direct state read rather than callbacks
+- [x] Add a way to change the speed of the emulator
 - [ ] Add disassembly
-- [ ] Add a way to change the used version of the chip8
-- [ ] Add a way to change the frequency of the emulator
-- [ ] Faire une fenêtre imgui quand on démarre pour sélectionner la version de chip8
-- [ ] Faire héritage cpp pour cpu et pour selection et peut être Chip8Core
-- [ ] Create a class Memory with the memory and the value of 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F
 - [ ] Add emulation sound
+- [ ] Create a class Memory with the memory and the value of 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F
 - [ ] Implement WebAssembly support
 - [ ] Add base files to the .data of emscripten to be able to load all the roms from the web
 - [ ] Add a file input to load roms from the web
 - [ ] Add emulation for the SuperChip8 and the XO-Chip ?
+- [ ] Add a way to change the used version of the chip8
+- [ ] Add a way to change the frequency of the emulator
+- [ ] Faire une fenêtre imgui quand on démarre pour sélectionner la version de chip8
+- [ ] Faire héritage cpp pour cpu et pour selection et peut être Chip8Core
 - [ ] Créer une classe ImGuiMenuItemWindowList. Améliorer code imgui des fenêtres avec un système qui contiendrait les
   enums des fenêtres à afficher, ensuite en
   allant dans un switch case pour chaque enum dans le tableau, on afficherait la fenêtre correspondante. Rajouter class
@@ -76,7 +77,7 @@ git submodule update --init --recursive
 
 - [GLFW](https://www.glfw.org/)
 - [GLAD](https://glad.dav1d.de/)
+- [stb](https://github.com/nothings/stb)
 - [ImGui](https://github.com/ocornut/imgui)
 - [ImGuiFileDialog](https://github.com/aiekick/ImGuiFileDialog)
 - [ImGui Memory Editor](https://github.com/ocornut/imgui_club/tree/main/imgui_memory_editor)
-- [tinyfiledialogs](https://sourceforge.net/projects/tinyfiledialogs/)

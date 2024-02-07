@@ -302,6 +302,7 @@ void Chip8topia::toggleFullScreen() {
 void Chip8topia::toggleTurboMode() {
     glfwSwapInterval(m_isTurboMode ? 1 : 0); // 0 = no vsync, 1 = vsync
     m_isTurboMode = !m_isTurboMode;
+    m_chip8Emulator->setIsTurboMode(m_isTurboMode);
 }
 
 void Chip8topia::setWindowIcon() {
