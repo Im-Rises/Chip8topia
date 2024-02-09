@@ -57,6 +57,7 @@ git submodule update --init --recursive
 - [x] Improve the input response by using direct state read rather than callbacks
 - [x] Add a way to change the speed of the emulator
 - [ ] Add disassembly
+- [ ] Refactor all imgui windows to look pretty
 - [ ] Add emulation sound
 - [ ] Create a class Memory with the memory and the value of 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F
 - [ ] Implement WebAssembly support

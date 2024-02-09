@@ -51,7 +51,7 @@ private:
     void drawRegisters(Chip8Core* chip8);
     void drawStack(Chip8Core* chip8);
     void drawMemory(Chip8Core* chip8);
-    void drawKeyboard(Chip8Core* chip8);
+    void drawKeypad(Chip8Core* chip8);
     void drawDisassembler(Chip8Core* chip8);
 
 private:
@@ -61,7 +61,7 @@ private:
         "Registers", true, [this](Chip8Core* chip8) { drawRegisters(chip8); },
         "Stack", true, [this](Chip8Core* chip8) { drawStack(chip8); },
         "Memory Editor", true, [this](Chip8Core* chip8) { drawMemory(chip8); },
-        "Keyboard", true, [this](Chip8Core* chip8) { drawKeyboard(chip8); },
+        "Keyboard", true, [this](Chip8Core* chip8) { drawKeypad(chip8); },
         "Disassembler", true, [this](Chip8Core* chip8) { drawDisassembler(chip8); }
     };
 };

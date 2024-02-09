@@ -72,10 +72,10 @@ void Chip8topiaUi::drawEngineEmulationMenu(Chip8topia& chip8topia) {
             chip8topia.toggleTurboMode();
         }
 
-//        if (ImGui::MenuItem(std::format("Toggle Emulation turbo mode : {}", chip8topia.getChip8Emulator().getIsTurboMode() ? "ON " : "OFF").c_str(), "F3"))
-//        {
-//            chip8topia.getChip8Emulator().toggleTurboMode();
-//        }
+        //        if (ImGui::MenuItem(std::format("Toggle Emulation turbo mode : {}", chip8topia.getChip8Emulator().getIsTurboMode() ? "ON " : "OFF").c_str(), "F3"))
+        //        {
+        //            chip8topia.getChip8Emulator().toggleTurboMode();
+        //        }
 
         if (ImGui::MenuItem(chip8topia.getChip8Emulator().getIsPaused() ? "Resume" : "Pause", "F"))
         {
@@ -111,12 +111,12 @@ void Chip8topiaUi::drawViewMenu(Chip8topia& chip8topia) {
         // TODO: Create a dictonary of the keys and the name of the menu item with the event, to be sure to call the right event
         if (ImGui::MenuItem("Show/Hide MenuBar", "F1", &m_isMenuBarOpen))
         {
-//            toggleMenuBarVisibility();
+            //            toggleMenuBarVisibility();
         }
 
         if (ImGui::MenuItem("Show/Hide Windows", "F2", &m_windowsVisible))
         {
-//            toggleWindowsVisibility();
+            //            toggleWindowsVisibility();
         }
 
         if (ImGui::MenuItem("Center window", "F10"))
@@ -173,6 +173,7 @@ void Chip8topiaUi::drawVideoWindow(Chip8topia& chip8topia) {
         ImGui::End();
     }
 
+    // Save color in imgui.ini
     if (m_showForegroundColor)
     {
         ImGui::Begin("Draw color", &m_showForegroundColor);
