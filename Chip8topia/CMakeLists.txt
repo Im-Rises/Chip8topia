@@ -1,22 +1,12 @@
 file(GLOB_RECURSE SRCS "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 file(GLOB_RECURSE SRCS_IMGUI_FILEDIALOG "${CMAKE_SOURCE_DIR}/dependencies/ImGuiFileDialog/*.cpp")
-set(SRCS_IMGUI
-        "${CMAKE_SOURCE_DIR}/dependencies/imgui/imgui.cpp"
-        "${CMAKE_SOURCE_DIR}/dependencies/imgui/imgui_draw.cpp"
-        "${CMAKE_SOURCE_DIR}/dependencies/imgui/imgui_widgets.cpp"
-        "${CMAKE_SOURCE_DIR}/dependencies/imgui/imgui_tables.cpp"
-        "${CMAKE_SOURCE_DIR}/dependencies/imgui/backends/imgui_impl_glfw.cpp"
-        "${CMAKE_SOURCE_DIR}/dependencies/imgui/backends/imgui_impl_opengl3.cpp"
-        )
 
 add_executable(${PROJECT_NAME}
         ${SRCS}
-        ${SRCS_IMGUI}
         ${SRCS_IMGUI_FILEDIALOG}
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/dependencies")
-target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/dependencies/imgui")
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/dependencies/imgui_club")
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/utils")
 
@@ -29,6 +19,9 @@ target_link_libraries(${PROJECT_NAME} PRIVATE glad::glad)
 set(OpenGL_GL_PREFERENCE GLVND)
 find_package(OpenGL 3.3 REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL)
+
+find_package(imgui CONFIG REQUIRED)
+target_link_libraries(${PROJECT_NAME} PRIVATE imgui::imgui)
 
 find_package(Stb REQUIRED)
 target_include_directories(${PROJECT_NAME} PRIVATE ${Stb_INCLUDE_DIR})
