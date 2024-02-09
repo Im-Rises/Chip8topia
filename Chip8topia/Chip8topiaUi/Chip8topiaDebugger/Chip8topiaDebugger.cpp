@@ -82,30 +82,72 @@ void Chip8topiaDebugger::drawMemory(Chip8Core* chip8) {
     m_memoryEditor.DrawWindow("Memory Editor", &chip8->getCpu().getMemory(), Cpu::MEMORY_SIZE);
 }
 
-void Chip8topiaDebugger::drawKeyboard(Chip8Core* chip8) {
-    // TODO: Change design to be like the real keyboard of the chip8
-    ImGui::Text("Keyboard");
-    ImGui::BeginTable("Keyboard", 3);
-    for (auto i = 0; i < Input::KEY_COUNT; i++)
+void Chip8topiaDebugger::drawKeypad(Chip8Core* chip8) {
+    // TODO: Change design to be like the real keypad of the chip8
+    ImGui::Begin("Keypad");
+
+    ImGui::PushStyleVar(ImGuiStyleVar_SelectableTextAlign, ImVec2(0.5f, 0.5f));
+    // imgui push color to blue color
+    ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
+    //    static constexpr int
+    for (int i = 0; i < Input::KEY_COUNT; i++)
     {
-        ImGui::TableNextRow();
-        ImGui::TableSetColumnIndex(0);
-        ImGui::Text("Key: %02X", i);
-        ImGui::TableSetColumnIndex(1);
-        ImGui::Text("0x%04X", chip8->getInput()->isKeyPressed(i) ? 1 : 0);
-        ImGui::TableSetColumnIndex(2);
-        ImGui::Button("Toggle Key");
-        if (ImGui::IsItemClicked())
-        {
-            chip8->getInput()->updateKey(i, !chip8->getInput()->isKeyPressed(i));
-        }
+        ImGui::PushID(i);
+
+        //        char label[2] = { (char)k[i], '\0' };
+
+        //        ImGui::Selectable(label, v[i] != 0, 0, ImVec2(50, 50));
+
+        ImGui::Selectable("T", false, 0, ImVec2(50, 50));
+
+        //        if (ImGui::IsItemClicked())
+        //        {
+        //            chip8->getInput()->updateKey(i, !chip8->getInput()->isKeyPressed(i));
+        //        }
+        //
+        //        if (ImGui::IsAnyItemFocused())
+        //        {
+        //            chip8->getInput()->updateKey(i, true);
+        //        }
+
         //        if (ImGui::IsItemReleased())
         //        {
         //            chip8->getInput()->updateKey(i, false);
         //        }
-    }
 
-    ImGui::EndTable();
+        ImGui::PopID();
+
+        if ((i % 4) < 3)
+        {
+            ImGui::SameLine();
+        }
+    }
+    ImGui::PopStyleColor();
+    ImGui::PopStyleVar();
+
+    ImGui::End();
+
+    //    ImGui::BeginTable("Keyboard", 3);
+    //    for (auto i = 0; i < Input::KEY_COUNT; i++)
+    //    {
+    //        ImGui::TableNextRow();
+    //        ImGui::TableSetColumnIndex(0);
+    //        ImGui::Text("Key: %02X", i);
+    //        ImGui::TableSetColumnIndex(1);
+    //        ImGui::Text("0x%04X", chip8->getInput()->isKeyPressed(i) ? 1 : 0);
+    //        ImGui::TableSetColumnIndex(2);
+    //        ImGui::Button("Toggle Key");
+    //        if (ImGui::IsItemClicked())
+    //        {
+    //            chip8->getInput()->updateKey(i, !chip8->getInput()->isKeyPressed(i));
+    //        }
+    //        //        if (ImGui::IsItemReleased())
+    //        //        {
+    //        //            chip8->getInput()->updateKey(i, false);
+    //        //        }
+    //    }
+    //
+    //    ImGui::EndTable();
 }
 
 void Chip8topiaDebugger::drawDisassembler(Chip8Core* chip8) {
