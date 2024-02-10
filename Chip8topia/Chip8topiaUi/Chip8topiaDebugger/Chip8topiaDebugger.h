@@ -7,6 +7,7 @@
 
 #include "../../Chip8Emulator/Chip8Emulator.h"
 #include "../../Chip8Emulator/Chip8Core/Chip8Core.h"
+#include "Chip8Disassembler.h"
 
 class Chip8Emulator;
 class Chip8topiaDebugger {
@@ -17,9 +18,8 @@ class Chip8topiaDebugger {
         std::function<void(Args*...)> m_drawFunction;
 
         void drawMenuItem() {
-            if (ImGui::MenuItem(m_name))
+            if (ImGui::MenuItem(m_name, nullptr, &m_isOpen))
             {
-                m_isOpen = !m_isOpen;
             }
         }
 
@@ -56,12 +56,14 @@ private:
 
 private:
     MemoryEditor m_memoryEditor;
+    Chip8Disassembler m_disassembler;
 
+    // TODO: Add a new parameter which is the flags for the window
     std::array<MenuItem<Chip8Core>, 5> m_menuItems = {
         "Registers", true, [this](Chip8Core* chip8) { drawRegisters(chip8); },
         "Stack", true, [this](Chip8Core* chip8) { drawStack(chip8); },
         "Memory Editor", true, [this](Chip8Core* chip8) { drawMemory(chip8); },
-        "Keyboard", true, [this](Chip8Core* chip8) { drawKeypad(chip8); },
+        "Keypad", true, [this](Chip8Core* chip8) { drawKeypad(chip8); },
         "Disassembler", true, [this](Chip8Core* chip8) { drawDisassembler(chip8); }
     };
 };

@@ -23,8 +23,6 @@ void Chip8topiaUi::drawUi(Chip8topia& chip8topia) {
 }
 
 void Chip8topiaUi::drawMainMenuBar(Chip8topia& chip8topia) {
-    // TODO: Correct UI to still display the window when the menu bar is hidden
-    // TODO: Add a hide all windows button
     if (m_isMenuBarOpen && ImGui::BeginMainMenuBar())
     {
         drawFileMenu(chip8topia);
@@ -46,6 +44,10 @@ void Chip8topiaUi::drawMainMenuBar(Chip8topia& chip8topia) {
     drawRomWindow(chip8topia);
     drawAboutChip8topiaPopUpWindow();
     drawAboutChip8PopUpWindow();
+
+#ifndef NDEBUG
+    ImGui::ShowDemoWindow();
+#endif
 }
 
 void Chip8topiaUi::drawFileMenu(Chip8topia& chip8topia) {
@@ -71,11 +73,6 @@ void Chip8topiaUi::drawEngineEmulationMenu(Chip8topia& chip8topia) {
         {
             chip8topia.toggleTurboMode();
         }
-
-        //        if (ImGui::MenuItem(std::format("Toggle Emulation turbo mode : {}", chip8topia.getChip8Emulator().getIsTurboMode() ? "ON " : "OFF").c_str(), "F3"))
-        //        {
-        //            chip8topia.getChip8Emulator().toggleTurboMode();
-        //        }
 
         if (ImGui::MenuItem(chip8topia.getChip8Emulator().getIsPaused() ? "Resume" : "Pause", "F"))
         {
@@ -111,12 +108,10 @@ void Chip8topiaUi::drawViewMenu(Chip8topia& chip8topia) {
         // TODO: Create a dictonary of the keys and the name of the menu item with the event, to be sure to call the right event
         if (ImGui::MenuItem("Show/Hide MenuBar", "F1", &m_isMenuBarOpen))
         {
-            //            toggleMenuBarVisibility();
         }
 
         if (ImGui::MenuItem("Show/Hide Windows", "F2", &m_windowsVisible))
         {
-            //            toggleWindowsVisibility();
         }
 
         if (ImGui::MenuItem("Center window", "F10"))

@@ -105,8 +105,8 @@ public:
     auto getV() -> std::array<uint8, REGISTER_V_SIZE>& { return m_V; }
     auto getI() -> uint16& { return m_I; }
 
-    auto getGameTimer() -> uint8& { return m_gameTimer; }
-    auto getSoundTimer() -> uint8& { return m_soundTimer; }
+    auto getDT() -> uint8& { return m_DT; }
+    auto getST() -> uint8& { return m_ST; }
 
 private:
     std::array<uint8, MEMORY_SIZE> m_memory;
@@ -118,8 +118,8 @@ private:
     std::array<uint8, REGISTER_V_SIZE> m_V;
     uint16 m_I;
 
-    uint8 m_gameTimer;
-    uint8 m_soundTimer;
+    uint8 m_DT;
+    uint8 m_ST;
 
     std::shared_ptr<Ppu> m_ppu;
     std::shared_ptr<Input> m_input;

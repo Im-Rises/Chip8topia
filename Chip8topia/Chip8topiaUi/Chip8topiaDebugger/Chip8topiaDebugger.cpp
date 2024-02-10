@@ -24,10 +24,7 @@ void Chip8topiaDebugger::drawDebuggerWindows(Chip8Emulator& emulator) {
 void Chip8topiaDebugger::drawRegisters(Chip8Core* chip8) {
     Cpu& cpu = chip8->getCpu();
 
-    //    ImGui::Indent( 10.0f );
-    //    ImGui::AlignTextToFramePadding();
-    //    ImGui::PushItemWidth(30.0f);
-
+    ImGui::PushItemWidth(-FLT_MIN);
     ImGui::Text("PC:");
     ImGui::SameLine();
     ImGui::InputScalar("##PC", ImGuiDataType_U16, &cpu.getPc(), nullptr, nullptr, "%04X", ImGuiInputTextFlags_CharsHexadecimal);
@@ -36,20 +33,34 @@ void Chip8topiaDebugger::drawRegisters(Chip8Core* chip8) {
     ImGui::SameLine();
     ImGui::InputScalar("##I", ImGuiDataType_U16, &cpu.getI(), nullptr, nullptr, "%04X", ImGuiInputTextFlags_CharsHexadecimal);
 
+    ImGui::Text("DT:");
+    ImGui::SameLine();
+    ImGui::InputScalar("##DT", ImGuiDataType_U8, &cpu.getDT(), nullptr, nullptr, "%02X", ImGuiInputTextFlags_CharsHexadecimal);
+
+    ImGui::Text("ST:");
+    ImGui::SameLine();
+    ImGui::InputScalar("##ST", ImGuiDataType_U8, &cpu.getST(), nullptr, nullptr, "%02X", ImGuiInputTextFlags_CharsHexadecimal);
+    ImGui::PopItemWidth();
+
+    ImGui::Indent(10.0f);
+    ImGui::AlignTextToFramePadding();
+    ImGui::PushItemWidth(30.0f);
+    static constexpr int WINDOW_COUNT_PER_LINE = 4;
     for (auto i = 0; i < Cpu::REGISTER_V_SIZE; i++)
     {
-        ImGui::Text("V:");
+        ImGui::Text("V%X", i);
         ImGui::SameLine();
+        ImGui::PushID(i);
         ImGui::InputScalar("##V", ImGuiDataType_U8, &cpu.getV()[i], nullptr, nullptr, "%02X", ImGuiInputTextFlags_CharsHexadecimal);
+        ImGui::PopID();
+
+        if ((i % WINDOW_COUNT_PER_LINE) < WINDOW_COUNT_PER_LINE - 1)
+        {
+            ImGui::SameLine();
+        }
     }
 
-    ImGui::Text("Game Timer:");
-    ImGui::SameLine();
-    ImGui::InputScalar("##GameTimer", ImGuiDataType_U8, &cpu.getGameTimer(), nullptr, nullptr, "%02X", ImGuiInputTextFlags_CharsHexadecimal);
-
-    ImGui::Text("Sound Timer:");
-    ImGui::SameLine();
-    ImGui::InputScalar("##SoundTimer", ImGuiDataType_U8, &cpu.getSoundTimer(), nullptr, nullptr, "%02X", ImGuiInputTextFlags_CharsHexadecimal);
+    ImGui::PopItemWidth();
 }
 
 void Chip8topiaDebugger::drawStack(Chip8Core* chip8) {
@@ -59,23 +70,34 @@ void Chip8topiaDebugger::drawStack(Chip8Core* chip8) {
     ImGui::SameLine();
     ImGui::InputScalar("##SP", ImGuiDataType_U8, &cpu.getSp(), nullptr, nullptr, "%02X", ImGuiInputTextFlags_CharsHexadecimal);
 
+    ImGui::NewLine();
 
-    ImGui::Text("Stack");
-    ImGui::BeginTable("Stack", 3);
-    for (auto i = 0; i < 16; ++i)
+    if (ImGui::BeginTable("Stack", 2, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_Resizable))
     {
-        //        ImGui::PushID(i);
-        ImGui::TableNextRow();
-        ImGui::TableSetColumnIndex(0);
-        ImGui::Text("SP: %02X", i);
-        ImGui::TableSetColumnIndex(1);
-        ImGui::Text("0x%04X", cpu.getStack()[i]);
-        ImGui::TableSetColumnIndex(2);
-        ImGui::InputScalar("##Stack", ImGuiDataType_U16, &cpu.getStack()[i], nullptr, nullptr, "%04X", ImGuiInputTextFlags_CharsHexadecimal);
-        //        ImGui::PopID();
-    }
+        ImGui::TableSetupColumn("Depth");
+        ImGui::TableSetupColumn("Value");
+        ImGui::TableHeadersRow();
 
-    ImGui::EndTable();
+        for (auto row = 0; row < Cpu::STACK_SIZE; row++)
+        {
+            ImGui::TableNextRow();
+
+            if (row == 0)
+            {
+                ImGui::TableSetColumnIndex(1);
+                ImGui::PushItemWidth(-FLT_MIN);
+            }
+
+            ImGui::PushID(row);
+            ImGui::TableSetColumnIndex(0);
+            ImGui::Text("%02X", row);
+            ImGui::TableSetColumnIndex(1);
+            ImGui::InputScalar("##Stack", ImGuiDataType_U16, &cpu.getStack()[row], nullptr, nullptr, "%04X", ImGuiInputTextFlags_CharsHexadecimal);
+            ImGui::PopID();
+        }
+
+        ImGui::EndTable();
+    }
 }
 
 void Chip8topiaDebugger::drawMemory(Chip8Core* chip8) {
@@ -83,77 +105,40 @@ void Chip8topiaDebugger::drawMemory(Chip8Core* chip8) {
 }
 
 void Chip8topiaDebugger::drawKeypad(Chip8Core* chip8) {
-    // TODO: Change design to be like the real keypad of the chip8
-    ImGui::Begin("Keypad");
+    static constexpr int WINDOW_SIZE = 50;
+    static constexpr int WINDOW_COUNT_PER_LINE = 4;
 
-    ImGui::PushStyleVar(ImGuiStyleVar_SelectableTextAlign, ImVec2(0.5f, 0.5f));
-    // imgui push color to blue color
-    ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
-    //    static constexpr int
+    int flags = ImGuiSelectableFlags_AllowDoubleClick | ImGuiSelectableFlags_AllowItemOverlap;
+    ImGui::SetWindowFontScale(2.0F);
+    ImGui::PushStyleVar(ImGuiStyleVar_SelectableTextAlign, ImVec2(0.5F, 0.5F));
     for (int i = 0; i < Input::KEY_COUNT; i++)
     {
         ImGui::PushID(i);
+        if (ImGui::Selectable(Input::KEY_NAMES[i], chip8->getInput()->isKeyPressed(Input::KEYS[i]), flags, ImVec2(WINDOW_SIZE, WINDOW_SIZE)))
+        {
+        }
 
-        //        char label[2] = { (char)k[i], '\0' };
-
-        //        ImGui::Selectable(label, v[i] != 0, 0, ImVec2(50, 50));
-
-        ImGui::Selectable("T", false, 0, ImVec2(50, 50));
-
-        //        if (ImGui::IsItemClicked())
-        //        {
-        //            chip8->getInput()->updateKey(i, !chip8->getInput()->isKeyPressed(i));
-        //        }
-        //
-        //        if (ImGui::IsAnyItemFocused())
-        //        {
-        //            chip8->getInput()->updateKey(i, true);
-        //        }
-
-        //        if (ImGui::IsItemReleased())
-        //        {
-        //            chip8->getInput()->updateKey(i, false);
-        //        }
-
+        if (ImGui::IsItemActivated())
+        {
+            chip8->getInput()->updateKey(Input::KEYS[i], true);
+        }
+        else if (ImGui::IsItemDeactivated())
+        {
+            chip8->getInput()->updateKey(Input::KEYS[i], false);
+        }
         ImGui::PopID();
 
-        if ((i % 4) < 3)
+        if ((i % WINDOW_COUNT_PER_LINE) < WINDOW_COUNT_PER_LINE - 1)
         {
             ImGui::SameLine();
         }
     }
-    ImGui::PopStyleColor();
     ImGui::PopStyleVar();
-
-    ImGui::End();
-
-    //    ImGui::BeginTable("Keyboard", 3);
-    //    for (auto i = 0; i < Input::KEY_COUNT; i++)
-    //    {
-    //        ImGui::TableNextRow();
-    //        ImGui::TableSetColumnIndex(0);
-    //        ImGui::Text("Key: %02X", i);
-    //        ImGui::TableSetColumnIndex(1);
-    //        ImGui::Text("0x%04X", chip8->getInput()->isKeyPressed(i) ? 1 : 0);
-    //        ImGui::TableSetColumnIndex(2);
-    //        ImGui::Button("Toggle Key");
-    //        if (ImGui::IsItemClicked())
-    //        {
-    //            chip8->getInput()->updateKey(i, !chip8->getInput()->isKeyPressed(i));
-    //        }
-    //        //        if (ImGui::IsItemReleased())
-    //        //        {
-    //        //            chip8->getInput()->updateKey(i, false);
-    //        //        }
-    //    }
-    //
-    //    ImGui::EndTable();
+    ImGui::SetWindowFontScale(1.0F);
 }
 
 void Chip8topiaDebugger::drawDisassembler(Chip8Core* chip8) {
     // TODO: Implement disassembler
-
-    //    Disassembler disassembler;
     //    disassembler.disassemble(chip8->getCpu().m_Memory, chip8->getCpu().m_pc);
     //    disassembler.drawDisassembly();
 }
