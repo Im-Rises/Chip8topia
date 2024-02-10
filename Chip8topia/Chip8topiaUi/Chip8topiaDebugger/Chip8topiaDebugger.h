@@ -57,11 +57,12 @@ private:
 private:
     MemoryEditor m_memoryEditor;
 
+    // TODO: Add a new parameter which is the flags for the window
     std::array<MenuItem<Chip8Core>, 5> m_menuItems = {
         "Registers", true, [this](Chip8Core* chip8) { drawRegisters(chip8); },
         "Stack", true, [this](Chip8Core* chip8) { drawStack(chip8); },
         "Memory Editor", true, [this](Chip8Core* chip8) { drawMemory(chip8); },
-        "Keyboard", true, [this](Chip8Core* chip8) { drawKeypad(chip8); },
+        "Keypad", true, [this](Chip8Core* chip8) { drawKeypad(chip8); },
         "Disassembler", true, [this](Chip8Core* chip8) { drawDisassembler(chip8); }
     };
 };

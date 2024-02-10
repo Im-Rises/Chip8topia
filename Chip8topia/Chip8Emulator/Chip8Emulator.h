@@ -5,6 +5,9 @@
 #include "Chip8Emulation/Chip8SoundEmulation.h"
 #include "Chip8Emulation/Chip8RomLoader.h"
 
+// TODO: Faire un switch case qui démarre la version de Core sélectionné avec la création de Chip8Core m_core; en tant que unique_ptr
+// TODO: Pour la partie emulation faire des surcharges de fonctions avec comme paramètre const SuperChip8Core& core, const Chip8Core& core, const XOChip8Core& core, de cette façon on pourra définir trois fonctions différentes pour chaque version de Core et le prendra autmaotiquement lors de l'appel ?
+
 class Chip8Emulator {
 public:
     Chip8Emulator();
