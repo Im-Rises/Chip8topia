@@ -9,8 +9,8 @@
 Cpu::Cpu() : m_pc(START_ADDRESS),
              m_sp(0),
              m_I(0),
-             m_gameTimer(0),
-             m_soundTimer(0),
+             m_DT(0),
+             m_ST(0),
              m_memory{},
              m_V{},
              m_stack{},
@@ -31,8 +31,8 @@ void Cpu::reset() {
     m_pc = START_ADDRESS;
     m_sp = 0;
     m_I = 0;
-    m_gameTimer = 0;
-    m_soundTimer = 0;
+    m_DT = 0;
+    m_ST = 0;
     m_memory = {}; // TODO: Maybe for the ram we can reset everything except the rom location so it can be reloaded
     std::copy(FONTSET.begin(), FONTSET.end(), m_memory.begin());
     m_V = {};
@@ -51,14 +51,14 @@ void Cpu::clock() {
 }
 
 void Cpu::clockTimers() {
-    if (m_gameTimer > 0)
+    if (m_DT > 0)
     {
-        m_gameTimer--;
+        m_DT--;
     }
 
-    if (m_soundTimer > 0)
+    if (m_ST > 0)
     {
-        m_soundTimer--;
+        m_ST--;
     }
 }
 
@@ -319,7 +319,7 @@ void Cpu::SKNP_Vx(const uint8 x) {
 }
 
 void Cpu::LD_Vx_DT(const uint8 x) {
-    m_V[x] = m_gameTimer;
+    m_V[x] = m_DT;
 }
 
 void Cpu::LD_Vx_x(const uint8 x) {
@@ -334,11 +334,11 @@ void Cpu::LD_Vx_x(const uint8 x) {
 }
 
 void Cpu::LD_DT_Vx(const uint8 x) {
-    m_gameTimer = m_V[x];
+    m_DT = m_V[x];
 }
 
 void Cpu::LD_ST_Vx(const uint8 x) {
-    m_soundTimer = m_V[x];
+    m_ST = m_V[x];
 }
 
 void Cpu::ADD_I_Vx(const uint8 x) {
