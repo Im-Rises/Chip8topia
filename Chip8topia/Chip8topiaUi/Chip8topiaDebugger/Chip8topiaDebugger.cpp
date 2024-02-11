@@ -41,18 +41,10 @@ void Chip8topiaDebugger::drawRegisters(Chip8Core* chip8) {
     ImGui::SameLine();
     ImGui::InputScalar("##ST", ImGuiDataType_U8, &cpu.getST(), nullptr, nullptr, "%02X", ImGuiInputTextFlags_CharsHexadecimal);
     ImGui::PopItemWidth();
-    //    ImGui::Text("Halted:");
-    //    ImGui::SameLine();
-    //    ImGui::Checkbox("##Halted", &cpu.isHalted());
 
-    ImGui::Indent(10.0F);
+    ImGui::Indent(10.0f);
     ImGui::AlignTextToFramePadding();
-    //    ImGui::PushItemWidth(FLT_MIN / 4);
-    //    ImGui::PushItemWidth(TEXT_BASE_WIDTH * 3.0f); // Small
-    ImGui::PushItemWidth(-ImGui::GetContentRegionAvail().x);
-    //    ImGui::PushItemWidth(30.0F);
-
-    //    static constexpr int WINDOW_SIZE = 50;
+    ImGui::PushItemWidth(30.0f);
     static constexpr int WINDOW_COUNT_PER_LINE = 4;
     for (auto i = 0; i < Cpu::REGISTER_V_SIZE; i++)
     {
@@ -67,6 +59,8 @@ void Chip8topiaDebugger::drawRegisters(Chip8Core* chip8) {
             ImGui::SameLine();
         }
     }
+
+    ImGui::PopItemWidth();
 }
 
 void Chip8topiaDebugger::drawStack(Chip8Core* chip8) {
