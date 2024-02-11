@@ -2,6 +2,8 @@
 
 #include <binaryLib/binaryLib.h>
 #include <array>
+#include <string>
+#include <bitset>
 #include "../../Chip8Emulator/Chip8Core/Core/Cpu.h"
 
 class Chip8Disassembler {
@@ -18,5 +20,6 @@ public:
     void draw();
 
 private:
-    std::array<char, 512> m_disassembly;
+    std::array<std::string, Cpu::MEMORY_SIZE> m_disassembly{ "D" };
+    std::bitset<Cpu::MEMORY_SIZE> m_breakpoints;
 };

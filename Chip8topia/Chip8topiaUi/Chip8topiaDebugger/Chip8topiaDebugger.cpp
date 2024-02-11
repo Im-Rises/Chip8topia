@@ -154,5 +154,6 @@ void Chip8topiaDebugger::drawKeypad(Chip8Core* chip8) {
 }
 
 void Chip8topiaDebugger::drawDisassembler(Chip8Core* chip8) {
-    //    m_disassembler.draw(chip8->getCpu().getMemory(), chip8->getCpu().getPc());
+    m_disassembler.disasemble(chip8->getCpu().getMemory(), chip8->getCpu().getPc());
+    m_disassembler.draw();
 }
