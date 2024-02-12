@@ -52,18 +52,20 @@ private:
     void drawStack(Chip8Core* chip8);
     void drawMemory(Chip8Core* chip8);
     void drawKeypad(Chip8Core* chip8);
-    void drawDisassembler(Chip8Core* chip8);
+    void drawAssembly(Chip8Core* chip8);
+    void drawDisassemblyControls(Chip8Core* chip8);
 
 private:
     MemoryEditor m_memoryEditor;
     Chip8Disassembler m_disassembler;
 
     // TODO: Add a new parameter which is the flags for the window
-    std::array<MenuItem<Chip8Core>, 5> m_menuItems = {
+    std::array<MenuItem<Chip8Core>, 6> m_menuItems = {
         "Registers", true, [this](Chip8Core* chip8) { drawRegisters(chip8); },
         "Stack", true, [this](Chip8Core* chip8) { drawStack(chip8); },
         "Memory Editor", true, [this](Chip8Core* chip8) { drawMemory(chip8); },
         "Keypad", true, [this](Chip8Core* chip8) { drawKeypad(chip8); },
-        "Disassembler", true, [this](Chip8Core* chip8) { drawDisassembler(chip8); }
+        "Assembly", true, [this](Chip8Core* chip8) { drawAssembly(chip8); },
+        "Assembly Controls", true, [this](Chip8Core* chip8) { drawDisassemblyControls(chip8); }
     };
 };
