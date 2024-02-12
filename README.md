@@ -56,19 +56,24 @@ git submodule update --init --recursive
 - [x] Correct the emulation turbo mode (deleted currently)
 - [x] Improve the input response by using direct state read rather than callbacks
 - [x] Add a way to change the speed of the emulator
-- [ ] Refactor all imgui windows to look pretty
-- [ ] Change the structure of Chip8topia so it starts the window in a function and not in the constructor
+- [x] Refactor all imgui windows to look pretty
 - [ ] Add disassembly
+- [ ] Change the structure of Chip8topia so it starts the window in a function and not in the constructor
+- [ ] Faire des fonctions virtuel et les override dans chaque cpu ! Pas pure virtual, pour que si c'est pas override ça
+  appalle "assert" !
 - [ ] Add emulation sound
 - [ ] Create a class Memory with the memory and the value of 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F
 - [ ] Implement WebAssembly support
 - [ ] Add base files to the .data of emscripten to be able to load all the roms from the web
 - [ ] Add a file input to load roms from the web
 - [ ] Add emulation for the SuperChip8 and the XO-Chip ?
-- [ ] Add a way to change the used version of the chip8
+- [ ] Add a way to change the used version of the chip8 (ask with a window like the About window, which block user intil
+  he decides which version to use) and make it changeable before running a game and when the game is running (restart
+  the game when the version is changed while the game is running)
 - [ ] Add a way to change the frequency of the emulator
 - [ ] Faire une fenêtre imgui quand on démarre pour sélectionner la version de chip8
 - [ ] Faire héritage cpp pour cpu et pour selection et peut être Chip8Core
+- [ ] Add save states ?
 - [ ] Créer une classe ImGuiMenuItemWindowList. Améliorer code imgui des fenêtres avec un système qui contiendrait les
   enums des fenêtres à afficher, ensuite en
   allant dans un switch case pour chaque enum dans le tableau, on afficherait la fenêtre correspondante. Rajouter class
