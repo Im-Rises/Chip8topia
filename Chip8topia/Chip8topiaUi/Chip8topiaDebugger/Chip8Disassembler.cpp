@@ -27,8 +27,8 @@ void Chip8Disassembler::drawAssembly(const std::array<uint8, Cpu::MEMORY_SIZE>& 
             opcodeStringBuffer += "  ";
         }
 
-        //        opcodeStringBuffer += std::format("0x{:04X}: ({:04X}) {}\n", i, opcode, CpuDisassembly::disassembleOpcode(opcode));
-        opcodeStringBuffer += std::format("0x{:04X}: ({:04X})\n", i, opcode);
+        opcodeStringBuffer += std::format("0x{:04X}: ({:04X}) {}\n", i, opcode, CpuDisassembly::disassembleOpcode(opcode));
+        //        opcodeStringBuffer += std::format("0x{:04X}: ({:04X})\n", i, opcode);
 
         ImGui::Selectable(opcodeStringBuffer.c_str(), m_breakpoints[i], ImGuiSelectableFlags_AllowDoubleClick);
 
