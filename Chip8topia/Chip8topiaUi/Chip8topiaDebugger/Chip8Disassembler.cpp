@@ -7,37 +7,33 @@
 #include "../Chip8Emulator/Chip8Core/Core/CpuDisassembly.h"
 
 void Chip8Disassembler::drawAssembly(const std::array<uint8, Cpu::MEMORY_SIZE>& memory, uint16 pc) {
-    // TODO: Optimise to use a string with specific size and only modify its content not change its size every time
-
-    std::string opcodeStringBuffer;
-    for (int i = Cpu::START_ADDRESS; i < Cpu::MEMORY_SIZE; i += 2)
+    // TODO: Modify assembly to put real value for X, Y, N, NN, NNN and KK
+    ImGuiListClipper clipper;
+    clipper.Begin(Cpu::MEMORY_SIZE - 1);
+    while (clipper.Step())
     {
-        uint16 opcode = (memory[i] << 8) | memory[i + 1];
-
-        if (pc == i)
+        for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
         {
-            opcodeStringBuffer += "> ";
-        }
-        else if (m_breakpoints[i])
-        {
-            opcodeStringBuffer += "* ";
-        }
-        else
-        {
-            opcodeStringBuffer += "  ";
-        }
+            uint16 opcode = (memory[i] << 8) | memory[i + 1];
 
-        //        opcodeStringBuffer += std::format("0x{:04X}: ({:04X}) {}\n", i, opcode, CpuDisassembly::disassembleOpcode(opcode));
-        opcodeStringBuffer += std::format("0x{:04X}: ({:04X})\n", i, opcode);
+            if (pc == i)
+            {
+                ImGui::Text("> 0x%04X: (%04X) %s", i, opcode, CpuDisassembly::disassembleOpcode(opcode).c_str());
+            }
+            else if (m_breakpoints[i])
+            {
+                ImGui::Text("* 0x%04X: (%04X) %s", i, opcode, CpuDisassembly::disassembleOpcode(opcode).c_str());
+            }
+            else
+            {
+                ImGui::Text("  0x%04X: (%04X) %s", i, opcode, CpuDisassembly::disassembleOpcode(opcode).c_str());
+            }
 
-        ImGui::Selectable(opcodeStringBuffer.c_str(), m_breakpoints[i], ImGuiSelectableFlags_AllowDoubleClick);
-
-        if (ImGui::IsItemClicked())
-        {
-            m_breakpoints[i] = !m_breakpoints[i];
+            if (ImGui::IsItemClicked())
+            {
+                m_breakpoints[i] = !m_breakpoints[i];
+            }
         }
-
-        opcodeStringBuffer.clear();
     }
 }
 

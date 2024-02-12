@@ -58,6 +58,8 @@ git submodule update --init --recursive
 - [x] Add a way to change the speed of the emulator
 - [x] Refactor all imgui windows to look pretty
 - [ ] Add disassembly
+- [ ] Create a macro which will identify release and debug mode and change the window title accordingly _DEBUG and
+  NDEBUG
 - [ ] Change the structure of Chip8topia so it starts the window in a function and not in the constructor
 - [ ] Faire des fonctions virtuel et les override dans chaque cpu ! Pas pure virtual, pour que si c'est pas override ça
   appalle "assert" !

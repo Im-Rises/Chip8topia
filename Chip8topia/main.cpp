@@ -1,7 +1,3 @@
-#include <iostream>
-
-#include "Chip8topia.h"
-
 // // Doesn't work with MSVC
 // auto getCPppVersion() -> const char* {
 //    switch (__cplusplus)
@@ -23,12 +19,34 @@
 //    }
 //}
 
+#if defined(_WIN32) && !defined(_DEBUG)
+#define WIN32_RELEASE 1
+#endif
+
+
+#if defined(WIN32_RELEASE)
+#include <Windows.h>
+#else
+#include <iostream>
+#endif
+
+#include "Chip8topia.h"
+
+#if defined(WIN32_RELEASE)
+auto WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) -> int {
+    (void)hInstance;
+    (void)hPrevInstance;
+    (void)lpCmdLine;
+    (void)nCmdShow;
+#else
 auto main(int argc, char* argv[]) -> int {
     (void)argc;
     (void)argv;
+#endif
 
     Chip8topia chip8topia;
 
+#ifndef WIN32_RELEASE
     std::cout << Chip8topia::PROJECT_NAME << " " << Chip8topia::PROJECT_VERSION << std::endl
               << Chip8topia::PROJECT_LINK << std::endl
               << Chip8topia::PROJECT_AUTHOR << "\n"
@@ -38,7 +56,7 @@ auto main(int argc, char* argv[]) -> int {
     std::cout << "Build infos:" << std::endl
               << " - C++ standard: " << __cplusplus << std::endl
     //              << "Compiler: " << __VERSION__ << std::endl
-#if defined(NDEBUG)
+#if defined(_DEBUG)
               << " - Build type: Release" << std::endl
 #else
               << " - Build type: Debug" << std::endl
@@ -54,6 +72,7 @@ auto main(int argc, char* argv[]) -> int {
               << " - Glad version " << Chip8topia::getGladVersion() << std::endl
               << " - ImGui version " << Chip8topia::getImGuiVersion() << std::endl
               << std::endl;
+#endif
 
     return chip8topia.run();
 }

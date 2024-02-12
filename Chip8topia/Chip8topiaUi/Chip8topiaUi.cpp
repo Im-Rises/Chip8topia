@@ -45,7 +45,7 @@ void Chip8topiaUi::drawMainMenuBar(Chip8topia& chip8topia) {
     drawAboutChip8topiaPopUpWindow();
     drawAboutChip8PopUpWindow();
 
-#ifndef NDEBUG
+#ifdef _DEBUG
     ImGui::ShowDemoWindow();
 #endif
 }
