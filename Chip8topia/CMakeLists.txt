@@ -6,8 +6,12 @@ add_executable(${PROJECT_NAME}
         ${SRCS_IMGUI_FILEDIALOG}
 )
 
-if (WIN32)
+if (WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Release")
+    message("Setting WIN32_EXECUTABLE to TRUE in Release mode")
     set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE TRUE)
+elseif (WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Debug")
+    message("Setting WIN32_EXECUTABLE to FALSE in Debug mode")
+    set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE FALSE)
 endif ()
 
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/dependencies")
