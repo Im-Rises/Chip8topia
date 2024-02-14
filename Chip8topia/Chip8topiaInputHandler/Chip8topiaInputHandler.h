@@ -33,7 +33,7 @@ public:
     [[maybe_unused]] SingleSubscriberEvent<> m_F3KeyButtonPressedEvent;
     [[maybe_unused]] SingleSubscriberEvent<> m_F10KeyButtonPressedEvent;
     [[maybe_unused]] SingleSubscriberEvent<> m_F11KeyButtonPressedEvent;
-#ifndef NDEBUG
+#ifdef _DEBUG
     [[maybe_unused]] SingleSubscriberEvent<> m_F12KeyDebugButtonPressedEvent;
 #endif
 

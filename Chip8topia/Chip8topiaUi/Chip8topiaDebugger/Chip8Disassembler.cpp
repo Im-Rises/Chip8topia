@@ -7,60 +7,34 @@
 #include "../Chip8Emulator/Chip8Core/Core/CpuDisassembly.h"
 
 void Chip8Disassembler::drawAssembly(const std::array<uint8, Cpu::MEMORY_SIZE>& memory, uint16 pc) {
-    // TODO: Optimise to use a string with specific size and only modify its content not change its size every time
+    // TODO: Modify assembly to put real value for X, Y, N, NN, NNN and KK
+    ImGuiListClipper clipper;
+    clipper.Begin(Cpu::MEMORY_SIZE);
+    while (clipper.Step())
+    {
+        for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
+        {
+            uint16 opcode = (memory[i] << 8) | memory[i + 1];
 
-    //    std::string opcodeStringBuffer;
-    //    for (int i = Cpu::START_ADDRESS; i < Cpu::MEMORY_SIZE; i += 2)
-    //    {
-    //        uint16 opcode = (memory[i] << 8) | memory[i + 1];
-    //
-    //        if (pc == i)
-    //        {
-    //            opcodeStringBuffer += "> ";
-    //        }
-    //        else if (m_breakpoints[i])
-    //        {
-    //            opcodeStringBuffer += "* ";
-    //        }
-    //        else
-    //        {
-    //            opcodeStringBuffer += "  ";
-    //        }
-    //
-    //        opcodeStringBuffer += std::format("0x{:04X}: ({:04X}) {}\n", i, opcode, CpuDisassembly::disassembleOpcode(opcode));
-    //        //        opcodeStringBuffer += std::format("0x{:04X}: ({:04X})\n", i, opcode);
-    //
-    //        ImGui::Selectable(opcodeStringBuffer.c_str(), m_breakpoints[i], ImGuiSelectableFlags_AllowDoubleClick);
-    //
-    //        if (ImGui::IsItemClicked())
-    //        {
-    //            m_breakpoints[i] = !m_breakpoints[i];
-    //        }
-    //
-    //        opcodeStringBuffer.clear();
-    //    }
+            if (pc == i)
+            {
+                ImGui::Text("> 0x%04X: (%04X) %s", i, opcode, CpuDisassembly::disassembleOpcode(opcode).c_str());
+            }
+            else if (m_breakpoints[i])
+            {
+                ImGui::Text("* 0x%04X: (%04X) %s", i, opcode, CpuDisassembly::disassembleOpcode(opcode).c_str());
+            }
+            else
+            {
+                ImGui::Text("  0x%04X: (%04X) %s", i, opcode, CpuDisassembly::disassembleOpcode(opcode).c_str());
+            }
 
-    //    // TODO: use this code https://github.com/ocornut/imgui/issues/150
-
-    //    int ITEMS_COUNT = 2000;
-    //    ImGuiListClipper clipper;
-    //    clipper.Begin(ITEMS_COUNT);
-    //    while (clipper.Step())
-    //    {
-    //        for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
-    //            for (int j = 0; j < 10; j++)
-    //            {
-    //                ImGui::Text("Line %d Column %d...", i, j);
-    //                ImGui::NextColumn();
-    //            }
-    //    }
-
-    //    int lines = 0x1000;
-    //    ImGuiListClipper clipper;
-    //    clipper.Begin(lines);
-    //    while (clipper.Step())
-    //        for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
-    //            ImGui::Text("%i The quick brown fox jumps over the lazy dog", i);
+            if (ImGui::IsItemClicked())
+            {
+                m_breakpoints[i] = !m_breakpoints[i];
+            }
+        }
+    }
 }
 
 void Chip8Disassembler::drawAssemblyControls() {

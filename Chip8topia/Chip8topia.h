@@ -60,7 +60,7 @@ public:
     static auto getGladVersion() -> std::string_view;
     static auto getImGuiVersion() -> std::string;
 
-#ifndef NDEBUG
+#ifdef _DEBUG
     void loadDebugRom();
 #endif
 

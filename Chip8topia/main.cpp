@@ -56,7 +56,7 @@ auto main(int argc, char* argv[]) -> int {
     std::cout << "Build infos:" << std::endl
               << " - C++ standard: " << __cplusplus << std::endl
     //              << "Compiler: " << __VERSION__ << std::endl
-#if defined(NDEBUG)
+#if defined(_DEBUG)
               << " - Build type: Release" << std::endl
 #else
               << " - Build type: Debug" << std::endl
