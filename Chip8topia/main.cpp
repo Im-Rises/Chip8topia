@@ -1,7 +1,3 @@
-#include <iostream>
-
-#include "Chip8topia.h"
-
 // // Doesn't work with MSVC
 // auto getCPppVersion() -> const char* {
 //    switch (__cplusplus)
@@ -23,6 +19,26 @@
 //    }
 //}
 
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <iostream>
+#endif
+
+#include "Chip8topia.h"
+
+#ifdef _WIN32
+auto WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) -> int {
+    (void)hInstance;
+    (void)hPrevInstance;
+    (void)lpCmdLine;
+    (void)nCmdShow;
+
+    Chip8topia chip8topia;
+
+    return chip8topia.run();
+}
+#else
 auto main(int argc, char* argv[]) -> int {
     (void)argc;
     (void)argv;
@@ -57,3 +73,4 @@ auto main(int argc, char* argv[]) -> int {
 
     return chip8topia.run();
 }
+#endif
