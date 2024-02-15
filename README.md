@@ -16,11 +16,6 @@ https://chip8.gulrak.net/
 
 https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 
-```bash
-git submodule update --remote
-git submodule update --init --recursive
-```
-
 ## TODO
 
 - [x] Add glad init in Chip8topia.cpp
@@ -90,3 +85,22 @@ git submodule update --init --recursive
 - [ImGui](https://github.com/ocornut/imgui)
 - [ImGuiFileDialog](https://github.com/aiekick/ImGuiFileDialog)
 - [ImGui Memory Editor](https://github.com/ocornut/imgui_club/tree/main/imgui_memory_editor)
+- [Vcpkg](https://vcpkg.io/en)
+
+## Commands
+
+### Submodule:
+
+```bash
+git submodule update --remote
+git submodule update --init --recursive
+```
+
+### Emscripten:
+
+The first command auto install the vcpkg cmake dependencies and the second one build the project with emscripten.
+
+```bash
+emcmake cmake -B trash -S . -DCMAKE_TOOLCHAIN_FILE=~/vcpkg/scripts/buildsystems/vcpkg.cmake
+emmake make -C trash
+```
