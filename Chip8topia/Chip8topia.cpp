@@ -9,8 +9,8 @@
 #include <imgui_impl_opengl3.h>
 #include <cstdio>
 #define GL_SILENCE_DEPRECATION
-#if defined(IMGUI_IMPL_OPENGL_ES3)
-#include <GLES3/gl3.h>
+#if defined(IMGUI_IMPL_OPENGL_ES2)
+#include <GLES2/gl2.h>
 #endif
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
