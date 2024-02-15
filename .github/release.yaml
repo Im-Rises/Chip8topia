@@ -1,12 +1,12 @@
+# .github/release.yml
 # https://docs.github.com/en/repositories/releasing-projects-on-github/automatically-generated-release-notes
-# https://docs.github.com/en/issues/using-labels-and-milestones-to-track-work/managing-labels
 
 changelog:
   exclude:
     labels:
       - ignore-for-release
-#    authors:
-#      - octocat
+    authors:
+      - Im-Rises
   categories:
     - title: Breaking Changes 🛠
       labels:

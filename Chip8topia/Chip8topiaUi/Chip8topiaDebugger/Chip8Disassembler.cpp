@@ -9,7 +9,7 @@
 void Chip8Disassembler::drawAssembly(const std::array<uint8, Cpu::MEMORY_SIZE>& memory, uint16 pc) {
     // TODO: Modify assembly to put real value for X, Y, N, NN, NNN and KK
     ImGuiListClipper clipper;
-    clipper.Begin(Cpu::MEMORY_SIZE);
+    clipper.Begin(Cpu::MEMORY_SIZE - 1);
     while (clipper.Step())
     {
         for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
