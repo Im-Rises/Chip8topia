@@ -6,6 +6,10 @@ add_executable(${PROJECT_NAME}
         ${SRCS_IMGUI_FILEDIALOG}
 )
 
+target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/dependencies")
+target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/dependencies/imgui_club")
+target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/utils")
+
 if (NOT EMSCRIPTEN)
     if (WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Release")
         message("Setting WIN32_EXECUTABLE to TRUE in Release mode")
@@ -14,10 +18,6 @@ if (NOT EMSCRIPTEN)
         message("Setting WIN32_EXECUTABLE to FALSE in Debug mode")
         set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE FALSE)
     endif ()
-
-    target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/dependencies")
-    target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/dependencies/imgui_club")
-    target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/utils")
 
     find_package(glfw3 CONFIG REQUIRED)
     target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
