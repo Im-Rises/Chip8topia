@@ -13,7 +13,7 @@ uniform vec4 u_foregroundColor;
 void main()
 {
     vec4 color = texture(u_ourTexture, v_texCoord);
-    if (color.r > 0)
+    if (color.r > 0.0)
     {
         o_fragColor = u_foregroundColor;
     }
