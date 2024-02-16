@@ -52,9 +52,10 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [x] Improve the input response by using direct state read rather than callbacks
 - [x] Add a way to change the speed of the emulator
 - [x] Refactor all imgui windows to look pretty
-- [ ] Add disassembly
-- [ ] Create a macro which will identify release and debug mode and change the window title accordingly _DEBUG and
+- [x] Add disassembly
+- [] Create a macro which will identify release and debug mode and change the window title accordingly _DEBUG and
   NDEBUG
+- [ ] Use ImGui flags to keep last state (open or close) of the windows
 - [ ] Change the structure of Chip8topia so it starts the window in a function and not in the constructor
 - [ ] Faire des fonctions virtuel et les override dans chaque cpu ! Pas pure virtual, pour que si c'est pas override ça
   appalle "assert" !
@@ -101,6 +102,10 @@ git submodule update --init --recursive
 The first command auto install the vcpkg cmake dependencies and the second one build the project with emscripten.
 
 ```bash
-emcmake cmake -B trash -S . -DCMAKE_TOOLCHAIN_FILE=~/vcpkg/scripts/buildsystems/vcpkg.cmake
-emmake make -C trash
+emcmake cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=~/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=${EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -DVCPKG_TARGET_TRIPLET=wasm32-emscripten -DCMAKE_BUILD_TYPE=Release  
+emmake make -C build
+``` 
+
+```bash
+cmake . -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=../my/project/toolchain.cmake
 ```

@@ -16,7 +16,7 @@
 #include <GLFW/glfw3.h>
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
-// #include <format>
+#include <format>
 #include <chrono>
 
 #include "res/chip8topiaIconResource.h"
@@ -26,11 +26,12 @@
 #endif
 
 #ifdef __EMSCRIPTEN__
-#include "imgui/emscripten/emscripten_mainloop_stub.h"
+#include "imgui_emscripten/emscripten_mainloop_stub.h"
 #endif
 
 static void glfw_error_callback(int error, const char* description) {
-    fprintf(stderr, "GLFW Error %d: %s\n", error, description);
+    // TODO: Delete the print to console?
+    //    fprintf(stderr, "GLFW Error %d: %s\n", error, description);
 }
 
 void drop_callback(GLFWwindow* window, int count, const char** paths) {
@@ -118,9 +119,9 @@ Chip8topia::Chip8topia() {
 
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(m_window, true);
-#ifdef __EMSCRIPTEN__
-    ImGui_ImplGlfw_InstallEmscriptenCanvasResizeCallback("WEB_CANVAS_ID");
-#endif
+    // #ifdef __EMSCRIPTEN__
+    //     ImGui_ImplGlfw_InstallEmscriptenCanvasResizeCallback("WEB_CANVAS_ID");
+    // #endif
     ImGui_ImplOpenGL3_Init(glsl_version);
 
 #ifndef __EMSCRIPTEN__
@@ -154,16 +155,6 @@ Chip8topia::~Chip8topia() {
 }
 
 auto Chip8topia::run() -> int {
-    m_chip8Emulator = std::make_unique<Chip8Emulator>();
-#ifdef _WIN32
-    timeBeginPeriod(1);
-#endif
-
-#ifdef __EMSCRIPTEN__
-    io.IniFilename = nullptr;
-    EMSCRIPTEN_MAINLOOP_BEGIN
-#else
-
     auto lastTime = std::chrono::high_resolution_clock::now();
     auto currentTime = lastTime;
     float deltaTime = 0.0F;
@@ -171,6 +162,16 @@ auto Chip8topia::run() -> int {
     float frameCounter = 0.0F;
     float elapsedTimeAccumulator = 0.0F;
 
+    m_chip8Emulator = std::make_unique<Chip8Emulator>();
+#ifdef _WIN32
+    timeBeginPeriod(1);
+#endif
+
+#ifdef __EMSCRIPTEN__
+    ImGuiIO& io = ImGui::GetIO();
+    io.IniFilename = nullptr;
+    EMSCRIPTEN_MAINLOOP_BEGIN
+#else
     while (glfwWindowShouldClose(m_window) == 0)
 #endif
     {
