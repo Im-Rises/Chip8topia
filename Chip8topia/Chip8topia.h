@@ -33,15 +33,16 @@ public:
 
 public:
     auto run() -> int;
-    void close();
+    void closeRequest();
 
 private:
     auto init() -> int;
+    void cleanup();
+
     void handleInputs();
     void handleUi(const float deltaTime);
     void handleGameUpdate(const float deltaTime);
     void handleScreenUpdate();
-    void cleanup();
 
 public:
     void centerWindow();

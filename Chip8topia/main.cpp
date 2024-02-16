@@ -64,14 +64,14 @@ auto main(int argc, char* argv[]) -> int {
               << " - Build date: " << __DATE__ << " " << __TIME__ << std::endl
               << std::endl;
 
-    std::cout << "System and dependencies infos:" << std::endl
-              << " - OpenGL vendor " << Chip8topia::getOpenGLVendor() << std::endl
-              << " - OpenGL version " << Chip8topia::getOpenGLVersion() << std::endl
-              << " - OpenGL GLSL version " << Chip8topia::getGLSLVersion() << std::endl
-              << " - GLFW version " << Chip8topia::getGLFWVersion() << std::endl
-              << " - Glad version " << Chip8topia::getGladVersion() << std::endl
-              << " - ImGui version " << Chip8topia::getImGuiVersion() << std::endl
-              << std::endl;
+//    std::cout << "System and dependencies infos:" << std::endl
+//              << " - OpenGL vendor " << Chip8topia::getOpenGLVendor() << std::endl
+//              << " - OpenGL version " << Chip8topia::getOpenGLVersion() << std::endl
+//              << " - OpenGL GLSL version " << Chip8topia::getGLSLVersion() << std::endl
+//              << " - GLFW version " << Chip8topia::getGLFWVersion() << std::endl
+//              << " - Glad version " << Chip8topia::getGladVersion() << std::endl
+//              << " - ImGui version " << Chip8topia::getImGuiVersion() << std::endl
+//              << std::endl;
 #endif
 
     return chip8topia.run();

@@ -59,7 +59,7 @@ void Chip8topiaUi::drawFileMenu(Chip8topia& chip8topia) {
         }
         if (ImGui::MenuItem("Exit", "Alt+F4"))
         {
-            chip8topia.close();
+            chip8topia.closeRequest();
         }
 
         ImGui::EndMenu();

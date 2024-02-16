@@ -35,108 +35,14 @@ void drop_callback(GLFWwindow* window, int count, const char** paths) {
     //    engine->getChip8Emulator().getChip8Core()->getInput()->updateKey(0x0, 1);
 }
 
-Chip8topia::Chip8topia() {
-    glfwSetErrorCallback(glfw_error_callback);
-    if (glfwInit() == 0)
-        exit(1);
-
-    // GL 3.0 + GLSL 130
-    const char* glsl_version = "#version 330";
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // 3.2+ only
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);           // 3.0+ only
-
-    // Create window with graphics context
-    m_window = glfwCreateWindow(m_currentWidth, m_currentHeight, PROJECT_NAME, nullptr, nullptr);
-    if (m_window == nullptr)
-        exit(1);
-    glfwMakeContextCurrent(m_window);
-    glfwSwapInterval(m_isTurboMode ? 0 : 1); // 0 = no vsync, 1 = vsync
-
-    // Set window callbacks
-    glfwSetWindowUserPointer(m_window, this);
-    glfwSetDropCallback(m_window, drop_callback);
-    glfwSetKeyCallback(m_window, Chip8topiaInputHandler::key_callback);
-
-    // Center window
-    centerWindow();
-
-    // Initialize OpenGL loader
-    if (gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)) == 0)
-        exit(1);
-
-    // Setup Dear ImGui context
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO();
-    (void)io;
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;  // Enable Gamepad Controls
-    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;     // Enable Docking
-    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;   // Enable Multi-Viewport / Platform Windows
-    // io.ConfigViewportsNoAutoMerge = true;
-    // io.ConfigViewportsNoTaskBarIcon = true;
-
-    // Setup Dear ImGui style
-    ImGui::StyleColorsDark();
-    // ImGui::StyleColorsLight();
-
-    // When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
-    ImGuiStyle& style = ImGui::GetStyle();
-    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-    {
-        style.WindowRounding = 0.0F;
-        style.Colors[ImGuiCol_WindowBg].w = 1.0F;
-    }
-
-    // Setup Platform/Renderer backends
-    ImGui_ImplGlfw_InitForOpenGL(m_window, true);
-    ImGui_ImplOpenGL3_Init(glsl_version);
-
-    setWindowIcon();
-
-    m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.subscribe(this, &Chip8topia::close);
-    m_chip8topiaInputHandler.m_F3KeyButtonPressedEvent.subscribe(this, &Chip8topia::toggleTurboMode);
-    m_chip8topiaInputHandler.m_F10KeyButtonPressedEvent.subscribe(this, &Chip8topia::centerWindow);
-    m_chip8topiaInputHandler.m_F11KeyButtonPressedEvent.subscribe(this, &Chip8topia::toggleFullScreen);
-#ifdef _DEBUG
-    m_chip8topiaInputHandler.m_F12KeyDebugButtonPressedEvent.subscribe(this, &Chip8topia::loadDebugRom);
-#endif
+Chip8topia::Chip8topia() : m_window(nullptr) {
 }
 
-Chip8topia::~Chip8topia() {
-    m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.unsubscribe(this, &Chip8topia::close);
-    m_chip8topiaInputHandler.m_F3KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::toggleTurboMode);
-    m_chip8topiaInputHandler.m_F10KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::centerWindow);
-    m_chip8topiaInputHandler.m_F11KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::toggleFullScreen);
-#ifdef _DEBUG
-    m_chip8topiaInputHandler.m_F12KeyDebugButtonPressedEvent.unsubscribe(this, &Chip8topia::loadDebugRom);
-#endif
-
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
-
-    glfwDestroyWindow(m_window);
-    glfwTerminate();
-}
+Chip8topia::~Chip8topia() = default;
 
 auto Chip8topia::run() -> int {
-    //    if (init() != 0)
-    //        return 1;
-    //
-    //    while (!glfwWindowShouldClose(m_window))
-    //    {
-    //        updateInput();
-    //        updateUi();
-    //        updateGame();
-    //        render();
-    //    }
-    //
-    //    cleanup();
-    //
-    //    return 0;
+    if (init() != 0)
+        return 1;
 
     auto lastTime = std::chrono::high_resolution_clock::now();
     auto currentTime = lastTime;
@@ -175,15 +81,102 @@ auto Chip8topia::run() -> int {
     timeEndPeriod(1);
 #endif
 
+    cleanup();
+
     return 0;
 }
 
-void Chip8topia::close() {
+void Chip8topia::closeRequest() {
     glfwSetWindowShouldClose(m_window, 1);
 }
 
 auto Chip8topia::init() -> int {
+    glfwSetErrorCallback(glfw_error_callback);
+    if (glfwInit() == 0)
+        return 1;
+
+    // GL 3.0 + GLSL 130
+    const char* glsl_version = "#version 330";
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // 3.2+ only
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);           // 3.0+ only
+
+    // Create window with graphics context
+    m_window = glfwCreateWindow(m_currentWidth, m_currentHeight, PROJECT_NAME, nullptr, nullptr);
+    if (m_window == nullptr)
+        return 1;
+    glfwMakeContextCurrent(m_window);
+    glfwSwapInterval(m_isTurboMode ? 0 : 1); // 0 = no vsync, 1 = vsync
+
+    // Set window callbacks
+    glfwSetWindowUserPointer(m_window, this);
+    glfwSetDropCallback(m_window, drop_callback);
+    glfwSetKeyCallback(m_window, Chip8topiaInputHandler::key_callback);
+
+    // Center window
+    centerWindow();
+
+    // Initialize OpenGL loader
+    if (gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)) == 0)
+        return 1;
+
+    // Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+    (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;  // Enable Gamepad Controls
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;     // Enable Docking
+    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;   // Enable Multi-Viewport / Platform Windows
+    // io.ConfigViewportsNoAutoMerge = true;
+    // io.ConfigViewportsNoTaskBarIcon = true;
+
+    // Setup Dear ImGui style
+    ImGui::StyleColorsDark();
+    // ImGui::StyleColorsLight();
+
+    // When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
+    ImGuiStyle& style = ImGui::GetStyle();
+    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    {
+        style.WindowRounding = 0.0F;
+        style.Colors[ImGuiCol_WindowBg].w = 1.0F;
+    }
+
+    // Setup Platform/Renderer backends
+    ImGui_ImplGlfw_InitForOpenGL(m_window, true);
+    ImGui_ImplOpenGL3_Init(glsl_version);
+
+    setWindowIcon();
+
+    m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.subscribe(this, &Chip8topia::closeRequest);
+    m_chip8topiaInputHandler.m_F3KeyButtonPressedEvent.subscribe(this, &Chip8topia::toggleTurboMode);
+    m_chip8topiaInputHandler.m_F10KeyButtonPressedEvent.subscribe(this, &Chip8topia::centerWindow);
+    m_chip8topiaInputHandler.m_F11KeyButtonPressedEvent.subscribe(this, &Chip8topia::toggleFullScreen);
+#ifdef _DEBUG
+    m_chip8topiaInputHandler.m_F12KeyDebugButtonPressedEvent.subscribe(this, &Chip8topia::loadDebugRom);
+#endif
+
     return 0;
+}
+
+void Chip8topia::cleanup() {
+    m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.unsubscribe(this, &Chip8topia::closeRequest);
+    m_chip8topiaInputHandler.m_F3KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::toggleTurboMode);
+    m_chip8topiaInputHandler.m_F10KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::centerWindow);
+    m_chip8topiaInputHandler.m_F11KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::toggleFullScreen);
+#ifdef _DEBUG
+    m_chip8topiaInputHandler.m_F12KeyDebugButtonPressedEvent.unsubscribe(this, &Chip8topia::loadDebugRom);
+#endif
+
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
+    glfwDestroyWindow(m_window);
+    glfwTerminate();
 }
 
 void Chip8topia::handleInputs() {
@@ -230,9 +223,6 @@ void Chip8topia::handleScreenUpdate() {
     }
 
     glfwSwapBuffers(m_window);
-}
-
-void Chip8topia::cleanup() {
 }
 
 void Chip8topia::centerWindow() {
