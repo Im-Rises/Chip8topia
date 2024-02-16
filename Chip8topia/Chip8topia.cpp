@@ -119,9 +119,10 @@ Chip8topia::Chip8topia() {
 
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(m_window, true);
-#ifdef __EMSCRIPTEN__
-    ImGui_ImplGlfw_InstallEmscriptenCanvasResizeCallback(WEB_CANVAS_ID);
-#endif
+    // TODO: Not available on current version of ImGui for vcpkg
+    //  #ifdef __EMSCRIPTEN__
+    //      ImGui_ImplGlfw_InstallEmscriptenCanvasResizeCallback(WEB_CANVAS_ID);
+    //  #endif
     ImGui_ImplOpenGL3_Init(glsl_version);
 
 #ifndef __EMSCRIPTEN__

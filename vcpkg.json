@@ -9,13 +9,7 @@
     },
     {
       "name": "glfw3",
-      "version>=": "3.3.9",
-      "platform": "linux"
-    },
-    {
-      "name": "glfw3",
-      "version>=": "3.3.9",
-      "platform": "windows"
+      "version>=": "3.3.9"
     },
     {
       "name": "stb",

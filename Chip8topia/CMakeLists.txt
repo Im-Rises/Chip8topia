@@ -1,11 +1,6 @@
 file(GLOB_RECURSE SRCS "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 file(GLOB_RECURSE SRCS_IMGUI_FILEDIALOG "${CMAKE_SOURCE_DIR}/dependencies/ImGuiFileDialog/*.cpp")
 
-if (EMSCRIPTEN)
-    #    set(CMAKE_EXECUTABLE_SUFFIX ".html") # Add default .html file
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s USE_GLFW=3 -s FULL_ES3=1 -s WASM=1 -s ALLOW_MEMORY_GROWTH=1")
-endif ()
-
 add_executable(${PROJECT_NAME}
         ${SRCS}
         ${SRCS_IMGUI_FILEDIALOG}
@@ -23,23 +18,15 @@ elseif (WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Debug")
     set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE FALSE)
 endif ()
 
+find_package(glfw3 CONFIG REQUIRED)
+target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
 
-if (NOT EMSCRIPTEN)
+find_package(glad CONFIG REQUIRED)
+target_link_libraries(${PROJECT_NAME} PRIVATE glad::glad)
 
-    find_package(glfw3 CONFIG REQUIRED)
-    target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
-
-    find_package(glad CONFIG REQUIRED)
-    target_link_libraries(${PROJECT_NAME} PRIVATE glad::glad)
-
-    set(OpenGL_GL_PREFERENCE GLVND)
-    find_package(OpenGL 3.3 REQUIRED)
-    target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL)
-
-else ()
-    #    set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/web)
-    #    set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "index") # Change output name of .html and .js file
-endif ()
+set(OpenGL_GL_PREFERENCE GLVND)
+find_package(OpenGL 3.3 REQUIRED)
+target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL)
 
 find_package(imgui CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE imgui::imgui)
