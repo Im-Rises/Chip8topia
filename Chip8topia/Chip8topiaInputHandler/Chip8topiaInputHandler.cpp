@@ -1,6 +1,6 @@
 #include "Chip8topiaInputHandler.h"
 
-#include <glfw/glfw3.h>
+#include <GLFW/glfw3.h>
 
 void Chip8topiaInputHandler::update(GLFWwindow* window) const {
     glfwPollEvents();

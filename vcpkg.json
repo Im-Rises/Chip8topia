@@ -9,7 +9,8 @@
     },
     {
       "name": "glfw3",
-      "version>=": "3.3.9"
+      "version>=": "3.3.9",
+      "platform": "!emscripten"
     },
     {
       "name": "stb",
