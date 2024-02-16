@@ -22,8 +22,7 @@
 #endif
 
 static void glfw_error_callback(int error, const char* description) {
-    // TODO: Delete the print to console?
-    //    fprintf(stderr, "GLFW Error %d: %s\n", error, description);
+    std::cerr << "Glfw Error " << error << ": " << description << std::endl;
 }
 
 void drop_callback(GLFWwindow* window, int count, const char** paths) {
@@ -200,7 +199,6 @@ void Chip8topia::handleGameUpdate(const float deltaTime) {
 
 void Chip8topia::handleScreenUpdate() {
     const ImGuiIO& io = ImGui::GetIO();
-    static constexpr ImVec4 CLEAR_COLOR = ImVec4(0.45F, 0.55F, 0.60F, 1.00F); // TODO: Declare as a member ? (even through it doesn't change anything because currently not seen by the user)
 
     if (!m_isFullScreen)
     {

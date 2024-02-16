@@ -11,7 +11,6 @@ auto Chip8RomLoader::loadRom(const std::string& romPath) -> std::vector<uint8> {
         throw std::runtime_error("File does not exist");
     }
 
-
     if (!checkRomFileSize(romPath))
     {
         throw std::runtime_error("File size is not valid");
@@ -35,13 +34,10 @@ auto Chip8RomLoader::checkRomFileSize(const std::string& romPath) -> bool {
 }
 
 auto Chip8RomLoader::readRom(std::ifstream& romFile) -> std::vector<uint8> {
-    // TODO: Update this code to use std::filesystem::file_size ?
+    // TODO: Update this code to use std::filesystem::file_size and/or an array of uint8 of defined size ?
     std::vector<uint8> rom;
 
-    //    rom.resize(Cpu::ROM_SIZE);
-    romFile.seekg(0, std::ios::end);
-    const auto fileSize = romFile.tellg();
-    rom.resize(fileSize);
+    rom.resize(Cpu::ROM_SIZE);
     romFile.seekg(0, std::ios::beg);
 
     romFile.read(reinterpret_cast<char*>(rom.data()), Cpu::ROM_SIZE);
