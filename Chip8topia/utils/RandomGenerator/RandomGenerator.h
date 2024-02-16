@@ -4,7 +4,8 @@
 
 class RandomGenerator {
 public:
-    RandomGenerator(int min, int max) : m_randomDistribution(min, max) {
+    RandomGenerator(int min, int max) : m_randomDistribution(min, max),
+                                        m_randomEngine(std::random_device{}()) {
     }
     RandomGenerator(const RandomGenerator&) = delete;
     RandomGenerator(RandomGenerator&&) = delete;

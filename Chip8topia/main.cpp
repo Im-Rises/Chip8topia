@@ -23,7 +23,6 @@
 #define WIN32_RELEASE 1
 #endif
 
-
 #if defined(WIN32_RELEASE)
 #include <Windows.h>
 #else
