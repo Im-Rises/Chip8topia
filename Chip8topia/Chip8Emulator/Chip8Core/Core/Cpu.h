@@ -1,9 +1,11 @@
 #pragma once
 
 #include <binaryLib/binaryLib.h>
+#include <RandomGenerator/RandomGenerator.h>
 
 #include <array>
 #include <memory>
+#include <random>
 #include <vector>
 
 class Ppu;
@@ -126,4 +128,6 @@ private:
 
     bool m_isHalted;
     bool m_requestDisableHalt;
+
+    RandomGenerator m_u8NumberRandomGenerator;
 };

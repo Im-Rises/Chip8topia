@@ -4,7 +4,7 @@ https://en.wikipedia.org/wiki/CHIP-8#Further_reading
 
 http://devernay.free.fr/hacks/chip8/C8TECH10.HTM
 
-tobiasvl.github.io/blog/write-a-chip-8-emulator/
+http://tobiasvl.github.io/blog/write-a-chip-8-emulator/
 
 https://www.laurencescotford.net/2020/07/19/chip-8-on-the-cosmac-vip-arithmetic-and-logic-instructions/
 
@@ -52,17 +52,17 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [x] Improve the input response by using direct state read rather than callbacks
 - [x] Add a way to change the speed of the emulator
 - [x] Refactor all imgui windows to look pretty
-- [ ] Add disassembly
-- [ ] Create a macro which will identify release and debug mode and change the window title accordingly _DEBUG and
+- [x] Add disassembly
+- [x] Change the structure of Chip8topia so it starts the window in a function and not in the constructor
+- [x] Add commands and try compilation with emscripten
+- [x] Create a macro which will identify release and debug mode and change the window title accordingly _DEBUG and
+- [ ] Add OpenGL ES support for WebAssembly
   NDEBUG
-- [ ] Change the structure of Chip8topia so it starts the window in a function and not in the constructor
 - [ ] Faire des fonctions virtuel et les override dans chaque cpu ! Pas pure virtual, pour que si c'est pas override ça
-  appalle "assert" !
+  appelle "assert" !
+- [ ] Replace PlateformIdentifier.h with variable defined in the CMakeLists.txt
 - [ ] Add emulation sound
 - [ ] Create a class Memory with the memory and the value of 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F
-- [ ] Implement WebAssembly support
-- [ ] Add base files to the .data of emscripten to be able to load all the roms from the web
-- [ ] Add a file input to load roms from the web
 - [ ] Add emulation for the SuperChip8 and the XO-Chip ?
 - [ ] Add a way to change the used version of the chip8 (ask with a window like the About window, which block user intil
   he decides which version to use) and make it changeable before running a game and when the game is running (restart
@@ -96,11 +96,23 @@ git submodule update --remote
 git submodule update --init --recursive
 ```
 
-### Emscripten:
+### Vcpkg:
 
-The first command auto install the vcpkg cmake dependencies and the second one build the project with emscripten.
+In order to use vcpkg with CMake outside of an IDE, you can use the toolchain file:
 
 ```bash
-emcmake cmake -B trash -S . -DCMAKE_TOOLCHAIN_FILE=~/vcpkg/scripts/buildsystems/vcpkg.cmake
-emmake make -C trash
+cmake -B [build directory] -S . -DCMAKE_TOOLCHAIN_FILE=[path to vcpkg]/scripts/buildsystems/vcpkg.cmake
+```
+
+Then build with:
+
+```bash
+cmake --build [build directory]
+```
+
+### Emscripten
+
+```bash
+emcmake cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=~/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=${EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -DVCPKG_TARGET_TRIPLET=wasm32-emscripten "-DCMAKE_EXE_LINKER_FLAGS=-s USE_GLFW=3 -s FULL_ES3=1 -s WASM=1 -s ALLOW_MEMORY_GROWTH=1" -DCMAKE_BUILD_TYPE=Release  
+emmake make -C build // or cd build && make
 ```

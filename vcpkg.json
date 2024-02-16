@@ -9,15 +9,17 @@
     },
     {
       "name": "glfw3",
-      "version>=": "3.3.9"
+      "version>=": "3.3.9",
+      "platform": "!emscripten"
     },
     {
       "name": "stb",
-      "version>=": "2023-04-11#1"
+      "version>=": "2023-04-11#1",
+      "platform": "!emscripten"
     },
     {
       "name": "imgui",
-      "version>=": "1.90#4",
+      "version>=": "1.90#3",
       "features": [
         "glfw-binding",
         "opengl3-binding",

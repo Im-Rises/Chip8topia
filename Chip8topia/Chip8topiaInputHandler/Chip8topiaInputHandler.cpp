@@ -1,6 +1,6 @@
 #include "Chip8topiaInputHandler.h"
 
-#include <glfw/glfw3.h>
+#include <GLFW/glfw3.h>
 
 void Chip8topiaInputHandler::update(GLFWwindow* window) const {
     glfwPollEvents();
@@ -48,7 +48,7 @@ void Chip8topiaInputHandler::key_callback(GLFWwindow* /*window*/, int key, int /
         case GLFW_KEY_F3: inputHandler.m_F3KeyButtonPressedEvent.trigger(); break;
         case GLFW_KEY_F10: inputHandler.m_F10KeyButtonPressedEvent.trigger(); break;
         case GLFW_KEY_F11: inputHandler.m_F11KeyButtonPressedEvent.trigger(); break;
-#ifdef _DEBUG
+#if !defined(BUILD_RELEASE)
         case GLFW_KEY_F12: inputHandler.m_F12KeyDebugButtonPressedEvent.trigger(); break;
 #endif
         case GLFW_KEY_1: inputHandler.m_GameInput.trigger(0x1, true); break;

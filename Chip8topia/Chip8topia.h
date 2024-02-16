@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string_view>
+#include <plateformIdentifier/plateformIdentifier.h>
 
 #include "Chip8topiaUi/Chip8topiaUi.h"
 #include "Chip8Emulator/Chip8Emulator.h"
@@ -33,9 +34,12 @@ public:
 
 public:
     auto run() -> int;
-    void close();
+    void closeRequest();
 
 private:
+    auto init() -> int;
+    void cleanup();
+
     void handleInputs();
     void handleUi(const float deltaTime);
     void handleGameUpdate(const float deltaTime);
@@ -47,26 +51,28 @@ public:
     void toggleFullScreen();
     void toggleTurboMode();
 
-#ifndef __EMSCRIPTEN__
     void setWindowIcon();
     void setWindowTitle(const float fps);
-#endif
 
     [[nodiscard]] auto getChip8Emulator() -> Chip8Emulator&;
     [[nodiscard]] auto getIsTurboMode() const -> bool;
 
+private:
     static auto getOpenGLVendor() -> std::string_view;
     static auto getOpenGLVersion() -> std::string_view;
     static auto getGLSLVersion() -> std::string_view;
     static auto getGLFWVersion() -> std::string;
     static auto getGladVersion() -> std::string_view;
     static auto getImGuiVersion() -> std::string;
+    void printDependenciesInfos();
 
-#ifdef _DEBUG
+#if !defined(BUILD_RELEASE)
     void loadDebugRom();
 #endif
 
 private:
+    static constexpr ImVec4 CLEAR_COLOR = ImVec4(0.45F, 0.55F, 0.60F, 1.00F);
+
     GLFWwindow* m_window;
     std::unique_ptr<Chip8Emulator> m_chip8Emulator; // TODO: Change to be initialized once the game loop is started
     Chip8topiaUi m_chip8topiaUi;                    // TODO: Change to be initialized once the game loop is started

@@ -1,6 +1,5 @@
 #include "Cpu.h"
 
-#include <random>
 #include <utility>
 
 #include "Input.h"
@@ -15,7 +14,8 @@ Cpu::Cpu() : m_pc(START_ADDRESS),
              m_V{},
              m_stack{},
              m_isHalted(false),
-             m_requestDisableHalt(false) {
+             m_requestDisableHalt(false),
+             m_u8NumberRandomGenerator(0, 255) {
     std::copy(FONTSET.begin(), FONTSET.end(), m_memory.begin());
 }
 
@@ -270,20 +270,8 @@ void Cpu::JP_V0_addr(const uint16 address) {
     m_pc = m_V[0] + address;
 }
 
-auto generateRandomNumber(int min, int max) -> int {
-    // TODO: Maybe move this to a separate class and stop initializing the random number generator every time
-
-    // Create a random number generator
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> distribution(min, max);
-
-    // Generate and return a random number within the specified range
-    return distribution(gen);
-}
-
 void Cpu::RND_Vx_nn(const uint8 x, const uint8 nn) {
-    m_V[x] = generateRandomNumber(0, 255) & nn; // TODO: Check the value can reach 0 to 255 inclusive
+    m_V[x] = m_u8NumberRandomGenerator.generateRandomNumber() & nn; // TODO: Check the value can reach 0 to 255 inclusive
 }
 
 void Cpu::DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) {

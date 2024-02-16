@@ -7,7 +7,6 @@
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
-#include <cstdio>
 #define GL_SILENCE_DEPRECATION
 #if defined(IMGUI_IMPL_OPENGL_ES2)
 #include <GLES2/gl2.h>
@@ -16,8 +15,9 @@
 #include <GLFW/glfw3.h>
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
-// #include <format>
+#include <format>
 #include <chrono>
+#include <iostream>
 
 #include "res/chip8topiaIconResource.h"
 
@@ -26,11 +26,11 @@
 #endif
 
 #ifdef __EMSCRIPTEN__
-#include "imgui/emscripten/emscripten_mainloop_stub.h"
+#include "imgui_emscripten/imgui_emscripten.h"
 #endif
 
 static void glfw_error_callback(int error, const char* description) {
-    fprintf(stderr, "GLFW Error %d: %s\n", error, description);
+    std::cerr << "Glfw Error " << error << ": " << description << '\n';
 }
 
 void drop_callback(GLFWwindow* window, int count, const char** paths) {
@@ -43,25 +43,83 @@ void drop_callback(GLFWwindow* window, int count, const char** paths) {
     //    engine->getChip8Emulator().getChip8Core()->getInput()->updateKey(0x0, 1);
 }
 
-Chip8topia::Chip8topia() {
+Chip8topia::Chip8topia() : m_window(nullptr) {
+}
+
+Chip8topia::~Chip8topia() = default;
+
+auto Chip8topia::run() -> int {
+    if (init() != 0)
+        return 1;
+
+    printDependenciesInfos();
+
+    auto lastTime = std::chrono::high_resolution_clock::now();
+    auto currentTime = lastTime;
+    float deltaTime = 0.0F;
+
+    float frameCounter = 0.0F;
+    float elapsedTimeAccumulator = 0.0F;
+
+    m_chip8Emulator = std::make_unique<Chip8Emulator>();
+#ifdef _WIN32
+    timeBeginPeriod(1);
+#endif
+
+#ifdef __EMSCRIPTEN__
+    io.IniFilename = nullptr;
+    EMSCRIPTEN_MAINLOOP_BEGIN
+#else
+    while (glfwWindowShouldClose(m_window) == 0)
+#endif
+    {
+        currentTime = std::chrono::high_resolution_clock::now();
+        deltaTime = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - lastTime).count();
+        lastTime = currentTime;
+
+        handleInputs();
+        handleUi(deltaTime);
+        handleGameUpdate(deltaTime);
+        handleScreenUpdate();
+
+        frameCounter++;
+        elapsedTimeAccumulator += deltaTime;
+        if (elapsedTimeAccumulator >= 1.0F)
+        {
+            setWindowTitle(frameCounter / elapsedTimeAccumulator);
+            frameCounter = 0;
+            elapsedTimeAccumulator = 0.0F;
+        }
+    }
+#ifdef __EMSCRIPTEN__
+    EMSCRIPTEN_MAINLOOP_END;
+#endif
+
+#ifdef _WIN32
+    timeEndPeriod(1);
+#endif
+
+    cleanup();
+
+    return 0;
+}
+
+void Chip8topia::closeRequest() {
+    glfwSetWindowShouldClose(m_window, 1);
+}
+
+auto Chip8topia::init() -> int {
     glfwSetErrorCallback(glfw_error_callback);
     if (glfwInit() == 0)
-        exit(1);
+        return 1;
 
         // Decide GL+GLSL versions
-#if defined(IMGUI_IMPL_OPENGL_ES2)
-    // GL ES 2.0 + GLSL 100
+#if defined(IMGUI_IMPL_OPENGL_ES2) // TODO: Change to use OPENGL_ES3 ?
+    // GL ES 3.0 + GLSL 300 ES
     const char* glsl_version = "#version 300 es";
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
     glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
-// #elif defined(__APPLE__)
-//     // GL 3.2 + GLSL 150
-//     const char* glsl_version = "#version 150";
-//     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-//     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-//     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // 3.2+ only
-//     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);           // Required on Mac
 #else
     // GL 3.0 + GLSL 130
     const char* glsl_version = "#version 330";
@@ -74,7 +132,7 @@ Chip8topia::Chip8topia() {
     // Create window with graphics context
     m_window = glfwCreateWindow(m_currentWidth, m_currentHeight, PROJECT_NAME, nullptr, nullptr);
     if (m_window == nullptr)
-        exit(1);
+        return 1;
     glfwMakeContextCurrent(m_window);
     glfwSwapInterval(m_isTurboMode ? 0 : 1); // 0 = no vsync, 1 = vsync
 
@@ -84,13 +142,11 @@ Chip8topia::Chip8topia() {
     glfwSetKeyCallback(m_window, Chip8topiaInputHandler::key_callback);
 
     // Center window
-    centerWindow(); // TODO: Check if doesn't cause problems on Emscripten
+    centerWindow();
 
-// Initialize OpenGL loader
-#ifndef __EMSCRIPTEN__
+    // Initialize OpenGL loader
     if (gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)) == 0)
-        exit(1);
-#endif
+        return 1;
 
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
@@ -119,29 +175,29 @@ Chip8topia::Chip8topia() {
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(m_window, true);
 #ifdef __EMSCRIPTEN__
-    ImGui_ImplGlfw_InstallEmscriptenCanvasResizeCallback("WEB_CANVAS_ID");
+    ImGui_ImplGlfw_InstallEmscriptenCanvasResizeCallback("#canvas");
 #endif
     ImGui_ImplOpenGL3_Init(glsl_version);
 
-#ifndef __EMSCRIPTEN__
     setWindowIcon();
-#endif
 
-    m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.subscribe(this, &Chip8topia::close);
+    m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.subscribe(this, &Chip8topia::closeRequest);
     m_chip8topiaInputHandler.m_F3KeyButtonPressedEvent.subscribe(this, &Chip8topia::toggleTurboMode);
     m_chip8topiaInputHandler.m_F10KeyButtonPressedEvent.subscribe(this, &Chip8topia::centerWindow);
     m_chip8topiaInputHandler.m_F11KeyButtonPressedEvent.subscribe(this, &Chip8topia::toggleFullScreen);
-#ifdef _DEBUG
+#if !defined(BUILD_RELEASE)
     m_chip8topiaInputHandler.m_F12KeyDebugButtonPressedEvent.subscribe(this, &Chip8topia::loadDebugRom);
 #endif
+
+    return 0;
 }
 
-Chip8topia::~Chip8topia() {
-    m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.unsubscribe(this, &Chip8topia::close);
+void Chip8topia::cleanup() {
+    m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.unsubscribe(this, &Chip8topia::closeRequest);
     m_chip8topiaInputHandler.m_F3KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::toggleTurboMode);
     m_chip8topiaInputHandler.m_F10KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::centerWindow);
     m_chip8topiaInputHandler.m_F11KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::toggleFullScreen);
-#ifdef _DEBUG
+#if !defined(BUILD_RELEASE)
     m_chip8topiaInputHandler.m_F12KeyDebugButtonPressedEvent.unsubscribe(this, &Chip8topia::loadDebugRom);
 #endif
 
@@ -151,62 +207,6 @@ Chip8topia::~Chip8topia() {
 
     glfwDestroyWindow(m_window);
     glfwTerminate();
-}
-
-auto Chip8topia::run() -> int {
-    m_chip8Emulator = std::make_unique<Chip8Emulator>();
-#ifdef _WIN32
-    timeBeginPeriod(1);
-#endif
-
-#ifdef __EMSCRIPTEN__
-    io.IniFilename = nullptr;
-    EMSCRIPTEN_MAINLOOP_BEGIN
-#else
-
-    auto lastTime = std::chrono::high_resolution_clock::now();
-    auto currentTime = lastTime;
-    float deltaTime = 0.0F;
-
-    float frameCounter = 0.0F;
-    float elapsedTimeAccumulator = 0.0F;
-
-    while (glfwWindowShouldClose(m_window) == 0)
-#endif
-    {
-        currentTime = std::chrono::high_resolution_clock::now();
-        deltaTime = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - lastTime).count();
-        lastTime = currentTime;
-
-        handleInputs();
-        handleUi(deltaTime);
-        handleGameUpdate(deltaTime);
-        handleScreenUpdate();
-
-        frameCounter++;
-        elapsedTimeAccumulator += deltaTime;
-        if (elapsedTimeAccumulator >= 1.0F)
-        {
-#ifndef __EMSCRIPTEN__
-            setWindowTitle(frameCounter / elapsedTimeAccumulator);
-#endif
-            frameCounter = 0;
-            elapsedTimeAccumulator = 0.0F;
-        }
-    }
-#ifdef __EMSCRIPTEN__
-    EMSCRIPTEN_MAINLOOP_END;
-#endif
-
-#ifdef _WIN32
-    timeEndPeriod(1);
-#endif
-
-    return 0;
-}
-
-void Chip8topia::close() {
-    glfwSetWindowShouldClose(m_window, 1);
 }
 
 void Chip8topia::handleInputs() {
@@ -227,7 +227,6 @@ void Chip8topia::handleGameUpdate(const float deltaTime) {
 
 void Chip8topia::handleScreenUpdate() {
     const ImGuiIO& io = ImGui::GetIO();
-    static constexpr ImVec4 CLEAR_COLOR = ImVec4(0.45F, 0.55F, 0.60F, 1.00F); // TODO: Declare as a member ? (even through it doesn't change anything because currently not seen by the user)
 
     if (!m_isFullScreen)
     {
@@ -306,7 +305,6 @@ void Chip8topia::toggleTurboMode() {
     m_chip8Emulator->setIsTurboMode(m_isTurboMode);
 }
 
-#ifndef __EMSCRIPTEN__
 void Chip8topia::setWindowIcon() {
     int chip8topiaIconWidth = 0, chip8topiaIconHeight = 0, channelsInFile = 0;
     unsigned char* imagePixels = stbi_load_from_memory(CHIP8TOPIA_ICON_DATA.data(), static_cast<int>(CHIP8TOPIA_ICON_DATA.size()), &chip8topiaIconWidth, &chip8topiaIconHeight, &channelsInFile, 0);
@@ -322,7 +320,6 @@ void Chip8topia::setWindowTitle(const float fps) {
     //    m_chip8Emulator.getRomName();// TODO: Add rom name to window title
     glfwSetWindowTitle(m_window, std::format("{} - {:.2f} fps", PROJECT_NAME, fps).c_str());
 }
-#endif
 
 auto Chip8topia::getChip8Emulator() -> Chip8Emulator& {
     return *m_chip8Emulator;
@@ -357,7 +354,20 @@ auto Chip8topia::getImGuiVersion() -> std::string {
     return IMGUI_VERSION;
 }
 
-#ifdef _DEBUG
+void Chip8topia::printDependenciesInfos() {
+    {
+        std::cout << "System and dependencies infos:" << '\n'
+                  << " - OpenGL vendor " << Chip8topia::getOpenGLVendor() << '\n'
+                  << " - OpenGL version " << Chip8topia::getOpenGLVersion() << '\n'
+                  << " - OpenGL GLSL version " << Chip8topia::getGLSLVersion() << '\n'
+                  << " - GLFW version " << Chip8topia::getGLFWVersion() << '\n'
+                  << " - Glad version " << Chip8topia::getGladVersion() << '\n'
+                  << " - ImGui version " << Chip8topia::getImGuiVersion() << '\n'
+                  << '\n';
+    }
+}
+
+#if !defined(BUILD_RELEASE)
 void Chip8topia::loadDebugRom() {
     m_chip8Emulator->loadRom("trash/5-quirks.ch8");
 }

@@ -1,30 +1,10 @@
-// // Doesn't work with MSVC
-// auto getCPppVersion() -> const char* {
-//    switch (__cplusplus)
-//    {
-//    case 202101L:
-//        return "C++23";
-//    case 202002L:
-//        return "C++20";
-//    case 201703L:
-//        return "C++17";
-//    case 201402L:
-//        return "C++14";
-//    case 201103L:
-//        return "C++11";
-//    case 199711L:
-//        return "C++98";
-//    default:
-//        return (&"pre-standard C++. "[__cplusplus]);
-//    }
-//}
+#include <plateformIdentifier/plateformIdentifier.h>
 
-#if defined(_WIN32) && !defined(_DEBUG)
-#define WIN32_RELEASE 1
+#if defined(PLATFORM_WINDOWS) && defined(BUILD_RELEASE)
+#define WINRELEASE
 #endif
 
-
-#if defined(WIN32_RELEASE)
+#if defined(WINRELEASE)
 #include <Windows.h>
 #else
 #include <iostream>
@@ -32,13 +12,13 @@
 
 #include "Chip8topia.h"
 
-#if defined(WIN32_RELEASE)
+#if defined(WINRELEASE)
 auto WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) -> int {
     (void)hInstance;
     (void)hPrevInstance;
     (void)lpCmdLine;
     (void)nCmdShow;
-#else
+#else // Windows Debug, Linux, Apple
 auto main(int argc, char* argv[]) -> int {
     (void)argc;
     (void)argv;
@@ -46,32 +26,19 @@ auto main(int argc, char* argv[]) -> int {
 
     Chip8topia chip8topia;
 
-#ifndef WIN32_RELEASE
-    std::cout << Chip8topia::PROJECT_NAME << " " << Chip8topia::PROJECT_VERSION << std::endl
-              << Chip8topia::PROJECT_LINK << std::endl
+#if !(defined(WINRELEASE))
+    std::cout << Chip8topia::PROJECT_NAME << " " << Chip8topia::PROJECT_VERSION << '\n'
+              << Chip8topia::PROJECT_LINK << '\n'
               << Chip8topia::PROJECT_AUTHOR << "\n"
-              << std::endl
-              << std::endl;
+              << '\n'
+              << '\n';
 
-    std::cout << "Build infos:" << std::endl
-              << " - C++ standard: " << __cplusplus << std::endl
-    //              << "Compiler: " << __VERSION__ << std::endl
-#if defined(_DEBUG)
-              << " - Build type: Release" << std::endl
-#else
-              << " - Build type: Debug" << std::endl
-#endif
-              << " - Build date: " << __DATE__ << " " << __TIME__ << std::endl
-              << std::endl;
-
-    std::cout << "System and dependencies infos:" << std::endl
-              << " - OpenGL vendor " << Chip8topia::getOpenGLVendor() << std::endl
-              << " - OpenGL version " << Chip8topia::getOpenGLVersion() << std::endl
-              << " - OpenGL GLSL version " << Chip8topia::getGLSLVersion() << std::endl
-              << " - GLFW version " << Chip8topia::getGLFWVersion() << std::endl
-              << " - Glad version " << Chip8topia::getGladVersion() << std::endl
-              << " - ImGui version " << Chip8topia::getImGuiVersion() << std::endl
-              << std::endl;
+    std::cout << "Build infos:" << '\n'
+              << " - C++ standard: " << __cplusplus << '\n'
+              //              << "Compiler: " << __VERSION__ << '\n'
+              << " - Build type: " << BUILD_CONFIGURATION << '\n'
+              << " - Build date: " << __DATE__ << " " << __TIME__ << '\n'
+              << '\n';
 #endif
 
     return chip8topia.run();
