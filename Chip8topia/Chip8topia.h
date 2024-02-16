@@ -36,10 +36,12 @@ public:
     void close();
 
 private:
+    auto init() -> int;
     void handleInputs();
     void handleUi(const float deltaTime);
     void handleGameUpdate(const float deltaTime);
     void handleScreenUpdate();
+    void cleanup();
 
 public:
     void centerWindow();
@@ -47,10 +49,8 @@ public:
     void toggleFullScreen();
     void toggleTurboMode();
 
-#ifndef __EMSCRIPTEN__
     void setWindowIcon();
     void setWindowTitle(const float fps);
-#endif
 
     [[nodiscard]] auto getChip8Emulator() -> Chip8Emulator&;
     [[nodiscard]] auto getIsTurboMode() const -> bool;

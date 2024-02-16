@@ -17,7 +17,7 @@
     },
     {
       "name": "imgui",
-      "version>=": "1.90#4",
+      "version>=": "1.90#3",
       "features": [
         "glfw-binding",
         "opengl3-binding",

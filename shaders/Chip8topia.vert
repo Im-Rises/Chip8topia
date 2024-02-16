@@ -1,6 +1,4 @@
-#version 300 es
-
-precision mediump float;
+#version 330 core
 
 layout (location = 0) in vec3 a_texCoord;
 
