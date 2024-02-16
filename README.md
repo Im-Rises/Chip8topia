@@ -56,9 +56,8 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [x] Change the structure of Chip8topia so it starts the window in a function and not in the constructor
 - [ ] Create a macro which will identify release and debug mode and change the window title accordingly _DEBUG and
   NDEBUG
-- [ ] Use ImGui flags to keep last state (open or close) of the windows
 - [ ] Faire des fonctions virtuel et les override dans chaque cpu ! Pas pure virtual, pour que si c'est pas override ça
-  appalle "assert" !
+  appelle "assert" !
 - [ ] Add emulation sound
 - [ ] Create a class Memory with the memory and the value of 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F
 - [ ] Add emulation for the SuperChip8 and the XO-Chip ?

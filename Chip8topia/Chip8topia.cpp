@@ -13,6 +13,7 @@
 #include <stb_image.h>
 #include <format>
 #include <chrono>
+#include <iostream>
 
 #include "res/chip8topiaIconResource.h"
 
@@ -43,6 +44,8 @@ Chip8topia::~Chip8topia() = default;
 auto Chip8topia::run() -> int {
     if (init() != 0)
         return 1;
+
+    printDependenciesInfos();
 
     auto lastTime = std::chrono::high_resolution_clock::now();
     auto currentTime = lastTime;
@@ -323,6 +326,19 @@ auto Chip8topia::getGladVersion() -> std::string_view {
 
 auto Chip8topia::getImGuiVersion() -> std::string {
     return IMGUI_VERSION;
+}
+
+void Chip8topia::printDependenciesInfos() {
+    {
+        std::cout << "System and dependencies infos:" << std::endl
+                  << " - OpenGL vendor " << Chip8topia::getOpenGLVendor() << std::endl
+                  << " - OpenGL version " << Chip8topia::getOpenGLVersion() << std::endl
+                  << " - OpenGL GLSL version " << Chip8topia::getGLSLVersion() << std::endl
+                  << " - GLFW version " << Chip8topia::getGLFWVersion() << std::endl
+                  << " - Glad version " << Chip8topia::getGladVersion() << std::endl
+                  << " - ImGui version " << Chip8topia::getImGuiVersion() << std::endl
+                  << std::endl;
+    }
 }
 
 #ifdef _DEBUG

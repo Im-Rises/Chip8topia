@@ -56,12 +56,14 @@ public:
     [[nodiscard]] auto getChip8Emulator() -> Chip8Emulator&;
     [[nodiscard]] auto getIsTurboMode() const -> bool;
 
+private:
     static auto getOpenGLVendor() -> std::string_view;
     static auto getOpenGLVersion() -> std::string_view;
     static auto getGLSLVersion() -> std::string_view;
     static auto getGLFWVersion() -> std::string;
     static auto getGladVersion() -> std::string_view;
     static auto getImGuiVersion() -> std::string;
+    void printDependenciesInfos();
 
 #ifdef _DEBUG
     void loadDebugRom();
