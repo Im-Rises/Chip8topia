@@ -157,7 +157,7 @@ auto Chip8topia::init() -> int {
     m_chip8topiaInputHandler.m_F3KeyButtonPressedEvent.subscribe(this, &Chip8topia::toggleTurboMode);
     m_chip8topiaInputHandler.m_F10KeyButtonPressedEvent.subscribe(this, &Chip8topia::centerWindow);
     m_chip8topiaInputHandler.m_F11KeyButtonPressedEvent.subscribe(this, &Chip8topia::toggleFullScreen);
-#ifdef _DEBUG
+#if !defined(BUILD_RELEASE)
     m_chip8topiaInputHandler.m_F12KeyDebugButtonPressedEvent.subscribe(this, &Chip8topia::loadDebugRom);
 #endif
 
@@ -169,7 +169,7 @@ void Chip8topia::cleanup() {
     m_chip8topiaInputHandler.m_F3KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::toggleTurboMode);
     m_chip8topiaInputHandler.m_F10KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::centerWindow);
     m_chip8topiaInputHandler.m_F11KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::toggleFullScreen);
-#ifdef _DEBUG
+#if !defined(BUILD_RELEASE)
     m_chip8topiaInputHandler.m_F12KeyDebugButtonPressedEvent.unsubscribe(this, &Chip8topia::loadDebugRom);
 #endif
 
@@ -339,9 +339,8 @@ void Chip8topia::printDependenciesInfos() {
     }
 }
 
-#ifdef _DEBUG
+#if !defined(BUILD_RELEASE)
 void Chip8topia::loadDebugRom() {
     m_chip8Emulator->loadRom("trash/5-quirks.ch8");
 }
-
 #endif

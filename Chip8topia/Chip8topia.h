@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string_view>
+#include <plateformIdentifier/plateformIdentifier.h>
 
 #include "Chip8topiaUi/Chip8topiaUi.h"
 #include "Chip8Emulator/Chip8Emulator.h"
@@ -65,7 +66,7 @@ private:
     static auto getImGuiVersion() -> std::string;
     void printDependenciesInfos();
 
-#ifdef _DEBUG
+#if !defined(BUILD_RELEASE)
     void loadDebugRom();
 #endif
 

@@ -60,6 +60,7 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
   NDEBUG
 - [ ] Faire des fonctions virtuel et les override dans chaque cpu ! Pas pure virtual, pour que si c'est pas override ça
   appelle "assert" !
+- [ ] Replace PlateformIdentifier.h with variable defined in the CMakeLists.txt
 - [ ] Add emulation sound
 - [ ] Create a class Memory with the memory and the value of 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F
 - [ ] Add emulation for the SuperChip8 and the XO-Chip ?

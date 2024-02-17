@@ -44,11 +44,11 @@
 
 /* Language: */
 
-#if defined(__cplusplus)
-#define LANGUAGE_CPP
-#else
-#define LANGUAGE_C
-#endif
+// #if defined(__cplusplus)
+// #define LANGUAGE_CPP
+// #else
+// #define LANGUAGE_C
+// #endif
 
 // #ifdef __cplusplus
 // #define EXTERN_C extern "C"

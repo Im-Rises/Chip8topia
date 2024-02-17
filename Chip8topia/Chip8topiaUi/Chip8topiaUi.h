@@ -49,7 +49,7 @@ private:
     bool m_isMenuBarOpen = true;
     bool m_windowsVisible = true;
 
-    //TODO: Move to a separate class
+    // TODO: Move to a separate class
     bool m_showAboutChip8topiaPopup = false;
     bool m_showAboutChip8Popup = false;
     bool m_showBackgroundColor = false;

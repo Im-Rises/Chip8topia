@@ -2,6 +2,7 @@
 
 #include <binaryLib/binaryLib.h>
 #include <Singleton/Singleton.h>
+#include <plateformIdentifier/plateformIdentifier.h>
 
 #include "SubscriberEventSystem/MultiSubscriberEvent.h"
 #include "SubscriberEventSystem/SingleSubscriberEvent.h"
@@ -33,7 +34,7 @@ public:
     [[maybe_unused]] SingleSubscriberEvent<> m_F3KeyButtonPressedEvent;
     [[maybe_unused]] SingleSubscriberEvent<> m_F10KeyButtonPressedEvent;
     [[maybe_unused]] SingleSubscriberEvent<> m_F11KeyButtonPressedEvent;
-#ifdef _DEBUG
+#if !defined(BUILD_RELEASE)
     [[maybe_unused]] SingleSubscriberEvent<> m_F12KeyDebugButtonPressedEvent;
 #endif
 

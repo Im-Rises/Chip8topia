@@ -3,6 +3,7 @@
 #include <imgui.h>
 #include <ImGuiFileDialog/ImGuiFileDialog.h>
 #include <format>
+#include <plateformIdentifier/plateformIdentifier.h>
 
 #include "../Chip8topia.h"
 
@@ -45,7 +46,7 @@ void Chip8topiaUi::drawMainMenuBar(Chip8topia& chip8topia) {
     drawAboutChip8topiaPopUpWindow();
     drawAboutChip8PopUpWindow();
 
-#ifdef _DEBUG
+#if !defined(BUILD_RELEASE)
     ImGui::ShowDemoWindow();
 #endif
 }
