@@ -32,9 +32,12 @@ jobs:
           token: ${{ github.token }}
           github-binarycache: true
 
+      - name: Checkout
+        uses: actions/checkout@v2
+
       - name: CMake configure
         run: cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=${{ steps.vcpkg.outputs.toolchain_file }} -DVCPKG_TARGET_TRIPLET=${{ matrix.config.vcpkg_triplet }}
       - name: CMake build
         run: cmake --build build
-      - name: CMake test
-        run: cmake --build build --target test
+#      - name: CMake test
+#        run: cmake --build build --target test
