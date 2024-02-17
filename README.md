@@ -88,6 +88,11 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [ImGui Memory Editor](https://github.com/ocornut/imgui_club/tree/main/imgui_memory_editor)
 - [Vcpkg](https://vcpkg.io/en)
 
+### Other docs
+
+https://emscripten.org/docs/porting/files/packaging_files.html
+https://webgl2fundamentals.org/webgl/lessons/webgl-data-textures.html
+
 ## Commands
 
 ### Submodule:
@@ -115,5 +120,5 @@ cmake --build [build directory]
 
 ```bash
 emcmake cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=~/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=${EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -DVCPKG_TARGET_TRIPLET=wasm32-emscripten "-DCMAKE_EXE_LINKER_FLAGS=-s USE_GLFW=3 -s FULL_ES3=1 -s WASM=1 -s ALLOW_MEMORY_GROWTH=1 --preload-file Chip8Games" -DCMAKE_BUILD_TYPE=Release  
-emmake make -C build // or cd build && make
+emmake make -C build
 ```
