@@ -1,62 +1,12 @@
-#version 430 core
+#version 330 core
 
-struct Particle {
-    vec3 position;
-    float mass;
-    vec3 velocity;
-    float offset1;
-    vec3 color;
-    float offset2;
-};
+layout (location = 0) in vec3 a_texCoord;
 
-layout (std430, binding = 0) buffer ParticlesSsbo {
-    Particle particles[];
-} particlesSsboData;
-
-uniform mat4 u_mvp;
-uniform float u_deltaTime;
-uniform float u_damping;
-uniform float u_particleMass;
-uniform float u_gravity;
-uniform float u_softening;
-uniform float u_isRunning;
-uniform float u_interactionPercent;
-
-out vec3 v_color;
+out vec2 v_texCoord;
 
 void main()
 {
-    Particle particle = particlesSsboData.particles[gl_VertexID];
-
-    vec3 sumForces = vec3(0.0);
-    const int numParticles = int(particlesSsboData.particles.length() * u_interactionPercent);
-    for (int i = 0; i < numParticles; ++i) {
-        if (i == gl_VertexID)
-        continue;
-
-        Particle otherParticle = particlesSsboData.particles[i];
-
-        vec3 r = otherParticle.position - particle.position;
-        float rSquared = dot(r, r) + u_softening;
-        sumForces += normalize(r) * (u_gravity * u_particleMass * u_particleMass) / rSquared;
-    }
-
-    sumForces = mix(vec3(0.0, 0.0, 0.0), sumForces, u_isRunning);
-
-    vec3 acceleration = sumForces / u_particleMass;
-    vec3 position = particle.position + (particle.velocity * u_deltaTime + 0.5 * acceleration * u_deltaTime * u_deltaTime) * u_isRunning;
-    vec3 velocity = particle.velocity + acceleration * u_deltaTime;
-
-    velocity = mix(velocity, velocity * u_damping, u_isRunning);
-
-    particle.position = position;
-    particle.velocity = velocity;
-
-    memoryBarrierBuffer();
-
-    particlesSsboData.particles[gl_VertexID] = particle;
-
-    gl_Position = u_mvp * vec4(particle.position, 1.0);
-
-    v_color = particle.color;
+    //    v_texCoord = a_Pos.xy * 0.5 + 0.5;
+    v_texCoord = vec2(a_texCoord.x * 0.5 + 0.5, 1.0 - (a_texCoord.y * 0.5 + 0.5));// flip y
+    gl_Position = vec4(a_texCoord.x, a_texCoord.y, a_texCoord.z, 1.0);//     gl_Position = vec4(a_texCoord, 1.0);
 }

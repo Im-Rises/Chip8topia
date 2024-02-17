@@ -1,10 +1,24 @@
-#version 430 core
+#version 330 core
 
-in vec3 v_color;
+precision mediump float;
+
+in vec2 v_texCoord;
 
 out vec4 o_fragColor;
 
+uniform sampler2D u_ourTexture;
+uniform vec4 u_backgroundColor;
+uniform vec4 u_foregroundColor;
+
 void main()
 {
-    o_fragColor = vec4(v_color, 1.0f);
+    vec4 color = texture(u_ourTexture, v_texCoord);
+    if (color.r > 0.0)
+    {
+        o_fragColor = u_foregroundColor;
+    }
+    else
+    {
+        o_fragColor = u_backgroundColor;
+    }
 }

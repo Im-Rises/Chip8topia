@@ -1,214 +1,388 @@
 #include "Chip8topia.h"
 
-#include <imgui/imgui.h>
-#include <imgui/imgui_impl_glfw.h>
-#include <imgui/imgui_impl_opengl3.h>
-#include <cstdio>
-#define GL_SILENCE_DEPRECATION
-#if defined(IMGUI_IMPL_OPENGL_ES2)
-#include <GLES2/gl2.h>
+#ifdef _WIN32
+#include <Windows.h>
+#endif
+
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
+#if defined(__EMSCRIPTEN__)
+#include <GLES3/gl3.h>
+#else
+#include <glad/glad.h>
 #endif
 #include <GLFW/glfw3.h>
+
+#ifndef __EMSCRIPTEN__
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
+#endif
+
+#include <format>
+#include <chrono>
+#include <iostream>
+
+#include "res/chip8topiaIconResource.h"
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
 #endif
 
 #ifdef __EMSCRIPTEN__
-#include "imgui/emscripten/emscripten_mainloop_stub.h"
+#include "imgui_emscripten/imgui_emscripten.h"
 #endif
 
-static void glfw_error_callback(int error, const char* description)
-{
-    fprintf(stderr, "GLFW Error %d: %s\n", error, description);
+static void glfw_error_callback(int error, const char* description) {
+    std::cerr << "Glfw Error " << error << ": " << description << '\n';
 }
 
-Chip8topia::Chip8topia() {
+void drop_callback(GLFWwindow* window, int count, const char** paths) {
+    // TODO: Handle crash when loading file with invalid extension
+    (void)count;
+    static constexpr int INDEX = 0;
+    const char* path = paths[INDEX];
+    auto* engine = reinterpret_cast<Chip8topia*>(glfwGetWindowUserPointer(window));
+    engine->getChip8Emulator().loadRom(path);
+    //    engine->getChip8Emulator().getChip8Core()->getInput()->updateKey(0x0, 1);
 }
 
-Chip8topia::~Chip8topia() {
+Chip8topia::Chip8topia() : m_window(nullptr) {
 }
 
-int Chip8topia::run() {
-    glfwSetErrorCallback(glfw_error_callback);
-    if (!glfwInit())
+Chip8topia::~Chip8topia() = default;
+
+auto Chip8topia::run() -> int {
+    if (init() != 0)
         return 1;
 
-        // Decide GL+GLSL versions
-#if defined(IMGUI_IMPL_OPENGL_ES2)
-    // GL ES 2.0 + GLSL 100
-    const char* glsl_version = "#version 100";
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
-#elif defined(__APPLE__)
-    // GL 3.2 + GLSL 150
-    const char* glsl_version = "#version 150";
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // Required on Mac
-#else
-    // GL 3.0 + GLSL 130
-    const char* glsl_version = "#version 130";
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
-    //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
+    printDependenciesInfos();
+
+    auto lastTime = std::chrono::high_resolution_clock::now();
+    auto currentTime = lastTime;
+    float deltaTime = 0.0F;
+
+    float frameCounter = 0.0F;
+    float elapsedTimeAccumulator = 0.0F;
+
+    m_chip8Emulator = std::make_unique<Chip8Emulator>();
+#ifdef _WIN32
+    timeBeginPeriod(1);
 #endif
 
-    // Create window with graphics context
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "Dear ImGui GLFW+OpenGL3 example", nullptr, nullptr);
-    if (window == nullptr)
-        return 1;
-    glfwMakeContextCurrent(window);
-    glfwSwapInterval(1); // Enable vsync
-
-    // Setup Dear ImGui context
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
-    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
-    //io.ConfigViewportsNoAutoMerge = true;
-    //io.ConfigViewportsNoTaskBarIcon = true;
-
-    // Setup Dear ImGui style
-    ImGui::StyleColorsDark();
-    //ImGui::StyleColorsLight();
-
-    // When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
-    ImGuiStyle& style = ImGui::GetStyle();
-    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-    {
-        style.WindowRounding = 0.0f;
-        style.Colors[ImGuiCol_WindowBg].w = 1.0f;
-    }
-
-    // Setup Platform/Renderer backends
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
 #ifdef __EMSCRIPTEN__
-    ImGui_ImplGlfw_InstallEmscriptenCanvasResizeCallback("#canvas");
-#endif
-    ImGui_ImplOpenGL3_Init(glsl_version);
-
-    // Load Fonts
-    // - If no fonts are loaded, dear imgui will use the default font. You can also load multiple fonts and use ImGui::PushFont()/PopFont() to select them.
-    // - AddFontFromFileTTF() will return the ImFont* so you can store it if you need to select the font among multiple.
-    // - If the file cannot be loaded, the function will return a nullptr. Please handle those errors in your application (e.g. use an assertion, or display an error and quit).
-    // - The fonts will be rasterized at a given size (w/ oversampling) and stored into a texture when calling ImFontAtlas::Build()/GetTexDataAsXXXX(), which ImGui_ImplXXXX_NewFrame below will call.
-    // - Use '#define IMGUI_ENABLE_FREETYPE' in your imconfig file to use Freetype for higher quality font rendering.
-    // - Read 'docs/FONTS.md' for more instructions and details.
-    // - Remember that in C/C++ if you want to include a backslash \ in a string literal you need to write a double backslash \\ !
-    // - Our Emscripten build process allows embedding fonts to be accessible at runtime from the "fonts/" folder. See Makefile.emscripten for details.
-    //io.Fonts->AddFontDefault();
-    //io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\segoeui.ttf", 18.0f);
-    //io.Fonts->AddFontFromFileTTF("../../misc/fonts/DroidSans.ttf", 16.0f);
-    //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Roboto-Medium.ttf", 16.0f);
-    //io.Fonts->AddFontFromFileTTF("../../misc/fonts/Cousine-Regular.ttf", 15.0f);
-    //ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, nullptr, io.Fonts->GetGlyphRangesJapanese());
-    //IM_ASSERT(font != nullptr);
-
-    // Our state
-    bool show_demo_window = true;
-    bool show_another_window = false;
-    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-
-    // Main loop
-#ifdef __EMSCRIPTEN__
-    // For an Emscripten build we are disabling file-system access, so let's not attempt to do a fopen() of the imgui.ini file.
-    // You may manually call LoadIniSettingsFromMemory() to load settings from your own storage.
+    ImGuiIO& io = ImGui::GetIO();
     io.IniFilename = nullptr;
     EMSCRIPTEN_MAINLOOP_BEGIN
 #else
-    while (!glfwWindowShouldClose(window))
+    while (glfwWindowShouldClose(m_window) == 0)
 #endif
     {
-        // Poll and handle events (inputs, window resize, etc.)
-        // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
-        // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application, or clear/overwrite your copy of the mouse data.
-        // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application, or clear/overwrite your copy of the keyboard data.
-        // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
-        glfwPollEvents();
+        currentTime = std::chrono::high_resolution_clock::now();
+        deltaTime = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - lastTime).count();
+        lastTime = currentTime;
 
-        // Start the Dear ImGui frame
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
+        handleInputs();
+        handleUi(deltaTime);
+        handleGameUpdate(deltaTime);
+        handleScreenUpdate();
 
-        // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-        if (show_demo_window)
-            ImGui::ShowDemoWindow(&show_demo_window);
-
-        // 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
+        frameCounter++;
+        elapsedTimeAccumulator += deltaTime;
+        if (elapsedTimeAccumulator >= 1.0F)
         {
-            static float f = 0.0f;
-            static int counter = 0;
-
-            ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
-
-            ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-            ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-            ImGui::Checkbox("Another Window", &show_another_window);
-
-            ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-            ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
-
-            if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-                counter++;
-            ImGui::SameLine();
-            ImGui::Text("counter = %d", counter);
-
-            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
-            ImGui::End();
+#ifndef __EMSCRIPTEN__
+            setWindowTitle(frameCounter / elapsedTimeAccumulator);
+#endif
+            frameCounter = 0;
+            elapsedTimeAccumulator = 0.0F;
         }
-
-        // 3. Show another simple window.
-        if (show_another_window)
-        {
-            ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-            ImGui::Text("Hello from another window!");
-            if (ImGui::Button("Close Me"))
-                show_another_window = false;
-            ImGui::End();
-        }
-
-        // Rendering
-        ImGui::Render();
-        int display_w, display_h;
-        glfwGetFramebufferSize(window, &display_w, &display_h);
-        glViewport(0, 0, display_w, display_h);
-        glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
-        glClear(GL_COLOR_BUFFER_BIT);
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-        // Update and Render additional Platform Windows
-        // (Platform functions may change the current OpenGL context, so we save/restore it to make it easier to paste this code elsewhere.
-        //  For this specific demo app we could also call glfwMakeContextCurrent(window) directly)
-        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-        {
-            GLFWwindow* backup_current_context = glfwGetCurrentContext();
-            ImGui::UpdatePlatformWindows();
-            ImGui::RenderPlatformWindowsDefault();
-            glfwMakeContextCurrent(backup_current_context);
-        }
-
-        glfwSwapBuffers(window);
     }
 #ifdef __EMSCRIPTEN__
     EMSCRIPTEN_MAINLOOP_END;
 #endif
 
-    // Cleanup
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
+#ifdef _WIN32
+    timeEndPeriod(1);
+#endif
 
-    glfwDestroyWindow(window);
-    glfwTerminate();
+    cleanup();
 
     return 0;
 }
 
+#ifndef __EMSCRIPTEN__
+void Chip8topia::closeRequest() {
+    glfwSetWindowShouldClose(m_window, 1);
+}
+#endif
+
+auto Chip8topia::init() -> int {
+    glfwSetErrorCallback(glfw_error_callback);
+    if (glfwInit() == 0)
+        return 1;
+
+#if defined(__EMSCRIPTEN__)
+    const char* glsl_version = "#version 300 es";
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
+#else
+    const char* glsl_version = "#version 330";
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // 3.2+ only
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);           // 3.0+ only
+#endif
+
+    // Create window with graphics context
+    m_window = glfwCreateWindow(m_currentWidth, m_currentHeight, PROJECT_NAME, nullptr, nullptr);
+    if (m_window == nullptr)
+        return 1;
+    glfwMakeContextCurrent(m_window);
+    glfwSwapInterval(m_isTurboMode ? 0 : 1); // 0 = no vsync, 1 = vsync
+
+    // Set window callbacks
+    glfwSetWindowUserPointer(m_window, this);
+    glfwSetDropCallback(m_window, drop_callback);
+    glfwSetKeyCallback(m_window, Chip8topiaInputHandler::key_callback);
+
+    // Center window
+    centerWindow();
+
+    // Initialize OpenGL loader
+#ifndef __EMSCRIPTEN__
+    if (gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)) == 0)
+        return 1;
+#endif
+
+    // Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+    (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;  // Enable Gamepad Controls
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;     // Enable Docking
+    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;   // Enable Multi-Viewport / Platform Windows
+    // io.ConfigViewportsNoAutoMerge = true;
+    // io.ConfigViewportsNoTaskBarIcon = true;
+
+    // Setup Dear ImGui style
+    ImGui::StyleColorsDark();
+    // ImGui::StyleColorsLight();
+
+    // When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
+    ImGuiStyle& style = ImGui::GetStyle();
+    if ((io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) != 0)
+    {
+        style.WindowRounding = 0.0F;
+        style.Colors[ImGuiCol_WindowBg].w = 1.0F;
+    }
+
+    // Setup Platform/Renderer backends
+    ImGui_ImplGlfw_InitForOpenGL(m_window, true);
+    // #ifdef __EMSCRIPTEN__
+    //     ImGui_ImplGlfw_InstallEmscriptenCanvasResizeCallback("#canvas");
+    // #endif
+    ImGui_ImplOpenGL3_Init(glsl_version);
+
+#ifndef __EMSCRIPTEN__
+    setWindowIcon();
+#endif
+
+#ifndef __EMSCRIPTEN__
+    m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.subscribe(this, &Chip8topia::closeRequest);
+#endif
+    m_chip8topiaInputHandler.m_F3KeyButtonPressedEvent.subscribe(this, &Chip8topia::toggleTurboMode);
+    m_chip8topiaInputHandler.m_F10KeyButtonPressedEvent.subscribe(this, &Chip8topia::centerWindow);
+    m_chip8topiaInputHandler.m_F11KeyButtonPressedEvent.subscribe(this, &Chip8topia::toggleFullScreen);
+#if !defined(BUILD_RELEASE)
+    m_chip8topiaInputHandler.m_F12KeyDebugButtonPressedEvent.subscribe(this, &Chip8topia::loadDebugRom);
+#endif
+
+    return 0;
+}
+
+void Chip8topia::cleanup() {
+#ifndef __EMSCRIPTEN__
+    m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.unsubscribe(this, &Chip8topia::closeRequest);
+#endif
+    m_chip8topiaInputHandler.m_F3KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::toggleTurboMode);
+    m_chip8topiaInputHandler.m_F10KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::centerWindow);
+    m_chip8topiaInputHandler.m_F11KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::toggleFullScreen);
+#if !defined(BUILD_RELEASE)
+    m_chip8topiaInputHandler.m_F12KeyDebugButtonPressedEvent.unsubscribe(this, &Chip8topia::loadDebugRom);
+#endif
+
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
+    glfwDestroyWindow(m_window);
+    glfwTerminate();
+}
+
+void Chip8topia::handleInputs() {
+    m_chip8topiaInputHandler.update(m_window);
+}
+
+void Chip8topia::handleUi(const float deltaTime) {
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+    m_chip8topiaUi.drawUi(*this);
+    ImGui::Render();
+}
+
+void Chip8topia::handleGameUpdate(const float deltaTime) {
+    m_chip8Emulator->update(deltaTime);
+}
+
+void Chip8topia::handleScreenUpdate() {
+    const ImGuiIO& io = ImGui::GetIO();
+
+    if (!m_isFullScreen)
+    {
+        glfwGetWindowPos(m_window, &m_windowedPosX, &m_windowedPosY);
+        glfwGetWindowSize(m_window, &m_windowedWidth, &m_windowedHeight);
+    }
+
+    glfwGetFramebufferSize(m_window, &m_currentWidth, &m_currentHeight);
+    glViewport(0, 0, m_currentWidth, m_currentHeight);
+    glClearColor(CLEAR_COLOR.x * CLEAR_COLOR.w, CLEAR_COLOR.y * CLEAR_COLOR.w, CLEAR_COLOR.z * CLEAR_COLOR.w, CLEAR_COLOR.w);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    m_chip8Emulator->render();
+
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+    if ((io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) != 0)
+    {
+        GLFWwindow* backup_current_context = glfwGetCurrentContext();
+        ImGui::UpdatePlatformWindows();
+        ImGui::RenderPlatformWindowsDefault();
+        glfwMakeContextCurrent(backup_current_context);
+    }
+
+    glfwSwapBuffers(m_window);
+}
+
+void Chip8topia::centerWindow() {
+    // TODO: Mix code from toggleFullScreen and centerWindow to avoid code duplication for the window area location calculation
+    int count;
+    GLFWmonitor** monitors = glfwGetMonitors(&count);
+    for (int i = 0; i < count; i++)
+    {
+        int x, y;
+        int width, height;
+        glfwGetMonitorWorkarea(monitors[i], &x, &y, &width, &height);
+
+        if (m_windowedPosX >= x && m_windowedPosX <= x + width && m_windowedPosY >= y && m_windowedPosY <= y + height)
+        {
+            glfwSetWindowPos(m_window, x + (width - m_windowedWidth) / 2, y + (height - m_windowedHeight) / 2);
+            break;
+        }
+    }
+}
+
+void Chip8topia::toggleFullScreen() {
+    if (!m_isFullScreen)
+    {
+        int count;
+        GLFWmonitor** monitors = glfwGetMonitors(&count);
+        for (int i = 0; i < count; i++)
+        {
+            int x, y;
+            int width, height;
+            glfwGetMonitorWorkarea(monitors[i], &x, &y, &width, &height);
+
+            if (m_windowedPosX >= x && m_windowedPosX <= x + width && m_windowedPosY >= y && m_windowedPosY <= y + height)
+            {
+                const GLFWvidmode* mode = glfwGetVideoMode(monitors[i]);
+                glfwSetWindowMonitor(m_window, monitors[i], 0, 0, mode->width, mode->height, mode->refreshRate);
+                break;
+            }
+        }
+    }
+    else
+    {
+        glfwSetWindowMonitor(m_window, nullptr, m_windowedPosX, m_windowedPosY, m_windowedWidth, m_windowedHeight, 0);
+    }
+
+    m_isFullScreen = !m_isFullScreen;
+}
+
+void Chip8topia::toggleTurboMode() {
+    glfwSwapInterval(m_isTurboMode ? 1 : 0); // 0 = no vsync, 1 = vsync
+    m_isTurboMode = !m_isTurboMode;
+    m_chip8Emulator->setIsTurboMode(m_isTurboMode);
+}
+
+#ifndef __EMSCRIPTEN__
+void Chip8topia::setWindowIcon() {
+    int chip8topiaIconWidth = 0, chip8topiaIconHeight = 0, channelsInFile = 0;
+    unsigned char* imagePixels = stbi_load_from_memory(CHIP8TOPIA_ICON_DATA.data(), static_cast<int>(CHIP8TOPIA_ICON_DATA.size()), &chip8topiaIconWidth, &chip8topiaIconHeight, &channelsInFile, 0);
+    GLFWimage images;
+    images.width = chip8topiaIconWidth;
+    images.height = chip8topiaIconHeight;
+    images.pixels = imagePixels;
+    glfwSetWindowIcon(m_window, 1, &images);
+    stbi_image_free(imagePixels);
+}
+
+void Chip8topia::setWindowTitle(const float fps) {
+    //    m_chip8Emulator.getRomName();// TODO: Add rom name to window title
+    glfwSetWindowTitle(m_window, std::format("{} - {:.2f} fps", PROJECT_NAME, fps).c_str());
+}
+#endif
+
+auto Chip8topia::getChip8Emulator() -> Chip8Emulator& {
+    return *m_chip8Emulator;
+}
+
+auto Chip8topia::getIsTurboMode() const -> bool {
+    return m_isTurboMode;
+}
+
+auto Chip8topia::getOpenGLVendor() -> std::string_view {
+    return reinterpret_cast<const char*>(glGetString(GL_RENDERER));
+}
+
+auto Chip8topia::getOpenGLVersion() -> std::string_view {
+    return reinterpret_cast<const char*>(glGetString(GL_VERSION));
+}
+
+auto Chip8topia::getGLSLVersion() -> std::string_view {
+    return reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION));
+}
+
+auto Chip8topia::getGLFWVersion() -> std::string {
+    return std::to_string(GLFW_VERSION_MAJOR) + "." + std::to_string(GLFW_VERSION_MINOR) + "." +
+           std::to_string(GLFW_VERSION_REVISION);
+}
+
+auto Chip8topia::getGladVersion() -> std::string_view {
+    return "0.1.36";
+}
+
+auto Chip8topia::getImGuiVersion() -> std::string {
+    return IMGUI_VERSION;
+}
+
+void Chip8topia::printDependenciesInfos() {
+    std::cout << "System and dependencies infos:" << '\n'
+              << " - OpenGL vendor " << Chip8topia::getOpenGLVendor() << '\n'
+              << " - OpenGL version " << Chip8topia::getOpenGLVersion() << '\n'
+              << " - OpenGL GLSL version " << Chip8topia::getGLSLVersion() << '\n'
+              << " - GLFW version " << Chip8topia::getGLFWVersion() << '\n'
+              << " - Glad version " << Chip8topia::getGladVersion() << '\n'
+              << " - ImGui version " << Chip8topia::getImGuiVersion() << '\n'
+              << '\n';
+}
+
+#if !defined(BUILD_RELEASE)
+void Chip8topia::loadDebugRom() {
+    m_chip8Emulator->loadRom("trash/5-quirks.ch8");
+}
+#endif
