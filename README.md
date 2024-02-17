@@ -58,6 +58,7 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [x] Create a macro which will identify release and debug mode and change the window title accordingly _DEBUG and
 - [ ] Add OpenGL ES support for WebAssembly
 - [ ] Check if with emscripten it really compile in Release mode
+- [ ] Add break, run, step to the debugger
 - [ ] Faire des fonctions virtuel et les override dans chaque cpu ! Pas pure virtual, pour que si c'est pas override ça
   appelle "assert" !
 - [ ] Replace PlateformIdentifier.h with variable defined in the CMakeLists.txt
