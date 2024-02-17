@@ -1,10 +1,10 @@
 # This starter workflow is for a CMake project running on multiple platforms. There is a different starter workflow if you just want a single platform.
 # See: https://github.com/actions/starter-workflows/blob/main/ci/cmake-single-platform.yml
-name: vcpkg-cmake
+name: CMake on multiple platforms
 
 on:
   push:
-    branches: [ "main" ]
+  #    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
@@ -23,9 +23,11 @@ jobs:
       #
       # To add more build types (Release, Debug, RelWithDebInfo, etc.) customize the build_type list.
       matrix:
-        os: [ ubuntu-latest, windows-latest ]
+        #        os: [ ubuntu-latest, windows-latest ]
+        os: [ ubuntu-latest ]
         build_type: [ Release ]
-        c_compiler: [ gcc, clang, cl ]
+        #        c_compiler: [ gcc, clang, cl ]
+        c_compiler: [ clang ]
         include:
           - os: windows-latest
             c_compiler: cl
@@ -54,28 +56,12 @@ jobs:
         run: |
           echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
-      - name: Download vcpkg
-        # Install vcpkg to the default location ($GITHUB_WORKSPACE/vcpkg).
-        run: |
-          git clone https://github.com/Microsoft/vcpkg.git
-
-      - name: Windows or Linux
-        run: |
-          if [ ${{ matrix.os }} == 'windows-latest' ]; then
-            .\vcpkg\bootstrap-vcpkg.bat
-          else
-            ./vcpkg/bootstrap-vcpkg.sh
-          fi
-
-      - name: Install dependencies
-        # Install the dependencies from the vcpkg.json file. This example uses the vcpkg.json file to specify dependencies.
-        run: |
-          if [ ${{ matrix.os }} == 'windows-latest' ]; then
-            .\vcpkg\vcpkg install
-          else
-            ./vcpkg/vcpkg install
-          fi
-
+      - name: Install vcpgk
+        uses: lukka/run-vcpkg@v11
+        with:
+          # Set the vcpkg directory to the default location
+          vcpkg-directory: ${{ github.workspace }}/vcpkg
+          runVcpkgInstall: true
 
       - name: Configure CMake
         # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
