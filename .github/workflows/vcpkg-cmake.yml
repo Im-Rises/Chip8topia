@@ -73,7 +73,7 @@ jobs:
           if [ ${{ matrix.os }} == 'windows-latest' ]; then
             .\vcpkg\vcpkg install --triplet x64-windows
           else
-            ./vcpkg/vcpkg install --triplet linux-x64
+            ./vcpkg/vcpkg install --triplet x64-linux
           fi
 
 
