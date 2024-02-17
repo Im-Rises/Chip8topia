@@ -37,6 +37,12 @@ jobs:
         with:
           submodules: 'true'
 
+      - name: Install libs
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get install -y xorg-dev
+          sudo apt-get install -y libglu1-mesa-dev
+
       - name: Set reusable strings
         id: strings
         shell: bash
@@ -59,8 +65,7 @@ jobs:
           -S ${{ github.workspace }}
 
       - name: Build
-        run: cmake --build ${{ steps.strings.outputs.build-output-dir }}
-      #        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
       - name: Test
         working-directory: ${{ steps.strings.outputs.build-output-dir }}
