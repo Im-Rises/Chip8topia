@@ -34,7 +34,9 @@ public:
 
 public:
     auto run() -> int;
+#ifndef __EMSCRIPTEN__
     void closeRequest();
+#endif
 
 private:
     auto init() -> int;
@@ -66,7 +68,7 @@ private:
     static auto getGLFWVersion() -> std::string;
     static auto getGladVersion() -> std::string_view;
     static auto getImGuiVersion() -> std::string;
-    void printDependenciesInfos();
+    static void printDependenciesInfos();
 
 #if !defined(BUILD_RELEASE)
     void loadDebugRom();

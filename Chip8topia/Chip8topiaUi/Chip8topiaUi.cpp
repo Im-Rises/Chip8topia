@@ -58,10 +58,13 @@ void Chip8topiaUi::drawFileMenu(Chip8topia& chip8topia) {
         {
             openRomWindow();
         }
+
+#ifndef __EMSCRIPTEN__
         if (ImGui::MenuItem("Exit", "Alt+F4"))
         {
             chip8topia.closeRequest();
         }
+#endif
 
         ImGui::EndMenu();
     }
