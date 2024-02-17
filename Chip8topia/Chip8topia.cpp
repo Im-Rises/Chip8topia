@@ -8,13 +8,21 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 #define GL_SILENCE_DEPRECATION
-#if defined(IMGUI_IMPL_OPENGL_ES2)
-#include <GLES2/gl2.h>
-#endif
+// #if defined(IMGUI_IMPL_OPENGL_ES2)
+// #include <GLES2/gl2.h>
+// #endif
+// #ifndef __EMSCRIPTEN__
+// #include <glad/glad.h>
+// #endif
 #include <glad/glad.h>
+
 #include <GLFW/glfw3.h>
+
+#ifndef __EMSCRIPTEN__
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
+#endif
+
 #include <format>
 #include <chrono>
 #include <iostream>
@@ -67,6 +75,7 @@ auto Chip8topia::run() -> int {
 #endif
 
 #ifdef __EMSCRIPTEN__
+    ImGuiIO& io = ImGui::GetIO();
     io.IniFilename = nullptr;
     EMSCRIPTEN_MAINLOOP_BEGIN
 #else
@@ -86,7 +95,9 @@ auto Chip8topia::run() -> int {
         elapsedTimeAccumulator += deltaTime;
         if (elapsedTimeAccumulator >= 1.0F)
         {
+#ifndef __EMSCRIPTEN__
             setWindowTitle(frameCounter / elapsedTimeAccumulator);
+#endif
             frameCounter = 0;
             elapsedTimeAccumulator = 0.0F;
         }
@@ -145,8 +156,10 @@ auto Chip8topia::init() -> int {
     centerWindow();
 
     // Initialize OpenGL loader
+#ifndef __EMSCRIPTEN__
     if (gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)) == 0)
         return 1;
+#endif
 
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
@@ -174,12 +187,14 @@ auto Chip8topia::init() -> int {
 
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(m_window, true);
-#ifdef __EMSCRIPTEN__
-    ImGui_ImplGlfw_InstallEmscriptenCanvasResizeCallback("#canvas");
-#endif
+    // #ifdef __EMSCRIPTEN__
+    //     ImGui_ImplGlfw_InstallEmscriptenCanvasResizeCallback("#canvas");
+    // #endif
     ImGui_ImplOpenGL3_Init(glsl_version);
 
+#ifndef __EMSCRIPTEN__
     setWindowIcon();
+#endif
 
     m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.subscribe(this, &Chip8topia::closeRequest);
     m_chip8topiaInputHandler.m_F3KeyButtonPressedEvent.subscribe(this, &Chip8topia::toggleTurboMode);
@@ -305,6 +320,7 @@ void Chip8topia::toggleTurboMode() {
     m_chip8Emulator->setIsTurboMode(m_isTurboMode);
 }
 
+#ifndef __EMSCRIPTEN__
 void Chip8topia::setWindowIcon() {
     int chip8topiaIconWidth = 0, chip8topiaIconHeight = 0, channelsInFile = 0;
     unsigned char* imagePixels = stbi_load_from_memory(CHIP8TOPIA_ICON_DATA.data(), static_cast<int>(CHIP8TOPIA_ICON_DATA.size()), &chip8topiaIconWidth, &chip8topiaIconHeight, &channelsInFile, 0);
@@ -320,6 +336,7 @@ void Chip8topia::setWindowTitle(const float fps) {
     //    m_chip8Emulator.getRomName();// TODO: Add rom name to window title
     glfwSetWindowTitle(m_window, std::format("{} - {:.2f} fps", PROJECT_NAME, fps).c_str());
 }
+#endif
 
 auto Chip8topia::getChip8Emulator() -> Chip8Emulator& {
     return *m_chip8Emulator;

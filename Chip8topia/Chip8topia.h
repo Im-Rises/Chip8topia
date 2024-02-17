@@ -51,8 +51,10 @@ public:
     void toggleFullScreen();
     void toggleTurboMode();
 
+#ifndef __EMSCRIPTEN__
     void setWindowIcon();
     void setWindowTitle(const float fps);
+#endif
 
     [[nodiscard]] auto getChip8Emulator() -> Chip8Emulator&;
     [[nodiscard]] auto getIsTurboMode() const -> bool;
