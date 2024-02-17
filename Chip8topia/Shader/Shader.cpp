@@ -1,11 +1,5 @@
 #include "Shader.h"
 
-#if defined(__EMSCRIPTEN__)
-#include <GLES3/gl3.h>
-#else
-#include <glad/glad.h>
-#endif
-
 #include <iostream>
 #include <fstream>
 #include <sstream>
