@@ -7,6 +7,10 @@
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
+#define GL_SILENCE_DEPRECATION
+#if defined(IMGUI_IMPL_OPENGL_ES2)
+#include <GLES2/gl2.h>
+#endif
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #define STB_IMAGE_IMPLEMENTATION
@@ -21,8 +25,12 @@
 #pragma comment(lib, "legacy_stdio_definitions")
 #endif
 
+#ifdef __EMSCRIPTEN__
+#include "imgui_emscripten/imgui_emscripten.h"
+#endif
+
 static void glfw_error_callback(int error, const char* description) {
-    std::cerr << "Glfw Error " << error << ": " << description << std::endl;
+    std::cerr << "Glfw Error " << error << ": " << description << '\n';
 }
 
 void drop_callback(GLFWwindow* window, int count, const char** paths) {
@@ -58,7 +66,12 @@ auto Chip8topia::run() -> int {
     timeBeginPeriod(1);
 #endif
 
+#ifdef __EMSCRIPTEN__
+    io.IniFilename = nullptr;
+    EMSCRIPTEN_MAINLOOP_BEGIN
+#else
     while (glfwWindowShouldClose(m_window) == 0)
+#endif
     {
         currentTime = std::chrono::high_resolution_clock::now();
         deltaTime = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - lastTime).count();
@@ -78,6 +91,9 @@ auto Chip8topia::run() -> int {
             elapsedTimeAccumulator = 0.0F;
         }
     }
+#ifdef __EMSCRIPTEN__
+    EMSCRIPTEN_MAINLOOP_END;
+#endif
 
 #ifdef _WIN32
     timeEndPeriod(1);
@@ -97,12 +113,21 @@ auto Chip8topia::init() -> int {
     if (glfwInit() == 0)
         return 1;
 
+        // Decide GL+GLSL versions
+#if defined(IMGUI_IMPL_OPENGL_ES2) // TODO: Change to use OPENGL_ES3 ?
+    // GL ES 3.0 + GLSL 300 ES
+    const char* glsl_version = "#version 300 es";
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
+#else
     // GL 3.0 + GLSL 130
     const char* glsl_version = "#version 330";
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // 3.2+ only
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);           // 3.0+ only
+#endif
 
     // Create window with graphics context
     m_window = glfwCreateWindow(m_currentWidth, m_currentHeight, PROJECT_NAME, nullptr, nullptr);
@@ -149,6 +174,9 @@ auto Chip8topia::init() -> int {
 
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(m_window, true);
+#ifdef __EMSCRIPTEN__
+    ImGui_ImplGlfw_InstallEmscriptenCanvasResizeCallback("#canvas");
+#endif
     ImGui_ImplOpenGL3_Init(glsl_version);
 
     setWindowIcon();
@@ -328,14 +356,14 @@ auto Chip8topia::getImGuiVersion() -> std::string {
 
 void Chip8topia::printDependenciesInfos() {
     {
-        std::cout << "System and dependencies infos:" << std::endl
-                  << " - OpenGL vendor " << Chip8topia::getOpenGLVendor() << std::endl
-                  << " - OpenGL version " << Chip8topia::getOpenGLVersion() << std::endl
-                  << " - OpenGL GLSL version " << Chip8topia::getGLSLVersion() << std::endl
-                  << " - GLFW version " << Chip8topia::getGLFWVersion() << std::endl
-                  << " - Glad version " << Chip8topia::getGladVersion() << std::endl
-                  << " - ImGui version " << Chip8topia::getImGuiVersion() << std::endl
-                  << std::endl;
+        std::cout << "System and dependencies infos:" << '\n'
+                  << " - OpenGL vendor " << Chip8topia::getOpenGLVendor() << '\n'
+                  << " - OpenGL version " << Chip8topia::getOpenGLVersion() << '\n'
+                  << " - OpenGL GLSL version " << Chip8topia::getGLSLVersion() << '\n'
+                  << " - GLFW version " << Chip8topia::getGLFWVersion() << '\n'
+                  << " - Glad version " << Chip8topia::getGladVersion() << '\n'
+                  << " - ImGui version " << Chip8topia::getImGuiVersion() << '\n'
+                  << '\n';
     }
 }
 

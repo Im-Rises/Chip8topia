@@ -55,8 +55,8 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [x] Add disassembly
 - [x] Change the structure of Chip8topia so it starts the window in a function and not in the constructor
 - [x] Add commands and try compilation with emscripten
+- [x] Create a macro which will identify release and debug mode and change the window title accordingly _DEBUG and
 - [ ] Add OpenGL ES support for WebAssembly
-- [ ] Create a macro which will identify release and debug mode and change the window title accordingly _DEBUG and
   NDEBUG
 - [ ] Faire des fonctions virtuel et les override dans chaque cpu ! Pas pure virtual, pour que si c'est pas override ça
   appelle "assert" !
