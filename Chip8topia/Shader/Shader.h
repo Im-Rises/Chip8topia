@@ -1,5 +1,10 @@
 #pragma once
 
+#if defined(__EMSCRIPTEN__)
+#include <GLES3/gl3.h>
+#else
+#include <glad/glad.h>
+#endif
 #include <vector>
 #include <string>
 
@@ -10,7 +15,7 @@ public:
     auto operator=(const Shader&) -> Shader& = delete;
     Shader(Shader&&) = delete;
     auto operator=(Shader&&) -> Shader& = delete;
-    virtual ~Shader();
+    ~Shader();
 
 public:
     void compileFromFiles(const char* vertexPath, const char* fragmentPath);
@@ -30,5 +35,5 @@ public:
     [[maybe_unused]] void setVec4(const std::string& name, float x, float y, float z, float w) const;
 
 private:
-    unsigned int m_ID;
+    GLuint m_ID;
 };

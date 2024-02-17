@@ -56,16 +56,22 @@ private:
     void drawDisassemblyControls(Chip8Core* chip8);
 
 private:
+#if defined(__EMSCRIPTEN__)
+    static constexpr auto INITIAL_WINDOW_STATE = false;
+#else
+    static constexpr auto INITIAL_WINDOW_STATE = true;
+#endif
+    
     MemoryEditor m_memoryEditor;
     Chip8Disassembler m_disassembler;
 
     // TODO: Add a new parameter which is the flags for the window
     std::array<MenuItem<Chip8Core>, 6> m_menuItems = {
-        "Registers", true, [this](Chip8Core* chip8) { drawRegisters(chip8); },
-        "Stack", true, [this](Chip8Core* chip8) { drawStack(chip8); },
-        "Memory Editor", true, [this](Chip8Core* chip8) { drawMemory(chip8); },
-        "Keypad", true, [this](Chip8Core* chip8) { drawKeypad(chip8); },
-        "Assembly", true, [this](Chip8Core* chip8) { drawAssembly(chip8); },
-        "Assembly Controls", true, [this](Chip8Core* chip8) { drawDisassemblyControls(chip8); }
+        "Registers", INITIAL_WINDOW_STATE, [this](Chip8Core* chip8) { drawRegisters(chip8); },
+        "Stack", INITIAL_WINDOW_STATE, [this](Chip8Core* chip8) { drawStack(chip8); },
+        "Memory Editor", INITIAL_WINDOW_STATE, [this](Chip8Core* chip8) { drawMemory(chip8); },
+        "Keypad", INITIAL_WINDOW_STATE, [this](Chip8Core* chip8) { drawKeypad(chip8); },
+        "Assembly", INITIAL_WINDOW_STATE, [this](Chip8Core* chip8) { drawAssembly(chip8); },
+        "Assembly Controls", INITIAL_WINDOW_STATE, [this](Chip8Core* chip8) { drawDisassemblyControls(chip8); }
     };
 };
