@@ -18,9 +18,12 @@ elseif (WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Debug")
     set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE FALSE)
 endif ()
 
-if (NOT ${EMSCRIPTEN})
+if (NOT EMSCRIPTEN)
     find_package(glfw3 CONFIG REQUIRED)
     target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
+
+    find_package(glad CONFIG REQUIRED)
+    target_link_libraries(${PROJECT_NAME} PRIVATE glad::glad)
 
     set(OpenGL_GL_PREFERENCE GLVND)
     find_package(OpenGL 3.3 REQUIRED)
@@ -28,17 +31,14 @@ if (NOT ${EMSCRIPTEN})
 
     find_package(Stb REQUIRED)
     target_include_directories(${PROJECT_NAME} PRIVATE ${Stb_INCLUDE_DIR})
+
+    if (WIN32)
+        target_link_libraries(${PROJECT_NAME} PUBLIC winmm.lib)
+    endif ()
 else ()
     target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
 endif ()
 
-#TODO: Maybe move to desktop only (also change vcpkg.json)
-find_package(glad CONFIG REQUIRED)
-target_link_libraries(${PROJECT_NAME} PRIVATE glad::glad)
-
 find_package(imgui CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE imgui::imgui)
 
-if (WIN32)
-    target_link_libraries(${PROJECT_NAME} PUBLIC winmm.lib)
-endif ()
