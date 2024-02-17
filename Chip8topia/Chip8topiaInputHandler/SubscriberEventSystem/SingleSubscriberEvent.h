@@ -87,15 +87,12 @@ public:
 
     template <class T>
     auto isRegistered(FunctionPointer<Args...> function) const -> bool {
-        if (const auto* functionEventVarying = dynamic_cast<const FunctionEventVarying<T, Args...>*>(&function))
-            return *m_functionMethodPointer == *functionEventVarying;
-
-        return false;
+        return *m_functionMethodPointer == FunctionEventVarying<Args...>(function);
     }
 
 #pragma endregion
 
-    [[nodiscard]] auto getHasSubscribed() const -> bool {
+    [[nodiscard]] auto getHasSubscriber() const -> bool {
         return m_functionMethodPointer != nullptr;
     }
 

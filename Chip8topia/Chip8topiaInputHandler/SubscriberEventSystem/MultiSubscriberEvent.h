@@ -51,6 +51,16 @@ public:
         return unsubscribe(methodEvent);
     }
 
+    template <class T>
+    auto isRegistered(const MethodEventVarying<T, Args...>& methodEvent) const -> bool {
+        if (const auto* methodEventVarying = dynamic_cast<const MethodEventVarying<Args...>*>(&methodEvent))
+            return std::any_of(m_functionMethodPointers.begin(), m_functionMethodPointers.end(), [methodEventVarying](const auto& methodEvent) {
+                return *methodEvent == *methodEventVarying;
+            });
+
+        return false;
+    }
+
 #pragma endregion
 
 #pragma region Function
@@ -84,6 +94,12 @@ public:
 
     auto operator-=(FunctionPointer<Args...> function) -> bool {
         return unsubscribe(function);
+    }
+
+    auto isRegistered(FunctionPointer<Args...> function) const -> bool {
+        return std::any_of(m_functionMethodPointers.begin(), m_functionMethodPointers.end(), [function](const auto& methodEvent) {
+            return *methodEvent == FunctionEventVarying<Args...>(function);
+        });
     }
 #pragma endregion
 
