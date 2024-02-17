@@ -7,16 +7,11 @@
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
-// TODO: Change the commented code below...
-#define GL_SILENCE_DEPRECATION
-// #if defined(IMGUI_IMPL_OPENGL_ES2)
-// #include <GLES2/gl2.h>
-// #endif
-// #ifndef __EMSCRIPTEN__
-// #include <glad/glad.h>
-// #endif
+#if defined(__EMSCRIPTEN__)
+#include <GLES3/gl3.h>
+#else
 #include <glad/glad.h>
-
+#endif
 #include <GLFW/glfw3.h>
 
 #ifndef __EMSCRIPTEN__
@@ -127,15 +122,12 @@ auto Chip8topia::init() -> int {
     if (glfwInit() == 0)
         return 1;
 
-        // Decide GL+GLSL versions
-#if defined(IMGUI_IMPL_OPENGL_ES2) // TODO: Change to use OPENGL_ES3 ?
-    // GL ES 3.0 + GLSL 300 ES
+#if defined(__EMSCRIPTEN__)
     const char* glsl_version = "#version 300 es";
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
     glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
 #else
-    // GL 3.0 + GLSL 130
     const char* glsl_version = "#version 330";
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);

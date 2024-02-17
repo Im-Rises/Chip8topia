@@ -18,7 +18,7 @@ elseif (WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Debug")
     set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE FALSE)
 endif ()
 
-if (NOT ${EMSCRIPTEN})
+if (NOT EMSCRIPTEN)
     find_package(glfw3 CONFIG REQUIRED)
     target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
 
@@ -31,6 +31,10 @@ if (NOT ${EMSCRIPTEN})
 
     find_package(Stb REQUIRED)
     target_include_directories(${PROJECT_NAME} PRIVATE ${Stb_INCLUDE_DIR})
+
+    if (WIN32)
+        target_link_libraries(${PROJECT_NAME} PUBLIC winmm.lib)
+    endif ()
 else ()
     target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
 endif ()
@@ -38,6 +42,3 @@ endif ()
 find_package(imgui CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE imgui::imgui)
 
-if (WIN32)
-    target_link_libraries(${PROJECT_NAME} PUBLIC winmm.lib)
-endif ()

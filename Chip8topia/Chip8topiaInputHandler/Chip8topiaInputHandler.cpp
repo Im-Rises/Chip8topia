@@ -41,7 +41,9 @@ void Chip8topiaInputHandler::key_callback(GLFWwindow* /*window*/, int key, int /
     {
         switch (key)
         {
+#ifndef __EMSCRIPTEN__
         case GLFW_KEY_ESCAPE: inputHandler.m_EscapeKeyButtonPressedEvent.trigger(); break;
+#endif
         case GLFW_KEY_P: inputHandler.m_PKeyButtonPressedEvent.trigger(); break;
         case GLFW_KEY_F1: inputHandler.m_F1KeyButtonPressedEvent.trigger(); break;
         case GLFW_KEY_F2: inputHandler.m_F2KeyButtonPressedEvent.trigger(); break;
