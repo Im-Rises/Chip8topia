@@ -1,23 +1,4 @@
-// // Doesn't work with MSVC
-// auto getCPppVersion() -> const char* {
-//    switch (__cplusplus)
-//    {
-//    case 202101L:
-//        return "C++23";
-//    case 202002L:
-//        return "C++20";
-//    case 201703L:
-//        return "C++17";
-//    case 201402L:
-//        return "C++14";
-//    case 201103L:
-//        return "C++11";
-//    case 199711L:
-//        return "C++98";
-//    default:
-//        return (&"pre-standard C++. "[__cplusplus]);
-//    }
-//}
+#include <plateformIdentifier/plateformIdentifier.h>
 
 #if defined(_WIN32) && !defined(_DEBUG)
 #define WIN32_RELEASE 1

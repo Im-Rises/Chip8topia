@@ -14,7 +14,8 @@
     },
     {
       "name": "stb",
-      "version>=": "2023-04-11#1"
+      "version>=": "2023-04-11#1",
+      "platform": "!emscripten"
     },
     {
       "name": "imgui",

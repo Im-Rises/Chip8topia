@@ -54,6 +54,8 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [x] Refactor all imgui windows to look pretty
 - [x] Add disassembly
 - [x] Change the structure of Chip8topia so it starts the window in a function and not in the constructor
+- [x] Add commands and try compilation with emscripten
+- [ ] Add OpenGL ES support for WebAssembly
 - [ ] Create a macro which will identify release and debug mode and change the window title accordingly _DEBUG and
   NDEBUG
 - [ ] Faire des fonctions virtuel et les override dans chaque cpu ! Pas pure virtual, pour que si c'est pas override ça
@@ -111,5 +113,5 @@ cmake --build [build directory]
 
 ```bash
 emcmake cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=~/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=${EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -DVCPKG_TARGET_TRIPLET=wasm32-emscripten "-DCMAKE_EXE_LINKER_FLAGS=-s USE_GLFW=3 -s FULL_ES3=1 -s WASM=1 -s ALLOW_MEMORY_GROWTH=1" -DCMAKE_BUILD_TYPE=Release  
-emmake make -C build
+emmake make -C build // or cd build && make
 ```

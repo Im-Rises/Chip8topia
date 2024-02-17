@@ -25,18 +25,19 @@ if (NOT ${EMSCRIPTEN})
     set(OpenGL_GL_PREFERENCE GLVND)
     find_package(OpenGL 3.3 REQUIRED)
     target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL)
+
+    find_package(Stb REQUIRED)
+    target_include_directories(${PROJECT_NAME} PRIVATE ${Stb_INCLUDE_DIR})
 else ()
     target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
 endif ()
 
+#TODO: Maybe move to desktop only (also change vcpkg.json)
 find_package(glad CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE glad::glad)
 
 find_package(imgui CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE imgui::imgui)
-
-find_package(Stb REQUIRED)
-target_include_directories(${PROJECT_NAME} PRIVATE ${Stb_INCLUDE_DIR})
 
 if (WIN32)
     target_link_libraries(${PROJECT_NAME} PUBLIC winmm.lib)
