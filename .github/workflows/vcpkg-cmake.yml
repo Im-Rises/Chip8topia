@@ -71,9 +71,9 @@ jobs:
         # Install the dependencies from the vcpkg.json file. This example uses the vcpkg.json file to specify dependencies.
         run: |
           if [ ${{ matrix.os }} == 'windows-latest' ]; then
-            .\vcpkg\vcpkg install --triplet x64-windows
+            .\vcpkg\vcpkg install
           else
-            ./vcpkg/vcpkg install --triplet x64-linux
+            ./vcpkg/vcpkg install
           fi
 
 
