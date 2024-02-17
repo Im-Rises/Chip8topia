@@ -29,6 +29,7 @@ public:
     /*
      * UI Input
      * */
+    // TODO: Rename all the event to what they really do!
     [[maybe_unused]] SingleSubscriberEvent<> m_F1KeyButtonPressedEvent;
     [[maybe_unused]] SingleSubscriberEvent<> m_F2KeyButtonPressedEvent;
     [[maybe_unused]] SingleSubscriberEvent<> m_F3KeyButtonPressedEvent;
@@ -40,7 +41,10 @@ public:
 
     [[maybe_unused]] SingleSubscriberEvent<> m_CTRL_OKeyButtonPressedEvent;
 
+#ifndef __EMSCRIPTEN__
     [[maybe_unused]] SingleSubscriberEvent<> m_EscapeKeyButtonPressedEvent;
+#endif
+
     [[maybe_unused]] MultiSubscriberEvent<> m_PKeyButtonPressedEvent;
 
     /*

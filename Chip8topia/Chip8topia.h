@@ -34,7 +34,9 @@ public:
 
 public:
     auto run() -> int;
+#ifndef __EMSCRIPTEN__
     void closeRequest();
+#endif
 
 private:
     auto init() -> int;
@@ -51,8 +53,10 @@ public:
     void toggleFullScreen();
     void toggleTurboMode();
 
+#ifndef __EMSCRIPTEN__
     void setWindowIcon();
     void setWindowTitle(const float fps);
+#endif
 
     [[nodiscard]] auto getChip8Emulator() -> Chip8Emulator&;
     [[nodiscard]] auto getIsTurboMode() const -> bool;
@@ -64,7 +68,7 @@ private:
     static auto getGLFWVersion() -> std::string;
     static auto getGladVersion() -> std::string_view;
     static auto getImGuiVersion() -> std::string;
-    void printDependenciesInfos();
+    static void printDependenciesInfos();
 
 #if !defined(BUILD_RELEASE)
     void loadDebugRom();
