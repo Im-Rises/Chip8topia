@@ -18,17 +18,17 @@ jobs:
       matrix:
         os: [ ubuntu-latest, windows-latest ]
         build_type: [ Release ]
-        c_compiler: [ gcc, cl ]
+        c_compiler: [ clang, cl ] # gcc, cl, clang
         include:
           - os: windows-latest
             c_compiler: cl
             cpp_compiler: cl
           - os: ubuntu-latest
-            c_compiler: gcc
-            cpp_compiler: g++
+            c_compiler: clang #gcc
+            cpp_compiler: clang++ #g++
         exclude:
           - os: windows-latest
-            c_compiler: gcc
+            c_compiler: clang
           - os: ubuntu-latest
             c_compiler: cl
 
@@ -37,18 +37,18 @@ jobs:
         with:
           submodules: 'true'
 
+      - name: Set reusable strings
+        id: strings
+        shell: bash
+        run: |
+          echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+
       - name: Install libs
         if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt-get update
           sudo apt-get install -y xorg-dev
           sudo apt-get install -y libglu1-mesa-dev
-
-      - name: Set reusable strings
-        id: strings
-        shell: bash
-        run: |
-          echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
       - name: Install vcpgk
         uses: lukka/run-vcpkg@v11
