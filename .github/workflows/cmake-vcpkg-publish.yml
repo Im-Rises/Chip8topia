@@ -106,10 +106,9 @@ jobs:
           cp -r ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.executable_name }}/${{ matrix.build_type }}/${{ matrix.executable_name }}${{ matrix.executable_extension }} ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}
           cp -r ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.executable_name }}/${{ matrix.build_type }}/glfw3.dll ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}
 
-      - name: Zip artifacts
-        run: |
-          cd ${{ github.workspace }}
-          zip -r ${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}.zip ${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}
+      - uses: montudor/action-zip@v1
+        with:
+          args: zip -r ${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}.zip ${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}
 
       - name: Upload release
         uses: actions/upload-release-asset@v1
