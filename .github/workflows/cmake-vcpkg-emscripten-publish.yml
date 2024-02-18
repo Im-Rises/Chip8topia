@@ -1,6 +1,6 @@
 # This starter workflow is for a CMake project running on multiple platforms. There is a different starter workflow if you just want a single platform.
 # See: https://github.com/actions/starter-workflows/blob/main/ci/cmake-single-platform.yml
-name: CMake Vcpkg Emscripten
+name: CMake Vcpkg Emscripten Publish
 
 on:
   push:
@@ -48,3 +48,22 @@ jobs:
 
       - name: Build
         run: emmake make -C build
+
+      - name: Copy artefacts to web folder
+        run: |
+          cp build/Chip8topia/Chip8topia.js web/
+          cp build/Chip8topia/Chip8topia.wasm web/
+          cp build/Chip8topia/Chip8topia.data web/
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          # Upload entire repository
+          path: './web'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
