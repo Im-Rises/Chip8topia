@@ -19,7 +19,8 @@
 #include <stb_image.h>
 #endif
 
-#include <format>
+// #include <format>
+#include <fmt/core.h>
 #include <chrono>
 #include <iostream>
 
@@ -333,7 +334,8 @@ void Chip8topia::setWindowIcon() {
 
 void Chip8topia::setWindowTitle(const float fps) {
     //    m_chip8Emulator.getRomName();// TODO: Add rom name to window title
-    glfwSetWindowTitle(m_window, std::format("{} - {:.2f} fps", PROJECT_NAME, fps).c_str());
+    //    glfwSetWindowTitle(m_window, std::format("{} - {:.2f} fps", PROJECT_NAME, fps).c_str());
+    glfwSetWindowTitle(m_window, fmt::format("{} - {:.2f} fps", PROJECT_NAME, fps).c_str());
 }
 #endif
 

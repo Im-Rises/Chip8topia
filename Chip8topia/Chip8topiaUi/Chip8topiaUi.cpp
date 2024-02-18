@@ -2,7 +2,8 @@
 
 #include <imgui.h>
 #include <ImGuiFileDialog/ImGuiFileDialog.h>
-#include <format>
+// #include <format>
+#include <fmt/core.h>
 #include <plateformIdentifier/plateformIdentifier.h>
 
 #include "../Chip8topia.h"
@@ -73,7 +74,7 @@ void Chip8topiaUi::drawFileMenu(Chip8topia& chip8topia) {
 void Chip8topiaUi::drawEngineEmulationMenu(Chip8topia& chip8topia) {
     if (ImGui::BeginMenu("Engine/Emulation"))
     {
-        if (ImGui::MenuItem(std::format("Toggle Engine turbo mode : {}", chip8topia.getIsTurboMode() ? "ON " : "OFF").c_str(), "F3"))
+        if (ImGui::MenuItem(fmt::format("Toggle Engine turbo mode : {}", chip8topia.getIsTurboMode() ? "ON " : "OFF").c_str(), "F3"))
         {
             chip8topia.toggleTurboMode();
         }
