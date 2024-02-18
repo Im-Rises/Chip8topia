@@ -9,15 +9,13 @@
 #include <imgui_impl_opengl3.h>
 #if defined(__EMSCRIPTEN__)
 #include <GLES3/gl3.h>
+#include <emscripten.h>
 #else
 #include <glad/glad.h>
-#endif
-#include <GLFW/glfw3.h>
-
-#ifndef __EMSCRIPTEN__
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 #endif
+#include <GLFW/glfw3.h>
 
 // #include <format>
 #include <fmt/format.h>
@@ -26,19 +24,15 @@
 
 #include "res/chip8topiaIconResource.h"
 
-#if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
-#pragma comment(lib, "legacy_stdio_definitions")
-#endif
-
 #ifdef __EMSCRIPTEN__
 #include "imgui_emscripten/imgui_emscripten.h"
 #endif
 
-static void glfw_error_callback(int error, const char* description) {
+void glfw_error_callback(int error, const char* description) {
     std::cerr << "Glfw Error " << error << ": " << description << '\n';
 }
 
-void drop_callback(GLFWwindow* window, int count, const char** paths) {
+void glfw_drop_callback(GLFWwindow* window, int count, const char** paths) {
     // TODO: Handle crash when loading file with invalid extension
     (void)count;
     static constexpr int INDEX = 0;
@@ -143,9 +137,16 @@ auto Chip8topia::init() -> int {
     glfwMakeContextCurrent(m_window);
     glfwSwapInterval(m_isTurboMode ? 0 : 1); // 0 = no vsync, 1 = vsync
 
+    // #if defined(__EMSCRIPTEN__)
+    //     // Set canvas size
+    //     int canvasWidth, canvasHeight;
+    //     emscripten_get_canvas_element_size("#canvas", &canvasWidth, &canvasHeight);
+    //     glfwSetWindowSize(m_window, canvasWidth, canvasHeight);
+    // #endif
+
     // Set window callbacks
     glfwSetWindowUserPointer(m_window, this);
-    glfwSetDropCallback(m_window, drop_callback);
+    glfwSetDropCallback(m_window, glfw_drop_callback);
     glfwSetKeyCallback(m_window, Chip8topiaInputHandler::key_callback);
 
     // Center window

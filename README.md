@@ -61,12 +61,8 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [x] Integrate data to the assembly like VX and VY becoming V2 and V7 depending on the opcode
 - [x] Create actions for github
 - [ ] Add web rom loading
+- [ ] Add canvas window size adaptation for the web
 - [ ] Add break, run, step to the debugger
-- [ ] Créer une classe ImGuiMenuItemWindowList. Améliorer code imgui des fenêtres avec un système qui contiendrait les
-  enums des fenêtres à afficher, ensuite en
-  allant dans un switch case pour chaque enum dans le tableau, on afficherait la fenêtre correspondante. Rajouter class
-  ImGui (Créer une classe ImGuiMenuItemWindowList). Faire une structure qui prend en paramètre un array seulement
-  movable
 - [ ] Faire des fonctions virtuel et les override dans chaque cpu ! Pas pure virtual, pour que si c'est pas override ça
   appelle "assert" !
 - [ ] Add emulation sound
@@ -82,6 +78,11 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
   Check later
 - [ ] Replace PlateformIdentifier.h with variable defined in the CMakeLists.txt
 - [x] Check if with emscripten it really compile in Release mode
+- [ ] Créer une classe ImGuiMenuItemWindowList. Améliorer code imgui des fenêtres avec un système qui contiendrait les
+  enums des fenêtres à afficher, ensuite en
+  allant dans un switch case pour chaque enum dans le tableau, on afficherait la fenêtre correspondante. Rajouter class
+  ImGui (Créer une classe ImGuiMenuItemWindowList). Faire une structure qui prend en paramètre un array seulement
+  movable
 
 ## Dependencies
 

@@ -55,7 +55,12 @@ void Chip8topiaUi::drawMainMenuBar(Chip8topia& chip8topia) {
 void Chip8topiaUi::drawFileMenu(Chip8topia& chip8topia) {
     if (ImGui::BeginMenu("File"))
     {
-        if (ImGui::MenuItem("Open rom..", "Ctrl+O"))
+#if defined(__EMSCRIPTEN__)
+        static constexpr auto ROM_LABEL = "Open integrated rom...";
+#else
+        static constexpr auto ROM_LABEL = "Open rom... (Ctrl+O)";
+#endif
+        if (ImGui::MenuItem(ROM_LABEL, "Ctrl+O"))
         {
             openRomWindow();
         }
@@ -172,7 +177,7 @@ void Chip8topiaUi::drawVideoWindow(Chip8topia& chip8topia) {
         ImGui::ColorPicker4("Background color", reinterpret_cast<float*>(&chip8topia.getChip8Emulator().getChip8VideoEmulation().getBackgroundColor()));
         ImGui::End();
     }
-    
+
     if (m_showForegroundColor)
     {
         ImGui::Begin("Draw color", &m_showForegroundColor);
@@ -222,7 +227,7 @@ void Chip8topiaUi::drawAboutPopUpInternal(const std::string_view& popupName, con
 
 void Chip8topiaUi::openRomWindow() {
     IGFD::FileDialogConfig config;
-    config.path = ".";
+    config.path = DEFAULT_FOLDER_PATH;
     ImGuiFileDialog::Instance()->OpenDialog(FILE_DIALOG_NAME, "Select a game rom", CHIP8_ROM_FILE_EXTENSION, config);
 }
 
