@@ -96,6 +96,9 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 
 https://emscripten.org/docs/porting/files/packaging_files.html
 https://webgl2fundamentals.org/webgl/lessons/webgl-data-textures.html
+https://emscripten.org/docs/porting/files/index.html
+https://emscripten.org/docs/porting/files/file_systems_overview.html#file-system-overview
+https://emscripten.org/docs/porting/files/Synchronous-Virtual-XHR-Backed-File-System-Usage.html#synchronous-virtual-xhr-backed-file-system-usage
 
 ## Commands
 
