@@ -130,19 +130,17 @@ auto Chip8topia::init() -> int {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);           // 3.0+ only
 #endif
 
+    // Get canvas size
+#if defined(__EMSCRIPTEN__)
+    emscripten_get_canvas_element_size("#canvas", &m_currentWidth, &m_currentHeight);
+#endif
+
     // Create window with graphics context
     m_window = glfwCreateWindow(m_currentWidth, m_currentHeight, PROJECT_NAME, nullptr, nullptr);
     if (m_window == nullptr)
         return 1;
     glfwMakeContextCurrent(m_window);
     glfwSwapInterval(m_isTurboMode ? 0 : 1); // 0 = no vsync, 1 = vsync
-
-    // #if defined(__EMSCRIPTEN__)
-    //     // Set canvas size
-    //     int canvasWidth, canvasHeight;
-    //     emscripten_get_canvas_element_size("#canvas", &canvasWidth, &canvasHeight);
-    //     glfwSetWindowSize(m_window, canvasWidth, canvasHeight);
-    // #endif
 
     // Set window callbacks
     glfwSetWindowUserPointer(m_window, this);
@@ -249,8 +247,12 @@ void Chip8topia::handleScreenUpdate() {
         glfwGetWindowPos(m_window, &m_windowedPosX, &m_windowedPosY);
         glfwGetWindowSize(m_window, &m_windowedWidth, &m_windowedHeight);
     }
-
+    
+#if defined(__EMSCRIPTEN__)
+    emscripten_get_canvas_element_size("#canvas", &m_currentWidth, &m_currentHeight);
+#else
     glfwGetFramebufferSize(m_window, &m_currentWidth, &m_currentHeight);
+#endif
     glViewport(0, 0, m_currentWidth, m_currentHeight);
     glClearColor(CLEAR_COLOR.x * CLEAR_COLOR.w, CLEAR_COLOR.y * CLEAR_COLOR.w, CLEAR_COLOR.z * CLEAR_COLOR.w, CLEAR_COLOR.w);
     glClear(GL_COLOR_BUFFER_BIT);

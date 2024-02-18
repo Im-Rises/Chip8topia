@@ -60,8 +60,8 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [x] Add .data rom files to the emscripten build
 - [x] Integrate data to the assembly like VX and VY becoming V2 and V7 depending on the opcode
 - [x] Create actions for github
-- [ ] Add web rom loading
-- [ ] Add canvas window size adaptation for the web
+- [x] Add web rom loading
+- [x] Add canvas window size adaptation for the web
 - [ ] Add break, run, step to the debugger
 - [ ] Faire des fonctions virtuel et les override dans chaque cpu ! Pas pure virtual, pour que si c'est pas override ça
   appelle "assert" !
