@@ -7,9 +7,7 @@
 #include "../Chip8Emulator/Chip8Core/Core/CpuDisassembly.h"
 
 void Chip8Disassembler::drawAssembly(const std::array<uint8, Cpu::MEMORY_SIZE>& memory, uint16 pc) {
-    // TODO: Optimize using only modification of value with index of the string
     // Change the storage to use real bool not a bitset ? This way we don't need the ImGui::IsItemClicked() and we can use directly the value of the array
-    // TODO: Modify assembly to put real value for X, Y, N, NN, NNN and KK
 
     std::string buffer;
     ImGuiListClipper clipper;

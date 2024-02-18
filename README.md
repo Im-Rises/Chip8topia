@@ -58,13 +58,18 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [x] Create a macro which will identify release and debug mode and change the window title accordingly _DEBUG and
 - [x] Add OpenGL ES support for WebAssembly
 - [x] Add .data rom files to the emscripten build
-- [ ] Integrate data to the assembly like VX and VY becoming V2 and V7 depending on the opcode
+- [x] Integrate data to the assembly like VX and VY becoming V2 and V7 depending on the opcode
+- [x] Create actions for github
+- [ ] Add web rom loading
 - [ ] Add break, run, step to the debugger
-- [ ] Create actions for github
+- [ ] Créer une classe ImGuiMenuItemWindowList. Améliorer code imgui des fenêtres avec un système qui contiendrait les
+  enums des fenêtres à afficher, ensuite en
+  allant dans un switch case pour chaque enum dans le tableau, on afficherait la fenêtre correspondante. Rajouter class
+  ImGui (Créer une classe ImGuiMenuItemWindowList). Faire une structure qui prend en paramètre un array seulement
+  movable
 - [ ] Faire des fonctions virtuel et les override dans chaque cpu ! Pas pure virtual, pour que si c'est pas override ça
   appelle "assert" !
 - [ ] Add emulation sound
-- [ ] Create a class Memory with the memory and the value of 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F
 - [ ] Add emulation for the SuperChip8 and the XO-Chip ?
 - [ ] Add a way to change the used version of the chip8 (ask with a window like the About window, which block user intil
   he decides which version to use) and make it changeable before running a game and when the game is running (restart
@@ -73,11 +78,6 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [ ] Faire une fenêtre imgui quand on démarre pour sélectionner la version de chip8
 - [ ] Faire héritage cpp pour cpu et pour selection et peut être Chip8Core
 - [ ] Add save states ?
-- [ ] Créer une classe ImGuiMenuItemWindowList. Améliorer code imgui des fenêtres avec un système qui contiendrait les
-  enums des fenêtres à afficher, ensuite en
-  allant dans un switch case pour chaque enum dans le tableau, on afficherait la fenêtre correspondante. Rajouter class
-  ImGui (Créer une classe ImGuiMenuItemWindowList). Faire une structure qui prend en paramètre un array seulement
-  movable
 
   Check later
 - [ ] Replace PlateformIdentifier.h with variable defined in the CMakeLists.txt

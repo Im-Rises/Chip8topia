@@ -5,17 +5,21 @@
 #include <sstream>
 #include <array>
 
-
+#if defined(__EMSCRIPTEN__)
+Shader::Shader(const char* vertexCode, const char* fragmentCode) : m_ID(0) {
+    compile(vertexCode, fragmentCode);
+}
+#else
 Shader::Shader(const char* vertexPath, const char* fragmentPath) : m_ID(0) {
     compileFromFiles(vertexPath, fragmentPath);
 }
+#endif
 
 Shader::~Shader() {
     glDeleteProgram(m_ID);
 }
 
 void Shader::compileFromFiles(const char* vertexPath, const char* fragmentPath) {
-#ifndef __EMSCRIPTEN__
     // Retrieve the vertex/fragment source code from filePath
     std::ifstream vShaderFile;
     std::ifstream fShaderFile;
@@ -52,12 +56,6 @@ void Shader::compileFromFiles(const char* vertexPath, const char* fragmentPath) 
     {
         std::cerr << "ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ: " << e.what() << '\n';
     }
-
-#else // TODO: Modify put this shader code out of the general Shader class!!!
-
-    compile(vertexShaderSource, fragmentShaderSource);
-
-#endif
 }
 
 void Shader::compile(const char* vertexSource, const char* fragmentSource) {
