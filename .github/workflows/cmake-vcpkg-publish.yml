@@ -90,21 +90,21 @@ jobs:
       - name: Build
         run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
+      - name: Copy common artifacts
+        run: |
+          mkdir ${{ github.workspace }}/${{ matrix.executable_name }}-common-v${{ github.run_number }}
+          cp -r ${{ github.workspace }}/imgui.ini ${{ github.workspace }}/${{ matrix.executable_name }}-common-v${{ github.run_number }}
+
       - name: Copy artifacts ubuntu
         if: matrix.os == 'ubuntu-latest'
         run: |
-          mkdir ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}        
           cp -r ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.executable_name }}/${{ matrix.executable_name }} ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}
-          cp -r ${{ github.workspace }}/imgui.ini ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}
 
       - name: Copy artifacts windows
         if: matrix.os == 'windows-latest'
         run: |
-          ls -R ${{ steps.strings.outputs.build-output-dir }}
-          mkdir ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}
-          cp -r ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.executable_name }}/${{build_type}}/${{ matrix.executable_name }}${{ matrix.executable_extension }} ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}
-          cp -r ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.executable_name }}/${{build_type}}/glfw3.dll ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}
-          cp -r ${{ github.workspace }}/imgui.ini ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}
+          cp -r ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.executable_name }}/${{ matrix.build_type }}/${{ matrix.executable_name }}${{ matrix.executable_extension }} ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}
+          cp -r ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.executable_name }}/${{ matrix.build_type }}/glfw3.dll ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}
 
       - name: Zip artifacts
         run: |
