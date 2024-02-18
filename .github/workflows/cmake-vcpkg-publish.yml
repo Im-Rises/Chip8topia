@@ -70,9 +70,17 @@ jobs:
       - name: Build
         run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
-      - name: Upload binaries to release
-        uses: svenstaro/upload-release-action@v2
+      - name: Zip the asset into a zip file
+        id: zip_asset
+        run: |
+          7z a -tzip ${{ github.workspace }}/Release/xtest-${{ matrix.os }}-${{ github.ref }}.zip ${{ github.workspace }}/Release/xtest*
+
+      - name: Upload a release asset
+        uses: actions/upload-release-asset@v1
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.artifact_name }}.*
-          asset_name: ${{ matrix.asset_name }}
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ${{ steps.zip_asset.outputs.id }}
+          asset_name: ${{ matrix.asset_name }}-${{ github.ref }}.zip
+          asset_content_type: application/zip
+          asset_label: ${{ matrix.asset_name }}-${{ github.ref }}.zip
+          token: ${{ secrets.GITHUB_TOKEN }}
