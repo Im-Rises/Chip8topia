@@ -73,20 +73,17 @@ jobs:
       - name: Create release folder
         run: mkdir -p ${{ github.workspace }}/release
 
-      - name: Copy artifacts
+      - name: Copy artifacts ubuntu
+        if: matrix.os == 'ubuntu-latest'
         run: |
-          mkdir ${{ matrix.executable_name }}-v${{ github.run_number }}
-          if: matrix.os == 'ubuntu-latest'
-            cp -r ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.executable_name }}/${{ matrix.executable_name }} ${{ github.workspace }}/release/${{ matrix.executable_name }}-v${{ github.run_number }}
-          else
-            cp -r ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.build_type }}/${{ matrix.executable_name }}${{ matrix.executable_extension }} ${{ github.workspace }}/release/${{ matrix.executable_name }}-v${{ github.run_number }}
-          fi
+          mkdir ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}        
+          cp -r ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.executable_name }}/${{ matrix.executable_name }} ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}
 
       - name: Publish release
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ${{ github.workspace }}/release/${{ matrix.executable_name }}-v${{ github.run_number }}
-          asset_name: ${{ matrix.executable_name }}-v${{ github.run_number }}
+          asset_path: ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}
+          asset_name: ${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}
           asset_content_type: application/zip
           token: ${{ secrets.GITHUB_TOKEN }}
