@@ -57,6 +57,7 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [x] Add commands and try compilation with emscripten
 - [x] Create a macro which will identify release and debug mode and change the window title accordingly _DEBUG and
 - [x] Add OpenGL ES support for WebAssembly
+- [x] Add .data rom files to the emscripten build
 - [ ] Integrate data to the assembly like VX and VY becoming V2 and V7 depending on the opcode
 - [ ] Add break, run, step to the debugger
 - [ ] Create actions for github
@@ -100,6 +101,7 @@ https://emscripten.org/docs/porting/files/index.html
 https://emscripten.org/docs/porting/files/file_systems_overview.html#file-system-overview
 https://emscripten.org/docs/porting/files/Synchronous-Virtual-XHR-Backed-File-System-Usage.html#synchronous-virtual-xhr-backed-file-system-usage
 https://github.com/marketplace/actions/upload-release-asset
+https://github.com/mymindstorm/setup-emsdk
 
 ## Commands
 
