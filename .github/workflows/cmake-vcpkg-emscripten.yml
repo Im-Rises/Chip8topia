@@ -1,0 +1,47 @@
+# This starter workflow is for a CMake project running on multiple platforms. There is a different starter workflow if you just want a single platform.
+# See: https://github.com/actions/starter-workflows/blob/main/ci/cmake-single-platform.yml
+name: CMake Vcpkg
+
+on:
+  push:
+  #    branches: [ "main" ]
+  pull_request:
+#    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: 'true'
+
+      - name: Install libs
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xorg-dev
+          sudo apt-get install -y libglu1-mesa-dev
+
+      - name: Install vcpgk
+        uses: lukka/run-vcpkg@v11
+        with:
+          vcpkgDirectory: ${{ github.workspace }}/vcpkg
+          runVcpkgInstall: true
+
+      - name: Install emsdk
+        uses: mymindstorm/setup-emsdk@v11
+      #        with:
+      #          version: 2.0.10
+
+      - name: Verify
+        run: emcc -v
+
+      - name: Create build directory
+        run: mkdir build
+
+      - name: Configure CMake
+        run: emcmake cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=${EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -DVCPKG_TARGET_TRIPLET=wasm32-emscripten "-DCMAKE_EXE_LINKER_FLAGS=-s USE_GLFW=3 -s FULL_ES3=1 -s WASM=1 -s ALLOW_MEMORY_GROWTH=1 --preload-file ../../Chip8Games" -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: emmake make -C build --config Release
