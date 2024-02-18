@@ -21,13 +21,13 @@ jobs:
           - os: windows-latest
             c_compiler: cl
             cpp_compiler: cl
-            artifact_name: Chip8topia-win64
-            asset_name: Chip8topia-win64
+            executable_name: "Chip8topia"
+            executable_extension: ".exe"
           - os: ubuntu-latest
             c_compiler: gcc
             cpp_compiler: g++
-            artifact_name: Chip8topia-linux64
-            asset_name: Chip8topia-linux64
+            executable_name: "Chip8topia"
+            executable_extension: ""
         exclude:
           - os: windows-latest
             c_compiler: gcc
@@ -70,12 +70,23 @@ jobs:
       - name: Build
         run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
-      - name: Upload a release asset
+      - name: Create release folder
+        run: mkdir -p ${{ github.workspace }}/release
+
+      - name: Copy artifacts
+        run: |
+          mkdir ${{ matrix.executable_name }}-v${{ github.run_number }}
+          if: matrix.os == 'ubuntu-latest'
+            cp -r ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.executable_name }}/${{ matrix.executable_name }} ${{ github.workspace }}/release/${{ matrix.executable_name }}-v${{ github.run_number }}
+          else
+            cp -r ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.build_type }}/${{ matrix.executable_name }}${{ matrix.executable_extension }} ${{ github.workspace }}/release/${{ matrix.executable_name }}-v${{ github.run_number }}
+          fi
+
+      - name: Publish release
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ${{ steps.zip_asset.outputs.id }}
-          asset_name: ${{ matrix.asset_name }}-${{ github.ref }}.zip
+          asset_path: ${{ github.workspace }}/release/${{ matrix.executable_name }}-v${{ github.run_number }}
+          asset_name: ${{ matrix.executable_name }}-v${{ github.run_number }}
           asset_content_type: application/zip
-          asset_label: ${{ matrix.asset_name }}-${{ github.ref }}.zip
           token: ${{ secrets.GITHUB_TOKEN }}
