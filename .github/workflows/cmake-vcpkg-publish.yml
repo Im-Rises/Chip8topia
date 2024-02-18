@@ -78,6 +78,7 @@ jobs:
         run: |
           mkdir ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}        
           cp -r ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.executable_name }}/${{ matrix.executable_name }} ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}
+          cp -r ${{ github.workspace }}/imgui.ini ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}
 
       - name: Copy artifacts windows
         if: matrix.os == 'windows-latest'
@@ -85,13 +86,29 @@ jobs:
           mkdir ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}
           cp -r ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.executable_name }}/${{ matrix.executable_name }}${{ matrix.executable_extension }} ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}
           cp -r ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.executable_name }}/glfw3.dll ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}
+          cp -r ${{ github.workspace }}/imgui.ini ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}
 
-      - name: Publish release
+      - name: Zip artifacts
+        run: |
+          cd ${{ github.workspace }}
+          zip -r ${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}.zip ${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}
+
+      - name: Upload release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}
-          asset_name: ${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}
+          upload_url: ${{ steps.create-new-release.outputs.upload_url }}
+          asset_path: ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}.zip
+          asset_name: ${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}.zip
           asset_content_type: application/zip
+
+#      - name: Publish release
+#        uses: actions/upload-release-asset@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          upload_url: ${{ github.event.release.upload_url }}
+#          asset_path: ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}
+#          asset_name: ${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}
+#          asset_content_type: application/zip
