@@ -4,9 +4,7 @@ name: CMake Vcpkg
 
 on:
   push:
-  #    branches: [ "main" ]
-  pull_request:
-#    branches: [ "main" ]
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -48,9 +46,9 @@ jobs:
 
       - name: Copy artefacts to web folder
         run: |
-          cp build/Chip8topia.js web/
-          cp build/Chip8topia.wasm web/
-          cp build/Chip8topia.data web/
+          cp build/Chip8topia/Chip8topia.js web/
+          cp build/Chip8topia/Chip8topia.wasm web/
+          cp build/Chip8topia/Chip8topia.data web/
 
       - name: Setup Pages
         uses: actions/configure-pages@v3
