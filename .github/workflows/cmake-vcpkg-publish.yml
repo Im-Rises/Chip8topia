@@ -92,8 +92,8 @@ jobs:
 
       - name: Copy common artifacts
         run: |
-          mkdir ${{ github.workspace }}/${{ matrix.executable_name }}-common-v${{ github.run_number }}
-          cp -r ${{ github.workspace }}/imgui.ini ${{ github.workspace }}/${{ matrix.executable_name }}-common-v${{ github.run_number }}
+          mkdir ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}
+          cp -r ${{ github.workspace }}/imgui.ini ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}
 
       - name: Copy artifacts ubuntu
         if: matrix.os == 'ubuntu-latest'
