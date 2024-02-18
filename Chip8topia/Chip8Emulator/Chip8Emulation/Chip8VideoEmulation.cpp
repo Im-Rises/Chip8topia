@@ -1,5 +1,46 @@
 #include "Chip8VideoEmulation.h"
 
+static constexpr const char* const VERTEX_SHADER_SOURCE =
+    R"(#version 300 es
+
+            layout(location = 0) in vec3 a_texCoord;
+
+            out vec2 v_texCoord;
+
+            void main()
+            {
+            v_texCoord = vec2(a_texCoord.x * 0.5 + 0.5, 1.0 - (a_texCoord.y * 0.5 + 0.5));
+            gl_Position = vec4(a_texCoord.x, a_texCoord.y, a_texCoord.z, 1.0);
+            }
+    )";
+
+static constexpr const char* const FRAGMENT_SHADER_SOURCE =
+    R"(#version 300 es
+
+            precision mediump float;
+
+            in vec2 v_texCoord;
+
+            out vec4 o_fragColor;
+
+            uniform sampler2D u_ourTexture;
+            uniform vec4 u_backgroundColor;
+            uniform vec4 u_foregroundColor;
+
+            void main()
+            {
+                vec4 color = texture(u_ourTexture, v_texCoord);
+                if (color.r > 0.0)
+                {
+                    o_fragColor = u_foregroundColor;
+                }
+                else
+                {
+                    o_fragColor = u_backgroundColor;
+                }
+            }
+    )";
+
 Chip8VideoEmulation::Chip8VideoEmulation() : m_VAO(0), m_VBO(0), m_shader(VERTEX_SHADER_PATH, FRAGMENT_SHADER_PATH) {
     // Setup main shader data
     glGenVertexArrays(1, &m_VAO);

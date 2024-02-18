@@ -20,7 +20,7 @@
 #endif
 
 // #include <format>
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <chrono>
 #include <iostream>
 

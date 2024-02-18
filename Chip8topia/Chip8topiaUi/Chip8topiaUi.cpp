@@ -3,7 +3,7 @@
 #include <imgui.h>
 #include <ImGuiFileDialog/ImGuiFileDialog.h>
 // #include <format>
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <plateformIdentifier/plateformIdentifier.h>
 
 #include "../Chip8topia.h"
@@ -172,8 +172,7 @@ void Chip8topiaUi::drawVideoWindow(Chip8topia& chip8topia) {
         ImGui::ColorPicker4("Background color", reinterpret_cast<float*>(&chip8topia.getChip8Emulator().getChip8VideoEmulation().getBackgroundColor()));
         ImGui::End();
     }
-
-    // Save color in imgui.ini
+    
     if (m_showForegroundColor)
     {
         ImGui::Begin("Draw color", &m_showForegroundColor);
