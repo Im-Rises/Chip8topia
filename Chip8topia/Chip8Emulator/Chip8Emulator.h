@@ -20,6 +20,7 @@ public:
 public:
     void restart();
     void loadRom(const std::string& romPath);
+    void loadRom(const std::vector<uint8_t>& romData);
 
     void update(const float deltaTime);
     void render();

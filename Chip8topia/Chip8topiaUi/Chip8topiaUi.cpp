@@ -4,14 +4,35 @@
 #include <ImGuiFileDialog/ImGuiFileDialog.h>
 // #include <format>
 #include <fmt/format.h>
+#include <iostream>
 #include <plateformIdentifier/plateformIdentifier.h>
 
 #if defined(__EMSCRIPTEN__)
 #include <emscripten_browser_file.h>
 
-void handle_upload_file(std::string const& filename, std::string const& mime_type, std::string_view buffer, void*) {
-    // define a handler to process the file
-    // ...
+void handle_upload_file(std::string const& filename, std::string const& mime_type, std::string_view buffer, void* chip8emulator) {
+    std::cout << "File uploaded: " << filename << " (" << mime_type << ")" << std::endl;
+    Chip8Emulator* chip8Emulator = static_cast<Chip8Emulator*>(chip8emulator);
+
+    std::cout << "Buffer size: " << buffer.size() << std::endl;
+    //    std::cout << "Buffer: " << buffer << std::endl;
+    //    int i = 0;
+    //    for (char c : buffer)
+    //    {
+    //        uint8_t value = static_cast<uint8_t>(c);
+    //        std::cout << i++ << ": " << static_cast<int>(value) << std::endl;
+    //    }
+
+    // TODO: Maybe copy the buffer in the Chip8InputHandler instead of here?
+    std::vector<uint8> romData;
+    romData.reserve(buffer.size());
+
+    for (const auto& byte : buffer)
+    {
+        romData.push_back(static_cast<uint8>(byte));
+    }
+
+    chip8Emulator->loadRom(romData);
 }
 #endif
 
@@ -78,7 +99,8 @@ void Chip8topiaUi::drawFileMenu(Chip8topia& chip8topia) {
 #if defined(__EMSCRIPTEN__)
         if (ImGui::MenuItem("Open rom"))
         {
-            emscripten_browser_file::upload(CHIP8_ROM_FILE_EXTENSION, handle_upload_file);
+            //            emscripten_browser_file::upload(CHIP8_ROM_FILE_EXTENSION, handle_upload_file);
+            emscripten_browser_file::upload(CHIP8_ROM_FILE_EXTENSION, handle_upload_file, &chip8topia.getChip8Emulator());
         }
 #endif
 

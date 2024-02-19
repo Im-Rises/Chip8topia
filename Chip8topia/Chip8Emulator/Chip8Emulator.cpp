@@ -35,6 +35,12 @@ void Chip8Emulator::loadRom(const std::string& romPath) {
     }
 }
 
+void Chip8Emulator::loadRom(const std::vector<uint8_t>& romData) {
+    m_core.reset();
+    m_core.readRom(romData);
+    m_isRomLoaded = true;
+}
+
 void Chip8Emulator::update(const float deltaTime) {
     if (!m_isRomLoaded || m_isPaused)
     {

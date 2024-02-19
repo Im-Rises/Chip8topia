@@ -63,9 +63,10 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [x] Add web rom loading
 - [x] Add canvas window size adaptation for the web
 - [ ] Add break, run, step to the debugger
+- [ ] Add emulation sound
+- [ ] Add save states ?
 - [ ] Faire des fonctions virtuel et les override dans chaque cpu ! Pas pure virtual, pour que si c'est pas override ça
   appelle "assert" !
-- [ ] Add emulation sound
 - [ ] Add emulation for the SuperChip8 and the XO-Chip ?
 - [ ] Add a way to change the used version of the chip8 (ask with a window like the About window, which block user intil
   he decides which version to use) and make it changeable before running a game and when the game is running (restart
@@ -73,7 +74,6 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [ ] Add a way to change the frequency of the emulator
 - [ ] Faire une fenêtre imgui quand on démarre pour sélectionner la version de chip8
 - [ ] Faire héritage cpp pour cpu et pour selection et peut être Chip8Core
-- [ ] Add save states ?
 
   Check later
 - [ ] Replace PlateformIdentifier.h with variable defined in the CMakeLists.txt
@@ -131,6 +131,6 @@ cmake --build [build directory]
 ### Emscripten
 
 ```bash
-emcmake cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=~/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=${EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -DVCPKG_TARGET_TRIPLET=wasm32-emscripten "-DCMAKE_EXE_LINKER_FLAGS=-s USE_GLFW=3 -s FULL_ES3=1 -s WASM=1 -s ALLOW_MEMORY_GROWTH=1 --preload-file Chip8Games" -DCMAKE_BUILD_TYPE=Release  
+emcmake cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=~/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=${EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -DVCPKG_TARGET_TRIPLET=wasm32-emscripten "-DCMAKE_EXE_LINKER_FLAGS=-s USE_GLFW=3 -s FULL_ES3=1 -s WASM=1 -s EXPORTED_RUNTIME_METHODS=[ccall] -s ALLOW_MEMORY_GROWTH=1 -s EXPORTED_FUNCTIONS=[_main,_malloc,_free] --preload-file ../../Chip8Games" -DCMAKE_BUILD_TYPE=Release  
 emmake make -C build
 ```
