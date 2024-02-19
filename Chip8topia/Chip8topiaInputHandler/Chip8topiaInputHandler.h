@@ -2,7 +2,6 @@
 
 #include <binaryLib/binaryLib.h>
 #include <Singleton/Singleton.h>
-#include <plateformIdentifier/plateformIdentifier.h>
 
 #include "SubscriberEventSystem/MultiSubscriberEvent.h"
 #include "SubscriberEventSystem/SingleSubscriberEvent.h"

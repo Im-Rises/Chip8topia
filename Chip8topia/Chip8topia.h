@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string_view>
-#include <plateformIdentifier/plateformIdentifier.h>
 
 #include "Chip8topiaUi/Chip8topiaUi.h"
 #include "Chip8Emulator/Chip8Emulator.h"
