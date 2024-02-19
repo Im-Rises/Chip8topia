@@ -7,8 +7,10 @@
 
 class Chip8topia;
 class Chip8topiaUi {
-private:
+public:
     static constexpr auto CHIP8_ROM_FILE_EXTENSION = ".ch8";
+
+private:
     static constexpr auto FILE_DIALOG_NAME = "RomFileWindowDialog";
 #if defined(__EMSCRIPTEN__)
     static constexpr auto DEFAULT_FOLDER_PATH = "Chip8Games";

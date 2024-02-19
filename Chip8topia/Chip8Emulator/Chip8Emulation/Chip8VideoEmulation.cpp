@@ -41,7 +41,13 @@ static constexpr const char* const FRAGMENT_SHADER_SOURCE =
             }
     )";
 
-Chip8VideoEmulation::Chip8VideoEmulation() : m_VAO(0), m_VBO(0), m_shader(VERTEX_SHADER_PATH, FRAGMENT_SHADER_PATH) {
+Chip8VideoEmulation::Chip8VideoEmulation() : m_VAO(0), m_VBO(0),
+#if defined(__EMSCRIPTEN__)
+                                             m_shader(VERTEX_SHADER_SOURCE, FRAGMENT_SHADER_SOURCE)
+#else
+                                             m_shader(VERTEX_SHADER_PATH, FRAGMENT_SHADER_PATH)
+#endif
+{
     // Setup main shader data
     glGenVertexArrays(1, &m_VAO);
     glGenBuffers(1, &m_VBO);

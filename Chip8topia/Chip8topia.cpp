@@ -10,6 +10,7 @@
 #if defined(__EMSCRIPTEN__)
 #include <GLES3/gl3.h>
 #include <emscripten.h>
+#include <emscripten/html5.h>
 #else
 #include <glad/glad.h>
 #define STB_IMAGE_IMPLEMENTATION
@@ -25,7 +26,7 @@
 #include "res/chip8topiaIconResource.h"
 
 #ifdef __EMSCRIPTEN__
-#include "imgui_emscripten/imgui_emscripten.h"
+#include <imgui_emscripten/imgui_emscripten.h>
 #endif
 
 void glfw_error_callback(int error, const char* description) {
@@ -37,6 +38,15 @@ void glfw_drop_callback(GLFWwindow* window, int count, const char** paths) {
     (void)count;
     static constexpr int INDEX = 0;
     const char* path = paths[INDEX];
+
+    // Check extension
+    std::string_view pathView(path);
+    if (pathView.ends_with(Chip8topiaUi::CHIP8_ROM_FILE_EXTENSION))
+    {
+        auto* engine = reinterpret_cast<Chip8topia*>(glfwGetWindowUserPointer(window));
+        engine->getChip8Emulator().loadRom(path);
+    }
+
     auto* engine = reinterpret_cast<Chip8topia*>(glfwGetWindowUserPointer(window));
     engine->getChip8Emulator().loadRom(path);
     //    engine->getChip8Emulator().getChip8Core()->getInput()->updateKey(0x0, 1);
@@ -247,7 +257,7 @@ void Chip8topia::handleScreenUpdate() {
         glfwGetWindowPos(m_window, &m_windowedPosX, &m_windowedPosY);
         glfwGetWindowSize(m_window, &m_windowedWidth, &m_windowedHeight);
     }
-    
+
 #if defined(__EMSCRIPTEN__)
     emscripten_get_canvas_element_size("#canvas", &m_currentWidth, &m_currentHeight);
 #else

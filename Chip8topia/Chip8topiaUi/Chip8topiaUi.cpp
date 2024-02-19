@@ -6,6 +6,16 @@
 #include <fmt/format.h>
 #include <plateformIdentifier/plateformIdentifier.h>
 
+#if defined(__EMSCRIPTEN__)
+#include <emscripten_browser_file.h>
+
+void handle_upload_file(std::string const& filename, std::string const& mime_type, std::string_view buffer, void*) {
+    // define a handler to process the file
+    // ...
+}
+#endif
+
+
 #include "../Chip8topia.h"
 
 Chip8topiaUi::Chip8topiaUi() {
@@ -64,6 +74,13 @@ void Chip8topiaUi::drawFileMenu(Chip8topia& chip8topia) {
         {
             openRomWindow();
         }
+
+#if defined(__EMSCRIPTEN__)
+        if (ImGui::MenuItem("Open rom"))
+        {
+            emscripten_browser_file::upload(CHIP8_ROM_FILE_EXTENSION, handle_upload_file);
+        }
+#endif
 
 #ifndef __EMSCRIPTEN__
         if (ImGui::MenuItem("Exit", "Alt+F4"))

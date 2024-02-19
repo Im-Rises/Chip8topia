@@ -103,6 +103,7 @@ https://emscripten.org/docs/porting/files/file_systems_overview.html#file-system
 https://emscripten.org/docs/porting/files/Synchronous-Virtual-XHR-Backed-File-System-Usage.html#synchronous-virtual-xhr-backed-file-system-usage
 https://github.com/marketplace/actions/upload-release-asset
 https://github.com/mymindstorm/setup-emsdk
+https://github.com/Armchair-Software/emscripten-browser-file
 
 ## Commands
 
