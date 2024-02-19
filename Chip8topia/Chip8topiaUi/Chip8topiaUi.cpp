@@ -237,6 +237,10 @@ void Chip8topiaUi::drawAboutChip8topiaPopUpWindow() {
             Chip8topia::PROJECT_VERSION,
             Chip8topia::PROJECT_AUTHOR,
             Chip8topia::PROJECT_LINK);
+        ImGui::Text("\n"
+                    "Description:\n"
+                    " - %s",
+            Chip8topia::PROJECT_DESCRIPTION);
     };
     drawAboutPopUpInternal(Chip8topia::PROJECT_NAME, ABOUT_CHIP8TOPIA, m_showAboutChip8topiaPopup);
 }

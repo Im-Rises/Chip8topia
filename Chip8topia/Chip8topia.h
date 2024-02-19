@@ -10,11 +10,11 @@ struct GLFWwindow;
 class Chip8topia {
 public:
     static constexpr auto PROJECT_NAME = "Chip8topia";
-    static constexpr auto PROJECT_VERSION = "0.0.1";
+    static constexpr auto PROJECT_VERSION = CHIP8TOPIA_VERSION;
     static constexpr auto PROJECT_LINK = "https://github.com/Im-Rises/Chip8topia";
     static constexpr auto PROJECT_AUTHOR = "Im-Rises (Quentin Morel)";
     static constexpr auto PROJECT_DESCRIPTION = "Chip8topia is a Chip8 emulator made with modern C++ and OpenGL."
-                                                "It is currently emulating the Chip8 interpreter and the SuperChip8 interpreter. ";
+                                                "It is currently emulating the Original Chip8.";
     static constexpr auto PROJECT_EMULATION_CONSOLE_NAME = "Chip8";
     static constexpr auto PROJECT_EMULATION_CONSOLE_DESCRIPTION = R"(
 Chip8 is an interpreted programming language, developed by Joseph Weisbecker.
