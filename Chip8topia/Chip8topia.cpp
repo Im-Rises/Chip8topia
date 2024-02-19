@@ -9,40 +9,43 @@
 #include <imgui_impl_opengl3.h>
 #if defined(__EMSCRIPTEN__)
 #include <GLES3/gl3.h>
+#include <emscripten.h>
+#include <emscripten/html5.h>
 #else
 #include <glad/glad.h>
-#endif
-#include <GLFW/glfw3.h>
-
-#ifndef __EMSCRIPTEN__
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 #endif
+#include <GLFW/glfw3.h>
 
 // #include <format>
-#include <fmt/core.h>
+#include <fmt/format.h>
 #include <chrono>
 #include <iostream>
 
 #include "res/chip8topiaIconResource.h"
 
-#if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
-#pragma comment(lib, "legacy_stdio_definitions")
-#endif
-
 #ifdef __EMSCRIPTEN__
-#include "imgui_emscripten/imgui_emscripten.h"
+#include <imgui_emscripten/imgui_emscripten.h>
 #endif
 
-static void glfw_error_callback(int error, const char* description) {
+void glfw_error_callback(int error, const char* description) {
     std::cerr << "Glfw Error " << error << ": " << description << '\n';
 }
 
-void drop_callback(GLFWwindow* window, int count, const char** paths) {
-    // TODO: Handle crash when loading file with invalid extension
+void glfw_drop_callback(GLFWwindow* window, int count, const char** paths) {
     (void)count;
     static constexpr int INDEX = 0;
     const char* path = paths[INDEX];
+
+    // Check extension
+    std::string_view pathView(path);
+    if (pathView.ends_with(Chip8topiaUi::CHIP8_ROM_FILE_EXTENSION))
+    {
+        auto* engine = reinterpret_cast<Chip8topia*>(glfwGetWindowUserPointer(window));
+        engine->getChip8Emulator().loadRom(path);
+    }
+
     auto* engine = reinterpret_cast<Chip8topia*>(glfwGetWindowUserPointer(window));
     engine->getChip8Emulator().loadRom(path);
     //    engine->getChip8Emulator().getChip8Core()->getInput()->updateKey(0x0, 1);
@@ -136,6 +139,11 @@ auto Chip8topia::init() -> int {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);           // 3.0+ only
 #endif
 
+    // Get canvas size
+#if defined(__EMSCRIPTEN__)
+    emscripten_get_canvas_element_size("#canvas", &m_currentWidth, &m_currentHeight);
+#endif
+
     // Create window with graphics context
     m_window = glfwCreateWindow(m_currentWidth, m_currentHeight, PROJECT_NAME, nullptr, nullptr);
     if (m_window == nullptr)
@@ -145,7 +153,7 @@ auto Chip8topia::init() -> int {
 
     // Set window callbacks
     glfwSetWindowUserPointer(m_window, this);
-    glfwSetDropCallback(m_window, drop_callback);
+    glfwSetDropCallback(m_window, glfw_drop_callback);
     glfwSetKeyCallback(m_window, Chip8topiaInputHandler::key_callback);
 
     // Center window
@@ -249,7 +257,11 @@ void Chip8topia::handleScreenUpdate() {
         glfwGetWindowSize(m_window, &m_windowedWidth, &m_windowedHeight);
     }
 
+#if defined(__EMSCRIPTEN__)
+    emscripten_get_canvas_element_size("#canvas", &m_currentWidth, &m_currentHeight);
+#else
     glfwGetFramebufferSize(m_window, &m_currentWidth, &m_currentHeight);
+#endif
     glViewport(0, 0, m_currentWidth, m_currentHeight);
     glClearColor(CLEAR_COLOR.x * CLEAR_COLOR.w, CLEAR_COLOR.y * CLEAR_COLOR.w, CLEAR_COLOR.z * CLEAR_COLOR.w, CLEAR_COLOR.w);
     glClear(GL_COLOR_BUFFER_BIT);

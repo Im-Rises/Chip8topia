@@ -1,11 +1,15 @@
 #include "Chip8Disassembler.h"
 
 #include <imgui.h>
+// #include <format>
+#include <fmt/format.h>
 
 #include "../Chip8Emulator/Chip8Core/Core/CpuDisassembly.h"
 
 void Chip8Disassembler::drawAssembly(const std::array<uint8, Cpu::MEMORY_SIZE>& memory, uint16 pc) {
-    // TODO: Modify assembly to put real value for X, Y, N, NN, NNN and KK
+    // Change the storage to use real bool not a bitset ? This way we don't need the ImGui::IsItemClicked() and we can use directly the value of the array
+
+    std::string buffer;
     ImGuiListClipper clipper;
     clipper.Begin(Cpu::MEMORY_SIZE - 1);
     while (clipper.Step())
@@ -14,18 +18,17 @@ void Chip8Disassembler::drawAssembly(const std::array<uint8, Cpu::MEMORY_SIZE>& 
         {
             uint16 opcode = (memory[i] << 8) | memory[i + 1];
 
+            buffer = fmt::format("  0x{:04X}: ({:04X}) {}", i, opcode, CpuDisassembly::disassembleOpcode(opcode));
             if (pc == i)
             {
-                ImGui::Text("> 0x%04X: (%04X) %s", i, opcode, CpuDisassembly::disassembleOpcode(opcode).c_str());
+                buffer[0] = '>';
             }
             else if (m_breakpoints[i])
             {
-                ImGui::Text("* 0x%04X: (%04X) %s", i, opcode, CpuDisassembly::disassembleOpcode(opcode).c_str());
+                buffer[0] = '*';
             }
-            else
-            {
-                ImGui::Text("  0x%04X: (%04X) %s", i, opcode, CpuDisassembly::disassembleOpcode(opcode).c_str());
-            }
+
+            ImGui::Selectable(buffer.c_str(), m_breakpoints[i]);
 
             if (ImGui::IsItemClicked())
             {

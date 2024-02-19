@@ -4,3 +4,6 @@
 [submodule "dependencies/ImGuiFileDialog"]
 	path = dependencies/ImGuiFileDialog
 	url = https://github.com/aiekick/ImGuiFileDialog.git
+[submodule "dependencies/emscripten-browser-file"]
+	path = dependencies/emscripten-browser-file
+	url = https://github.com/Armchair-Software/emscripten-browser-file.git
