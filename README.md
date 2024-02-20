@@ -64,7 +64,8 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [x] Add canvas window size adaptation for the web
 - [x] Check if with emscripten it really compile in Release mode
 - [x] Replace PlateformIdentifier.h with variable defined in the CMakeLists.txt
-- [ ] Correct buttons for the web (on AZERTY keyboard)
+- [ ] Creer une struct qui définie le nom de la touche shortcut avec le string et le keycode
+- [ ] Reformater le code des touches, changer par de vrais noms de touches
 - [ ] Add break, run, step to the debugger
 - [ ] Add emulation sound
 - [ ] Add save states ?
@@ -84,6 +85,11 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [ ] Add a way to change the frequency of the emulator
 - [ ] Faire une fenêtre imgui quand on démarre pour sélectionner la version de chip8
 - [ ] Faire héritage cpp pour cpu et pour selection et peut être Chip8Core
+- [ ] TODO: Faire un switch case qui démarre la version de Core sélectionné avec la création de Chip8Core m_core; en
+  tant que unique_ptr
+- [ ] TODO: Pour la partie emulation faire des surcharges de fonctions avec comme paramètre const SuperChip8Core& core,
+  const Chip8Core& core, const XOChip8Core& core, de cette façon on pourra définir trois fonctions différentes pour
+  chaque version de Core et le prendra autmaotiquement lors de l'appel ?
 
 ## Dependencies
 

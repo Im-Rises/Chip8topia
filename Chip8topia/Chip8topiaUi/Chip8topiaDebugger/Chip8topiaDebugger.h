@@ -11,6 +11,14 @@
 
 class Chip8Emulator;
 class Chip8topiaDebugger {
+private:
+#if defined(__EMSCRIPTEN__)
+    static constexpr auto INITIAL_WINDOW_STATE = false;
+#else
+    static constexpr auto INITIAL_WINDOW_STATE = true;
+#endif
+
+private:
     template <typename... Args>
     struct MenuItem {
         const char* m_name;
@@ -18,19 +26,15 @@ class Chip8topiaDebugger {
         std::function<void(Args*...)> m_drawFunction;
 
         void drawMenuItem() {
-            if (ImGui::MenuItem(m_name, nullptr, &m_isOpen))
-            {
-            }
+            ImGui::MenuItem(m_name, nullptr, &m_isOpen);
         }
 
         void drawWindow(Args*... args) {
             if (m_isOpen)
             {
-                if (ImGui::Begin(m_name, &m_isOpen))
-                {
-                    m_drawFunction(args...);
-                    ImGui::End();
-                }
+                ImGui::Begin(m_name, &m_isOpen);
+                m_drawFunction(args...);
+                ImGui::End();
             }
         }
     };
@@ -56,16 +60,9 @@ private:
     void drawDisassemblyControls(Chip8Core* chip8);
 
 private:
-#if defined(__EMSCRIPTEN__)
-    static constexpr auto INITIAL_WINDOW_STATE = false;
-#else
-    static constexpr auto INITIAL_WINDOW_STATE = true;
-#endif
-    
     MemoryEditor m_memoryEditor;
     Chip8Disassembler m_disassembler;
 
-    // TODO: Add a new parameter which is the flags for the window
     std::array<MenuItem<Chip8Core>, 6> m_menuItems = {
         "Registers", INITIAL_WINDOW_STATE, [this](Chip8Core* chip8) { drawRegisters(chip8); },
         "Stack", INITIAL_WINDOW_STATE, [this](Chip8Core* chip8) { drawStack(chip8); },

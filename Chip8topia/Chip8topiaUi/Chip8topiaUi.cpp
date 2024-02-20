@@ -86,11 +86,10 @@ void Chip8topiaUi::drawFileMenu(Chip8topia& chip8topia) {
     if (ImGui::BeginMenu("File"))
     {
 #if defined(__EMSCRIPTEN__)
-        static constexpr auto ROM_LABEL = "Open integrated rom...";
+        if (ImGui::MenuItem("Open integrated rom..."))
 #else
-        static constexpr auto ROM_LABEL = "Open rom... (Ctrl+O)";
+        if (ImGui::MenuItem("Open rom...", "Ctrl+O"))
 #endif
-        if (ImGui::MenuItem(ROM_LABEL, "Ctrl+O"))
         {
             openRomWindow();
         }
@@ -154,14 +153,11 @@ void Chip8topiaUi::drawViewMenu(Chip8topia& chip8topia) {
     if (ImGui::BeginMenu("View"))
     {
         // TODO: Create a dictonary of the keys and the name of the menu item with the event, to be sure to call the right event
-        if (ImGui::MenuItem("Show/Hide MenuBar", "F1", &m_isMenuBarOpen))
-        {
-        }
+        ImGui::MenuItem("Show/Hide MenuBar", "F1", &m_isMenuBarOpen);
 
-        if (ImGui::MenuItem("Show/Hide Windows", "F2", &m_windowsVisible))
-        {
-        }
+        ImGui::MenuItem("Show/Hide Windows", "F2", &m_windowsVisible);
 
+#ifndef __EMSCRIPTEN__
         if (ImGui::MenuItem("Center window", "F10"))
         {
             chip8topia.centerWindow();
@@ -171,6 +167,7 @@ void Chip8topiaUi::drawViewMenu(Chip8topia& chip8topia) {
         {
             chip8topia.toggleFullScreen();
         }
+#endif
 
         ImGui::EndMenu();
     }
@@ -179,14 +176,9 @@ void Chip8topiaUi::drawViewMenu(Chip8topia& chip8topia) {
 void Chip8topiaUi::drawVideoMenu() {
     if (ImGui::BeginMenu("Video"))
     {
-        if (ImGui::MenuItem("Background color"))
-        {
-            m_showBackgroundColor = !m_showBackgroundColor;
-        }
-        if (ImGui::MenuItem("Draw color"))
-        {
-            m_showForegroundColor = !m_showForegroundColor;
-        }
+        ImGui::MenuItem("Background color", nullptr, &m_showBackgroundColor);
+        ImGui::MenuItem("Draw color", nullptr, &m_showForegroundColor);
+
         ImGui::EndMenu();
     }
 }
@@ -194,15 +186,8 @@ void Chip8topiaUi::drawVideoMenu() {
 void Chip8topiaUi::drawAboutMenu() {
     if (ImGui::BeginMenu("About..."))
     {
-        if (ImGui::MenuItem(Chip8topia::PROJECT_NAME))
-        {
-            m_showAboutChip8topiaPopup = true;
-        }
-
-        if (ImGui::MenuItem(Chip8topia::PROJECT_EMULATION_CONSOLE_NAME))
-        {
-            m_showAboutChip8Popup = true;
-        }
+        ImGui::MenuItem(Chip8topia::PROJECT_NAME, nullptr, &m_showAboutChip8topiaPopup);
+        ImGui::MenuItem(Chip8topia::PROJECT_EMULATION_CONSOLE_NAME, nullptr, &m_showAboutChip8Popup);
 
         ImGui::EndMenu();
     }
