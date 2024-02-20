@@ -2,11 +2,11 @@
 
 #include <imgui.h>
 #include <imgui_memory_editor/imgui_memory_editor.h>
-#include <functional>
 #include <array>
 
 #include "../../Chip8Emulator/Chip8Emulator.h"
 #include "../../Chip8Emulator/Chip8Core/Chip8Core.h"
+#include "../ImGuiHelper/ImGuiHelper.h"
 #include "Chip8Disassembler.h"
 
 class Chip8Emulator;
@@ -17,27 +17,6 @@ private:
 #else
     static constexpr auto INITIAL_WINDOW_STATE = true;
 #endif
-
-private:
-    template <typename... Args>
-    struct MenuItem {
-        const char* m_name;
-        bool m_isOpen;
-        std::function<void(Args*...)> m_drawFunction;
-
-        void drawMenuItem() {
-            ImGui::MenuItem(m_name, nullptr, &m_isOpen);
-        }
-
-        void drawWindow(Args*... args) {
-            if (m_isOpen)
-            {
-                ImGui::Begin(m_name, &m_isOpen);
-                m_drawFunction(args...);
-                ImGui::End();
-            }
-        }
-    };
 
 public:
     Chip8topiaDebugger() = default;
@@ -63,7 +42,7 @@ private:
     MemoryEditor m_memoryEditor;
     Chip8Disassembler m_disassembler;
 
-    std::array<MenuItem<Chip8Core>, 6> m_menuItems = {
+    std::array<ImGuiMenuItemWindow<Chip8Core>, 6> m_menuItems = {
         "Registers", INITIAL_WINDOW_STATE, [this](Chip8Core* chip8) { drawRegisters(chip8); },
         "Stack", INITIAL_WINDOW_STATE, [this](Chip8Core* chip8) { drawStack(chip8); },
         "Memory Editor", INITIAL_WINDOW_STATE, [this](Chip8Core* chip8) { drawMemory(chip8); },
