@@ -33,8 +33,9 @@ void Cpu::reset() {
     m_I = 0;
     m_DT = 0;
     m_ST = 0;
-    m_memory = {}; // TODO: Maybe for the ram we can reset everything except the rom location so it can be reloaded
-    std::copy(FONTSET.begin(), FONTSET.end(), m_memory.begin());
+    // Maybe for the ram we can reset everything except the rom location so it can be reloaded
+    //    m_memory = {};
+    //    std::copy(FONTSET.begin(), FONTSET.end(), m_memory.begin());
     m_V = {};
     m_stack = {};
 }
@@ -69,8 +70,6 @@ auto Cpu::fetchOpcode() -> uint16 {
 }
 
 void Cpu::computeOpcode(const uint16 opcode) {
-    // TODO: Maybe add a security when reaching an unknown opcode
-
     const uint8 nibble4 = (opcode & 0xF000) >> 12;
     const uint8 nibble3 = (opcode & 0x0F00) >> 8;
     const uint8 nibble2 = (opcode & 0x00F0) >> 4;
@@ -271,7 +270,7 @@ void Cpu::JP_V0_addr(const uint16 address) {
 }
 
 void Cpu::RND_Vx_nn(const uint8 x, const uint8 nn) {
-    m_V[x] = m_u8NumberRandomGenerator.generateRandomNumber() & nn; // TODO: Check the value can reach 0 to 255 inclusive
+    m_V[x] = m_u8NumberRandomGenerator.generateRandomNumber() & nn;
 }
 
 void Cpu::DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) {

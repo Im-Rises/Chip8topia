@@ -35,8 +35,9 @@ void Chip8topiaInputHandler::key_callback(GLFWwindow* /*window*/, int key, int /
 #if !defined(BUILD_RELEASE)
         case GLFW_KEY_F12: inputHandler.m_F12KeyDebugButtonPressedEvent.trigger(); break;
 #endif
-            
+
         case GLFW_KEY_P: inputHandler.m_PKeyButtonPressedEvent.trigger(); break;
+        case GLFW_KEY_L: inputHandler.m_LKeyButtonPressedEvent.trigger(); break;
 
         case GLFW_KEY_1: inputHandler.m_GameInput.trigger(0x1, true); break;
         case GLFW_KEY_2: inputHandler.m_GameInput.trigger(0x2, true); break;

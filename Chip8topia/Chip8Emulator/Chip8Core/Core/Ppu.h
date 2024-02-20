@@ -23,7 +23,7 @@ public:
 
 public:
     void clearScreen();
-    auto drawSprite(uint8 x, uint8 y, uint8 n, const std::array<uint8, Cpu::MEMORY_SIZE>& memory, uint16 I_reg) -> bool; // TODO: Remove the use of std::vector and create a shared memory object
+    auto drawSprite(uint8 x, uint8 y, uint8 n, const std::array<uint8, Cpu::MEMORY_SIZE>& memory, uint16 I_reg) -> bool;
     [[nodiscard]] auto getVideoMemory() const -> const std::array<uint8, 2048>&;
 
 private:

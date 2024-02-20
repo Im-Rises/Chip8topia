@@ -77,8 +77,8 @@ private:
     static constexpr ImVec4 CLEAR_COLOR = ImVec4(0.45F, 0.55F, 0.60F, 1.00F);
 
     GLFWwindow* m_window;
-    std::unique_ptr<Chip8Emulator> m_chip8Emulator; // TODO: Change to be initialized once the game loop is started
-    Chip8topiaUi m_chip8topiaUi;                    // TODO: Change to be initialized once the game loop is started
+    std::unique_ptr<Chip8Emulator> m_chip8Emulator;
+    Chip8topiaUi m_chip8topiaUi;
     Chip8topiaInputHandler& m_chip8topiaInputHandler = Chip8topiaInputHandler::getInstance();
 
     bool m_isFullScreen = false;

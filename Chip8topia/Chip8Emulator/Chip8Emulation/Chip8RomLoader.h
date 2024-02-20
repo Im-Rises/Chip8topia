@@ -4,8 +4,6 @@
 #include <vector>
 #include <string>
 
-// TODO: Change this class to be used also for drag and drop so move it elsewhere and add it to Chip8topia
-
 class Chip8RomLoader {
 public:
     Chip8RomLoader() = default;
@@ -21,5 +19,5 @@ public:
 private:
     static auto checkFileExists(const std::string& romPath) -> bool;
     static auto checkRomFileSize(const std::string& romPath) -> bool;
-    static auto readRom(std::ifstream& romFile) -> std::vector<uint8>;
+    static auto readRom(const std::string& romPath) -> std::vector<uint8>;
 };

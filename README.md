@@ -71,6 +71,8 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [ ] Add save states ?
 - [ ] Faire des fonctions virtuel et les override dans chaque cpu ! Pas pure virtual, pour que si c'est pas override ça
   appelle "assert" !
+- [ ] Add the rom name on the window title
+- [ ] Change to init m_chip8topiaUi and m_chip8emulator in the game loop
 
   Check later
 - [ ] Créer une classe ImGuiMenuItemWindowList. Améliorer code imgui des fenêtres avec un système qui contiendrait les
@@ -85,11 +87,12 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [ ] Add a way to change the frequency of the emulator
 - [ ] Faire une fenêtre imgui quand on démarre pour sélectionner la version de chip8
 - [ ] Faire héritage cpp pour cpu et pour selection et peut être Chip8Core
-- [ ] TODO: Faire un switch case qui démarre la version de Core sélectionné avec la création de Chip8Core m_core; en
+- [ ] Faire un switch case qui démarre la version de Core sélectionné avec la création de Chip8Core m_core; en
   tant que unique_ptr
-- [ ] TODO: Pour la partie emulation faire des surcharges de fonctions avec comme paramètre const SuperChip8Core& core,
+- [ ] Pour la partie emulation faire des surcharges de fonctions avec comme paramètre const SuperChip8Core& core,
   const Chip8Core& core, const XOChip8Core& core, de cette façon on pourra définir trois fonctions différentes pour
   chaque version de Core et le prendra autmaotiquement lors de l'appel ?
+- [ ] Mix code for CenterWindow and FullScreenOnCurrentMonitor
 
 ## Dependencies
 

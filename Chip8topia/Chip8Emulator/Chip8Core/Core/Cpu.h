@@ -52,7 +52,7 @@ public:
 
 public:
     void reset();
-    void readRom(const std::vector<uint8>& rom); // TODO: Maybe change to a std::array<uint8, 4096> rom
+    void readRom(const std::vector<uint8>& rom);
     void clock();
     void clockTimers();
     void requestDisableHalt() { m_requestDisableHalt = true; }

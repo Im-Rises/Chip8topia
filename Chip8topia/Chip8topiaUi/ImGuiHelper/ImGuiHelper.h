@@ -22,7 +22,3 @@ struct ImGuiMenuItemWindow {
         }
     }
 };
-
-// template <typename Args>
-// struct ImGuiMenuItemAction {
-// };

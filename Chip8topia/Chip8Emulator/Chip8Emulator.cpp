@@ -5,19 +5,18 @@
 Chip8Emulator::Chip8Emulator() {
     Chip8topiaInputHandler::getInstance().m_GameInput.subscribe(this, &Chip8Emulator::OnInput);
     Chip8topiaInputHandler::getInstance().m_PKeyButtonPressedEvent.subscribe(this, &Chip8Emulator::togglePause);
+    Chip8topiaInputHandler::getInstance().m_LKeyButtonPressedEvent.subscribe(this, &Chip8Emulator::restart);
 }
 
 Chip8Emulator::~Chip8Emulator() {
     Chip8topiaInputHandler::getInstance().m_GameInput.unsubscribe(this, &Chip8Emulator::OnInput);
     Chip8topiaInputHandler::getInstance().m_PKeyButtonPressedEvent.unsubscribe(this, &Chip8Emulator::togglePause);
+    Chip8topiaInputHandler::getInstance().m_LKeyButtonPressedEvent.unsubscribe(this, &Chip8Emulator::restart);
 }
 
 void Chip8Emulator::restart() {
-    // TODO: Handle code to not reset memory where the rom is loaded
     m_core.reset();
-    //    m_isRomLoaded = false;
-    //    m_isTurboMode = false;
-    m_isPaused = false;
+    m_videoEmulation.reset();
     m_accumulator = 0.0F;
 }
 
@@ -58,7 +57,8 @@ void Chip8Emulator::update(const float deltaTime) {
 }
 
 void Chip8Emulator::render() {
-    m_videoEmulation.updateTexture(m_core.getPpu()->getVideoMemory()); // TODO: Maybe call this function only when the video memory has changed so when the corresponding opcode is called (make a trap for the opcode)
+    // Another way to do this would be to use a trap of the opcode (check if the opcode is render and if not then use the switch case to compute the opcode)
+    m_videoEmulation.updateTexture(m_core.getPpu()->getVideoMemory());
     m_videoEmulation.update();
 }
 

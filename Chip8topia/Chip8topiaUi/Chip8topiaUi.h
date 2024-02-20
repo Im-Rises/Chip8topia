@@ -61,4 +61,6 @@ private:
     bool m_showAboutChip8Popup = false;
     bool m_showBackgroundColor = false;
     bool m_showForegroundColor = false;
+
+    // TODO: Change to always use event system not direct calls ?
 };

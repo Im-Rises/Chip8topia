@@ -10,17 +10,20 @@
 #include <emscripten_browser_file.h>
 
 void handle_upload_file(std::string const& filename, std::string const& mime_type, std::string_view buffer, void* chip8emulator) {
-    std::cout << "File uploaded: " << filename << " (" << mime_type << ")" << std::endl;
+    std::cout << "File uploaded: " << filename << " (" << mime_type << ")" << '\n';
+    std::cout << "Buffer size: " << buffer.size() << '\n';
     Chip8Emulator* chip8Emulator = static_cast<Chip8Emulator*>(chip8emulator);
 
-    std::cout << "Buffer size: " << buffer.size() << std::endl;
-    //    std::cout << "Buffer: " << buffer << std::endl;
-    //    int i = 0;
-    //    for (char c : buffer)
-    //    {
-    //        uint8_t value = static_cast<uint8_t>(c);
-    //        std::cout << i++ << ": " << static_cast<int>(value) << std::endl;
-    //    }
+    if (buffer.size() > Cpu::ROM_SIZE)
+    {
+        std::cerr << "The rom is too big to be loaded in the memory" << std::endl;
+        return;
+    }
+    else if (buffer.size() == 0)
+    {
+        std::cerr << "The rom is empty" << std::endl;
+        return;
+    }
 
     // TODO: Maybe copy the buffer in the Chip8InputHandler instead of here?
     std::vector<uint8> romData;
@@ -121,28 +124,14 @@ void Chip8topiaUi::drawEngineEmulationMenu(Chip8topia& chip8topia) {
             chip8topia.toggleTurboMode();
         }
 
-        if (ImGui::MenuItem(chip8topia.getChip8Emulator().getIsPaused() ? "Resume" : "Pause", "F"))
+        if (ImGui::MenuItem(chip8topia.getChip8Emulator().getIsPaused() ? "Resume" : "Pause", "P"))
         {
-            chip8topia.getChip8Emulator().togglePause();
+            Chip8topiaInputHandler::getInstance().m_PKeyButtonPressedEvent.trigger();
         }
 
-        // TODO: Move this code in the Debugger with the disassembly or put it here too
-
-        if (ImGui::MenuItem("Resume"))
+        if (ImGui::MenuItem("Restart", "L"))
         {
-        }
-
-        if (ImGui::MenuItem("Break"))
-        {
-        }
-
-        if (ImGui::MenuItem("Step"))
-        {
-        }
-
-        if (ImGui::MenuItem("Restart"))
-        {
-            chip8topia.getChip8Emulator().restart();
+            Chip8topiaInputHandler::getInstance().m_LKeyButtonPressedEvent.trigger();
         }
 
         ImGui::EndMenu();
@@ -197,14 +186,14 @@ void Chip8topiaUi::drawVideoWindow(Chip8topia& chip8topia) {
     if (m_showBackgroundColor)
     {
         ImGui::Begin("Background color", &m_showBackgroundColor);
-        ImGui::ColorPicker4("Background color", reinterpret_cast<float*>(&chip8topia.getChip8Emulator().getChip8VideoEmulation().getBackgroundColor()));
+        ImGui::ColorPicker4("Background color", reinterpret_cast<float*>(&chip8topia.getChip8Emulator().getChip8VideoEmulation().getBackgroundColorRef()));
         ImGui::End();
     }
 
     if (m_showForegroundColor)
     {
         ImGui::Begin("Draw color", &m_showForegroundColor);
-        ImGui::ColorPicker4("Draw color", reinterpret_cast<float*>(&chip8topia.getChip8Emulator().getChip8VideoEmulation().getForegroundColor()));
+        ImGui::ColorPicker4("Draw color", reinterpret_cast<float*>(&chip8topia.getChip8Emulator().getChip8VideoEmulation().getForegroundColorRef()));
         ImGui::End();
     }
 }
@@ -212,7 +201,7 @@ void Chip8topiaUi::drawVideoWindow(Chip8topia& chip8topia) {
 void Chip8topiaUi::drawAboutChip8topiaPopUpWindow() {
     static constexpr auto ABOUT_CHIP8TOPIA = []() {
         ImGui::TextColored(ImVec4(1.0F, 0.0F, 1.0F, 1.0F), Chip8topia::PROJECT_NAME);
-        ImGui::Text("Version: %s\n" // TODO: Use R"("")"; string type
+        ImGui::Text("Version: %s\n"
                     "\n"
                     "Developed by:\n "
                     "- %s\n"

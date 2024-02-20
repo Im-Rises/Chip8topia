@@ -282,7 +282,6 @@ void Chip8topia::handleScreenUpdate() {
 }
 
 void Chip8topia::centerWindow() {
-    // TODO: Mix code from toggleFullScreen and centerWindow to avoid code duplication for the window area location calculation
     int count;
     GLFWmonitor** monitors = glfwGetMonitors(&count);
     for (int i = 0; i < count; i++)
@@ -345,8 +344,6 @@ void Chip8topia::setWindowIcon() {
 }
 
 void Chip8topia::setWindowTitle(const float fps) {
-    //    m_chip8Emulator.getRomName();// TODO: Add rom name to window title
-    //    glfwSetWindowTitle(m_window, std::format("{} - {:.2f} fps", PROJECT_NAME, fps).c_str());
     glfwSetWindowTitle(m_window, fmt::format("{} - {:.2f} fps", PROJECT_NAME, fps).c_str());
 }
 #endif

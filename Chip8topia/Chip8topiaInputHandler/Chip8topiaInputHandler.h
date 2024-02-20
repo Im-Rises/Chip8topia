@@ -39,6 +39,7 @@ public:
 #endif
 
     [[maybe_unused]] SingleSubscriberEvent<> m_PKeyButtonPressedEvent;
+    [[maybe_unused]] SingleSubscriberEvent<> m_LKeyButtonPressedEvent;
     [[maybe_unused]] SingleSubscriberEvent<const uint8, const bool> m_GameInput;
 
 private:

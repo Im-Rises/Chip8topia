@@ -77,6 +77,12 @@ Chip8VideoEmulation::Chip8VideoEmulation() : m_VAO(0), m_VBO(0),
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+void Chip8VideoEmulation::reset() {
+    glBindTexture(GL_TEXTURE_2D, m_texture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, Ppu::WIDTH, Ppu::HEIGHT, 0, GL_RED, GL_UNSIGNED_BYTE, nullptr);
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
 void Chip8VideoEmulation::updateTexture(const std::array<uint8, Ppu::WIDTH * Ppu::HEIGHT>& videoMemory) {
     glBindTexture(GL_TEXTURE_2D, m_texture);
     glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, Ppu::WIDTH, Ppu::HEIGHT, GL_RED, GL_UNSIGNED_BYTE, videoMemory.data());
@@ -88,17 +94,17 @@ void Chip8VideoEmulation::update() {
     glBindVertexArray(m_VAO);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_texture);
-    m_shader.setVec4("u_backgroundColor", m_backgroundColor.m_r, m_backgroundColor.m_g, m_backgroundColor.m_b, m_backgroundColor.m_a);
-    m_shader.setVec4("u_foregroundColor", m_foregroundColor.m_r, m_foregroundColor.m_g, m_foregroundColor.m_b, m_foregroundColor.m_a);
+    m_shader.setVec4("u_backgroundColor", m_backgroundColor.x, m_backgroundColor.y, m_backgroundColor.z, m_backgroundColor.w);
+    m_shader.setVec4("u_foregroundColor", m_foregroundColor.x, m_foregroundColor.y, m_foregroundColor.z, m_foregroundColor.w);
     glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(VERTICES.size() / 3));
     glBindTexture(GL_TEXTURE_2D, 0);
     glBindVertexArray(0);
 }
 
-auto Chip8VideoEmulation::getBackgroundColor() -> Chip8VideoEmulation::Color& {
+auto Chip8VideoEmulation::getBackgroundColorRef() -> ImVec4& {
     return m_backgroundColor;
 }
 
-auto Chip8VideoEmulation::getForegroundColor() -> Chip8VideoEmulation::Color& {
+auto Chip8VideoEmulation::getForegroundColorRef() -> ImVec4& {
     return m_foregroundColor;
 }

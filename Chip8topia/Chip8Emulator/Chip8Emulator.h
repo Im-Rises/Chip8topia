@@ -36,7 +36,6 @@ private:
     Chip8Core m_core;
     Chip8VideoEmulation m_videoEmulation;
     //    Chip8SoundEmulation m_soundEmulation;
-    //    Chip8RomLoader m_romLoader;
 
     bool m_isRomLoaded = false;
     bool m_isTurboMode = false;

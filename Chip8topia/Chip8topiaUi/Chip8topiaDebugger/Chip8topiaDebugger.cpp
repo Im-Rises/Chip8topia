@@ -157,5 +157,6 @@ void Chip8topiaDebugger::drawAssembly(Chip8Core* chip8) {
 }
 
 void Chip8topiaDebugger::drawDisassemblyControls(Chip8Core* chip8) {
+    // TODO: Implement with a Chip8Emulator as parameter...
     m_disassembler.drawAssemblyControls();
 }

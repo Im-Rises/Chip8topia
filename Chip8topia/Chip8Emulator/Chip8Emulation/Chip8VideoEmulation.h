@@ -5,6 +5,8 @@
 #else
 #include <glad/glad.h>
 #endif
+
+#include <imgui.h>
 #include <array>
 
 #include "../../Shader/Shader.h"
@@ -15,7 +17,7 @@ private:
     static constexpr auto VERTEX_SHADER_PATH = "shaders/Chip8topia.vert";
     static constexpr auto FRAGMENT_SHADER_PATH = "shaders/Chip8topia.frag";
 
-    static constexpr std::array<float, 18> VERTICES = {
+    static constexpr std::array<GLfloat, 18> VERTICES = {
         // first triangle
         1.0F, 1.0F, 0.0F,  // top right
         1.0F, -1.0F, 0.0F, // bottom right
@@ -24,13 +26,6 @@ private:
         1.0F, -1.0F, 0.0F,  // bottom right
         -1.0F, -1.0F, 0.0F, // bottom left
         -1.0F, 1.0F, 0.0F,  // top left
-    };
-
-    struct Color {
-        GLfloat m_r;
-        GLfloat m_g;
-        GLfloat m_b;
-        GLfloat m_a;
     };
 
 public:
@@ -42,12 +37,13 @@ public:
     ~Chip8VideoEmulation() = default;
 
 public:
+    void reset();
+
     void updateTexture(const std::array<uint8, Ppu::WIDTH * Ppu::HEIGHT>& videoMemory);
     void update();
 
-    // TODO: Change to not use get as a setter
-    auto getBackgroundColor() -> Color&;
-    auto getForegroundColor() -> Color&;
+    auto getBackgroundColorRef() -> ImVec4&;
+    auto getForegroundColorRef() -> ImVec4&;
 
 private:
     GLuint m_VAO;
@@ -56,20 +52,6 @@ private:
 
     Shader m_shader;
 
-    //    Color m_backgroundColor = { 0.0F, 0.0F, 0.0F, 1.0F };
-    //    Color m_backgroundColor = { 0.0F, 0.0F, 0.0F, 1.0F };
-
-    Color m_backgroundColor = { 0.3F, 0.3F, 0.3F, 1.0F };
-    Color m_foregroundColor = { 0.8F, 0.8F, 0.8F, 1.0F };
-
-    //    Color m_backgroundColor = { 0.0F, 0.5F, 0.5F, 1.0F };
-    //    Color m_foregroundColor = { 1.0F, 0.84F, 0.35F, 1.0F };
-
-    //    Color m_backgroundColor = { 0.45F, 0.55F, 0.60F, 1.00F };
-    //    Color m_foregroundColor = { 0.8, 0.8, 0.8, 1.0F };
-
-    /*
-     * FG #2AF8C9FF
-     * BG #1E46A3FF
-     * */
+    ImVec4 m_backgroundColor = { 0.3F, 0.3F, 0.3F, 1.0F };
+    ImVec4 m_foregroundColor = { 0.8F, 0.8F, 0.8F, 1.0F };
 };
