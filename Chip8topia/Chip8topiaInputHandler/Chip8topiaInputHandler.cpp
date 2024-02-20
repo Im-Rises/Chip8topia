@@ -15,7 +15,7 @@ void Chip8topiaInputHandler::key_callback(GLFWwindow* /*window*/, int key, int /
 
     if (action == GLFW_PRESS && (key == GLFW_KEY_O && mods == GLFW_MOD_CONTROL))
     {
-        inputHandler.m_CTRL_OKeyButtonPressedEvent.trigger();
+        inputHandler.m_OpenRomExplorerEvent.trigger();
         return;
     }
 
@@ -24,20 +24,20 @@ void Chip8topiaInputHandler::key_callback(GLFWwindow* /*window*/, int key, int /
         switch (key)
         {
 #ifndef __EMSCRIPTEN__
-        case GLFW_KEY_ESCAPE: inputHandler.m_EscapeKeyButtonPressedEvent.trigger(); break;
+        case GLFW_KEY_ESCAPE: inputHandler.m_ExitChip8topiaEvent.trigger(); break;
 
-        case GLFW_KEY_F1: inputHandler.m_F1KeyButtonPressedEvent.trigger(); break;
-        case GLFW_KEY_F2: inputHandler.m_F2KeyButtonPressedEvent.trigger(); break;
-        case GLFW_KEY_F3: inputHandler.m_F3KeyButtonPressedEvent.trigger(); break;
-        case GLFW_KEY_F10: inputHandler.m_F10KeyButtonPressedEvent.trigger(); break;
-        case GLFW_KEY_F11: inputHandler.m_F11KeyButtonPressedEvent.trigger(); break;
+        case GLFW_KEY_F1: inputHandler.m_ToggleMainBarEvent.trigger(); break;
+        case GLFW_KEY_F2: inputHandler.m_ToggleWindowsVisibilityEvent.trigger(); break;
+        case GLFW_KEY_F3: inputHandler.m_ToggleTurboModeEvent.trigger(); break;
+        case GLFW_KEY_F10: inputHandler.m_CenterWindowEvent.trigger(); break;
+        case GLFW_KEY_F11: inputHandler.m_ToggleFullScreenEvent.trigger(); break;
 #endif
 #if !defined(BUILD_RELEASE)
-        case GLFW_KEY_F12: inputHandler.m_F12KeyDebugButtonPressedEvent.trigger(); break;
+        case GLFW_KEY_F12: inputHandler.m_DebugRomFastLoadEvent.trigger(); break;
 #endif
 
-        case GLFW_KEY_P: inputHandler.m_PKeyButtonPressedEvent.trigger(); break;
-        case GLFW_KEY_L: inputHandler.m_LKeyButtonPressedEvent.trigger(); break;
+        case GLFW_KEY_P: inputHandler.m_PauseEmulationEvent.trigger(); break;
+        case GLFW_KEY_L: inputHandler.m_RestartEmulationEvent.trigger(); break;
 
         case GLFW_KEY_1: inputHandler.m_GameInput.trigger(0x1, true); break;
         case GLFW_KEY_2: inputHandler.m_GameInput.trigger(0x2, true); break;

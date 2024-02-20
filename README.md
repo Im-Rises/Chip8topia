@@ -67,12 +67,10 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [ ] Creer une struct qui définie le nom de la touche shortcut avec le string et le keycode
 - [ ] Reformater le code des touches, changer par de vrais noms de touches
 - [ ] Add break, run, step to the debugger
-- [ ] Add emulation sound
-- [ ] Add save states ?
-- [ ] Faire des fonctions virtuel et les override dans chaque cpu ! Pas pure virtual, pour que si c'est pas override ça
-  appelle "assert" !
 - [ ] Add the rom name on the window title
 - [ ] Change to init m_chip8topiaUi and m_chip8emulator in the game loop
+- [ ] Add emulation sound
+- [ ] Add save states ?
 
   Check later
 - [ ] Créer une classe ImGuiMenuItemWindowList. Améliorer code imgui des fenêtres avec un système qui contiendrait les
@@ -93,6 +91,8 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
   const Chip8Core& core, const XOChip8Core& core, de cette façon on pourra définir trois fonctions différentes pour
   chaque version de Core et le prendra autmaotiquement lors de l'appel ?
 - [ ] Mix code for CenterWindow and FullScreenOnCurrentMonitor
+- [ ] Faire des fonctions virtuel et les override dans chaque cpu ! Pas pure virtual, pour que si c'est pas override ça
+  appelle "assert" !
 
 ## Dependencies
 

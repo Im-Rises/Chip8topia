@@ -26,21 +26,19 @@ public:
 
 public:
 #ifndef __EMSCRIPTEN__
-    [[maybe_unused]] SingleSubscriberEvent<> m_CTRL_OKeyButtonPressedEvent;
-    [[maybe_unused]] SingleSubscriberEvent<> m_EscapeKeyButtonPressedEvent;
-    [[maybe_unused]] SingleSubscriberEvent<> m_F1KeyButtonPressedEvent;
-    [[maybe_unused]] SingleSubscriberEvent<> m_F2KeyButtonPressedEvent;
-    [[maybe_unused]] SingleSubscriberEvent<> m_F3KeyButtonPressedEvent;
-    [[maybe_unused]] SingleSubscriberEvent<> m_F10KeyButtonPressedEvent;
-    [[maybe_unused]] SingleSubscriberEvent<> m_F11KeyButtonPressedEvent;
+    [[maybe_unused]] SingleSubscriberEvent<> m_OpenRomExplorerEvent;
+    [[maybe_unused]] SingleSubscriberEvent<> m_ExitChip8topiaEvent;
+    [[maybe_unused]] SingleSubscriberEvent<> m_ToggleMainBarEvent;
+    [[maybe_unused]] SingleSubscriberEvent<> m_ToggleWindowsVisibilityEvent;
+    [[maybe_unused]] SingleSubscriberEvent<> m_ToggleTurboModeEvent;
+    [[maybe_unused]] SingleSubscriberEvent<> m_CenterWindowEvent;
+    [[maybe_unused]] SingleSubscriberEvent<> m_ToggleFullScreenEvent;
 #endif
 #if !defined(BUILD_RELEASE)
-    [[maybe_unused]] SingleSubscriberEvent<> m_F12KeyDebugButtonPressedEvent;
+    [[maybe_unused]] SingleSubscriberEvent<> m_DebugRomFastLoadEvent;
 #endif
 
-    [[maybe_unused]] SingleSubscriberEvent<> m_PKeyButtonPressedEvent;
-    [[maybe_unused]] SingleSubscriberEvent<> m_LKeyButtonPressedEvent;
+    [[maybe_unused]] SingleSubscriberEvent<> m_PauseEmulationEvent;
+    [[maybe_unused]] SingleSubscriberEvent<> m_RestartEmulationEvent;
     [[maybe_unused]] SingleSubscriberEvent<const uint8, const bool> m_GameInput;
-
-private:
 };

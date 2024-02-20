@@ -42,15 +42,15 @@ void handle_upload_file(std::string const& filename, std::string const& mime_typ
 #include "../Chip8topia.h"
 
 Chip8topiaUi::Chip8topiaUi() {
-    Chip8topiaInputHandler::getInstance().m_F1KeyButtonPressedEvent.subscribe(this, &Chip8topiaUi::toggleMenuBarVisibility);
-    Chip8topiaInputHandler::getInstance().m_F2KeyButtonPressedEvent.subscribe(this, &Chip8topiaUi::toggleWindowsVisibility);
-    Chip8topiaInputHandler::getInstance().m_CTRL_OKeyButtonPressedEvent.subscribe(this, &Chip8topiaUi::openRomWindow);
+    Chip8topiaInputHandler::getInstance().m_ToggleMainBarEvent.subscribe(this, &Chip8topiaUi::toggleMenuBarVisibility);
+    Chip8topiaInputHandler::getInstance().m_ToggleWindowsVisibilityEvent.subscribe(this, &Chip8topiaUi::toggleWindowsVisibility);
+    Chip8topiaInputHandler::getInstance().m_OpenRomExplorerEvent.subscribe(this, &Chip8topiaUi::openRomWindow);
 }
 
 Chip8topiaUi::~Chip8topiaUi() {
-    Chip8topiaInputHandler::getInstance().m_F1KeyButtonPressedEvent.unsubscribe(this, &Chip8topiaUi::toggleMenuBarVisibility);
-    Chip8topiaInputHandler::getInstance().m_F2KeyButtonPressedEvent.unsubscribe(this, &Chip8topiaUi::toggleWindowsVisibility);
-    Chip8topiaInputHandler::getInstance().m_CTRL_OKeyButtonPressedEvent.unsubscribe(this, &Chip8topiaUi::openRomWindow);
+    Chip8topiaInputHandler::getInstance().m_ToggleMainBarEvent.unsubscribe(this, &Chip8topiaUi::toggleMenuBarVisibility);
+    Chip8topiaInputHandler::getInstance().m_ToggleWindowsVisibilityEvent.unsubscribe(this, &Chip8topiaUi::toggleWindowsVisibility);
+    Chip8topiaInputHandler::getInstance().m_OpenRomExplorerEvent.unsubscribe(this, &Chip8topiaUi::openRomWindow);
 }
 
 void Chip8topiaUi::drawUi(Chip8topia& chip8topia) {
@@ -126,12 +126,12 @@ void Chip8topiaUi::drawEngineEmulationMenu(Chip8topia& chip8topia) {
 
         if (ImGui::MenuItem(chip8topia.getChip8Emulator().getIsPaused() ? "Resume" : "Pause", "P"))
         {
-            Chip8topiaInputHandler::getInstance().m_PKeyButtonPressedEvent.trigger();
+            Chip8topiaInputHandler::getInstance().m_PauseEmulationEvent.trigger();
         }
 
         if (ImGui::MenuItem("Restart", "L"))
         {
-            Chip8topiaInputHandler::getInstance().m_LKeyButtonPressedEvent.trigger();
+            Chip8topiaInputHandler::getInstance().m_RestartEmulationEvent.trigger();
         }
 
         ImGui::EndMenu();
