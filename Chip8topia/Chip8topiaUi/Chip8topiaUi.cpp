@@ -54,22 +54,21 @@ void Chip8topiaUi::drawMainMenuBar(Chip8topia& chip8topia) {
         drawFileMenu(chip8topia);
         drawViewMenu(chip8topia);
         drawEngineEmulationMenu(chip8topia);
-        drawVideoMenu();
+        m_chip8VideoUi.drawVideoMenu();
         m_chip8topiaDebugger.drawDebuggerMenu();
-        drawAboutMenu();
+        m_chip8About.drawAboutMenu();
 
         ImGui::EndMainMenuBar();
     }
 
     if (m_windowsVisible)
     {
+        m_chip8VideoUi.drawVideoWindows(chip8topia.getChip8Emulator());
         m_chip8topiaDebugger.drawDebuggerWindows(chip8topia.getChip8Emulator());
-        drawVideoWindow(chip8topia);
     }
 
     drawRomWindow(chip8topia);
-    drawAboutChip8topiaPopUpWindow();
-    drawAboutChip8PopUpWindow();
+    m_chip8About.drawAboutWindows();
 
 #if !defined(BUILD_RELEASE)
     ImGui::ShowDemoWindow();
@@ -150,85 +149,6 @@ void Chip8topiaUi::drawViewMenu(Chip8topia& chip8topia) {
 #endif
 
         ImGui::EndMenu();
-    }
-}
-
-void Chip8topiaUi::drawVideoMenu() {
-    if (ImGui::BeginMenu("Video"))
-    {
-        ImGui::MenuItem("Background color", nullptr, &m_showBackgroundColor);
-        ImGui::MenuItem("Draw color", nullptr, &m_showForegroundColor);
-
-        ImGui::EndMenu();
-    }
-}
-
-void Chip8topiaUi::drawAboutMenu() {
-    if (ImGui::BeginMenu("About..."))
-    {
-        ImGui::MenuItem(Chip8topia::PROJECT_NAME, nullptr, &m_showAboutChip8topiaPopup);
-        ImGui::MenuItem(Chip8topia::PROJECT_EMULATION_CONSOLE_NAME, nullptr, &m_showAboutChip8Popup);
-
-        ImGui::EndMenu();
-    }
-}
-
-void Chip8topiaUi::drawVideoWindow(Chip8topia& chip8topia) {
-    if (m_showBackgroundColor)
-    {
-        ImGui::Begin("Background color", &m_showBackgroundColor);
-        ImGui::ColorPicker4("Background color", reinterpret_cast<float*>(&chip8topia.getChip8Emulator().getChip8VideoEmulation().getBackgroundColorRef()));
-        ImGui::End();
-    }
-
-    if (m_showForegroundColor)
-    {
-        ImGui::Begin("Draw color", &m_showForegroundColor);
-        ImGui::ColorPicker4("Draw color", reinterpret_cast<float*>(&chip8topia.getChip8Emulator().getChip8VideoEmulation().getForegroundColorRef()));
-        ImGui::End();
-    }
-}
-
-void Chip8topiaUi::drawAboutChip8topiaPopUpWindow() {
-    static constexpr auto ABOUT_CHIP8TOPIA = []() {
-        ImGui::TextColored(ImVec4(1.0F, 0.0F, 1.0F, 1.0F), Chip8topia::PROJECT_NAME);
-        ImGui::Text("Version: %s\n"
-                    "\n"
-                    "Developed by:\n "
-                    "- %s\n"
-                    "\n"
-                    "Github:\n"
-                    " - %s",
-            Chip8topia::PROJECT_VERSION,
-            Chip8topia::PROJECT_AUTHOR,
-            Chip8topia::PROJECT_LINK);
-        ImGui::Text("\n"
-                    "Description:\n"
-                    " - %s",
-            Chip8topia::PROJECT_DESCRIPTION);
-    };
-    drawAboutPopUpInternal(Chip8topia::PROJECT_NAME, ABOUT_CHIP8TOPIA, m_showAboutChip8topiaPopup);
-}
-
-void Chip8topiaUi::drawAboutChip8PopUpWindow() {
-    static constexpr auto ABOUT_CHIP8 = []() {
-        ImGui::TextColored(ImVec4(1.0F, 0.0F, 1.0F, 1.0F), Chip8topia::PROJECT_EMULATION_CONSOLE_NAME);
-        ImGui::Text(Chip8topia::PROJECT_EMULATION_CONSOLE_DESCRIPTION);
-    };
-    drawAboutPopUpInternal(Chip8topia::PROJECT_EMULATION_CONSOLE_NAME, ABOUT_CHIP8, m_showAboutChip8Popup);
-}
-
-void Chip8topiaUi::drawAboutPopUpInternal(const std::string_view& popupName, const std::function<void()>& drawAboutPopUpContent, bool& showAboutPopup) {
-    if (showAboutPopup)
-    {
-        ImGui::OpenPopup(popupName.data());
-    }
-    if (ImGui::BeginPopupModal(popupName.data(), &showAboutPopup,
-            ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize |
-                ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings))
-    {
-        drawAboutPopUpContent();
-        ImGui::EndPopup();
     }
 }
 

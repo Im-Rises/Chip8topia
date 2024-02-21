@@ -4,6 +4,10 @@
 #include <string_view>
 
 #include "Chip8topiaDebugger/Chip8topiaDebugger.h"
+#include "Chip8VideoUi/Chip8VideoUi.h"
+#include "Chip8About/Chip8About.h"
+
+// TODO: Change to always use event system not direct calls ?
 
 class Chip8topia;
 class Chip8topiaUi {
@@ -35,14 +39,6 @@ private:
     void drawFileMenu(Chip8topia& chip8topia);
     void drawEngineEmulationMenu(Chip8topia& chip8topia);
     void drawViewMenu(Chip8topia& chip8topia);
-    void drawVideoMenu();
-    void drawAboutMenu();
-
-    void drawVideoWindow(Chip8topia& chip8topia);
-
-    void drawAboutChip8topiaPopUpWindow();
-    void drawAboutChip8PopUpWindow();
-    void drawAboutPopUpInternal(const std::string_view& popupName, const std::function<void()>& drawAboutPopUpContent, bool& showAboutPopup);
 
     void openRomWindow();
     void drawRomWindow(Chip8topia& chip8topia);
@@ -51,16 +47,10 @@ private:
     void toggleWindowsVisibility();
 
 private:
+    Chip8VideoUi m_chip8VideoUi;
+    Chip8About m_chip8About;
     Chip8topiaDebugger m_chip8topiaDebugger;
 
     bool m_isMenuBarOpen = true;
     bool m_windowsVisible = true;
-
-    // TODO: Move to a separate class
-    bool m_showAboutChip8topiaPopup = false;
-    bool m_showAboutChip8Popup = false;
-    bool m_showBackgroundColor = false;
-    bool m_showForegroundColor = false;
-
-    // TODO: Change to always use event system not direct calls ?
 };
