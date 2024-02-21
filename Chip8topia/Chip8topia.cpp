@@ -29,31 +29,9 @@
 #include <imgui_emscripten/imgui_emscripten.h>
 #endif
 
-void glfw_error_callback(int error, const char* description) {
-    std::cerr << "Glfw Error " << error << ": " << description << '\n';
-}
-
-void glfw_drop_callback(GLFWwindow* window, int count, const char** paths) {
-    // TODO: Declare as a real method...
-    (void)count;
-    static constexpr int INDEX = 0;
-    const char* path = paths[INDEX];
-
-    try
-    {
-        std::vector<uint8> rom = Chip8RomLoader::loadRomFromPath(path);
-        auto* engine = reinterpret_cast<Chip8topia*>(glfwGetWindowUserPointer(window));
-        engine->getChip8Emulator().loadRom(rom);
-    }
-    catch (const std::exception& e)
-    {
-        std::cerr << e.what() << '\n';
-    }
-}
 
 Chip8topia::Chip8topia() : m_window(nullptr) {
 }
-
 
 Chip8topia::~Chip8topia() = default;
 
@@ -395,8 +373,37 @@ void Chip8topia::printDependenciesInfos() {
               << '\n';
 }
 
+void Chip8topia::glfw_error_callback(int error, const char* description) {
+    std::cerr << "Glfw Error " << error << ": " << description << '\n';
+}
+
+void Chip8topia::glfw_drop_callback(GLFWwindow* window, int count, const char** paths) {
+    (void)count;
+    static constexpr int INDEX = 0;
+    const char* path = paths[INDEX];
+
+    try
+    {
+        std::vector<uint8> rom = Chip8RomLoader::loadRomFromPath(path);
+        auto* engine = reinterpret_cast<Chip8topia*>(glfwGetWindowUserPointer(window));
+        engine->getChip8Emulator().loadRom(rom);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+}
+
 #if !defined(BUILD_RELEASE)
 void Chip8topia::loadDebugRom() {
-    m_chip8Emulator->loadRom("trash/5-quirks.ch8");
+    try
+    {
+        std::vector<uint8> rom = Chip8RomLoader::loadRomFromPath(DEBUG_ROM_PATH);
+        m_chip8Emulator->loadRom(rom);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
 }
 #endif

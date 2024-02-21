@@ -23,6 +23,11 @@ It was made to allow video games to be more easily programmed for said computers
 
     //    static constexpr auto WEB_CANVAS_ID = "#webCanvas";
 
+private:
+#if !defined(BUILD_RELEASE)
+    static constexpr auto DEBUG_ROM_PATH = "trash/5-quirks.ch8";
+#endif
+
 public:
     Chip8topia();
     Chip8topia(const Chip8topia&) = delete;
@@ -68,6 +73,9 @@ private:
     static auto getGladVersion() -> std::string_view;
     static auto getImGuiVersion() -> std::string;
     static void printDependenciesInfos();
+
+    static void glfw_error_callback(int error, const char* description);
+    static void glfw_drop_callback(GLFWwindow* window, int count, const char** paths);
 
 #if !defined(BUILD_RELEASE)
     void loadDebugRom();

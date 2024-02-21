@@ -20,19 +20,19 @@ void Chip8Emulator::restart() {
     m_accumulator = 0.0F;
 }
 
-void Chip8Emulator::loadRom(const std::string& romPath) {
-    try
-    {
-        m_core.reset();
-        m_core.readRom(Chip8RomLoader::loadRomFromPath(romPath));
-        m_isRomLoaded = true;
-    }
-    catch (const std::exception& e)
-    {
-        m_isRomLoaded = false;
-        throw e;
-    }
-}
+// void Chip8Emulator::loadRom(const std::string& romPath) {
+//     try
+//     {
+//         m_core.reset();
+//         m_core.readRom(Chip8RomLoader::loadRomFromPath(romPath));
+//         m_isRomLoaded = true;
+//     }
+//     catch (const std::exception& e)
+//     {
+//         m_isRomLoaded = false;
+//         throw e;
+//     }
+// }
 
 void Chip8Emulator::loadRom(const std::vector<uint8_t>& romData) {
     m_core.reset();
