@@ -24,7 +24,7 @@ void Chip8Emulator::loadRom(const std::string& romPath) {
     try
     {
         m_core.reset();
-        m_core.readRom(Chip8RomLoader::loadRom(romPath));
+        m_core.readRom(Chip8RomLoader::loadRomFromPath(romPath));
         m_isRomLoaded = true;
     }
     catch (const std::exception& e)

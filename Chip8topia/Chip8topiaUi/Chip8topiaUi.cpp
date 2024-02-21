@@ -5,52 +5,43 @@
 // #include <format>
 #include <fmt/format.h>
 #include <iostream>
-
 #if defined(__EMSCRIPTEN__)
 #include <emscripten_browser_file.h>
-
-void handle_upload_file(std::string const& filename, std::string const& mime_type, std::string_view buffer, void* chip8emulator) {
-    std::cout << "File uploaded: " << filename << " (" << mime_type << ")" << '\n';
-    std::cout << "Buffer size: " << buffer.size() << '\n';
-    Chip8Emulator* chip8Emulator = static_cast<Chip8Emulator*>(chip8emulator);
-
-    if (buffer.size() > Cpu::ROM_SIZE)
-    {
-        std::cerr << "The rom is too big to be loaded in the memory" << std::endl;
-        return;
-    }
-    else if (buffer.size() == 0)
-    {
-        std::cerr << "The rom is empty" << std::endl;
-        return;
-    }
-
-    // TODO: Maybe copy the buffer in the Chip8InputHandler instead of here?
-    std::vector<uint8> romData;
-    romData.reserve(buffer.size());
-
-    for (const auto& byte : buffer)
-    {
-        romData.push_back(static_cast<uint8>(byte));
-    }
-
-    chip8Emulator->loadRom(romData);
-}
 #endif
-
 
 #include "../Chip8topia.h"
 
+#if defined(__EMSCRIPTEN__)
+void handle_upload_file(std::string const& filename, std::string const& mime_type, std::string_view buffer, void* chip8emulator) {
+    std::cout << "File uploaded: " << filename << " (" << mime_type << ")" << '\n';
+    Chip8Emulator* chip8Emulator = static_cast<Chip8Emulator*>(chip8emulator);
+
+    try
+    {
+        std::vector<uint8> rom = Chip8RomLoader::loadRomFromData(buffer);
+        chip8Emulator->loadRom(rom);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+}
+#endif
+
 Chip8topiaUi::Chip8topiaUi() {
+#ifndef __EMSCRIPTEN__
     Chip8topiaInputHandler::getInstance().m_ToggleMainBarEvent.subscribe(this, &Chip8topiaUi::toggleMenuBarVisibility);
     Chip8topiaInputHandler::getInstance().m_ToggleWindowsVisibilityEvent.subscribe(this, &Chip8topiaUi::toggleWindowsVisibility);
     Chip8topiaInputHandler::getInstance().m_OpenRomExplorerEvent.subscribe(this, &Chip8topiaUi::openRomWindow);
+#endif
 }
 
 Chip8topiaUi::~Chip8topiaUi() {
+#ifndef __EMSCRIPTEN__
     Chip8topiaInputHandler::getInstance().m_ToggleMainBarEvent.unsubscribe(this, &Chip8topiaUi::toggleMenuBarVisibility);
     Chip8topiaInputHandler::getInstance().m_ToggleWindowsVisibilityEvent.unsubscribe(this, &Chip8topiaUi::toggleWindowsVisibility);
     Chip8topiaInputHandler::getInstance().m_OpenRomExplorerEvent.unsubscribe(this, &Chip8topiaUi::openRomWindow);
+#endif
 }
 
 void Chip8topiaUi::drawUi(Chip8topia& chip8topia) {

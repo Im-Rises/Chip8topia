@@ -14,8 +14,13 @@
 
 class Chip8VideoEmulation {
 private:
+#if defined(__EMSCRIPTEN__)
+    static constexpr auto VERTEX_SHADER_PATH = "shaders/Chip8topia_es.vert";
+    static constexpr auto FRAGMENT_SHADER_PATH = "shaders/Chip8topia_es.frag";
+#else
     static constexpr auto VERTEX_SHADER_PATH = "shaders/Chip8topia.vert";
     static constexpr auto FRAGMENT_SHADER_PATH = "shaders/Chip8topia.frag";
+#endif
 
     static constexpr std::array<GLfloat, 18> VERTICES = {
         // first triangle

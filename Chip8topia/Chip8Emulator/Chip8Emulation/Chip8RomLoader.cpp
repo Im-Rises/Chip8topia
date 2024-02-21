@@ -4,8 +4,14 @@
 #include <filesystem>
 
 #include "../Chip8Core/Core/Cpu.h"
+#include "../../Chip8topiaUi/Chip8topiaUi.h"
 
-auto Chip8RomLoader::loadRom(const std::string& romPath) -> std::vector<uint8> {
+auto Chip8RomLoader::loadRomFromPath(const std::string& romPath) -> std::vector<uint8> {
+    if (!checkFileExtension(romPath))
+    {
+        throw std::runtime_error("File extension is not valid");
+    }
+
     if (!checkFileExists(romPath))
     {
         throw std::runtime_error("File does not exist");
@@ -19,6 +25,22 @@ auto Chip8RomLoader::loadRom(const std::string& romPath) -> std::vector<uint8> {
     std::vector<uint8> romData = readRom(romPath);
 
     return romData;
+}
+
+auto Chip8RomLoader::loadRomFromData(const std::string_view& romBuffer) -> std::vector<uint8> {
+    std::vector<uint8> romData;
+    romData.reserve(romBuffer.size());
+
+    for (const auto& byte : romBuffer)
+    {
+        romData.push_back(static_cast<uint8>(byte));
+    }
+
+    return romData;
+}
+
+auto Chip8RomLoader::checkFileExtension(const std::string& romPath) -> bool {
+    return romPath.ends_with(Chip8topiaUi::CHIP8_ROM_FILE_EXTENSION);
 }
 
 auto Chip8RomLoader::checkFileExists(const std::string& romPath) -> bool {

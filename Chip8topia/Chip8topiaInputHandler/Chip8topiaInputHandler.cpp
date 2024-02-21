@@ -13,11 +13,13 @@ void Chip8topiaInputHandler::update(GLFWwindow* window) const {
 void Chip8topiaInputHandler::key_callback(GLFWwindow* /*window*/, int key, int /*scancode*/, int action, int mods) {
     auto& inputHandler = Chip8topiaInputHandler::getInstance();
 
+#ifndef __EMSCRIPTEN__
     if (action == GLFW_PRESS && (key == GLFW_KEY_O && mods == GLFW_MOD_CONTROL))
     {
         inputHandler.m_OpenRomExplorerEvent.trigger();
         return;
     }
+#endif
 
     if (action == GLFW_PRESS)
     {

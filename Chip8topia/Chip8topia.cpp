@@ -34,25 +34,26 @@ void glfw_error_callback(int error, const char* description) {
 }
 
 void glfw_drop_callback(GLFWwindow* window, int count, const char** paths) {
+    // TODO: Declare as a real method...
     (void)count;
     static constexpr int INDEX = 0;
     const char* path = paths[INDEX];
 
-    // Check extension
-    std::string_view pathView(path);
-    if (pathView.ends_with(Chip8topiaUi::CHIP8_ROM_FILE_EXTENSION))
+    try
     {
+        std::vector<uint8> rom = Chip8RomLoader::loadRomFromPath(path);
         auto* engine = reinterpret_cast<Chip8topia*>(glfwGetWindowUserPointer(window));
-        engine->getChip8Emulator().loadRom(path);
+        engine->getChip8Emulator().loadRom(rom);
     }
-
-    auto* engine = reinterpret_cast<Chip8topia*>(glfwGetWindowUserPointer(window));
-    engine->getChip8Emulator().loadRom(path);
-    //    engine->getChip8Emulator().getChip8Core()->getInput()->updateKey(0x0, 1);
+    catch (const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
 }
 
 Chip8topia::Chip8topia() : m_window(nullptr) {
 }
+
 
 Chip8topia::~Chip8topia() = default;
 
@@ -202,10 +203,11 @@ auto Chip8topia::init() -> int {
 
 #ifndef __EMSCRIPTEN__
     m_chip8topiaInputHandler.m_ExitChip8topiaEvent.subscribe(this, &Chip8topia::closeRequest);
-#endif
     m_chip8topiaInputHandler.m_ToggleTurboModeEvent.subscribe(this, &Chip8topia::toggleTurboMode);
     m_chip8topiaInputHandler.m_CenterWindowEvent.subscribe(this, &Chip8topia::centerWindow);
     m_chip8topiaInputHandler.m_ToggleFullScreenEvent.subscribe(this, &Chip8topia::toggleFullScreen);
+#endif
+
 #if !defined(BUILD_RELEASE)
     m_chip8topiaInputHandler.m_DebugRomFastLoadEvent.subscribe(this, &Chip8topia::loadDebugRom);
 #endif
@@ -216,10 +218,11 @@ auto Chip8topia::init() -> int {
 void Chip8topia::cleanup() {
 #ifndef __EMSCRIPTEN__
     m_chip8topiaInputHandler.m_ExitChip8topiaEvent.unsubscribe(this, &Chip8topia::closeRequest);
-#endif
     m_chip8topiaInputHandler.m_ToggleTurboModeEvent.unsubscribe(this, &Chip8topia::toggleTurboMode);
     m_chip8topiaInputHandler.m_CenterWindowEvent.unsubscribe(this, &Chip8topia::centerWindow);
     m_chip8topiaInputHandler.m_ToggleFullScreenEvent.unsubscribe(this, &Chip8topia::toggleFullScreen);
+#endif
+
 #if !defined(BUILD_RELEASE)
     m_chip8topiaInputHandler.m_DebugRomFastLoadEvent.unsubscribe(this, &Chip8topia::loadDebugRom);
 #endif

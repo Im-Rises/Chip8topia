@@ -1,6 +1,6 @@
-#version 330 core
+#version 300 es
 
-layout (location = 0) in vec3 a_texCoord;
+layout(location = 0) in vec3 a_texCoord;
 
 out vec2 v_texCoord;
 
