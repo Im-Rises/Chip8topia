@@ -6,6 +6,9 @@
 
 class Chip8RomLoader {
 public:
+    static constexpr auto CHIP8_ROM_FILE_EXTENSION = ".ch8";
+
+public:
     Chip8RomLoader() = default;
     Chip8RomLoader(const Chip8RomLoader&) = delete;
     Chip8RomLoader(Chip8RomLoader&&) = delete;

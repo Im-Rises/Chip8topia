@@ -40,7 +40,7 @@ auto Chip8RomLoader::loadRomFromData(const std::string_view& romBuffer) -> std::
 }
 
 auto Chip8RomLoader::checkFileExtension(const std::string& romPath) -> bool {
-    return romPath.ends_with(Chip8topiaUi::CHIP8_ROM_FILE_EXTENSION);
+    return romPath.ends_with(Chip8RomLoader::CHIP8_ROM_FILE_EXTENSION);
 }
 
 auto Chip8RomLoader::checkFileExists(const std::string& romPath) -> bool {

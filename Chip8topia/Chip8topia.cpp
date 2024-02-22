@@ -325,6 +325,7 @@ void Chip8topia::setWindowIcon() {
 }
 
 void Chip8topia::setWindowTitle(const float fps) {
+    //    glfwSetWindowTitle(m_window, std::format("{} - {:.2f} fps", PROJECT_NAME, fps).c_str());
     glfwSetWindowTitle(m_window, fmt::format("{} - {:.2f} fps", PROJECT_NAME, fps).c_str());
 }
 #endif
