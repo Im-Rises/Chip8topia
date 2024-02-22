@@ -7,8 +7,6 @@
 #include "Chip8VideoUi/Chip8VideoUi.h"
 #include "Chip8About/Chip8About.h"
 
-// TODO: Change to always use event system not direct calls ?
-
 class Chip8topia;
 class Chip8topiaUi {
 public:
@@ -37,11 +35,15 @@ private:
     void drawMainMenuBar(Chip8topia& chip8topia);
 
     void drawFileMenu(Chip8topia& chip8topia);
-    void drawEngineEmulationMenu(Chip8topia& chip8topia);
-    void drawViewMenu(Chip8topia& chip8topia);
+#if defined(__EMSCRIPTEN__)
+    static void Chip8topiaUi::handle_upload_file(std::string const& filename, std::string const& mime_type, std::string_view buffer, void* chip8emulator);
+#endif
 
     void openRomWindow();
     void drawRomWindow(Chip8topia& chip8topia);
+
+    void drawEmulationMenu(Chip8topia& chip8topia);
+    void drawViewMenu(Chip8topia& chip8topia);
 
     void toggleMenuBarVisibility();
     void toggleWindowsVisibility();

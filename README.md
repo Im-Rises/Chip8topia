@@ -65,11 +65,13 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [x] Check if with emscripten it really compile in Release mode
 - [x] Replace PlateformIdentifier.h with variable defined in the CMakeLists.txt
 - [x] Reformater le code des touches, changer par de vrais noms de touches
+- [x] Correct openfiledialog not having good size on the web
 - [ ] Add the rom name on the window title
 - [ ] Correct all preprocessing directives for emscripten for key inputs
 - [ ] Creer une struct qui définie le nom de la touche shortcut avec le string et le keycode
 - [ ] Add break, run, step to the debugger
 - [ ] Change to init m_chip8topiaUi and m_chip8emulator in the game loop
+- [ ] Add imgui.ini to the .data emscripten build
 - [ ] Add emulation sound
 - [ ] Add save states ?
 

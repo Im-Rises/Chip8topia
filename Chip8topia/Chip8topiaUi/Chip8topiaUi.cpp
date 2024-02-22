@@ -11,23 +11,6 @@
 
 #include "../Chip8topia.h"
 
-#if defined(__EMSCRIPTEN__)
-void handle_upload_file(std::string const& filename, std::string const& mime_type, std::string_view buffer, void* chip8emulator) {
-    std::cout << "File uploaded: " << filename << " (" << mime_type << ")" << '\n';
-    Chip8Emulator* chip8Emulator = static_cast<Chip8Emulator*>(chip8emulator);
-
-    try
-    {
-        std::vector<uint8> rom = Chip8RomLoader::loadRomFromData(buffer);
-        chip8Emulator->loadRom(rom);
-    }
-    catch (const std::exception& e)
-    {
-        std::cerr << e.what() << '\n';
-    }
-}
-#endif
-
 Chip8topiaUi::Chip8topiaUi() {
 #ifndef __EMSCRIPTEN__
     Chip8topiaInputHandler::getInstance().m_ToggleMainBarEvent.subscribe(this, &Chip8topiaUi::toggleMenuBarVisibility);
@@ -53,7 +36,7 @@ void Chip8topiaUi::drawMainMenuBar(Chip8topia& chip8topia) {
     {
         drawFileMenu(chip8topia);
         drawViewMenu(chip8topia);
-        drawEngineEmulationMenu(chip8topia);
+        drawEmulationMenu(chip8topia);
         m_chip8VideoUi.drawVideoMenu();
         m_chip8topiaDebugger.drawDebuggerMenu();
         m_chip8About.drawAboutMenu();
@@ -81,7 +64,7 @@ void Chip8topiaUi::drawFileMenu(Chip8topia& chip8topia) {
 #if defined(__EMSCRIPTEN__)
         if (ImGui::MenuItem("Open integrated rom..."))
 #else
-        if (ImGui::MenuItem("Open rom...", "Ctrl+O"))
+        if (ImGui::MenuItem("Open rom...", "O"))
 #endif
         {
             openRomWindow();
@@ -90,13 +73,12 @@ void Chip8topiaUi::drawFileMenu(Chip8topia& chip8topia) {
 #if defined(__EMSCRIPTEN__)
         if (ImGui::MenuItem("Open rom"))
         {
-            //            emscripten_browser_file::upload(CHIP8_ROM_FILE_EXTENSION, handle_upload_file);
-            emscripten_browser_file::upload(CHIP8_ROM_FILE_EXTENSION, handle_upload_file, &chip8topia.getChip8Emulator());
+            emscripten_browser_file::upload(CHIP8_ROM_FILE_EXTENSION, Chip8topia::handle_upload_file, &chip8topia.getChip8Emulator());
         }
 #endif
 
 #ifndef __EMSCRIPTEN__
-        if (ImGui::MenuItem("Exit", "Alt+F4"))
+        if (ImGui::MenuItem("Exit", "ESCAPE"))
         {
             chip8topia.closeRequest();
         }
@@ -106,10 +88,58 @@ void Chip8topiaUi::drawFileMenu(Chip8topia& chip8topia) {
     }
 }
 
-void Chip8topiaUi::drawEngineEmulationMenu(Chip8topia& chip8topia) {
+#if defined(__EMSCRIPTEN__)
+void Chip8topiaUi::handle_upload_file(std::string const& filename, std::string const& mime_type, std::string_view buffer, void* chip8emulator) {
+    std::cout << "File uploaded: " << filename << " (" << mime_type << ")" << '\n';
+    Chip8Emulator* chip8Emulator = static_cast<Chip8Emulator*>(chip8emulator);
+
+    try
+    {
+        std::vector<uint8> rom = Chip8RomLoader::loadRomFromData(buffer);
+        chip8Emulator->loadRom(rom);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+}
+#endif
+
+void Chip8topiaUi::openRomWindow() {
+    IGFD::FileDialogConfig config;
+    config.path = DEFAULT_FOLDER_PATH;
+    ImGuiFileDialog::Instance()->OpenDialog(FILE_DIALOG_NAME, "Select a game rom", CHIP8_ROM_FILE_EXTENSION, config);
+}
+
+void Chip8topiaUi::drawRomWindow(Chip8topia& chip8topia) {
+    std::pair windowSize = chip8topia.getWindowDimensions();
+
+    // TODO: Maybe Add imgui.ini to the .data emscripten build
+    if (ImGuiFileDialog::Instance()->Display(FILE_DIALOG_NAME, ImGuiWindowFlags_NoCollapse, ImVec2(static_cast<float>(windowSize.first), static_cast<float>(windowSize.second))))
+    {
+        if (ImGuiFileDialog::Instance()->IsOk())
+        {
+            const std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+
+            try
+            {
+                std::vector<uint8> rom = Chip8RomLoader::loadRomFromPath(filePathName);
+                chip8topia.getChip8Emulator().loadRom(rom);
+            }
+            catch (const std::exception& e)
+            {
+                std::cerr << e.what() << '\n';
+            }
+        }
+
+        ImGuiFileDialog::Instance()->Close();
+    }
+}
+
+void Chip8topiaUi::drawEmulationMenu(Chip8topia& chip8topia) {
     if (ImGui::BeginMenu("Engine/Emulation"))
     {
-        if (ImGui::MenuItem(fmt::format("Toggle Engine turbo mode : {}", chip8topia.getIsTurboMode() ? "ON " : "OFF").c_str(), "F3"))
+        if (ImGui::MenuItem(fmt::format("Toggle turbo mode : {}", chip8topia.getIsTurboMode() ? "ON " : "OFF").c_str(), "Y"))
         {
             chip8topia.toggleTurboMode();
         }
@@ -131,10 +161,9 @@ void Chip8topiaUi::drawEngineEmulationMenu(Chip8topia& chip8topia) {
 void Chip8topiaUi::drawViewMenu(Chip8topia& chip8topia) {
     if (ImGui::BeginMenu("View"))
     {
-        // TODO: Create a dictonary of the keys and the name of the menu item with the event, to be sure to call the right event
-        ImGui::MenuItem("Show/Hide MenuBar", "F1", &m_isMenuBarOpen);
+        ImGui::MenuItem("Show/Hide MenuBar", "U", &m_isMenuBarOpen);
 
-        ImGui::MenuItem("Show/Hide Windows", "F2", &m_windowsVisible);
+        ImGui::MenuItem("Show/Hide Windows", "I", &m_windowsVisible);
 
 #ifndef __EMSCRIPTEN__
         if (ImGui::MenuItem("Center window", "F10"))
@@ -149,34 +178,6 @@ void Chip8topiaUi::drawViewMenu(Chip8topia& chip8topia) {
 #endif
 
         ImGui::EndMenu();
-    }
-}
-
-void Chip8topiaUi::openRomWindow() {
-    IGFD::FileDialogConfig config;
-    config.path = DEFAULT_FOLDER_PATH;
-    ImGuiFileDialog::Instance()->OpenDialog(FILE_DIALOG_NAME, "Select a game rom", CHIP8_ROM_FILE_EXTENSION, config);
-}
-
-void Chip8topiaUi::drawRomWindow(Chip8topia& chip8topia) {
-    if (ImGuiFileDialog::Instance()->Display(FILE_DIALOG_NAME))
-    {
-        if (ImGuiFileDialog::Instance()->IsOk())
-        {
-            const std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
-
-            try
-            {
-                std::vector<uint8> rom = Chip8RomLoader::loadRomFromPath(filePathName);
-                chip8topia.getChip8Emulator().loadRom(rom);
-            }
-            catch (const std::exception& e)
-            {
-                std::cerr << e.what() << '\n';
-            }
-        }
-
-        ImGuiFileDialog::Instance()->Close();
     }
 }
 

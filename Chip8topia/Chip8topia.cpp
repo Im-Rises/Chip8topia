@@ -337,6 +337,10 @@ auto Chip8topia::getIsTurboMode() const -> bool {
     return m_isTurboMode;
 }
 
+auto Chip8topia::getWindowDimensions() const -> std::pair<int, int> {
+    return { m_currentWidth, m_currentHeight };
+}
+
 auto Chip8topia::getOpenGLVendor() -> std::string_view {
     return reinterpret_cast<const char*>(glGetString(GL_RENDERER));
 }

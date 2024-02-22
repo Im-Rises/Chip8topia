@@ -19,8 +19,6 @@ public:
     void drawAboutWindows();
 
 private:
-    //    void drawAboutPopUpInternal(const std::string_view& popupName, const std::function<void()>& drawAboutPopUpContent, bool& showAboutPopup);
-
     void drawAboutChip8topia();
     void drawAboutChip8();
 
