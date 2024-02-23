@@ -68,20 +68,16 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [x] Correct openfiledialog not having good size on the web
 - [x] Correct all preprocessing directives for emscripten for key inputs
 - [-] Creer une struct qui définie le nom de la touche shortcut avec le string et le keycode
-- [ ] Add the rom name on the window title
+- [x] Add the rom name on the window title and the Chip8 emulated version
+- [ ] Add imgui.ini to the .data emscripten build
 - [ ] Add break, run, step to the debugger
 - [ ] Change to init m_chip8topiaUi and m_chip8emulator in the game loop
-- [ ] Add imgui.ini to the .data emscripten build
 - [ ] Add emulation sound
 - [ ] Add save states ?
 - [ ] For the std::vector use ref or move... For the rom loading
 
-  Check later
-- [ ] Créer une classe ImGuiMenuItemWindowList. Améliorer code imgui des fenêtres avec un système qui contiendrait les
-  enums des fenêtres à afficher, ensuite en
-  allant dans un switch case pour chaque enum dans le tableau, on afficherait la fenêtre correspondante. Rajouter class
-  ImGui (Créer une classe ImGuiMenuItemWindowList). Faire une structure qui prend en paramètre un array seulement
-  movable
+Check later
+
 - [ ] Add emulation for the SuperChip8 and the XO-Chip ?
 - [ ] Add a way to change the used version of the chip8 (ask with a window like the About window, which block user intil
   he decides which version to use) and make it changeable before running a game and when the game is running (restart
@@ -94,7 +90,6 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [ ] Pour la partie emulation faire des surcharges de fonctions avec comme paramètre const SuperChip8Core& core,
   const Chip8Core& core, const XOChip8Core& core, de cette façon on pourra définir trois fonctions différentes pour
   chaque version de Core et le prendra autmaotiquement lors de l'appel ?
-- [ ] Mix code for CenterWindow and FullScreenOnCurrentMonitor
 - [ ] Faire des fonctions virtuel et les override dans chaque cpu ! Pas pure virtual, pour que si c'est pas override ça
   appelle "assert" !
 

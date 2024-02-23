@@ -6,6 +6,11 @@
 #include "../Chip8Core/Core/Cpu.h"
 #include "../../Chip8topiaUi/Chip8topiaUi.h"
 
+auto Chip8RomLoader::getRomNameFromPath(const std::string& romPath) -> std::string {
+    std::filesystem::path filePath(romPath);
+    return filePath.filename().string().substr(0, filePath.filename().string().find_last_of('.'));
+}
+
 auto Chip8RomLoader::loadRomFromPath(const std::string& romPath) -> std::vector<uint8> {
     if (!checkFileExtension(romPath))
     {
@@ -27,6 +32,7 @@ auto Chip8RomLoader::loadRomFromPath(const std::string& romPath) -> std::vector<
     return romData;
 }
 
+#if defined(__EMSCRIPTEN__)
 auto Chip8RomLoader::loadRomFromData(const std::string_view& romBuffer) -> std::vector<uint8> {
     std::vector<uint8> romData;
     romData.reserve(romBuffer.size());
@@ -38,6 +44,7 @@ auto Chip8RomLoader::loadRomFromData(const std::string_view& romBuffer) -> std::
 
     return romData;
 }
+#endif
 
 auto Chip8RomLoader::checkFileExtension(const std::string& romPath) -> bool {
     return romPath.ends_with(Chip8RomLoader::CHIP8_ROM_FILE_EXTENSION);

@@ -29,10 +29,23 @@ public:
     [[nodiscard]] auto getChip8Core() -> Chip8Core*;
     [[nodiscard]] auto getChip8VideoEmulation() -> Chip8VideoEmulation&;
 
+    void setRomName(const std::string& romName) {
+        m_romName = romName;
+    }
+    [[nodiscard]] auto getRomName() const -> std::string {
+        return m_romName;
+    }
+
+    [[nodiscard]] auto getConsoleName() -> std::string {
+        return "Chip8";
+    }
+
 private:
     void OnInput(const uint8 key, const bool isPressed);
 
 private:
+    std::string m_romName = "ROM";
+
     Chip8Core m_core;
     Chip8VideoEmulation m_videoEmulation;
     //    Chip8SoundEmulation m_soundEmulation;

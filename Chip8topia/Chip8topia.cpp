@@ -217,7 +217,7 @@ void Chip8topia::handleInputs() {
     m_chip8topiaInputHandler.update(m_window);
 }
 
-void Chip8topia::handleUi(const float deltaTime) {
+void Chip8topia::handleUi(const float /*deltaTime*/) {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
@@ -325,8 +325,14 @@ void Chip8topia::setWindowIcon() {
 }
 
 void Chip8topia::setWindowTitle(const float fps) {
-    //    glfwSetWindowTitle(m_window, std::format("{} - {:.2f} fps", PROJECT_NAME, fps).c_str());
-    glfwSetWindowTitle(m_window, fmt::format("{} - {:.2f} fps", PROJECT_NAME, fps).c_str());
+    if (m_chip8Emulator == nullptr)
+    {
+        glfwSetWindowTitle(m_window, fmt::format("{}", PROJECT_NAME).c_str());
+    }
+    else
+    {
+        glfwSetWindowTitle(m_window, fmt::format("{} - {} - {} - {:.2f} fps", PROJECT_NAME, m_chip8Emulator->getConsoleName().c_str(), m_chip8Emulator->getRomName().c_str(), fps).c_str());
+    }
 }
 #endif
 
@@ -392,6 +398,7 @@ void Chip8topia::glfw_drop_callback(GLFWwindow* window, int count, const char** 
         std::vector<uint8> rom = Chip8RomLoader::loadRomFromPath(path);
         auto* engine = reinterpret_cast<Chip8topia*>(glfwGetWindowUserPointer(window));
         engine->getChip8Emulator().loadRom(rom);
+        engine->getChip8Emulator().setRomName(Chip8RomLoader::getRomNameFromPath(path));
     }
     catch (const std::exception& e)
     {

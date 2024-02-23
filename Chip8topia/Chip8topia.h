@@ -91,6 +91,8 @@ private:
     Chip8topiaUi m_chip8topiaUi;
     Chip8topiaInputHandler& m_chip8topiaInputHandler = Chip8topiaInputHandler::getInstance();
 
+    std::string m_romName = "ROM";
+
     bool m_isFullScreen = false;
     bool m_isTurboMode = false;
     int m_currentWidth = 1280;

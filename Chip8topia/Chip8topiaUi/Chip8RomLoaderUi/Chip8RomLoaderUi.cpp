@@ -62,6 +62,7 @@ void Chip8RomLoaderUi::drawRomWindow(Chip8topia& chip8topia) {
             {
                 std::vector<uint8> rom = Chip8RomLoader::loadRomFromPath(filePathName);
                 chip8topia.getChip8Emulator().loadRom(rom);
+                chip8topia.getChip8Emulator().setRomName(Chip8RomLoader::getRomNameFromPath(filePathName));
             }
             catch (const std::exception& e)
             {

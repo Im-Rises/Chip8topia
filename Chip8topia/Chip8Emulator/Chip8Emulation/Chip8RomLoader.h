@@ -17,8 +17,13 @@ public:
     ~Chip8RomLoader() = default;
 
 public:
+    static auto getRomNameFromPath(const std::string& romPath) -> std::string;
+
     static auto loadRomFromPath(const std::string& romPath) -> std::vector<uint8>;
+
+#if defined(__EMSCRIPTEN__)
     static auto loadRomFromData(const std::string_view& romBuffer) -> std::vector<uint8>;
+#endif
 
 private:
     static auto checkFileExtension(const std::string& romPath) -> bool;
