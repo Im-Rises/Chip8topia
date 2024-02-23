@@ -19,7 +19,6 @@ void Chip8topiaInputHandler::key_callback(GLFWwindow* /*window*/, int key, int /
         {
 #ifndef __EMSCRIPTEN__
         case GLFW_KEY_ESCAPE: inputHandler.m_ExitChip8topiaEvent.trigger(); break;
-
         case GLFW_KEY_U: inputHandler.m_ToggleMainBarEvent.trigger(); break;
         case GLFW_KEY_I: inputHandler.m_ToggleWindowsVisibilityEvent.trigger(); break;
         case GLFW_KEY_Y: inputHandler.m_ToggleTurboModeEvent.trigger(); break;

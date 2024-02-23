@@ -2,7 +2,6 @@
 
 #include <imgui.h>
 #include <fmt/format.h>
-// #include <format>
 
 #include "../../Chip8topia/Chip8topia.h"
 #include "../../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
@@ -10,6 +9,14 @@
 void Chip8EmulationUi::drawEmulationMenu(Chip8topia& chip8topia) {
     if (ImGui::BeginMenu("Engine/Emulation"))
     {
+        if (ImGui::MenuItem("Change Chip8 version", "V"))
+        {
+        }
+
+        if (ImGui::MenuItem("Change Chip8 frequency", "F"))
+        {
+        }
+
         if (ImGui::MenuItem(fmt::format("Toggle turbo mode : {}", chip8topia.getIsTurboMode() ? "ON " : "OFF").c_str(), "Y"))
         {
             chip8topia.toggleTurboMode();

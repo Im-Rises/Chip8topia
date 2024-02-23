@@ -18,7 +18,6 @@
 #endif
 #include <GLFW/glfw3.h>
 
-// #include <format>
 #include <fmt/format.h>
 #include <chrono>
 #include <iostream>

@@ -1,11 +1,6 @@
 #include "Chip8topiaUi.h"
 
 #include <imgui.h>
-// #include <format>
-#include <fmt/format.h>
-#if defined(__EMSCRIPTEN__)
-#include <emscripten_browser_file.h>
-#endif
 
 #include "../Chip8topia.h"
 

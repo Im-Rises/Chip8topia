@@ -68,8 +68,9 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [x] Correct openfiledialog not having good size on the web
 - [x] Correct all preprocessing directives for emscripten for key inputs
 - [-] Creer une struct qui définie le nom de la touche shortcut avec le string et le keycode
+- [-] Add imgui.ini to the .data emscripten build
 - [x] Add the rom name on the window title and the Chip8 emulated version
-- [ ] Add imgui.ini to the .data emscripten build
+- [ ] Add a way to choose the version of the chip8 to emulate
 - [ ] Add break, run, step to the debugger
 - [ ] Change to init m_chip8topiaUi and m_chip8emulator in the game loop
 - [ ] Add emulation sound
@@ -87,6 +88,8 @@ Check later
 - [ ] Faire héritage cpp pour cpu et pour selection et peut être Chip8Core
 - [ ] Faire un switch case qui démarre la version de Core sélectionné avec la création de Chip8Core m_core; en
   tant que unique_ptr
+- [ ] Pour les load rom être sûr de bien utiliser std::move pour les vecteurs et des && pour les paramètres de
+  fonctions
 - [ ] Pour la partie emulation faire des surcharges de fonctions avec comme paramètre const SuperChip8Core& core,
   const Chip8Core& core, const XOChip8Core& core, de cette façon on pourra définir trois fonctions différentes pour
   chaque version de Core et le prendra autmaotiquement lors de l'appel ?
@@ -140,6 +143,6 @@ cmake --build [build directory]
 ### Emscripten
 
 ```bash
-emcmake cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=~/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=${EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -DVCPKG_TARGET_TRIPLET=wasm32-emscripten "-DCMAKE_EXE_LINKER_FLAGS=-s USE_GLFW=3 -s FULL_ES3=1 -s WASM=1 -s EXPORTED_RUNTIME_METHODS=[ccall] -s ALLOW_MEMORY_GROWTH=1 -s EXPORTED_FUNCTIONS=[_main,_malloc,_free] --preload-file ../../Chip8Games --preload-file ../../shaders" -DCMAKE_BUILD_TYPE=Release  
+emcmake cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=~/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=${EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -DVCPKG_TARGET_TRIPLET=wasm32-emscripten "-DCMAKE_EXE_LINKER_FLAGS=-s USE_GLFW=3 -s FULL_ES3=1 -s WASM=1 -s EXPORTED_RUNTIME_METHODS=[ccall] -s ALLOW_MEMORY_GROWTH=1 -s EXPORTED_FUNCTIONS=[_main,_malloc,_free] --preload-file ../../Chip8Games --preload-file ../../shaders" -DCMAKE_BUILD_TYPE=Release
 emmake make -C build
 ```

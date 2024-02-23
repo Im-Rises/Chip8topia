@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 class Chip8topia;
 class Chip8RomLoaderUi {
 private:
@@ -24,7 +26,7 @@ public:
 
 private:
 #if defined(__EMSCRIPTEN__)
-    static void Chip8topiaUi::handle_upload_file(std::string const& filename, std::string const& mime_type, std::string_view buffer, void* chip8emulator);
+    static void handle_upload_file(std::string const& filename, std::string const& mime_type, std::string_view buffer, void* chip8emulator);
 #endif
     void openRomWindow();
 };

@@ -26,7 +26,6 @@ public:
 
 public:
 #ifndef __EMSCRIPTEN__
-    [[maybe_unused]] SingleSubscriberEvent<> m_OpenRomExplorerEvent;
     [[maybe_unused]] SingleSubscriberEvent<> m_ExitChip8topiaEvent;
     [[maybe_unused]] SingleSubscriberEvent<> m_ToggleMainBarEvent;
     [[maybe_unused]] SingleSubscriberEvent<> m_ToggleWindowsVisibilityEvent;
@@ -40,5 +39,7 @@ public:
 
     [[maybe_unused]] SingleSubscriberEvent<> m_PauseEmulationEvent;
     [[maybe_unused]] SingleSubscriberEvent<> m_RestartEmulationEvent;
+    [[maybe_unused]] SingleSubscriberEvent<> m_OpenRomExplorerEvent;
+
     [[maybe_unused]] SingleSubscriberEvent<const uint8, const bool> m_GameInput;
 };
