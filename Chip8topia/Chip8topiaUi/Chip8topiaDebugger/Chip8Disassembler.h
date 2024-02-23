@@ -21,5 +21,8 @@ public:
     void drawAssemblyControls();
 
 private:
+    void clearBreakpoints();
+
+private:
     std::bitset<Cpu::MEMORY_SIZE> m_breakpoints;
 };

@@ -3,6 +3,7 @@
 #include <imgui.h>
 #include <fmt/format.h>
 
+#include "../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
 #include "../Chip8Emulator/Chip8Core/Core/CpuDisassembly.h"
 
 void Chip8Disassembler::drawAssembly(const std::array<uint8, Cpu::MEMORY_SIZE>& memory, uint16 pc) {
@@ -55,14 +56,16 @@ void Chip8Disassembler::drawAssemblyControls() {
 
     ImGui::SameLine();
 
-    if (ImGui::Button("Reset"))
+    if (ImGui::Button("Restart"))
     {
+        Chip8topiaInputHandler::getInstance().m_RestartEmulationEvent.trigger();
     }
 
     ImGui::SameLine();
 
     if (ImGui::Button("Clear"))
     {
+        clearBreakpoints();
     }
 
     ImGui::SameLine();
@@ -76,4 +79,8 @@ void Chip8Disassembler::drawAssemblyControls() {
     if (ImGui::Button("Save"))
     {
     }
+}
+
+void Chip8Disassembler::clearBreakpoints() {
+    m_breakpoints.reset();
 }
