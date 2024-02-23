@@ -38,6 +38,7 @@ void Chip8Disassembler::drawAssembly(const std::array<uint8, Cpu::MEMORY_SIZE>& 
 }
 
 void Chip8Disassembler::drawAssemblyControls() {
+    // TODO: Implement the Step, Run, Break, Load and Save buttons
     if (ImGui::Button("Step"))
     {
     }

@@ -7,6 +7,7 @@
 #include "../../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
 
 void Chip8EmulationUi::drawEmulationMenu(Chip8topia& chip8topia) {
+    // TODO: Add the ability to change the Chip8 version and frequency
     if (ImGui::BeginMenu("Engine/Emulation"))
     {
         if (ImGui::MenuItem("Change Chip8 version", "V"))
