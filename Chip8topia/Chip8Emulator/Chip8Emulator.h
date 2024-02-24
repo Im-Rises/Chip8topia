@@ -1,9 +1,8 @@
 #pragma once
 
 #include "Chip8Core/Chip8Core.h"
-#include "Chip8Emulation/Chip8VideoEmulation.h"
-#include "Chip8Emulation/Chip8SoundEmulation.h"
-#include "Chip8Emulation/Chip8RomLoader.h"
+#include "Chip8Emulator/Chip8VideoEmulation.h"
+// #include "Chip8Emulation/Chip8SoundEmulation.h"
 
 class Chip8Emulator {
 public:
@@ -26,19 +25,12 @@ public:
 
     void setIsTurboMode(const bool isTurboMode);
     [[nodiscard]] auto getIsPaused() const -> bool;
-    [[nodiscard]] auto getChip8Core() -> Chip8Core*;
+    [[nodiscard]] auto getChip8Core() -> Chip8CoreBase*;
     [[nodiscard]] auto getChip8VideoEmulation() -> Chip8VideoEmulation&;
 
-    void setRomName(const std::string& romName) {
-        m_romName = romName;
-    }
-    [[nodiscard]] auto getRomName() const -> std::string {
-        return m_romName;
-    }
-
-    [[nodiscard]] auto getConsoleName() -> std::string {
-        return "Chip8";
-    }
+    void setRomName(const std::string& romName) { m_romName = romName; }
+    [[nodiscard]] auto getRomName() const -> std::string { return m_romName; }
+    [[nodiscard]] static auto getConsoleName() -> std::string { return "Chip8"; } // TODO: Move to a more appropriate place
 
 private:
     void OnInput(const uint8 key, const bool isPressed);
@@ -46,7 +38,7 @@ private:
 private:
     std::string m_romName = "ROM";
 
-    Chip8Core m_core;
+    std::unique_ptr<Chip8CoreBase> m_core;
     Chip8VideoEmulation m_videoEmulation;
     //    Chip8SoundEmulation m_soundEmulation;
 

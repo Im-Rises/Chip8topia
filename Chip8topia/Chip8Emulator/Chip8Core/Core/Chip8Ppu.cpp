@@ -1,7 +1,8 @@
 #include "Chip8Ppu.h"
 
 void Chip8Ppu::clearScreen() {
-    m_videoMemory.fill(0);
+    //    m_videoMemory.fill(0);
+    std::fill(m_videoMemory.begin(), m_videoMemory.end(), 0);
 }
 
 auto Chip8Ppu::drawSprite(uint8 x, uint8 y, uint8 n, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint16 I_reg) -> bool {
@@ -41,7 +42,3 @@ auto Chip8Ppu::drawSprite(uint8 x, uint8 y, uint8 n, const std::array<uint8, Cpu
 
     return collision;
 }
-
-// auto Ppu::getVideoMemory() const -> const std::array<uint8, 2048>& {
-//     return m_videoMemory;
-// }

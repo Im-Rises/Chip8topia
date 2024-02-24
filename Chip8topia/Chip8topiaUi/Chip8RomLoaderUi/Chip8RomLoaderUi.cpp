@@ -8,6 +8,7 @@
 #include <emscripten_browser_file.h>
 #endif
 
+#include "../Chip8Emulator/Chip8Emulator/Chip8RomLoader.h"
 #include "../../Chip8topia.h"
 
 Chip8RomLoaderUi::Chip8RomLoaderUi() {

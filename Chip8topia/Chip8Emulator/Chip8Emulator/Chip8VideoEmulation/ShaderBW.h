@@ -6,15 +6,16 @@
 #include <glad/glad.h>
 #endif
 
-#include <imgui.h>
 #include <array>
+#include <binaryLib/binaryLib.h>
 
-#include "../../Shader/Shader.h"
-#include "../Chip8Core/Core/Chip8Ppu.h"
+#include "../../../Shader/Shader.h"
 
-// TODO: Change this class to receive different width and height when initialising the shader
+// TODO: Move imgui from here!!!
+#include <imgui.h>
 
-class Chip8VideoEmulation {
+// TODO: Find another name for this class !!!
+class ShaderBW {
 private:
 #if defined(__EMSCRIPTEN__)
     static constexpr auto VERTEX_SHADER_PATH = "shaders/Chip8topia_es.vert";
@@ -36,29 +37,33 @@ private:
     };
 
 public:
-    Chip8VideoEmulation();
-    Chip8VideoEmulation(const Chip8VideoEmulation&) = delete;
-    Chip8VideoEmulation(Chip8VideoEmulation&&) = delete;
-    auto operator=(const Chip8VideoEmulation&) -> Chip8VideoEmulation& = delete;
-    auto operator=(Chip8VideoEmulation&&) -> Chip8VideoEmulation& = delete;
-    ~Chip8VideoEmulation() = default;
+    ShaderBW(int width, int height);
+    ShaderBW(const ShaderBW&) = delete;
+    ShaderBW(ShaderBW&&) = delete;
+    auto operator=(const ShaderBW&) -> ShaderBW& = delete;
+    auto operator=(ShaderBW&&) -> ShaderBW& = delete;
+    ~ShaderBW();
 
 public:
-    //    void reset();
+    void updateTexture(const std::vector<uint8>& videoMemory);
+    void update();
+    void reset();
 
-    //    void updateTexture(const std::array<uint8, Ppu::WIDTH * Ppu::HEIGHT>& videoMemory);
-    //    void update();
-
-    auto getBackgroundColorRef() -> ImVec4&;
-    auto getForegroundColorRef() -> ImVec4&;
+    auto getBackgroundColorRef() -> ImVec4& { return m_backgroundColor; }
+    auto getForegroundColorRef() -> ImVec4& { return m_foregroundColor; }
 
 private:
     GLuint m_VAO;
     GLuint m_VBO;
     GLuint m_texture;
-
     Shader m_shader;
+
+    int m_width;
+    int m_height;
 
     ImVec4 m_backgroundColor = { 0.3F, 0.3F, 0.3F, 1.0F };
     ImVec4 m_foregroundColor = { 0.8F, 0.8F, 0.8F, 1.0F };
+
+    //    ImVec4 m_backgroundColor = { 0.0F, 0.0F, 0.0F, 1.0F };
+    //    ImVec4 m_foregroundColor = { 1.0F, 1.0F, 1.0F, 1.0F };
 };

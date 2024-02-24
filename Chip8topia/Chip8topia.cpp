@@ -22,6 +22,7 @@
 #include <chrono>
 #include <iostream>
 
+#include "Chip8Emulator/Chip8Emulator/Chip8RomLoader.h"
 #include "res/chip8topiaIconResource.h"
 
 #ifdef __EMSCRIPTEN__

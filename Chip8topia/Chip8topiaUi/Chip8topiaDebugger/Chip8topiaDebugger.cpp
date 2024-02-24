@@ -21,7 +21,7 @@ void Chip8topiaDebugger::drawDebuggerWindows(Chip8Emulator& emulator) {
     }
 }
 
-void Chip8topiaDebugger::drawRegisters(Chip8Core* chip8) {
+void Chip8topiaDebugger::drawRegisters(Chip8CoreBase* chip8) {
     std::unique_ptr<CpuBase>& cpu = chip8->getCpu();
 
     ImGui::PushItemWidth(-FLT_MIN);
@@ -62,7 +62,7 @@ void Chip8topiaDebugger::drawRegisters(Chip8Core* chip8) {
     ImGui::PopItemWidth();
 }
 
-void Chip8topiaDebugger::drawStack(Chip8Core* chip8) {
+void Chip8topiaDebugger::drawStack(Chip8CoreBase* chip8) {
     std::unique_ptr<CpuBase>& cpu = chip8->getCpu();
 
     ImGui::Text("SP:");
@@ -99,11 +99,11 @@ void Chip8topiaDebugger::drawStack(Chip8Core* chip8) {
     }
 }
 
-void Chip8topiaDebugger::drawMemory(Chip8Core* chip8) {
+void Chip8topiaDebugger::drawMemory(Chip8CoreBase* chip8) {
     m_memoryEditor.DrawWindow("Memory Editor", &chip8->getCpu()->getMemory(), Chip8Cpu::MEMORY_SIZE);
 }
 
-void Chip8topiaDebugger::drawKeypad(Chip8Core* chip8) {
+void Chip8topiaDebugger::drawKeypad(Chip8CoreBase* chip8) {
     static constexpr int WINDOW_SIZE = 50;
     static constexpr int WINDOW_COUNT_PER_LINE = 4;
 
@@ -136,11 +136,11 @@ void Chip8topiaDebugger::drawKeypad(Chip8Core* chip8) {
     ImGui::SetWindowFontScale(1.0F);
 }
 
-void Chip8topiaDebugger::drawAssembly(Chip8Core* chip8) {
+void Chip8topiaDebugger::drawAssembly(Chip8CoreBase* chip8) {
     //    m_disassembler.drawAssembly(chip8->getCpu().getMemory(), chip8->getCpu().getPc());
 }
 
-void Chip8topiaDebugger::drawDisassemblyControls(Chip8Core* chip8) {
+void Chip8topiaDebugger::drawDisassemblyControls(Chip8CoreBase* chip8) {
     // TODO: Implement with a Chip8Emulator as parameter...
     m_disassembler.drawAssemblyControls();
 }
