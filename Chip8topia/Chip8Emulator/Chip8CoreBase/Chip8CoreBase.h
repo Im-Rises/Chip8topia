@@ -5,6 +5,12 @@
 #include <vector>
 #include <binaryLib/binaryLib.h>
 
+enum class Chip8CoreType : uint8 {
+    Chip8,
+    SuperChip,
+    XoChip
+};
+
 class CpuBase;
 class PpuBase;
 class Input;
@@ -21,15 +27,16 @@ public:
     virtual ~Chip8CoreBase() = default;
 
 public:
+    [[nodiscard]] virtual auto getType() const -> Chip8CoreType = 0;
     void readRom(const std::vector<uint8>& rom);
     virtual void clock() = 0;
     void updateKey(const uint8 key, const bool pressed);
     void reset();
 
 public:
-    auto getCpu() -> std::unique_ptr<CpuBase>& { return m_cpu; }
-    auto getPpu() -> std::shared_ptr<PpuBase> { return m_ppu; }
-    auto getInput() -> std::shared_ptr<Input> { return m_input; }
+    [[nodiscard]] auto getCpu() -> std::unique_ptr<CpuBase>& { return m_cpu; }
+    [[nodiscard]] auto getPpu() -> std::shared_ptr<PpuBase> { return m_ppu; }
+    [[nodiscard]] auto getInput() -> std::shared_ptr<Input> { return m_input; }
 
 protected:
     std::unique_ptr<CpuBase> m_cpu;

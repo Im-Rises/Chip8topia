@@ -6,11 +6,11 @@
 #include "../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
 // #include "../Chip8Emulator/Chip8Core/Core/CpuDisassembly.h"
 
-void Chip8Disassembler::drawAssembly(const std::array<uint8, Cpu::MEMORY_SIZE>& memory, uint16 pc) {
+void Chip8Disassembler::drawAssembly(const std::array<uint8, Chip8Cpu::MEMORY_SIZE>& memory, uint16 pc) {
     // Maybe Change the storage to use real bool not a bitset ? This way we don't need the ImGui::IsItemClicked() and we can use directly the value of the array
     std::string buffer;
     ImGuiListClipper clipper;
-    clipper.Begin(Cpu::MEMORY_SIZE - 1);
+    clipper.Begin(Chip8Cpu::MEMORY_SIZE - 1);
     while (clipper.Step())
     {
         for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)

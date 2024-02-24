@@ -3,14 +3,14 @@
 #include "../../Chip8CoreBase/Core/CpuBase.h"
 
 
-class Cpu final : public CpuBase {
+class Chip8Cpu final : public CpuBase {
 public:
-    Cpu();
-    Cpu(const Cpu& other) = delete;
-    Cpu(Cpu&& other) = delete;
-    auto operator=(const Cpu& other) -> Cpu& = delete;
-    auto operator=(Cpu&& other) -> Cpu& = delete;
-    ~Cpu() final = default;
+    Chip8Cpu();
+    Chip8Cpu(const Chip8Cpu& other) = delete;
+    Chip8Cpu(Chip8Cpu&& other) = delete;
+    auto operator=(const Chip8Cpu& other) -> Chip8Cpu& = delete;
+    auto operator=(Chip8Cpu&& other) -> Chip8Cpu& = delete;
+    ~Chip8Cpu() final = default;
 
 public:
     void reset() final;

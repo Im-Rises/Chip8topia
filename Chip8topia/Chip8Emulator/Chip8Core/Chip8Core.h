@@ -4,7 +4,7 @@
 
 #include <memory>
 
-class Cpu;
+class Chip8Cpu;
 class Chip8Core final : public Chip8CoreBase {
 public:
     Chip8Core();
@@ -15,8 +15,9 @@ public:
     ~Chip8Core() final = default;
 
 public:
+    [[nodiscard]] auto getType() const -> Chip8CoreType final { return Chip8CoreType::Chip8; }
     void clock() final;
 
 private:
-    Cpu* m_cpuCasted; // TODO: Find a better solution...
+    Chip8Cpu* m_cpuCasted; // TODO: Find a better solution...
 };

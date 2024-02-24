@@ -45,7 +45,7 @@ void Chip8topiaDebugger::drawRegisters(Chip8Core* chip8) {
     ImGui::AlignTextToFramePadding();
     ImGui::PushItemWidth(30.0F);
     static constexpr int WINDOW_COUNT_PER_LINE = 4;
-    for (auto i = 0; i < Cpu::REGISTER_V_SIZE; i++)
+    for (auto i = 0; i < Chip8Cpu::REGISTER_V_SIZE; i++)
     {
         ImGui::Text("V%X", i);
         ImGui::SameLine();
@@ -77,7 +77,7 @@ void Chip8topiaDebugger::drawStack(Chip8Core* chip8) {
         ImGui::TableSetupColumn("Value");
         ImGui::TableHeadersRow();
 
-        for (auto row = 0; row < Cpu::STACK_SIZE; row++)
+        for (auto row = 0; row < Chip8Cpu::STACK_SIZE; row++)
         {
             ImGui::TableNextRow();
 
@@ -100,7 +100,7 @@ void Chip8topiaDebugger::drawStack(Chip8Core* chip8) {
 }
 
 void Chip8topiaDebugger::drawMemory(Chip8Core* chip8) {
-    m_memoryEditor.DrawWindow("Memory Editor", &chip8->getCpu()->getMemory(), Cpu::MEMORY_SIZE);
+    m_memoryEditor.DrawWindow("Memory Editor", &chip8->getCpu()->getMemory(), Chip8Cpu::MEMORY_SIZE);
 }
 
 void Chip8topiaDebugger::drawKeypad(Chip8Core* chip8) {

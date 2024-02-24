@@ -1,13 +1,13 @@
 #include "Chip8Core.h"
 
-#include "Core/Cpu.h"
-#include "Core/Ppu.h"
+#include "Core/Chip8Cpu.h"
+#include "Core/Chip8Ppu.h"
 
-Chip8Core::Chip8Core() : Chip8CoreBase(std::make_unique<Cpu>(), std::make_shared<Ppu>()), m_cpuCasted(dynamic_cast<Cpu*>(m_cpu.get())) {
+Chip8Core::Chip8Core() : Chip8CoreBase(std::make_unique<Chip8Cpu>(), std::make_shared<Chip8Ppu>()), m_cpuCasted(dynamic_cast<Chip8Cpu*>(m_cpu.get())) {
 }
 
 void Chip8Core::clock() {
-    while (m_clockCounter < Cpu::CLOCK_FREQUENCY / SCREEN_AND_TIMERS_FREQUENCY)
+    while (m_clockCounter < Chip8Cpu::CLOCK_FREQUENCY / SCREEN_AND_TIMERS_FREQUENCY)
     {
         m_cpu->clock();
         m_clockCounter++;

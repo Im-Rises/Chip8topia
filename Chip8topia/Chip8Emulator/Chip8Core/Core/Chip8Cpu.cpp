@@ -1,18 +1,18 @@
-#include "Cpu.h"
+#include "Chip8Cpu.h"
 
-#include "Ppu.h"
+#include "Chip8Ppu.h"
 
-Cpu::Cpu() : m_isHalted(false),
-             m_requestDisableHalt(false) {
+Chip8Cpu::Chip8Cpu() : m_isHalted(false),
+                       m_requestDisableHalt(false) {
 }
 
-void Cpu::reset() {
+void Chip8Cpu::reset() {
     CpuBase::reset();
     m_isHalted = false;
     m_requestDisableHalt = false;
 }
 
-void Cpu::computeOpcode(const uint16 opcode) {
+void Chip8Cpu::computeOpcode(const uint16 opcode) {
     const uint8 nibble4 = (opcode & 0xF000) >> 12;
     const uint8 nibble3 = (opcode & 0x0F00) >> 8;
     const uint8 nibble2 = (opcode & 0x00F0) >> 4;
@@ -97,50 +97,50 @@ void Cpu::computeOpcode(const uint16 opcode) {
     }
 }
 
-void Cpu::SYS(const uint16 /*address*/) {
+void Chip8Cpu::SYS(const uint16 /*address*/) {
     // This opcode is only used on the old computers on which Chip-8 was originally implemented.
     // It is ignored by modern interpreters.
     m_pc += 2;
 }
 
-void Cpu::OR_Vx_Vy(const uint8 x, const uint8 y) {
+void Chip8Cpu::OR_Vx_Vy(const uint8 x, const uint8 y) {
     m_V[x] |= m_V[y];
     m_V[0xF] = 0;
 }
 
-void Cpu::AND_Vx_Vy(const uint8 x, const uint8 y) {
+void Chip8Cpu::AND_Vx_Vy(const uint8 x, const uint8 y) {
     m_V[x] &= m_V[y];
     m_V[0xF] = 0;
 }
 
-void Cpu::XOR_Vx_Vy(const uint8 x, const uint8 y) {
+void Chip8Cpu::XOR_Vx_Vy(const uint8 x, const uint8 y) {
     m_V[x] ^= m_V[y];
     m_V[0xF] = 0;
 }
 
-void Cpu::SHR_Vx_Vy(const uint8 x, const uint8 y) {
+void Chip8Cpu::SHR_Vx_Vy(const uint8 x, const uint8 y) {
     const uint8 flag = m_V[y] & 0x1;
     m_V[x] = m_V[y] >> 1;
     m_V[0xF] = flag;
 }
 
-void Cpu::SUBN_Vx_Vy(const uint8 x, const uint8 y) {
+void Chip8Cpu::SUBN_Vx_Vy(const uint8 x, const uint8 y) {
     const auto flag = static_cast<uint8>(m_V[y] >= m_V[x]);
     m_V[x] = m_V[y] - m_V[x];
     m_V[0xF] = flag;
 }
 
-void Cpu::SHL_Vx_Vy(const uint8 x, const uint8 y) {
+void Chip8Cpu::SHL_Vx_Vy(const uint8 x, const uint8 y) {
     const uint8 flag = (m_V[x] & 0x80) >> 7;
     m_V[x] = m_V[y] << 1;
     m_V[0xF] = flag;
 }
 
-void Cpu::JP_V0_addr(const uint16 address) {
+void Chip8Cpu::JP_V0_addr(const uint16 address) {
     m_pc = m_V[0] + address;
 }
 
-void Cpu::DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) {
+void Chip8Cpu::DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) {
     m_isHalted = true;
 
     if (m_requestDisableHalt)
@@ -158,7 +158,7 @@ void Cpu::DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) {
     m_V[0xF] = static_cast<uint8>(m_ppu->drawSprite(m_V[x], m_V[y], n, m_memory, m_I));
 }
 
-void Cpu::LD_aI_Vx(const uint8 x) {
+void Chip8Cpu::LD_aI_Vx(const uint8 x) {
     for (int i = 0; i <= x; i++)
     {
         m_memory[m_I + i] = m_V[i];
@@ -166,7 +166,7 @@ void Cpu::LD_aI_Vx(const uint8 x) {
     m_I += x + 1;
 }
 
-void Cpu::LD_Vx_aI(const uint8 x) {
+void Chip8Cpu::LD_Vx_aI(const uint8 x) {
     for (int i = 0; i <= x; i++)
     {
         m_V[i] = m_memory[m_I + i];

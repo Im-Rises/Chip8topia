@@ -1,10 +1,10 @@
-#include "Ppu.h"
+#include "Chip8Ppu.h"
 
-void Ppu::clearScreen() {
+void Chip8Ppu::clearScreen() {
     m_videoMemory.fill(0);
 }
 
-auto Ppu::drawSprite(uint8 x, uint8 y, uint8 n, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint16 I_reg) -> bool {
+auto Chip8Ppu::drawSprite(uint8 x, uint8 y, uint8 n, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint16 I_reg) -> bool {
     bool collision = false;
 
     // Wrap around the screen if out of bounds

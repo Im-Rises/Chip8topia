@@ -5,7 +5,7 @@
 #include "../../Chip8CoreBase/Core/PpuBase.h"
 #include <binaryLib/binaryLib.h>
 
-class Ppu final : public PpuBase {
+class Chip8Ppu final : public PpuBase {
 private:
     static constexpr size_t WIDTH = 64;
     static constexpr size_t HEIGHT = 32;
@@ -13,12 +13,12 @@ private:
     //    static constexpr uint8 SPRITE_HEIGHT = 15;
 
 public:
-    Ppu() = default;
-    Ppu(const Ppu&) = delete;
-    Ppu(Ppu&&) = delete;
-    auto operator=(const Ppu&) -> Ppu& = delete;
-    auto operator=(Ppu&&) -> Ppu& = delete;
-    ~Ppu() = default;
+    Chip8Ppu() = default;
+    Chip8Ppu(const Chip8Ppu&) = delete;
+    Chip8Ppu(Chip8Ppu&&) = delete;
+    auto operator=(const Chip8Ppu&) -> Chip8Ppu& = delete;
+    auto operator=(Chip8Ppu&&) -> Chip8Ppu& = delete;
+    ~Chip8Ppu() = default;
 
 public:
     void clearScreen() final;

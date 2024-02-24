@@ -36,12 +36,13 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [x] Ajouter la synchronisation entre écran et cpu avec les timers audio et gameplay qui sont synchronisés avec le cpu
 - [x] Check all the carry and borrow flags in the opcodes
 - [x] Correct collision detection
-- [x] Correct the Ppu issues not rendering correctly (never clear the screen previously, everything was drawn on top of
+- [x] Correct the Chip8Ppu issues not rendering correctly (never clear the screen previously, everything was drawn on
+  top of
   each other)
 - [x] Add a file explorer to load roms
 - [x] Add inputs to the emulator
 - [x] Throttle the emulator to 60fps
-- [x] Add Ppu clipping
+- [x] Add Chip8Ppu clipping
 - [x] Add a way to hide all windows
 - [x] Prevent hiding the main bar to also hide the windows
 - [x] understand and correct the test roms from 5-quirks

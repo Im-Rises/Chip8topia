@@ -10,7 +10,7 @@
 #include <array>
 
 #include "../../Shader/Shader.h"
-#include "../Chip8Core/Core/Ppu.h"
+#include "../Chip8Core/Core/Chip8Ppu.h"
 
 // TODO: Change this class to receive different width and height when initialising the shader
 

@@ -3,7 +3,7 @@
 #include <fstream>
 #include <filesystem>
 
-#include "../Chip8Core/Core/Cpu.h"
+#include "../Chip8Core/Core/Chip8Cpu.h"
 #include "../../Chip8topiaUi/Chip8topiaUi.h"
 
 auto Chip8RomLoader::getRomNameFromPath(const std::string& romPath) -> std::string {
@@ -57,7 +57,7 @@ auto Chip8RomLoader::checkFileExists(const std::string& romPath) -> bool {
 
 auto Chip8RomLoader::checkRomFileSize(const std::string& romPath) -> bool {
     const std::filesystem::path filePath(romPath);
-    return std::filesystem::file_size(filePath) <= Cpu::ROM_SIZE;
+    return std::filesystem::file_size(filePath) <= Chip8Cpu::ROM_SIZE;
 }
 
 auto Chip8RomLoader::readRom(const std::string& romPath) -> std::vector<uint8> {
