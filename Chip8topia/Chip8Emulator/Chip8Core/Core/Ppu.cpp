@@ -4,13 +4,13 @@ void Ppu::clearScreen() {
     m_videoMemory.fill(0);
 }
 
-auto Ppu::drawSprite(uint8 x, uint8 y, uint8 n, const std::array<uint8, Cpu::MEMORY_SIZE>& memory, uint16 I_reg) -> bool {
+auto Ppu::drawSprite(uint8 x, uint8 y, uint8 n, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint16 I_reg) -> bool {
     bool collision = false;
 
     // Wrap around the screen if out of bounds
     x %= WIDTH;
     y %= HEIGHT;
-    
+
     for (auto i = 0; i < n; ++i)
     {
         const auto spriteByte = memory[I_reg + i];
@@ -42,6 +42,6 @@ auto Ppu::drawSprite(uint8 x, uint8 y, uint8 n, const std::array<uint8, Cpu::MEM
     return collision;
 }
 
-auto Ppu::getVideoMemory() const -> const std::array<uint8, 2048>& {
-    return m_videoMemory;
-}
+// auto Ppu::getVideoMemory() const -> const std::array<uint8, 2048>& {
+//     return m_videoMemory;
+// }
