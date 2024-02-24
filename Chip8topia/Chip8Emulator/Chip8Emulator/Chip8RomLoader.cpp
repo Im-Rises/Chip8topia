@@ -3,7 +3,7 @@
 #include <fstream>
 #include <filesystem>
 
-#include "../Chip8Core/Core/Chip8Cpu.h"
+#include "../ChipCores/Chip8Core/Core/Chip8Cpu.h"
 #include "../../Chip8topiaUi/Chip8topiaUi.h"
 
 auto Chip8RomLoader::getRomNameFromPath(const std::string& romPath) -> std::string {

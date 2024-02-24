@@ -7,7 +7,7 @@ Chip8Core::Chip8Core() : Chip8CoreBase(std::make_unique<Chip8Cpu>(), std::make_s
 }
 
 void Chip8Core::clock() {
-    while (m_clockCounter < Chip8Cpu::CLOCK_FREQUENCY / SCREEN_AND_TIMERS_FREQUENCY)
+    while (m_clockCounter < CpuBase::CLOCK_FREQUENCY / SCREEN_AND_TIMERS_FREQUENCY)
     {
         m_cpu->clock();
         m_clockCounter++;

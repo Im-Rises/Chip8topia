@@ -4,7 +4,7 @@
 #include <array>
 #include <string>
 #include <bitset>
-#include "../../Chip8Emulator/Chip8Core/Core/Chip8Cpu.h"
+#include "../../Chip8Emulator/ChipCores/Chip8Core/Core/Chip8Cpu.h"
 
 class Chip8Disassembler {
 public:

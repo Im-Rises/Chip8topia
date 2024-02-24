@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../Chip8CoreBase/Core/CpuBase.h"
+#include "../../../Chip8CoreBase/Core/CpuBase.h"
 
 
 class Chip8Cpu final : public CpuBase {

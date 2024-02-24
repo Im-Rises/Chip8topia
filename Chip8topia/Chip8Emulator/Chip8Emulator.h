@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Chip8Core/Chip8Core.h"
+#include "ChipCores/Chip8Core/Chip8Core.h"
 #include "Chip8Emulator/Chip8VideoEmulation.h"
 // #include "Chip8Emulation/Chip8SoundEmulation.h"
 

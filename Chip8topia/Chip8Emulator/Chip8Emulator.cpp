@@ -3,7 +3,7 @@
 #include "../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
 
 // TODO: Change this to create right instance of the core
-#include "Chip8Core/Chip8Core.h"
+#include "ChipCores/Chip8Core/Chip8Core.h"
 // TODO: Remove the line below
 #include "Chip8CoreBase/Core/CpuBase.h"
 

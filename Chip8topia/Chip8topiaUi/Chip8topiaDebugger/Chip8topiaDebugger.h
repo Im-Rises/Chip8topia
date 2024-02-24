@@ -5,7 +5,7 @@
 #include <array>
 
 #include "../../Chip8Emulator/Chip8Emulator.h"
-#include "../../Chip8Emulator/Chip8Core/Chip8Core.h"
+#include "../../Chip8Emulator/ChipCores/Chip8Core/Chip8Core.h"
 #include "../ImGuiHelper/ImGuiHelper.h"
 #include "Chip8Disassembler.h"
 

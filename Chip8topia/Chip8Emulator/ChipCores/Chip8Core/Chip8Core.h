@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Chip8CoreBase/Chip8CoreBase.h"
+#include "../../Chip8CoreBase/Chip8CoreBase.h"
 
 #include <memory>
 

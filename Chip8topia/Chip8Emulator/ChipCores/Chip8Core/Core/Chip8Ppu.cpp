@@ -1,7 +1,9 @@
 #include "Chip8Ppu.h"
 
+Chip8Ppu::Chip8Ppu() : m_videoMemory(WIDTH * HEIGHT, PIXEL_OFF) {
+}
+
 void Chip8Ppu::clearScreen() {
-    //    m_videoMemory.fill(0);
     std::fill(m_videoMemory.begin(), m_videoMemory.end(), 0);
 }
 

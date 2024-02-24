@@ -6,6 +6,8 @@
 
 #include "CpuBase.h"
 
+// TODO: Change this class completely to only have the right video memory and mode
+
 class PpuBase {
 public:
     enum class PpuMode {
@@ -19,8 +21,7 @@ public:
     static constexpr int SCREEN_HIRES_MODE_HEIGHT = 64;
 
 public:
-    //    PpuBase() = default;
-    PpuBase() : m_videoMemory(SCREEN_LORES_MODE_WIDTH * SCREEN_LORES_MODE_HEIGHT) {}
+    PpuBase() = default;
     PpuBase(const PpuBase&) = delete;
     PpuBase(PpuBase&&) = delete;
     auto operator=(const PpuBase&) -> PpuBase& = delete;
@@ -31,12 +32,12 @@ public:
     virtual void clearScreen() = 0;
     virtual auto drawSprite(uint8 x, uint8 y, uint8 n, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint16 I_reg) -> bool = 0;
 
-    [[nodiscard]] auto getVideoMemory() const -> const std::vector<uint8>& { return m_videoMemory; }
+    [[nodiscard]] virtual auto getVideoMemory() const -> const std::vector<uint8>& = 0;
 
-    virtual void setMode(PpuMode mode) { assert(true); }
+    virtual void setMode(PpuMode mode) { m_mode = mode; }
     [[nodiscard]] auto getMode() const -> PpuMode { return m_mode; }
 
 protected:
-    std::vector<uint8> m_videoMemory;
+    // TODO: Move to children classes and make private but create a pure virtual getter here (the parent class)
     PpuMode m_mode = PpuMode::LORES;
 };

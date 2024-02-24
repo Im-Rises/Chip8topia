@@ -6,9 +6,9 @@
 #include <binaryLib/binaryLib.h>
 
 enum class Chip8CoreType : uint8 {
-    Chip8,
-    SuperChip,
-    XoChip
+    Chip8,   // Chip-8 (COSMAC VIP)
+    SChip11, // SuperChip 1.1
+    XoChip   // XO-Chip
 };
 
 class CpuBase;
