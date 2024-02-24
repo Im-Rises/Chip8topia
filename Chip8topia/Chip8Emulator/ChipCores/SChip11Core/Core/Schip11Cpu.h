@@ -1,4 +1,42 @@
 #pragma once
 
-class Schip11Cpu {
+#include "../../../Chip8CoreBase/Core/CpuBase.h"
+
+class Schip11Ppu;
+class Schip11Cpu final : public CpuBase {
+public:
+    Schip11Cpu();
+    Schip11Cpu(const Schip11Cpu&) = delete;
+    Schip11Cpu(Schip11Cpu&&) = delete;
+    auto operator=(const Schip11Cpu&) -> Schip11Cpu& = delete;
+    auto operator=(Schip11Cpu&&) -> Schip11Cpu& = delete;
+    ~Schip11Cpu() final = default;
+
+public:
+    void reset() final;
+
+private:
+    void computeOpcode(const uint16 opcode) final;
+
+    void OR_Vx_Vy(const uint8 x, const uint8 y) final;                   // 8xy1
+    void AND_Vx_Vy(const uint8 x, const uint8 y) final;                  // 8xy2
+    void XOR_Vx_Vy(const uint8 x, const uint8 y) final;                  // 8xy3
+    void DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) final; // Dxyn
+    void LD_aI_Vx(const uint8 x) final;                                  // Fx55
+    void LD_Vx_aI(const uint8 x) final;                                  // Fx65
+
+    void SCD_n(const uint8 n);                            // 00CN
+    void SCR(const uint8 n);                              // 00FB
+    void SCL(const uint8 n);                              // 00FC
+    void LORES();                                         // 00FE
+    void HIRES();                                         // 00FF
+    void JP_Vx_addr(const uint8 x, const uint16 address); // Bxnn
+    void LD_HF_Vx(const uint8 x);                         // Fx30
+    void LD_R_Vx(const uint8 x);                          // Fx75
+    void LD_Vx_R(const uint8 x);                          // Fx85
+
+private:
+    Schip11Ppu* m_ppuCasted;
+
+    std::array<uint8, REGISTER_V_SIZE> m_savedV;
 };

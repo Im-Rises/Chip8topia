@@ -2,8 +2,6 @@
 
 #include "../../Chip8CoreBase/Chip8CoreBase.h"
 
-#include <memory>
-
 class Chip8Cpu;
 class Chip8Core final : public Chip8CoreBase {
 public:

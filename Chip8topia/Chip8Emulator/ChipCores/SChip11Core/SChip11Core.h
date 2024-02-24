@@ -4,7 +4,6 @@
 
 #include <memory>
 
-class Chip8Cpu;
 class SChip11Core final : public Chip8CoreBase {
 public:
     SChip11Core();
@@ -17,7 +16,4 @@ public:
 public:
     [[nodiscard]] auto getType() const -> Chip8CoreType final { return Chip8CoreType::SChip11; }
     void clock() final;
-
-private:
-    SChip11Core* m_cpuCasted; // TODO: Find a better solution...
 };

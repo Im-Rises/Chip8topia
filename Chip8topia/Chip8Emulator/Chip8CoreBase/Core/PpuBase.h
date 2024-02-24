@@ -15,10 +15,13 @@ public:
         HIRES
     };
 
-    static constexpr int SCREEN_LORES_MODE_WIDTH = 64;
-    static constexpr int SCREEN_LORES_MODE_HEIGHT = 32;
-    static constexpr int SCREEN_HIRES_MODE_WIDTH = 128;
-    static constexpr int SCREEN_HIRES_MODE_HEIGHT = 64;
+    static constexpr uint8 PIXEL_ON = 1;
+    static constexpr uint8 PIXEL_OFF = 0;
+
+    static constexpr unsigned int SCREEN_LORES_MODE_WIDTH = 64;
+    static constexpr unsigned int SCREEN_LORES_MODE_HEIGHT = 32;
+    static constexpr unsigned int SCREEN_HIRES_MODE_WIDTH = 128;
+    static constexpr unsigned int SCREEN_HIRES_MODE_HEIGHT = 64;
 
 public:
     PpuBase() = default;
@@ -29,10 +32,9 @@ public:
     virtual ~PpuBase() = default;
 
 public:
-    virtual void clearScreen() = 0;
-    virtual auto drawSprite(uint8 x, uint8 y, uint8 n, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint16 I_reg) -> bool = 0;
-
     [[nodiscard]] virtual auto getVideoMemory() const -> const std::vector<uint8>& = 0;
+    virtual void clearScreen() = 0;
+    virtual auto drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint16 I_reg) -> uint8 = 0;
 
     virtual void setMode(PpuMode mode) { m_mode = mode; }
     [[nodiscard]] auto getMode() const -> PpuMode { return m_mode; }

@@ -1,18 +1,18 @@
 #include "Chip8Ppu.h"
 
-Chip8Ppu::Chip8Ppu() : m_videoMemory(WIDTH * HEIGHT, PIXEL_OFF) {
+Chip8Ppu::Chip8Ppu() : m_videoMemory(PpuBase::SCREEN_LORES_MODE_WIDTH * PpuBase::SCREEN_LORES_MODE_HEIGHT, PpuBase::PIXEL_OFF) {
 }
 
 void Chip8Ppu::clearScreen() {
     std::fill(m_videoMemory.begin(), m_videoMemory.end(), 0);
 }
 
-auto Chip8Ppu::drawSprite(uint8 x, uint8 y, uint8 n, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint16 I_reg) -> bool {
+auto Chip8Ppu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint16 I_reg) -> uint8 {
     bool collision = false;
 
     // Wrap around the screen if out of bounds
-    x %= WIDTH;
-    y %= HEIGHT;
+    Vx %= PpuBase::SCREEN_LORES_MODE_WIDTH;
+    Vy %= PpuBase::SCREEN_LORES_MODE_HEIGHT;
 
     for (auto i = 0; i < n; ++i)
     {
@@ -22,13 +22,13 @@ auto Chip8Ppu::drawSprite(uint8 x, uint8 y, uint8 n, const std::array<uint8, Cpu
             if (((spriteByte) & (0x1 << (7 - j))) != 0)
             {
                 // Clip the sprite if it goes out of bounds
-                if (((x + j) >= WIDTH && j > 0) || ((y + i) >= HEIGHT && i > 0))
+                if (((Vx + j) >= PpuBase::SCREEN_LORES_MODE_WIDTH && j > 0) || ((Vy + i) >= PpuBase::SCREEN_LORES_MODE_HEIGHT && i > 0))
                 {
                     continue;
                 }
 
                 // Draw the pixel
-                const auto index = (x + j) % WIDTH + ((y + i) % HEIGHT) * WIDTH;
+                const auto index = (Vx + j) % PpuBase::SCREEN_LORES_MODE_WIDTH + ((Vy + i) % PpuBase::SCREEN_LORES_MODE_HEIGHT) * PpuBase::SCREEN_LORES_MODE_WIDTH;
                 if (m_videoMemory[index] == PIXEL_ON)
                 {
                     m_videoMemory[index] = PIXEL_OFF;
@@ -42,5 +42,5 @@ auto Chip8Ppu::drawSprite(uint8 x, uint8 y, uint8 n, const std::array<uint8, Cpu
         }
     }
 
-    return collision;
+    return static_cast<uint8>(collision);
 }

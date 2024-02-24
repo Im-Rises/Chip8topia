@@ -175,6 +175,7 @@ void CpuBase::ADD_I_Vx(const uint8 x) {
 }
 
 void CpuBase::LD_F_Vx(const uint8 x) {
+    // TODO: Check if this is correct
     m_I = m_V[x] * 5;
 }
 
