@@ -44,10 +44,10 @@ public:
     ~Chip8VideoEmulation() = default;
 
 public:
-    void reset();
+    //    void reset();
 
-    void updateTexture(const std::array<uint8, Ppu::WIDTH * Ppu::HEIGHT>& videoMemory);
-    void update();
+    //    void updateTexture(const std::array<uint8, Ppu::WIDTH * Ppu::HEIGHT>& videoMemory);
+    //    void update();
 
     auto getBackgroundColorRef() -> ImVec4&;
     auto getForegroundColorRef() -> ImVec4&;

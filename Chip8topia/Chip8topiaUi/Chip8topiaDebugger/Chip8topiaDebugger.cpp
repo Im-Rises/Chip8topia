@@ -1,6 +1,6 @@
 #include "Chip8topiaDebugger.h"
 
-#include "../../Chip8Emulator/Chip8Core/Core/Input.h"
+#include "../../Chip8Emulator/Chip8CoreBase/Core/Input.h"
 
 void Chip8topiaDebugger::drawDebuggerMenu() {
     if (ImGui::BeginMenu("Debugger"))
@@ -22,24 +22,24 @@ void Chip8topiaDebugger::drawDebuggerWindows(Chip8Emulator& emulator) {
 }
 
 void Chip8topiaDebugger::drawRegisters(Chip8Core* chip8) {
-    Cpu& cpu = chip8->getCpu();
+    std::unique_ptr<CpuBase>& cpu = chip8->getCpu();
 
     ImGui::PushItemWidth(-FLT_MIN);
     ImGui::Text("PC:");
     ImGui::SameLine();
-    ImGui::InputScalar("##PC", ImGuiDataType_U16, &cpu.getPc(), nullptr, nullptr, "%04X", ImGuiInputTextFlags_CharsHexadecimal);
+    ImGui::InputScalar("##PC", ImGuiDataType_U16, &cpu->getPc(), nullptr, nullptr, "%04X", ImGuiInputTextFlags_CharsHexadecimal);
 
     ImGui::Text(" I:");
     ImGui::SameLine();
-    ImGui::InputScalar("##I", ImGuiDataType_U16, &cpu.getI(), nullptr, nullptr, "%04X", ImGuiInputTextFlags_CharsHexadecimal);
+    ImGui::InputScalar("##I", ImGuiDataType_U16, &cpu->getI(), nullptr, nullptr, "%04X", ImGuiInputTextFlags_CharsHexadecimal);
 
     ImGui::Text("DT:");
     ImGui::SameLine();
-    ImGui::InputScalar("##DT", ImGuiDataType_U8, &cpu.getDT(), nullptr, nullptr, "%02X", ImGuiInputTextFlags_CharsHexadecimal);
+    ImGui::InputScalar("##DT", ImGuiDataType_U8, &cpu->getDT(), nullptr, nullptr, "%02X", ImGuiInputTextFlags_CharsHexadecimal);
 
     ImGui::Text("ST:");
     ImGui::SameLine();
-    ImGui::InputScalar("##ST", ImGuiDataType_U8, &cpu.getST(), nullptr, nullptr, "%02X", ImGuiInputTextFlags_CharsHexadecimal);
+    ImGui::InputScalar("##ST", ImGuiDataType_U8, &cpu->getST(), nullptr, nullptr, "%02X", ImGuiInputTextFlags_CharsHexadecimal);
     ImGui::PopItemWidth();
 
     ImGui::AlignTextToFramePadding();
@@ -50,7 +50,7 @@ void Chip8topiaDebugger::drawRegisters(Chip8Core* chip8) {
         ImGui::Text("V%X", i);
         ImGui::SameLine();
         ImGui::PushID(i);
-        ImGui::InputScalar("##V", ImGuiDataType_U8, &cpu.getV()[i], nullptr, nullptr, "%02X", ImGuiInputTextFlags_CharsHexadecimal);
+        ImGui::InputScalar("##V", ImGuiDataType_U8, &cpu->getV()[i], nullptr, nullptr, "%02X", ImGuiInputTextFlags_CharsHexadecimal);
         ImGui::PopID();
 
         if ((i % WINDOW_COUNT_PER_LINE) < WINDOW_COUNT_PER_LINE - 1)
@@ -63,11 +63,11 @@ void Chip8topiaDebugger::drawRegisters(Chip8Core* chip8) {
 }
 
 void Chip8topiaDebugger::drawStack(Chip8Core* chip8) {
-    Cpu& cpu = chip8->getCpu();
+    std::unique_ptr<CpuBase>& cpu = chip8->getCpu();
 
     ImGui::Text("SP:");
     ImGui::SameLine();
-    ImGui::InputScalar("##SP", ImGuiDataType_U8, &cpu.getSp(), nullptr, nullptr, "%02X", ImGuiInputTextFlags_CharsHexadecimal);
+    ImGui::InputScalar("##SP", ImGuiDataType_U8, &cpu->getSp(), nullptr, nullptr, "%02X", ImGuiInputTextFlags_CharsHexadecimal);
 
     ImGui::NewLine();
 
@@ -91,7 +91,7 @@ void Chip8topiaDebugger::drawStack(Chip8Core* chip8) {
             ImGui::TableSetColumnIndex(0);
             ImGui::Text("%02X", row);
             ImGui::TableSetColumnIndex(1);
-            ImGui::InputScalar("##Stack", ImGuiDataType_U16, &cpu.getStack()[row], nullptr, nullptr, "%04X", ImGuiInputTextFlags_CharsHexadecimal);
+            ImGui::InputScalar("##Stack", ImGuiDataType_U16, &cpu->getStack()[row], nullptr, nullptr, "%04X", ImGuiInputTextFlags_CharsHexadecimal);
             ImGui::PopID();
         }
 
@@ -100,7 +100,7 @@ void Chip8topiaDebugger::drawStack(Chip8Core* chip8) {
 }
 
 void Chip8topiaDebugger::drawMemory(Chip8Core* chip8) {
-    m_memoryEditor.DrawWindow("Memory Editor", &chip8->getCpu().getMemory(), Cpu::MEMORY_SIZE);
+    m_memoryEditor.DrawWindow("Memory Editor", &chip8->getCpu()->getMemory(), Cpu::MEMORY_SIZE);
 }
 
 void Chip8topiaDebugger::drawKeypad(Chip8Core* chip8) {
@@ -137,7 +137,7 @@ void Chip8topiaDebugger::drawKeypad(Chip8Core* chip8) {
 }
 
 void Chip8topiaDebugger::drawAssembly(Chip8Core* chip8) {
-    m_disassembler.drawAssembly(chip8->getCpu().getMemory(), chip8->getCpu().getPc());
+    //    m_disassembler.drawAssembly(chip8->getCpu().getMemory(), chip8->getCpu().getPc());
 }
 
 void Chip8topiaDebugger::drawDisassemblyControls(Chip8Core* chip8) {

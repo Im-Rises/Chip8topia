@@ -3,7 +3,7 @@
 #include "Core/Cpu.h"
 #include "Core/Ppu.h"
 
-Chip8Core::Chip8Core() : Chip8CoreBase(std::make_unique<Cpu>(), std::make_shared<Ppu>()) {
+Chip8Core::Chip8Core() : Chip8CoreBase(std::make_unique<Cpu>(), std::make_shared<Ppu>()), m_cpuCasted(dynamic_cast<Cpu*>(m_cpu.get())) {
 }
 
 void Chip8Core::clock() {
@@ -14,7 +14,7 @@ void Chip8Core::clock() {
     }
 
     m_cpu->clockTimers();
-    //    m_cpu->requestDisableHalt();
-    dynamic_cast<Cpu*>(m_cpu.get())->requestDisableHalt(); // TODO: Find a better solution...
+    //    dynamic_cast<Cpu*>(m_cpu.get())->requestDisableHalt(); // TODO: Find a better solution...
+    m_cpuCasted->requestDisableHalt();
     m_clockCounter = 0;
 }

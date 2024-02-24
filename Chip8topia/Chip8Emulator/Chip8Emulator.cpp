@@ -16,7 +16,7 @@ Chip8Emulator::~Chip8Emulator() {
 
 void Chip8Emulator::restart() {
     m_core.reset();
-    m_videoEmulation.reset();
+    //    m_videoEmulation.reset();
     m_accumulator = 0.0F;
 }
 
@@ -44,8 +44,8 @@ void Chip8Emulator::update(const float deltaTime) {
 
 void Chip8Emulator::render() {
     // Another way to do this would be to use a trap of the opcode (check if the opcode is render and if not then use the switch case to compute the opcode)
-    m_videoEmulation.updateTexture(m_core.getPpu()->getVideoMemory());
-    m_videoEmulation.update();
+    //    m_videoEmulation.updateTexture(m_core.getPpu()->getVideoMemory());
+    //    m_videoEmulation.update();
 }
 
 void Chip8Emulator::togglePause() {

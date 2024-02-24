@@ -2,6 +2,9 @@
 
 #include "../Chip8CoreBase/Chip8CoreBase.h"
 
+#include <memory>
+
+class Cpu;
 class Chip8Core final : public Chip8CoreBase {
 public:
     Chip8Core();
@@ -13,4 +16,7 @@ public:
 
 public:
     void clock() final;
+
+private:
+    Cpu* m_cpuCasted; // TODO: Find a better solution...
 };
