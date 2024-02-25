@@ -20,23 +20,23 @@ void Schip11Cpu::computeOpcode(const uint16 opcode) {
     case 0x0: {
         switch (nibble2)
         {
-        case 0xC: SCD(nibble1); break;
+        case 0xC: SCD(nibble1); break; // 00CN
         case 0xE: {
             switch (nibble1)
             {
-            case 0x0: CLS(); break;
-            case 0xE: RET(); break;
+            case 0x0: CLS(); break; // 00E0
+            case 0xE: RET(); break; // 00EE
             }
             break;
         }
         case 0xF: {
             switch (nibble1)
             {
-            case 0xB: SCR(nibble1); break;
-            case 0xC: SCL(nibble1); break;
-            case 0xD: EXIT(); break;
-            case 0xE: LORES(); break;
-            case 0xF: HIRES(); break;
+            case 0xB: SCR(nibble1); break; // 00FB
+            case 0xC: SCL(nibble1); break; // 00FC
+            case 0xD: EXIT(); break;       // 00FD
+            case 0xE: LORES(); break;      // 00FE
+            case 0xF: HIRES(); break;      // 00FF
             }
             break;
         }
