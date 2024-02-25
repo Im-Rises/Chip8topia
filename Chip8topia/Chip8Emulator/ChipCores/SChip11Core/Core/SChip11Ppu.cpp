@@ -1,6 +1,9 @@
-#include "Schip11Ppu.h"
+#include "SChip11Ppu.h"
 
-void Schip11Ppu::clearScreen() {
+SChip11Ppu::SChip11Ppu() : m_loresVideoMemory(PpuBase::SCREEN_LORES_MODE_WIDTH * PpuBase::SCREEN_LORES_MODE_HEIGHT, PpuBase::PIXEL_OFF), m_hiresVideoMemory(PpuBase::SCREEN_HIRES_MODE_WIDTH * PpuBase::SCREEN_HIRES_MODE_HEIGHT, PpuBase::PIXEL_OFF) {
+}
+
+void SChip11Ppu::clearScreen() {
     if (getMode() == PpuMode::LORES)
     {
         std::fill(m_loresVideoMemory.begin(), m_loresVideoMemory.end(), 0);
@@ -11,7 +14,7 @@ void Schip11Ppu::clearScreen() {
     }
 }
 
-auto Schip11Ppu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint16 I_reg) -> uint8 {
+auto SChip11Ppu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint16 I_reg) -> uint8 {
     //  The original SCHIP-1.1 in hires mode set VF to the number of sprite rows with collisions plus the number of rows clipped at the bottom border
     const uint8 spriteWidth = n == 0 ? SPRITE_DXY0_WIDTH : SPRITE_DXYN_WIDTH;
     const uint8 spriteHeight = n == 0 ? SPRITE_DXY0_HEIGHT : n;
@@ -26,7 +29,7 @@ auto Schip11Ppu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8,
     }
 }
 
-auto Schip11Ppu::drawLoresSprite(uint8 Vx, uint8 Vy, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint16 I_reg, uint8 width, uint8 height) -> bool {
+auto SChip11Ppu::drawLoresSprite(uint8 Vx, uint8 Vy, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint16 I_reg, uint8 width, uint8 height) -> bool {
     bool collision = false;
 
     // Wrap around the screen if out of bounds
@@ -64,7 +67,7 @@ auto Schip11Ppu::drawLoresSprite(uint8 Vx, uint8 Vy, const std::array<uint8, Cpu
     return collision;
 }
 
-auto Schip11Ppu::drawHiresSprite(uint8 Vx, uint8 Vy, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint16 I_reg, uint8 width, uint8 height) -> uint8 {
+auto SChip11Ppu::drawHiresSprite(uint8 Vx, uint8 Vy, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint16 I_reg, uint8 width, uint8 height) -> uint8 {
     int collisionCount = 0;
     int rowsClippedCount = 0;
 
@@ -114,7 +117,7 @@ auto Schip11Ppu::drawHiresSprite(uint8 Vx, uint8 Vy, const std::array<uint8, Cpu
     return collisionCount + rowsClippedCount;
 }
 
-void Schip11Ppu::scrollDown(uint8 n) {
+void SChip11Ppu::scrollDown(uint8 n) {
     if (getMode() == PpuMode::LORES)
     {
         std::rotate(m_loresVideoMemory.begin(), m_loresVideoMemory.begin() + n * PpuBase::SCREEN_LORES_MODE_WIDTH, m_loresVideoMemory.end());
@@ -125,7 +128,7 @@ void Schip11Ppu::scrollDown(uint8 n) {
     }
 }
 
-void Schip11Ppu::scrollRight(uint8 n) {
+void SChip11Ppu::scrollRight(uint8 n) {
     if (getMode() == PpuMode::LORES)
     {
         for (auto i = 0; i < n; ++i)
@@ -148,7 +151,7 @@ void Schip11Ppu::scrollRight(uint8 n) {
     }
 }
 
-void Schip11Ppu::scrollLeft(uint8 n) {
+void SChip11Ppu::scrollLeft(uint8 n) {
     if (getMode() == PpuMode::LORES)
     {
         for (auto i = 0; i < n; ++i)

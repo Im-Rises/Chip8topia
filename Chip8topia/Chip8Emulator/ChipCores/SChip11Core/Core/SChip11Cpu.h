@@ -2,15 +2,15 @@
 
 #include "../../../Chip8CoreBase/Core/CpuBase.h"
 
-class Schip11Ppu;
-class Schip11Cpu final : public CpuBase {
+class SChip11Ppu;
+class SChip11Cpu final : public CpuBase {
 public:
-    Schip11Cpu();
-    Schip11Cpu(const Schip11Cpu&) = delete;
-    Schip11Cpu(Schip11Cpu&&) = delete;
-    auto operator=(const Schip11Cpu&) -> Schip11Cpu& = delete;
-    auto operator=(Schip11Cpu&&) -> Schip11Cpu& = delete;
-    ~Schip11Cpu() final = default;
+    SChip11Cpu();
+    SChip11Cpu(const SChip11Cpu&) = delete;
+    SChip11Cpu(SChip11Cpu&&) = delete;
+    auto operator=(const SChip11Cpu&) -> SChip11Cpu& = delete;
+    auto operator=(SChip11Cpu&&) -> SChip11Cpu& = delete;
+    ~SChip11Cpu() final = default;
 
 public:
     void reset() final;
@@ -40,7 +40,7 @@ private:
     void LD_Vx_R(const uint8 x);                          // Fx85
 
 private:
-    Schip11Ppu* m_ppuCasted;
+    SChip11Ppu* m_ppuCasted;
 
     std::array<uint8, REGISTER_V_SIZE> m_savedV;
 };

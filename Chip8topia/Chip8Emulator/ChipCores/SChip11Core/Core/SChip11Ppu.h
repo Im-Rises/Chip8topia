@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../../../Chip8CoreBase/Core/PpuBase.h"
-class Schip11Ppu final : public PpuBase {
+class SChip11Ppu final : public PpuBase {
 private:
     // TODO: Add sprite width and height
     static constexpr uint8 SPRITE_DXYN_WIDTH = 8;
@@ -9,12 +9,12 @@ private:
     static constexpr uint8 SPRITE_DXY0_HEIGHT = 16;
 
 public:
-    Schip11Ppu() = default;
-    Schip11Ppu(const Schip11Ppu&) = delete;
-    Schip11Ppu(Schip11Ppu&&) = delete;
-    auto operator=(const Schip11Ppu&) -> Schip11Ppu& = delete;
-    auto operator=(Schip11Ppu&&) -> Schip11Ppu& = delete;
-    ~Schip11Ppu() final = default;
+    SChip11Ppu();
+    SChip11Ppu(const SChip11Ppu&) = delete;
+    SChip11Ppu(SChip11Ppu&&) = delete;
+    auto operator=(const SChip11Ppu&) -> SChip11Ppu& = delete;
+    auto operator=(SChip11Ppu&&) -> SChip11Ppu& = delete;
+    ~SChip11Ppu() final = default;
 
 public:
     [[nodiscard]] auto getVideoMemory() const -> const std::vector<uint8>& final { return getMode() == PpuMode::LORES ? m_loresVideoMemory : m_hiresVideoMemory; }

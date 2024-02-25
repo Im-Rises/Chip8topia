@@ -1,9 +1,9 @@
 #include "SChip11Core.h"
 
-#include "Core/Schip11Cpu.h"
-#include "Core/Schip11Ppu.h"
+#include "Core/SChip11Cpu.h"
+#include "Core/SChip11Ppu.h"
 
-SChip11Core::SChip11Core() : Chip8CoreBase(std::make_unique<Schip11Cpu>(), std::make_shared<Schip11Ppu>()) {
+SChip11Core::SChip11Core() : Chip8CoreBase(std::make_unique<SChip11Cpu>(), std::make_shared<SChip11Ppu>()) {
 }
 
 void SChip11Core::clock() {

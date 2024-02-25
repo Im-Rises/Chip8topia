@@ -4,10 +4,12 @@
 
 // TODO: Change this to create right instance of the core
 #include "ChipCores/Chip8Core/Chip8Core.h"
+#include "ChipCores/SChip11Core/SChip11Core.h"
 // TODO: Remove the line below
 #include "Chip8CoreBase/Core/CpuBase.h"
 
-Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<Chip8Core>()) {
+// Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<Chip8Core>()) {
+Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<SChip11Core>()) {
     Chip8topiaInputHandler::getInstance().m_GameInput.subscribe(this, &Chip8Emulator::OnInput);
     Chip8topiaInputHandler::getInstance().m_PauseEmulationEvent.subscribe(this, &Chip8Emulator::togglePause);
     Chip8topiaInputHandler::getInstance().m_RestartEmulationEvent.subscribe(this, &Chip8Emulator::restart);
