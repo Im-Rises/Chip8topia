@@ -45,7 +45,7 @@ public:
     ~ShaderBW();
 
 public:
-    void updateTexture(const std::vector<uint8>& videoMemory);
+    void updateTexture(const uint8* data);
     void update();
     void reset();
 

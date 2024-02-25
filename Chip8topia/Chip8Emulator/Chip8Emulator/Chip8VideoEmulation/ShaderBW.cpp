@@ -37,10 +37,10 @@ ShaderBW::~ShaderBW() {
     glDeleteBuffers(1, &m_VBO);
     glDeleteTextures(1, &m_texture);
 }
-#include <iostream>
-void ShaderBW::updateTexture(const std::vector<uint8>& videoMemory) {
+
+void ShaderBW::updateTexture(const uint8* data) {
     glBindTexture(GL_TEXTURE_2D, m_texture);
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_width, m_height, GL_RED, GL_UNSIGNED_BYTE, videoMemory.data());
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_width, m_height, GL_RED, GL_UNSIGNED_BYTE, data);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 

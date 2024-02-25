@@ -13,11 +13,11 @@ void Chip8VideoEmulation::reset() {
 void Chip8VideoEmulation::updateTexture(const std::unique_ptr<Chip8CoreBase>& core) {
     if (core->getPpu()->getMode() == PpuBase::PpuMode::LORES)
     {
-        m_shaderLores.updateTexture(core->getPpu()->getVideoMemory());
+        m_shaderLores.updateTexture(core->getPpu()->getLoresVideoMemory().data());
     }
     else
     {
-        m_shaderHires.updateTexture(core->getPpu()->getVideoMemory());
+        m_shaderHires.updateTexture(core->getPpu()->getHiresVideoMemory().data());
     }
 }
 

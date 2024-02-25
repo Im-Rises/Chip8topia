@@ -1,6 +1,6 @@
 #include "SChip11Ppu.h"
 
-SChip11Ppu::SChip11Ppu() : m_loresVideoMemory(PpuBase::SCREEN_LORES_MODE_WIDTH * PpuBase::SCREEN_LORES_MODE_HEIGHT, PpuBase::PIXEL_OFF), m_hiresVideoMemory(PpuBase::SCREEN_HIRES_MODE_WIDTH * PpuBase::SCREEN_HIRES_MODE_HEIGHT, PpuBase::PIXEL_OFF) {
+SChip11Ppu::SChip11Ppu() {
 }
 
 void SChip11Ppu::clearScreen() {

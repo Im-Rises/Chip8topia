@@ -1,10 +1,10 @@
 #include "Chip8Ppu.h"
 
-Chip8Ppu::Chip8Ppu() : m_videoMemory(PpuBase::SCREEN_LORES_MODE_WIDTH * PpuBase::SCREEN_LORES_MODE_HEIGHT, PpuBase::PIXEL_OFF) {
+Chip8Ppu::Chip8Ppu() {
 }
 
 void Chip8Ppu::clearScreen() {
-    std::fill(m_videoMemory.begin(), m_videoMemory.end(), 0);
+    std::fill(m_loresVideoMemory.begin(), m_loresVideoMemory.end(), 0);
 }
 
 auto Chip8Ppu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint16 I_reg) -> uint8 {
@@ -29,14 +29,14 @@ auto Chip8Ppu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, C
 
                 // Draw the pixel
                 const auto index = (Vx + j) % PpuBase::SCREEN_LORES_MODE_WIDTH + ((Vy + i) % PpuBase::SCREEN_LORES_MODE_HEIGHT) * PpuBase::SCREEN_LORES_MODE_WIDTH;
-                if (m_videoMemory[index] == PIXEL_ON)
+                if (m_loresVideoMemory[index] == PIXEL_ON)
                 {
-                    m_videoMemory[index] = PIXEL_OFF;
+                    m_loresVideoMemory[index] = PIXEL_OFF;
                     collision = true;
                 }
                 else
                 {
-                    m_videoMemory[index] = PIXEL_ON;
+                    m_loresVideoMemory[index] = PIXEL_ON;
                 }
             }
         }

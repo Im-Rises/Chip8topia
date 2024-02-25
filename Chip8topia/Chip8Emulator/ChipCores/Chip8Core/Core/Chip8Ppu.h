@@ -19,10 +19,6 @@ public:
     ~Chip8Ppu() final = default;
 
 public:
-    [[nodiscard]] auto getVideoMemory() const -> const std::vector<uint8>& final { return m_videoMemory; }
     void clearScreen() final;
     auto drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint16 I_reg) -> uint8 final;
-
-private:
-    std::vector<uint8> m_videoMemory;
 };

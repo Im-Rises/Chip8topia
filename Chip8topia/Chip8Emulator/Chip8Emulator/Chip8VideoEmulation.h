@@ -10,10 +10,6 @@
 
 #include "Chip8VideoEmulation/ShaderBW.h"
 
-// TODO: I think the best solution is to create a class that will have 2 different shaders, one for the 64x32 and another for the 128x64 resolution.
-// Depending on the resolution, the class will use the correct shader.
-// That means the Chip8Core in the Chip8Emulator will always be loaded, but the core will be changed when changing the console version.
-
 class Chip8CoreBase;
 class Chip8VideoEmulation {
 public:

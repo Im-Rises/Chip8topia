@@ -51,6 +51,8 @@ void Chip8Emulator::update(const float deltaTime) {
 
 void Chip8Emulator::render() {
     // Another way to do this would be to use a trap of the opcode (check if the opcode is render and if not then use the switch case to compute the opcode)
+
+    // TODO: fetch the type of drawing to do (64x32 or 128x64) then call the right method form the ppu to get the right array !
     m_videoEmulation.updateTexture(m_core);
     m_videoEmulation.update(m_core);
 }
