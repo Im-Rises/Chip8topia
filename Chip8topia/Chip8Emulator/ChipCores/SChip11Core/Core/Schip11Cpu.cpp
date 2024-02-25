@@ -18,14 +18,32 @@ void Schip11Cpu::computeOpcode(const uint16 opcode) {
     switch (nibble4)
     {
     case 0x0: {
-        switch (nibble1)
+        switch (nibble2)
         {
-            //        case 0x0: CLS(); break;               // 00E0
-            //        case 0xE: RET(); break;               // 00EE
-            //        default: SYS(opcode & 0x0FFF); break; // 0NNN
+        case 0xC: SCD(nibble1); break;
+        case 0xE: {
+            switch (nibble1)
+            {
+            case 0x0: CLS(); break;
+            case 0xE: RET(); break;
+            }
+            break;
+        }
+        case 0xF: {
+            switch (nibble1)
+            {
+            case 0xB: SCR(nibble1); break;
+            case 0xC: SCL(nibble1); break;
+            case 0xD: EXIT(); break;
+            case 0xE: LORES(); break;
+            case 0xF: HIRES(); break;
+            }
+            break;
+        }
         }
         break;
     }
+
     case 0x1: JP_addr(opcode & 0x0FFF); break;            // 1NNN
     case 0x2: CALL_addr(opcode & 0x0FFF); break;          // 2NNN
     case 0x3: SE_Vx_nn(nibble3, opcode & 0x00FF); break;  // 3XNN
@@ -51,15 +69,14 @@ void Schip11Cpu::computeOpcode(const uint16 opcode) {
     }
     case 0x9: SNE_Vx_Vy(nibble3, nibble2); break;            // 9XY0
     case 0xA: LD_I_addr(opcode & 0x0FFF); break;             // ANNN
-    case 0xB: JP_V0_addr(opcode & 0x0FFF); break;            // BNNN
+    case 0xB: JP_Vx_addr(nibble3, opcode & 0x0FFF); break;   // Bxnn
     case 0xC: RND_Vx_nn(nibble3, opcode & 0x00FF); break;    // CXNN
-    case 0xD: DRW_Vx_Vy_n(nibble3, nibble2, nibble1); break; // DXYN
+    case 0xD: DRW_Vx_Vy_n(nibble3, nibble2, nibble1); break; // Dxyn
     case 0xE: {
         switch (nibble1)
         {
         case 0xE: SKP_Vx(nibble3); break;  // EX9E
         case 0x1: SKNP_Vx(nibble3); break; // EXA1
-        default: /* Invalid opcode */ break;
         }
         break;
     }
@@ -83,15 +100,28 @@ void Schip11Cpu::computeOpcode(const uint16 opcode) {
             default: break;
             }
             break;
-        case 0x2: LD_F_Vx(nibble3); break;  // FX29
-        case 0x3: LD_B_Vx(nibble3); break;  // FX33
+        case 0x2: LD_F_Vx(nibble3); break; // FX29
+        case 0x3: {
+            switch (nibble1)
+            {
+            case 0x0: LD_HF_Vx(nibble3); break; // FX30
+            case 0x3: LD_B_Vx(nibble3); break;  // FX33
+            }
+            break;
+        }
         case 0x5: LD_aI_Vx(nibble3); break; // FX55
         case 0x6: LD_Vx_aI(nibble3); break; // FX65
+        case 0x7: LD_R_Vx(nibble3); break;  // FX75
+        case 0x8: LD_Vx_R(nibble3); break;  // FX85
         default: /* Invalid opcode */ break;
         }
         break;
     }
     }
+}
+
+void Schip11Cpu::EXIT() {
+    m_pc -= 2;
 }
 
 void Schip11Cpu::OR_Vx_Vy(const uint8 x, const uint8 y) {
@@ -124,7 +154,25 @@ void Schip11Cpu::LD_Vx_aI(const uint8 x) {
     }
 }
 
-void Schip11Cpu::SCD_n(const uint8 n) {
+void Schip11Cpu::SHR_Vx_Vy(const uint8 x, const uint8 y) {
+    const uint8 flag = m_V[x] & 0x1;
+    m_V[x] >>= 1;
+    m_V[0xF] = flag;
+}
+
+void Schip11Cpu::SUBN_Vx_Vy(const uint8 x, const uint8 y) {
+    const auto flag = static_cast<uint8>(m_V[y] >= m_V[x]);
+    m_V[x] = m_V[y] - m_V[x];
+    m_V[0xF] = flag;
+}
+
+void Schip11Cpu::SHL_Vx_Vy(const uint8 x, const uint8 y) {
+    const uint8 flag = (m_V[x] & 0x80) >> 7;
+    m_V[x] <<= 1;
+    m_V[0xF] = flag;
+}
+
+void Schip11Cpu::SCD(const uint8 n) {
     m_ppuCasted->scrollDown(n);
 }
 
