@@ -42,6 +42,7 @@ void Chip8topiaUi::drawMainMenuBar(Chip8topia& chip8topia) {
     }
 
     m_chip8RomLoaderUi.drawRomWindow(chip8topia);
+    m_chip8EmulationUi.drawEmulationWindows(chip8topia);
     m_chip8About.drawAboutWindows();
 
 #if !defined(BUILD_RELEASE)

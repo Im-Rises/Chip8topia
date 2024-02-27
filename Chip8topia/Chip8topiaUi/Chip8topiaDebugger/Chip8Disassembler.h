@@ -4,7 +4,7 @@
 #include <array>
 #include <string>
 #include <bitset>
-#include "../../Chip8Emulator/Chip8Core/Core/Cpu.h"
+#include "../../Chip8Emulator/ChipCores/Chip8Core/Core/Chip8Cpu.h"
 
 class Chip8Disassembler {
 public:
@@ -16,10 +16,14 @@ public:
     ~Chip8Disassembler() = default;
 
 public:
-    void drawAssembly(const std::array<uint8, Cpu::MEMORY_SIZE>& memory, uint16 pc);
+    void drawDisassembly(const std::array<uint8, Chip8Cpu::MEMORY_SIZE>& memory, uint16 pc);
 
-    void drawAssemblyControls();
+    void drawDisassemblyControls();
 
 private:
-    std::bitset<Cpu::MEMORY_SIZE> m_breakpoints;
+    void clearBreakpoints();
+
+private:
+    std::bitset<Chip8Cpu::MEMORY_SIZE> m_breakpoints;
+    bool m_followPC = true;
 };
