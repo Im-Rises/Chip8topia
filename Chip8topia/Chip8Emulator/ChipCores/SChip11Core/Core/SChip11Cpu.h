@@ -40,7 +40,8 @@ private:
     void LD_Vx_R(const uint8 x);                          // Fx85
 
 private:
-    SChip11Ppu* m_ppuCasted;
+    // TODO: Change to something else
+    //     SChip11Ppu* m_ppuCasted;
 
     std::array<uint8, REGISTER_V_SIZE> m_savedV;
 };

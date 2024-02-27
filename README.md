@@ -71,12 +71,18 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [-] Creer une struct qui définie le nom de la touche shortcut avec le string et le keycode
 - [-] Add imgui.ini to the .data emscripten build
 - [x] Add the rom name on the window title and the Chip8 emulated version
-- [ ] Add a way to choose the version of the chip8 to emulate
+- [x] Add a way to choose the version of the chip8 to emulate
 - [ ] Add break, run, step to the debugger
 - [ ] Change to init m_chip8topiaUi and m_chip8emulator in the game loop
 - [ ] Add emulation sound
 - [ ] Add save states ?
 - [ ] For the std::vector use ref or move... For the rom loading
+- [ ] Ajouter bouton au desassembleur pour suivre le point de debug. Et surtout en pas à pas faire qu'on le suive tout
+  le temps !!!!!!!
+- [ ] Dans la section Émulation rajouter une window "émulation info" avec les fps, etc...
+- [ ] Is aucune chip8 n'est chargé alors on draw avec un shader dans Chip8topia. Ce dernier aura l'image en background.
+  (Faire un tableau 1d dans le .h avec les valeurs 0 à 1 ou 255.
+  Le draw chaque frame]
 
 Check later
 

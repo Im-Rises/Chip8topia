@@ -7,8 +7,13 @@
 
 enum class Chip8CoreType : uint8 {
     Chip8,   // Chip-8 (COSMAC VIP)
-    SChip11, // SuperChip 1.1
+    SChip11, // SuperChip 1.1 (SuperChip Legacy)
+    SChipC,  // SuperChipC (SuperChip Modern)
     XoChip   // XO-Chip
+};
+
+enum class Chip8Frequency : uint8 {
+    FREQ_600_HZ
 };
 
 class CpuBase;

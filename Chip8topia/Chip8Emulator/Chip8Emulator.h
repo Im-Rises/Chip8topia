@@ -32,6 +32,11 @@ public:
     [[nodiscard]] auto getRomName() const -> std::string { return m_romName; }
     [[nodiscard]] static auto getConsoleName() -> std::string { return "Chip8"; } // TODO: Move to a more appropriate place
 
+    void switchCore(const Chip8CoreType coreType);
+    [[nodiscard]] auto getCoreType() const -> Chip8CoreType;
+    void switchFrequency(const Chip8Frequency frequency);
+    [[nodiscard]] auto getFrequency() const -> Chip8Frequency;
+
 private:
     void OnInput(const uint8 key, const bool isPressed);
 

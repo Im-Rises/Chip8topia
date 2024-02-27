@@ -2,7 +2,8 @@
 
 #include "SChip11Ppu.h"
 
-SChip11Cpu::SChip11Cpu() : m_ppuCasted(dynamic_cast<SChip11Ppu*>(m_ppu.get())) {
+// SChip11Cpu::SChip11Cpu() : m_ppuCasted(dynamic_cast<SChip11Ppu*>(m_ppu.get())) {
+SChip11Cpu::SChip11Cpu() {
 }
 
 void SChip11Cpu::reset() {
@@ -173,15 +174,18 @@ void SChip11Cpu::SHL_Vx_Vy(const uint8 x, const uint8 y) {
 }
 
 void SChip11Cpu::SCD(const uint8 n) {
-    m_ppuCasted->scrollDown(n);
+    //    m_ppuCasted->scrollDown(n);
+    dynamic_cast<SChip11Ppu*>(m_ppu.get())->scrollDown(n);
 }
 
 void SChip11Cpu::SCR(const uint8 n) {
-    m_ppuCasted->scrollRight(n);
+    //    m_ppuCasted->scrollRight(n);
+    dynamic_cast<SChip11Ppu*>(m_ppu.get())->scrollRight(n);
 }
 
 void SChip11Cpu::SCL(const uint8 n) {
-    m_ppuCasted->scrollLeft(n);
+    //    m_ppuCasted->scrollLeft(n);
+    dynamic_cast<SChip11Ppu*>(m_ppu.get())->scrollLeft(n);
 }
 
 void SChip11Cpu::LORES() {

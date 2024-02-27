@@ -51,8 +51,7 @@ void Chip8Emulator::update(const float deltaTime) {
 
 void Chip8Emulator::render() {
     // Another way to do this would be to use a trap of the opcode (check if the opcode is render and if not then use the switch case to compute the opcode)
-
-    // TODO: fetch the type of drawing to do (64x32 or 128x64) then call the right method form the ppu to get the right array !
+    // But because there is no real vsync, its no use
     m_videoEmulation.updateTexture(m_core);
     m_videoEmulation.update(m_core);
 }
@@ -75,6 +74,39 @@ auto Chip8Emulator::getChip8Core() -> Chip8CoreBase* {
 
 auto Chip8Emulator::getChip8VideoEmulation() -> Chip8VideoEmulation& {
     return m_videoEmulation;
+}
+
+void Chip8Emulator::switchCore(const Chip8CoreType coreType) {
+    switch (coreType)
+    {
+    case Chip8CoreType::Chip8:
+        m_core = std::make_unique<Chip8Core>();
+        break;
+    case Chip8CoreType::SChip11:
+        m_core = std::make_unique<SChip11Core>();
+        break;
+    case Chip8CoreType::XoChip:
+        break;
+    }
+
+    m_isRomLoaded = false;
+    m_isPaused = false;
+}
+
+auto Chip8Emulator::getCoreType() const -> Chip8CoreType {
+    return m_core->getType();
+}
+
+void Chip8Emulator::switchFrequency(const Chip8Frequency frequency) {
+    switch (frequency)
+    {
+    case Chip8Frequency::FREQ_600_HZ:
+        break;
+    }
+}
+
+auto Chip8Emulator::getFrequency() const -> Chip8Frequency {
+    return Chip8Frequency::FREQ_600_HZ;
 }
 
 void Chip8Emulator::OnInput(const uint8 key, const bool isPressed) {

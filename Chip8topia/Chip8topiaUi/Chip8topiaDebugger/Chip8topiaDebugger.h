@@ -35,7 +35,7 @@ private:
     void drawStack(Chip8CoreBase* chip8);
     void drawMemory(Chip8CoreBase* chip8);
     void drawKeypad(Chip8CoreBase* chip8);
-    void drawAssembly(Chip8CoreBase* chip8);
+    void drawDisassembly(Chip8CoreBase* chip8);
     void drawDisassemblyControls(Chip8CoreBase* chip8);
 
 private:
@@ -47,7 +47,7 @@ private:
         "Stack", INITIAL_WINDOW_STATE, [this](Chip8CoreBase* chip8) { drawStack(chip8); },
         "Memory Editor", INITIAL_WINDOW_STATE, [this](Chip8CoreBase* chip8) { drawMemory(chip8); },
         "Keypad", INITIAL_WINDOW_STATE, [this](Chip8CoreBase* chip8) { drawKeypad(chip8); },
-        "Assembly", INITIAL_WINDOW_STATE, [this](Chip8CoreBase* chip8) { drawAssembly(chip8); },
+        "Assembly", INITIAL_WINDOW_STATE, [this](Chip8CoreBase* chip8) { drawDisassembly(chip8); },
         "Assembly Controls", INITIAL_WINDOW_STATE, [this](Chip8CoreBase* chip8) { drawDisassemblyControls(chip8); }
     };
 };

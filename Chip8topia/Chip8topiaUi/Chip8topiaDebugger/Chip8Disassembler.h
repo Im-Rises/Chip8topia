@@ -16,13 +16,14 @@ public:
     ~Chip8Disassembler() = default;
 
 public:
-    void drawAssembly(const std::array<uint8, Chip8Cpu::MEMORY_SIZE>& memory, uint16 pc);
+    void drawDisassembly(const std::array<uint8, Chip8Cpu::MEMORY_SIZE>& memory, uint16 pc);
 
-    void drawAssemblyControls();
+    void drawDisassemblyControls();
 
 private:
     void clearBreakpoints();
 
 private:
     std::bitset<Chip8Cpu::MEMORY_SIZE> m_breakpoints;
+    bool m_followPC = true;
 };

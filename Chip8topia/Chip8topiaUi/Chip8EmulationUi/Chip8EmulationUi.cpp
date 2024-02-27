@@ -31,17 +31,32 @@ void Chip8EmulationUi::drawEmulationMenu(Chip8topia& chip8topia) {
 }
 
 void Chip8EmulationUi::drawEmulationWindows(Chip8topia& chip8topia) {
-    m_Chip8SettingsMenuItem.drawWindow();
+    m_Chip8SettingsMenuItem.drawWindow(&chip8topia);
 }
 
-void Chip8EmulationUi::drawEmulationSettings() {
+void Chip8EmulationUi::drawEmulationSettings(Chip8topia* chip8topia) {
+    Chip8Emulator& emulator = chip8topia->getChip8Emulator();
+
     ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Emulation Settings");
 
     ImGui::Separator();
 
     ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Console version");
-    ImGui::Selectable("Chip8", false);
-    ImGui::Selectable("SChip", false);
+    ImGui::Text("Current core: %d", emulator.getCoreType());
+    if (ImGui::Selectable("Chip8", m_selectedCore == Chip8CoreType::Chip8))
+    {
+        m_selectedCore = Chip8CoreType::Chip8;
+    }
+    if (ImGui::Selectable("SChip 1.1 (Legacy)", m_selectedCore == Chip8CoreType::SChip11))
+    {
+        m_selectedCore = Chip8CoreType::SChip11;
+    }
+    //    if (ImGui::Selectable("SChipC (Modern)", emulator.getCoreType() == Chip8CoreType::SChipC))
+    //    {
+    //    }
+    //    if (ImGui::Selectable("Xo-Chip", emulator.getCoreType() == Chip8CoreType::XoChip))
+    //    {
+    //    }
 
     ImGui::Separator();
 
@@ -49,4 +64,11 @@ void Chip8EmulationUi::drawEmulationSettings() {
     ImGui::Selectable("600HZ", false);
     ImGui::Selectable("400HZ", false);
     ImGui::Selectable("200HZ", false);
+
+    ImGui::Separator();
+    if (ImGui::Button("Apply"))
+    {
+        emulator.switchCore(m_selectedCore);
+        m_Chip8SettingsMenuItem.m_isOpen = false;
+    }
 }

@@ -136,11 +136,11 @@ void Chip8topiaDebugger::drawKeypad(Chip8CoreBase* chip8) {
     ImGui::SetWindowFontScale(1.0F);
 }
 
-void Chip8topiaDebugger::drawAssembly(Chip8CoreBase* chip8) {
-    //    m_disassembler.drawAssembly(chip8->getCpu().getMemory(), chip8->getCpu().getPc());
+void Chip8topiaDebugger::drawDisassembly(Chip8CoreBase* chip8) {
+    m_disassembler.drawDisassembly(chip8->getCpu()->getMemory(), chip8->getCpu()->getPc());
 }
 
 void Chip8topiaDebugger::drawDisassemblyControls(Chip8CoreBase* chip8) {
     // TODO: Implement with a Chip8Emulator as parameter...
-    m_disassembler.drawAssemblyControls();
+    m_disassembler.drawDisassemblyControls();
 }

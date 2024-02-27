@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../ImGuiHelper/ImGuiHelper.h"
+#include "../../Chip8Emulator/Chip8CoreBase/Chip8CoreBase.h"
 
 class Chip8topia;
 class Chip8EmulationUi {
@@ -17,8 +18,10 @@ public:
     void drawEmulationWindows(Chip8topia& chip8topia);
 
 private:
-    void drawEmulationSettings();
+    void drawEmulationSettings(Chip8topia* chip8topia);
 
 private:
-    ImGuiMenuItemPopup<> m_Chip8SettingsMenuItem = { "Chip8 Settings", false, [this]() { drawEmulationSettings(); } };
+    ImGuiMenuItemPopup<Chip8topia> m_Chip8SettingsMenuItem = { "Chip8 Settings", true, [this](Chip8topia* chip8topia) { drawEmulationSettings(chip8topia); } };
+
+    Chip8CoreType m_selectedCore = Chip8CoreType::Chip8;
 };
