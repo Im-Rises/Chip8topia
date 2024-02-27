@@ -10,7 +10,6 @@
 void Chip8Disassembler::drawDisassembly(const std::array<uint8, Chip8Cpu::MEMORY_SIZE>& memory, uint16 pc) {
     // Maybe Change the storage to use real bool not a bitset ? This way we don't need the ImGui::IsItemClicked() and we can use directly the value of the array
 
-    //    bool currentPcInViewport = ImGui::GetScrollY() <= (pc)*ImGui::GetTextLineHeight() && (pc)*ImGui::GetTextLineHeight() < ImGui::GetScrollY() + ImGui::GetWindowHeight();
     bool currentPcInViewport = false;
 
     std::string buffer;

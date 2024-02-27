@@ -72,6 +72,12 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [-] Add imgui.ini to the .data emscripten build
 - [x] Add the rom name on the window title and the Chip8 emulated version
 - [x] Add a way to choose the version of the chip8 to emulate
+- [ ] Correct display in HIRES mode which is doing weird things
+- [ ] Check the test roms, currently quirks test is perfect for the SCHIPC Modern and not for the SCHIP1.1, need to add
+  display wait :)
+- [ ] Copy the core of SCHIP1.1 before the display wait and it will be the perfect SCHIPC Modern (need to change the CPU
+  for it)
+
 - [ ] Add break, run, step to the debugger
 - [ ] Change to init m_chip8topiaUi and m_chip8emulator in the game loop
 - [ ] Add emulation sound
