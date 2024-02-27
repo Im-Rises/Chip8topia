@@ -2,12 +2,17 @@
 
 #include <imgui.h>
 #include <fmt/format.h>
+#include <iostream>
 
 #include "../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
 #include "../Chip8Emulator/Disassembly/CpuDisassembly.h"
 
 void Chip8Disassembler::drawDisassembly(const std::array<uint8, Chip8Cpu::MEMORY_SIZE>& memory, uint16 pc) {
     // Maybe Change the storage to use real bool not a bitset ? This way we don't need the ImGui::IsItemClicked() and we can use directly the value of the array
+
+    //    bool currentPcInViewport = ImGui::GetScrollY() <= (pc)*ImGui::GetTextLineHeight() && (pc)*ImGui::GetTextLineHeight() < ImGui::GetScrollY() + ImGui::GetWindowHeight();
+    bool currentPcInViewport = false;
+
     std::string buffer;
     ImGuiListClipper clipper;
     clipper.Begin(Chip8Cpu::MEMORY_SIZE - 1);
@@ -21,6 +26,7 @@ void Chip8Disassembler::drawDisassembly(const std::array<uint8, Chip8Cpu::MEMORY
             if (pc == i)
             {
                 buffer[0] = '>';
+                currentPcInViewport = true;
             }
             else if (m_breakpoints[i])
             {
@@ -35,6 +41,13 @@ void Chip8Disassembler::drawDisassembly(const std::array<uint8, Chip8Cpu::MEMORY
             }
         }
     }
+
+    if (m_previousPC != pc && m_followPC && !currentPcInViewport)
+    {
+        ImGui::SetScrollY(pc * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
+    }
+
+    m_previousPC = pc;
 }
 
 void Chip8Disassembler::drawDisassemblyControls() {

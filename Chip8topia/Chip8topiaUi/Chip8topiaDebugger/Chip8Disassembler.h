@@ -26,4 +26,5 @@ private:
 private:
     std::bitset<Chip8Cpu::MEMORY_SIZE> m_breakpoints;
     bool m_followPC = true;
+    uint16 m_previousPC = 0;
 };
