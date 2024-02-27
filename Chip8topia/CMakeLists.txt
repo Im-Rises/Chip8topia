@@ -16,13 +16,15 @@ target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/dependenc
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/dependencies/emscripten-browser-file")
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/utils")
 
-if (WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Release")
-    message("Setting WIN32_EXECUTABLE to TRUE in Release mode")
-    set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE TRUE)
-elseif (WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Debug")
-    message("Setting WIN32_EXECUTABLE to FALSE in Debug mode")
-    set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE FALSE)
-endif ()
+#if (WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Release")
+#    message("Setting WIN32_EXECUTABLE to TRUE in Release mode")
+#    set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE TRUE)
+#elseif (WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Debug")
+#    message("Setting WIN32_EXECUTABLE to FALSE in Debug mode")
+#    set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE FALSE)
+#endif ()
+
+set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE $<CONFIG:Release>)
 
 if (NOT EMSCRIPTEN)
     find_package(glfw3 CONFIG REQUIRED)
