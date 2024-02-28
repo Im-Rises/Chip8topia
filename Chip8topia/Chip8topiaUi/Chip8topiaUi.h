@@ -28,7 +28,6 @@ private:
     void drawViewMenu(Chip8topia& chip8topia);
 
     void toggleMenuBarVisibility();
-    void toggleWindowsVisibility();
 
 private:
     Chip8RomLoaderUi m_chip8RomLoaderUi;
@@ -38,5 +37,4 @@ private:
     Chip8About m_chip8About;
 
     bool m_isMenuBarOpen = true;
-    bool m_windowsVisible = true;
 };
