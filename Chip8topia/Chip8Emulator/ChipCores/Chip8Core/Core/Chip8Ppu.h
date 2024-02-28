@@ -6,10 +6,6 @@
 #include <binaryLib/binaryLib.h>
 
 class Chip8Ppu final : public PpuBase {
-private:
-    static constexpr uint8 SPRITE_WIDTH = 8;
-    //    static constexpr uint8 SPRITE_HEIGHT = 15;
-
 public:
     Chip8Ppu();
     Chip8Ppu(const Chip8Ppu&) = delete;

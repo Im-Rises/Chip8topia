@@ -17,7 +17,7 @@ auto Chip8Ppu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, C
     for (auto i = 0; i < n; ++i)
     {
         const auto spriteByte = memory[I_reg + i];
-        for (auto j = 0; j < SPRITE_WIDTH; j++)
+        for (auto j = 0; j < 8; j++)
         {
             if (((spriteByte) & (0x1 << (7 - j))) != 0)
             {
