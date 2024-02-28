@@ -1,3 +1,8 @@
+if (NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug)
+    message("Setting CMAKE_BUILD_TYPE to Debug as none was specified")
+endif ()
+
 file(GLOB_RECURSE SRCS "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 file(GLOB_RECURSE SRCS_IMGUI_FILEDIALOG "${CMAKE_SOURCE_DIR}/dependencies/ImGuiFileDialog/*.cpp")
 
@@ -11,13 +16,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/dependenc
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/dependencies/emscripten-browser-file")
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/utils")
 
-if (WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Release")
-    message("Setting WIN32_EXECUTABLE to TRUE in Release mode")
-    set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE TRUE)
-elseif (WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Debug")
-    message("Setting WIN32_EXECUTABLE to FALSE in Debug mode")
-    set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE FALSE)
-endif ()
+set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE $<CONFIG:Release>)
 
 if (NOT EMSCRIPTEN)
     find_package(glfw3 CONFIG REQUIRED)
@@ -45,3 +44,22 @@ target_link_libraries(${PROJECT_NAME} PRIVATE imgui::imgui)
 
 find_package(fmt CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt)
+
+
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_compile_definitions(${PROJECT_NAME} PRIVATE BUILD_DEBUG)
+    #    target_compile_definitions(${PROJECT_NAME} PRIVATE BUILD_CONFIG "$<$<CONFIG:Debug>:Debug>")
+else ()
+    target_compile_definitions(${PROJECT_NAME} PRIVATE BUILD_RELEASE)
+    #    target_compile_definitions(${PROJECT_NAME} PRIVATE BUILD_CONFIG "$<$<CONFIG:Release>:Release>")
+endif ()
+
+if (WIN32)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_WINDOWS)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_NAME="Windows")
+elseif (UNIX AND NOT APPLE)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_LINUX)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_NAME="Linux")
+endif ()
+
+target_compile_definitions(${PROJECT_NAME} PRIVATE PROJECT_CPP_VERSION="${CMAKE_CXX_STANDARD}")

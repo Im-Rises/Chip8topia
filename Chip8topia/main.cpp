@@ -1,5 +1,3 @@
-#include <plateformIdentifier/plateformIdentifier.h>
-
 #if defined(PLATFORM_WINDOWS) && defined(BUILD_RELEASE)
 #define WINRELEASE
 #endif
@@ -34,9 +32,9 @@ auto main(int argc, char* argv[]) -> int {
               << '\n';
 
     std::cout << "Build infos:" << '\n'
-              << " - C++ standard: " << __cplusplus << '\n'
-              //              << "Compiler: " << __VERSION__ << '\n'
-              << " - Build type: " << BUILD_CONFIGURATION << '\n'
+              << " - Platform: " << PLATFORM_NAME << '\n'
+              << " - C++ version: " << PROJECT_CPP_VERSION << '\n'
+              //              << " - Build type: " << BUILD_CONFIG << '\n'
               << " - Build date: " << __DATE__ << " " << __TIME__ << '\n'
               << '\n';
 #endif

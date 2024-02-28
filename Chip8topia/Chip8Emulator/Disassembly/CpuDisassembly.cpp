@@ -1,7 +1,6 @@
 #include "CpuDisassembly.h"
 
 #include <fmt/format.h>
-// #include <format>
 
 // static constexpr const char* const INVALID_OPCODE = "Invalid opcode";
 static constexpr const char* const INVALID_OPCODE = "";

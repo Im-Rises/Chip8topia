@@ -2,42 +2,34 @@
 
 #include "../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
 
-Chip8Emulator::Chip8Emulator() {
+// TODO: Change this to create right instance of the core
+#include "ChipCores/Chip8Core/Chip8Core.h"
+#include "ChipCores/SChip11Core/SChip11Core.h"
+// TODO: Remove the line below
+#include "Chip8CoreBase/Core/CpuBase.h"
+
+// Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<Chip8Core>()) {
+Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<SChip11Core>()) {
     Chip8topiaInputHandler::getInstance().m_GameInput.subscribe(this, &Chip8Emulator::OnInput);
-    Chip8topiaInputHandler::getInstance().m_PKeyButtonPressedEvent.subscribe(this, &Chip8Emulator::togglePause);
+    Chip8topiaInputHandler::getInstance().m_PauseEmulationEvent.subscribe(this, &Chip8Emulator::togglePause);
+    Chip8topiaInputHandler::getInstance().m_RestartEmulationEvent.subscribe(this, &Chip8Emulator::restart);
 }
 
 Chip8Emulator::~Chip8Emulator() {
     Chip8topiaInputHandler::getInstance().m_GameInput.unsubscribe(this, &Chip8Emulator::OnInput);
-    Chip8topiaInputHandler::getInstance().m_PKeyButtonPressedEvent.unsubscribe(this, &Chip8Emulator::togglePause);
+    Chip8topiaInputHandler::getInstance().m_PauseEmulationEvent.unsubscribe(this, &Chip8Emulator::togglePause);
+    Chip8topiaInputHandler::getInstance().m_RestartEmulationEvent.unsubscribe(this, &Chip8Emulator::restart);
 }
 
 void Chip8Emulator::restart() {
-    // TODO: Handle code to not reset memory where the rom is loaded
-    m_core.reset();
-    //    m_isRomLoaded = false;
-    //    m_isTurboMode = false;
-    m_isPaused = false;
+    m_core->reset();
+    m_videoEmulation.reset();
     m_accumulator = 0.0F;
 }
 
-void Chip8Emulator::loadRom(const std::string& romPath) {
-    try
-    {
-        m_core.reset();
-        m_core.readRom(Chip8RomLoader::loadRom(romPath));
-        m_isRomLoaded = true;
-    }
-    catch (const std::exception& e)
-    {
-        m_isRomLoaded = false;
-        throw e;
-    }
-}
-
 void Chip8Emulator::loadRom(const std::vector<uint8_t>& romData) {
-    m_core.reset();
-    m_core.readRom(romData);
+    m_core->reset();
+    m_core->readRom(romData);
     m_isRomLoaded = true;
 }
 
@@ -52,14 +44,16 @@ void Chip8Emulator::update(const float deltaTime) {
     if (m_isTurboMode || m_accumulator >= 1.0F / Chip8Core::SCREEN_AND_TIMERS_FREQUENCY)
     {
         m_accumulator = 0.0F;
-        m_core.clock();
+        m_core->clock();
         //        m_soundEmulation.update(deltaTime);
     }
 }
 
 void Chip8Emulator::render() {
-    m_videoEmulation.updateTexture(m_core.getPpu()->getVideoMemory()); // TODO: Maybe call this function only when the video memory has changed so when the corresponding opcode is called (make a trap for the opcode)
-    m_videoEmulation.update();
+    // Another way to do this would be to use a trap of the opcode (check if the opcode is render and if not then use the switch case to compute the opcode)
+    // But because there is no real vsync, its no use
+    m_videoEmulation.updateTexture(m_core);
+    m_videoEmulation.update(m_core);
 }
 
 void Chip8Emulator::togglePause() {
@@ -74,14 +68,47 @@ auto Chip8Emulator::getIsPaused() const -> bool {
     return m_isPaused;
 }
 
-auto Chip8Emulator::getChip8Core() -> Chip8Core* {
-    return &m_core;
+auto Chip8Emulator::getChip8Core() -> Chip8CoreBase* {
+    return m_core.get();
 }
 
 auto Chip8Emulator::getChip8VideoEmulation() -> Chip8VideoEmulation& {
     return m_videoEmulation;
 }
 
+void Chip8Emulator::switchCore(const Chip8CoreType coreType) {
+    switch (coreType)
+    {
+    case Chip8CoreType::Chip8:
+        m_core = std::make_unique<Chip8Core>();
+        break;
+    case Chip8CoreType::SChip11:
+        m_core = std::make_unique<SChip11Core>();
+        break;
+    case Chip8CoreType::XoChip:
+        break;
+    }
+
+    m_isRomLoaded = false;
+    m_isPaused = false;
+}
+
+auto Chip8Emulator::getCoreType() const -> Chip8CoreType {
+    return m_core->getType();
+}
+
+void Chip8Emulator::switchFrequency(const Chip8Frequency frequency) {
+    switch (frequency)
+    {
+    case Chip8Frequency::FREQ_600_HZ:
+        break;
+    }
+}
+
+auto Chip8Emulator::getFrequency() const -> Chip8Frequency {
+    return Chip8Frequency::FREQ_600_HZ;
+}
+
 void Chip8Emulator::OnInput(const uint8 key, const bool isPressed) {
-    m_core.updateKey(key, isPressed);
+    m_core->updateKey(key, isPressed);
 }

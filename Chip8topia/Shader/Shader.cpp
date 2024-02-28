@@ -5,15 +5,15 @@
 #include <sstream>
 #include <array>
 
-#if defined(__EMSCRIPTEN__)
-Shader::Shader(const char* vertexCode, const char* fragmentCode) : m_ID(0) {
-    compile(vertexCode, fragmentCode);
-}
-#else
+// #if defined(__EMSCRIPTEN__)
+// Shader::Shader(const char* vertexCode, const char* fragmentCode) : m_ID(0) {
+//     compile(vertexCode, fragmentCode);
+// }
+// #else
 Shader::Shader(const char* vertexPath, const char* fragmentPath) : m_ID(0) {
     compileFromFiles(vertexPath, fragmentPath);
 }
-#endif
+// #endif
 
 Shader::~Shader() {
     glDeleteProgram(m_ID);

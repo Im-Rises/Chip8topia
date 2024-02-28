@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string_view>
-#include <plateformIdentifier/plateformIdentifier.h>
 
 #include "Chip8topiaUi/Chip8topiaUi.h"
 #include "Chip8Emulator/Chip8Emulator.h"
@@ -11,11 +10,11 @@ struct GLFWwindow;
 class Chip8topia {
 public:
     static constexpr auto PROJECT_NAME = "Chip8topia";
-    static constexpr auto PROJECT_VERSION = "0.0.1";
+    static constexpr auto PROJECT_VERSION = CHIP8TOPIA_VERSION;
     static constexpr auto PROJECT_LINK = "https://github.com/Im-Rises/Chip8topia";
     static constexpr auto PROJECT_AUTHOR = "Im-Rises (Quentin Morel)";
     static constexpr auto PROJECT_DESCRIPTION = "Chip8topia is a Chip8 emulator made with modern C++ and OpenGL."
-                                                "It is currently emulating the Chip8 interpreter and the SuperChip8 interpreter. ";
+                                                "It is currently emulating the Original Chip8.";
     static constexpr auto PROJECT_EMULATION_CONSOLE_NAME = "Chip8";
     static constexpr auto PROJECT_EMULATION_CONSOLE_DESCRIPTION = R"(
 Chip8 is an interpreted programming language, developed by Joseph Weisbecker.
@@ -23,6 +22,11 @@ It was initially used on the COSMAC VIP and Telmac 1800 8-bit microcomputers in 
 It was made to allow video games to be more easily programmed for said computers.)";
 
     //    static constexpr auto WEB_CANVAS_ID = "#webCanvas";
+
+private:
+#if !defined(BUILD_RELEASE)
+    static constexpr auto DEBUG_ROM_PATH = "trash/5-quirks.ch8";
+#endif
 
 public:
     Chip8topia();
@@ -61,6 +65,8 @@ public:
     [[nodiscard]] auto getChip8Emulator() -> Chip8Emulator&;
     [[nodiscard]] auto getIsTurboMode() const -> bool;
 
+    [[nodiscard]] auto getWindowDimensions() const -> std::pair<int, int>;
+
 private:
     static auto getOpenGLVendor() -> std::string_view;
     static auto getOpenGLVersion() -> std::string_view;
@@ -70,6 +76,9 @@ private:
     static auto getImGuiVersion() -> std::string;
     static void printDependenciesInfos();
 
+    static void glfw_error_callback(int error, const char* description);
+    static void glfw_drop_callback(GLFWwindow* window, int count, const char** paths);
+
 #if !defined(BUILD_RELEASE)
     void loadDebugRom();
 #endif
@@ -78,9 +87,11 @@ private:
     static constexpr ImVec4 CLEAR_COLOR = ImVec4(0.45F, 0.55F, 0.60F, 1.00F);
 
     GLFWwindow* m_window;
-    std::unique_ptr<Chip8Emulator> m_chip8Emulator; // TODO: Change to be initialized once the game loop is started
-    Chip8topiaUi m_chip8topiaUi;                    // TODO: Change to be initialized once the game loop is started
+    std::unique_ptr<Chip8Emulator> m_chip8Emulator;
+    Chip8topiaUi m_chip8topiaUi;
     Chip8topiaInputHandler& m_chip8topiaInputHandler = Chip8topiaInputHandler::getInstance();
+
+    std::string m_romName = "ROM";
 
     bool m_isFullScreen = false;
     bool m_isTurboMode = false;

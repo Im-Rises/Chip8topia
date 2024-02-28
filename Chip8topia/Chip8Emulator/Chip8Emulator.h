@@ -1,12 +1,8 @@
 #pragma once
 
-#include "Chip8Core/Chip8Core.h"
-#include "Chip8Emulation/Chip8VideoEmulation.h"
-#include "Chip8Emulation/Chip8SoundEmulation.h"
-#include "Chip8Emulation/Chip8RomLoader.h"
-
-// TODO: Faire un switch case qui démarre la version de Core sélectionné avec la création de Chip8Core m_core; en tant que unique_ptr
-// TODO: Pour la partie emulation faire des surcharges de fonctions avec comme paramètre const SuperChip8Core& core, const Chip8Core& core, const XOChip8Core& core, de cette façon on pourra définir trois fonctions différentes pour chaque version de Core et le prendra autmaotiquement lors de l'appel ?
+#include "ChipCores/Chip8Core/Chip8Core.h"
+#include "Chip8Emulator/Chip8VideoEmulation.h"
+// #include "Chip8Emulation/Chip8SoundEmulation.h"
 
 class Chip8Emulator {
 public:
@@ -19,7 +15,7 @@ public:
 
 public:
     void restart();
-    void loadRom(const std::string& romPath);
+    //    void loadRom(const std::string& romPath);
     void loadRom(const std::vector<uint8_t>& romData);
 
     void update(const float deltaTime);
@@ -29,17 +25,27 @@ public:
 
     void setIsTurboMode(const bool isTurboMode);
     [[nodiscard]] auto getIsPaused() const -> bool;
-    [[nodiscard]] auto getChip8Core() -> Chip8Core*;
+    [[nodiscard]] auto getChip8Core() -> Chip8CoreBase*;
     [[nodiscard]] auto getChip8VideoEmulation() -> Chip8VideoEmulation&;
+
+    void setRomName(const std::string& romName) { m_romName = romName; }
+    [[nodiscard]] auto getRomName() const -> std::string { return m_romName; }
+    [[nodiscard]] static auto getConsoleName() -> std::string { return "Chip8"; } // TODO: Move to a more appropriate place
+
+    void switchCore(const Chip8CoreType coreType);
+    [[nodiscard]] auto getCoreType() const -> Chip8CoreType;
+    void switchFrequency(const Chip8Frequency frequency);
+    [[nodiscard]] auto getFrequency() const -> Chip8Frequency;
 
 private:
     void OnInput(const uint8 key, const bool isPressed);
 
 private:
-    Chip8Core m_core;
+    std::string m_romName = "ROM";
+
+    std::unique_ptr<Chip8CoreBase> m_core;
     Chip8VideoEmulation m_videoEmulation;
     //    Chip8SoundEmulation m_soundEmulation;
-    //    Chip8RomLoader m_romLoader;
 
     bool m_isRomLoaded = false;
     bool m_isTurboMode = false;

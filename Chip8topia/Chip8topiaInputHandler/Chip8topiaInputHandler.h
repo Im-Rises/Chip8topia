@@ -2,7 +2,6 @@
 
 #include <binaryLib/binaryLib.h>
 #include <Singleton/Singleton.h>
-#include <plateformIdentifier/plateformIdentifier.h>
 
 #include "SubscriberEventSystem/MultiSubscriberEvent.h"
 #include "SubscriberEventSystem/SingleSubscriberEvent.h"
@@ -26,31 +25,21 @@ public:
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 public:
-    /*
-     * UI Input
-     * */
-    // TODO: Rename all the event to what they really do!
-    [[maybe_unused]] SingleSubscriberEvent<> m_F1KeyButtonPressedEvent;
-    [[maybe_unused]] SingleSubscriberEvent<> m_F2KeyButtonPressedEvent;
-    [[maybe_unused]] SingleSubscriberEvent<> m_F3KeyButtonPressedEvent;
-    [[maybe_unused]] SingleSubscriberEvent<> m_F10KeyButtonPressedEvent;
-    [[maybe_unused]] SingleSubscriberEvent<> m_F11KeyButtonPressedEvent;
-#if !defined(BUILD_RELEASE)
-    [[maybe_unused]] SingleSubscriberEvent<> m_F12KeyDebugButtonPressedEvent;
-#endif
-
-    [[maybe_unused]] SingleSubscriberEvent<> m_CTRL_OKeyButtonPressedEvent;
-
 #ifndef __EMSCRIPTEN__
-    [[maybe_unused]] SingleSubscriberEvent<> m_EscapeKeyButtonPressedEvent;
+    [[maybe_unused]] SingleSubscriberEvent<> m_ExitChip8topiaEvent;
+    [[maybe_unused]] SingleSubscriberEvent<> m_ToggleMainBarEvent;
+    [[maybe_unused]] SingleSubscriberEvent<> m_ToggleWindowsVisibilityEvent;
+    [[maybe_unused]] SingleSubscriberEvent<> m_ToggleTurboModeEvent;
+    [[maybe_unused]] SingleSubscriberEvent<> m_CenterWindowEvent;
+    [[maybe_unused]] SingleSubscriberEvent<> m_ToggleFullScreenEvent;
+#endif
+#if !defined(BUILD_RELEASE)
+    [[maybe_unused]] SingleSubscriberEvent<> m_DebugRomFastLoadEvent;
 #endif
 
-    [[maybe_unused]] MultiSubscriberEvent<> m_PKeyButtonPressedEvent;
+    [[maybe_unused]] SingleSubscriberEvent<> m_PauseEmulationEvent;
+    [[maybe_unused]] SingleSubscriberEvent<> m_RestartEmulationEvent;
+    [[maybe_unused]] SingleSubscriberEvent<> m_OpenRomExplorerEvent;
 
-    /*
-     * Game Input
-     * */
     [[maybe_unused]] SingleSubscriberEvent<const uint8, const bool> m_GameInput;
-
-private:
 };

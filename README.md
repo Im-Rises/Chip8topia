@@ -36,12 +36,13 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [x] Ajouter la synchronisation entre écran et cpu avec les timers audio et gameplay qui sont synchronisés avec le cpu
 - [x] Check all the carry and borrow flags in the opcodes
 - [x] Correct collision detection
-- [x] Correct the Ppu issues not rendering correctly (never clear the screen previously, everything was drawn on top of
+- [x] Correct the Chip8Ppu issues not rendering correctly (never clear the screen previously, everything was drawn on
+  top of
   each other)
 - [x] Add a file explorer to load roms
 - [x] Add inputs to the emulator
 - [x] Throttle the emulator to 60fps
-- [x] Add Ppu clipping
+- [x] Add Chip8Ppu clipping
 - [x] Add a way to hide all windows
 - [x] Prevent hiding the main bar to also hide the windows
 - [x] understand and correct the test roms from 5-quirks
@@ -62,11 +63,37 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [x] Create actions for github
 - [x] Add web rom loading
 - [x] Add canvas window size adaptation for the web
+- [x] Check if with emscripten it really compile in Release mode
+- [x] Replace PlateformIdentifier.h with variable defined in the CMakeLists.txt
+- [x] Reformater le code des touches, changer par de vrais noms de touches
+- [x] Correct openfiledialog not having good size on the web
+- [x] Correct all preprocessing directives for emscripten for key inputs
+- [-] Creer une struct qui définie le nom de la touche shortcut avec le string et le keycode
+- [-] Add imgui.ini to the .data emscripten build
+- [x] Add the rom name on the window title and the Chip8 emulated version
+- [x] Add a way to choose the version of the chip8 to emulate
+
+- [ ] Correct all the PPU, it should display 8xn sprites, n is a nibble so from 0 to 15 it can be 16 pixels high then
+- [ ] Correct display in HIRES mode which is doing weird things
+- [ ] Check the test roms, currently quirks test is perfect for the SCHIPC Modern and not for the SCHIP1.1, need to add
+  display wait :)
+- [ ] Copy the core of SCHIP1.1 before the display wait and it will be the perfect SCHIPC Modern (need to change the CPU
+  for it)
+
 - [ ] Add break, run, step to the debugger
+- [ ] Change to init m_chip8topiaUi and m_chip8emulator in the game loop
 - [ ] Add emulation sound
 - [ ] Add save states ?
-- [ ] Faire des fonctions virtuel et les override dans chaque cpu ! Pas pure virtual, pour que si c'est pas override ça
-  appelle "assert" !
+- [ ] For the std::vector use ref or move... For the rom loading
+- [ ] Ajouter bouton au desassembleur pour suivre le point de debug. Et surtout en pas à pas faire qu'on le suive tout
+  le temps !!!!!!!
+- [ ] Dans la section Émulation rajouter une window "émulation info" avec les fps, etc...
+- [ ] Is aucune chip8 n'est chargé alors on draw avec un shader dans Chip8topia. Ce dernier aura l'image en background.
+  (Faire un tableau 1d dans le .h avec les valeurs 0 à 1 ou 255.
+  Le draw chaque frame]
+
+Check later
+
 - [ ] Add emulation for the SuperChip8 and the XO-Chip ?
 - [ ] Add a way to change the used version of the chip8 (ask with a window like the About window, which block user intil
   he decides which version to use) and make it changeable before running a game and when the game is running (restart
@@ -74,15 +101,15 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [ ] Add a way to change the frequency of the emulator
 - [ ] Faire une fenêtre imgui quand on démarre pour sélectionner la version de chip8
 - [ ] Faire héritage cpp pour cpu et pour selection et peut être Chip8Core
-
-  Check later
-- [ ] Replace PlateformIdentifier.h with variable defined in the CMakeLists.txt
-- [x] Check if with emscripten it really compile in Release mode
-- [ ] Créer une classe ImGuiMenuItemWindowList. Améliorer code imgui des fenêtres avec un système qui contiendrait les
-  enums des fenêtres à afficher, ensuite en
-  allant dans un switch case pour chaque enum dans le tableau, on afficherait la fenêtre correspondante. Rajouter class
-  ImGui (Créer une classe ImGuiMenuItemWindowList). Faire une structure qui prend en paramètre un array seulement
-  movable
+- [ ] Faire un switch case qui démarre la version de Core sélectionné avec la création de Chip8Core m_core; en
+  tant que unique_ptr
+- [ ] Pour les load rom être sûr de bien utiliser std::move pour les vecteurs et des && pour les paramètres de
+  fonctions
+- [ ] Pour la partie emulation faire des surcharges de fonctions avec comme paramètre const SuperChip8Core& core,
+  const Chip8Core& core, const XOChip8Core& core, de cette façon on pourra définir trois fonctions différentes pour
+  chaque version de Core et le prendra autmaotiquement lors de l'appel ?
+- [ ] Faire des fonctions virtuel et les override dans chaque cpu ! Pas pure virtual, pour que si c'est pas override ça
+  appelle "assert" !
 
 ## Dependencies
 
@@ -131,6 +158,6 @@ cmake --build [build directory]
 ### Emscripten
 
 ```bash
-emcmake cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=~/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=${EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -DVCPKG_TARGET_TRIPLET=wasm32-emscripten "-DCMAKE_EXE_LINKER_FLAGS=-s USE_GLFW=3 -s FULL_ES3=1 -s WASM=1 -s EXPORTED_RUNTIME_METHODS=[ccall] -s ALLOW_MEMORY_GROWTH=1 -s EXPORTED_FUNCTIONS=[_main,_malloc,_free] --preload-file ../../Chip8Games" -DCMAKE_BUILD_TYPE=Release  
+emcmake cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=~/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=${EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -DVCPKG_TARGET_TRIPLET=wasm32-emscripten "-DCMAKE_EXE_LINKER_FLAGS=-s USE_GLFW=3 -s FULL_ES3=1 -s WASM=1 -s EXPORTED_RUNTIME_METHODS=[ccall] -s ALLOW_MEMORY_GROWTH=1 -s EXPORTED_FUNCTIONS=[_main,_malloc,_free] --preload-file ../../Chip8Games --preload-file ../../shaders" -DCMAKE_BUILD_TYPE=Release
 emmake make -C build
 ```

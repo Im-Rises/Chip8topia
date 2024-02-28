@@ -18,38 +18,17 @@
 #endif
 #include <GLFW/glfw3.h>
 
-// #include <format>
 #include <fmt/format.h>
 #include <chrono>
 #include <iostream>
 
+#include "Chip8Emulator/Chip8Emulator/Chip8RomLoader.h"
 #include "res/chip8topiaIconResource.h"
 
 #ifdef __EMSCRIPTEN__
 #include <imgui_emscripten/imgui_emscripten.h>
 #endif
 
-void glfw_error_callback(int error, const char* description) {
-    std::cerr << "Glfw Error " << error << ": " << description << '\n';
-}
-
-void glfw_drop_callback(GLFWwindow* window, int count, const char** paths) {
-    (void)count;
-    static constexpr int INDEX = 0;
-    const char* path = paths[INDEX];
-
-    // Check extension
-    std::string_view pathView(path);
-    if (pathView.ends_with(Chip8topiaUi::CHIP8_ROM_FILE_EXTENSION))
-    {
-        auto* engine = reinterpret_cast<Chip8topia*>(glfwGetWindowUserPointer(window));
-        engine->getChip8Emulator().loadRom(path);
-    }
-
-    auto* engine = reinterpret_cast<Chip8topia*>(glfwGetWindowUserPointer(window));
-    engine->getChip8Emulator().loadRom(path);
-    //    engine->getChip8Emulator().getChip8Core()->getInput()->updateKey(0x0, 1);
-}
 
 Chip8topia::Chip8topia() : m_window(nullptr) {
 }
@@ -201,13 +180,14 @@ auto Chip8topia::init() -> int {
 #endif
 
 #ifndef __EMSCRIPTEN__
-    m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.subscribe(this, &Chip8topia::closeRequest);
+    m_chip8topiaInputHandler.m_ExitChip8topiaEvent.subscribe(this, &Chip8topia::closeRequest);
+    m_chip8topiaInputHandler.m_ToggleTurboModeEvent.subscribe(this, &Chip8topia::toggleTurboMode);
+    m_chip8topiaInputHandler.m_CenterWindowEvent.subscribe(this, &Chip8topia::centerWindow);
+    m_chip8topiaInputHandler.m_ToggleFullScreenEvent.subscribe(this, &Chip8topia::toggleFullScreen);
 #endif
-    m_chip8topiaInputHandler.m_F3KeyButtonPressedEvent.subscribe(this, &Chip8topia::toggleTurboMode);
-    m_chip8topiaInputHandler.m_F10KeyButtonPressedEvent.subscribe(this, &Chip8topia::centerWindow);
-    m_chip8topiaInputHandler.m_F11KeyButtonPressedEvent.subscribe(this, &Chip8topia::toggleFullScreen);
+
 #if !defined(BUILD_RELEASE)
-    m_chip8topiaInputHandler.m_F12KeyDebugButtonPressedEvent.subscribe(this, &Chip8topia::loadDebugRom);
+    m_chip8topiaInputHandler.m_DebugRomFastLoadEvent.subscribe(this, &Chip8topia::loadDebugRom);
 #endif
 
     return 0;
@@ -215,13 +195,14 @@ auto Chip8topia::init() -> int {
 
 void Chip8topia::cleanup() {
 #ifndef __EMSCRIPTEN__
-    m_chip8topiaInputHandler.m_EscapeKeyButtonPressedEvent.unsubscribe(this, &Chip8topia::closeRequest);
+    m_chip8topiaInputHandler.m_ExitChip8topiaEvent.unsubscribe(this, &Chip8topia::closeRequest);
+    m_chip8topiaInputHandler.m_ToggleTurboModeEvent.unsubscribe(this, &Chip8topia::toggleTurboMode);
+    m_chip8topiaInputHandler.m_CenterWindowEvent.unsubscribe(this, &Chip8topia::centerWindow);
+    m_chip8topiaInputHandler.m_ToggleFullScreenEvent.unsubscribe(this, &Chip8topia::toggleFullScreen);
 #endif
-    m_chip8topiaInputHandler.m_F3KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::toggleTurboMode);
-    m_chip8topiaInputHandler.m_F10KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::centerWindow);
-    m_chip8topiaInputHandler.m_F11KeyButtonPressedEvent.unsubscribe(this, &Chip8topia::toggleFullScreen);
+
 #if !defined(BUILD_RELEASE)
-    m_chip8topiaInputHandler.m_F12KeyDebugButtonPressedEvent.unsubscribe(this, &Chip8topia::loadDebugRom);
+    m_chip8topiaInputHandler.m_DebugRomFastLoadEvent.unsubscribe(this, &Chip8topia::loadDebugRom);
 #endif
 
     ImGui_ImplOpenGL3_Shutdown();
@@ -236,7 +217,7 @@ void Chip8topia::handleInputs() {
     m_chip8topiaInputHandler.update(m_window);
 }
 
-void Chip8topia::handleUi(const float deltaTime) {
+void Chip8topia::handleUi(const float /*deltaTime*/) {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
@@ -282,7 +263,6 @@ void Chip8topia::handleScreenUpdate() {
 }
 
 void Chip8topia::centerWindow() {
-    // TODO: Mix code from toggleFullScreen and centerWindow to avoid code duplication for the window area location calculation
     int count;
     GLFWmonitor** monitors = glfwGetMonitors(&count);
     for (int i = 0; i < count; i++)
@@ -345,9 +325,14 @@ void Chip8topia::setWindowIcon() {
 }
 
 void Chip8topia::setWindowTitle(const float fps) {
-    //    m_chip8Emulator.getRomName();// TODO: Add rom name to window title
-    //    glfwSetWindowTitle(m_window, std::format("{} - {:.2f} fps", PROJECT_NAME, fps).c_str());
-    glfwSetWindowTitle(m_window, fmt::format("{} - {:.2f} fps", PROJECT_NAME, fps).c_str());
+    if (m_chip8Emulator == nullptr)
+    {
+        glfwSetWindowTitle(m_window, fmt::format("{}", PROJECT_NAME).c_str());
+    }
+    else
+    {
+        glfwSetWindowTitle(m_window, fmt::format("{} - {} - {} - {:.2f} fps", PROJECT_NAME, m_chip8Emulator->getConsoleName().c_str(), m_chip8Emulator->getRomName().c_str(), fps).c_str());
+    }
 }
 #endif
 
@@ -357,6 +342,10 @@ auto Chip8topia::getChip8Emulator() -> Chip8Emulator& {
 
 auto Chip8topia::getIsTurboMode() const -> bool {
     return m_isTurboMode;
+}
+
+auto Chip8topia::getWindowDimensions() const -> std::pair<int, int> {
+    return { m_currentWidth, m_currentHeight };
 }
 
 auto Chip8topia::getOpenGLVendor() -> std::string_view {
@@ -395,8 +384,38 @@ void Chip8topia::printDependenciesInfos() {
               << '\n';
 }
 
+void Chip8topia::glfw_error_callback(int error, const char* description) {
+    std::cerr << "Glfw Error " << error << ": " << description << '\n';
+}
+
+void Chip8topia::glfw_drop_callback(GLFWwindow* window, int count, const char** paths) {
+    (void)count;
+    static constexpr int INDEX = 0;
+    const char* path = paths[INDEX];
+
+    try
+    {
+        std::vector<uint8> rom = Chip8RomLoader::loadRomFromPath(path);
+        auto* engine = reinterpret_cast<Chip8topia*>(glfwGetWindowUserPointer(window));
+        engine->getChip8Emulator().loadRom(rom);
+        engine->getChip8Emulator().setRomName(Chip8RomLoader::getRomNameFromPath(path));
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+}
+
 #if !defined(BUILD_RELEASE)
 void Chip8topia::loadDebugRom() {
-    m_chip8Emulator->loadRom("trash/5-quirks.ch8");
+    try
+    {
+        std::vector<uint8> rom = Chip8RomLoader::loadRomFromPath(DEBUG_ROM_PATH);
+        m_chip8Emulator->loadRom(rom);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
 }
 #endif
