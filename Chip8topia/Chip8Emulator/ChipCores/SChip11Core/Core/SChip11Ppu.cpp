@@ -71,36 +71,34 @@ auto SChip11Ppu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::ar
     uint8 rowCollisionCount = 0;
     uint8 rowClippedCount = 0;
 
-    for (int i = 0; i < 16; i++)
+    for (int i = 0; i < 16; i++) // 16 rows
     {
-        const auto spriteByte1 = memory[I_reg + i];
-        const auto spriteByte2 = memory[I_reg + i + 16];
-
-        for (int j = 0; j < 8; j++)
+        for (int byteIndex = 0; byteIndex < 2; byteIndex++) // Two bytes per row (16 pixels) each pixel is 1 bit
         {
+            for (int j = 0; j < 8; j++) // 8 pixels per byte
+            {
+                if (((memory[I_reg + i * 2 + byteIndex] >> (7 - j)) & 0x1) == 1)
+                {
+                    int x = (Vx + j + byteIndex * 8) % PpuBase::SCREEN_HIRES_MODE_WIDTH;
+                    int y = (Vy + i) % PpuBase::SCREEN_HIRES_MODE_HEIGHT;
 
+                    if (x >= PpuBase::SCREEN_HIRES_MODE_WIDTH || y >= PpuBase::SCREEN_HIRES_MODE_HEIGHT)
+                    {
+                        rowClippedCount++;
+                        continue;
+                    }
 
-            //            if (((spriteByte1) & (0x1 << (7 - j))) != 0 || ((spriteByte2) & (0x1 << (7 - j))) != 0)
-            //            {
-            //                // Clip the sprite if it goes out of bounds
-            //                if (((Vx + j) >= PpuBase::SCREEN_HIRES_MODE_WIDTH && j > 0) || ((Vy + i) >= PpuBase::SCREEN_HIRES_MODE_HEIGHT && i > 0))
-            //                {
-            //                    rowClippedCount++;
-            //                    continue;
-            //                }
-            //
-            //                // Draw the pixel
-            //                const auto index = (Vx + j) % PpuBase::SCREEN_HIRES_MODE_WIDTH + ((Vy + i) % PpuBase::SCREEN_HIRES_MODE_HEIGHT) * PpuBase::SCREEN_HIRES_MODE_WIDTH;
-            //                if (m_hiresVideoMemory[index] == PIXEL_ON)
-            //                {
-            //                    m_hiresVideoMemory[index] = PIXEL_OFF;
-            //                    rowCollisionCount++;
-            //                }
-            //                else
-            //                {
-            //                    m_hiresVideoMemory[index] = PIXEL_ON;
-            //                }
-            //            }
+                    if (m_hiresVideoMemory[y * PpuBase::SCREEN_HIRES_MODE_WIDTH + x] == PIXEL_ON)
+                    {
+                        m_hiresVideoMemory[y * PpuBase::SCREEN_HIRES_MODE_WIDTH + x] = PIXEL_OFF;
+                        rowCollisionCount++;
+                    }
+                    else
+                    {
+                        m_hiresVideoMemory[y * PpuBase::SCREEN_HIRES_MODE_WIDTH + x] = PIXEL_ON;
+                    }
+                }
+            }
         }
     }
 
