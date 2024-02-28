@@ -25,7 +25,7 @@ It was made to allow video games to be more easily programmed for said computers
 
 private:
 #if !defined(BUILD_RELEASE)
-    static constexpr auto DEBUG_ROM_PATH = "trash/8-scrolling.ch8";
+    static constexpr auto DEBUG_ROM_PATH = "trash/5-quirks.ch8";
 #endif
 
 public:
