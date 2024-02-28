@@ -16,15 +16,15 @@ void SChip11Ppu::clearScreen() {
 
 auto SChip11Ppu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint16 I_reg) -> uint8 {
     //  The original SCHIP-1.1 in hires mode set VF to the number of sprite rows with collisions plus the number of rows clipped at the bottom border
-    const uint8 spriteWidth = n == 0 ? SPRITE_DXY0_WIDTH : SPRITE_DXYN_WIDTH;
-    const uint8 spriteHeight = n == 0 ? SPRITE_DXY0_HEIGHT : n;
 
     if (getMode() == PpuMode::LORES)
     {
-        return static_cast<uint8>(drawLoresSprite(Vx, Vy, memory, I_reg, spriteWidth, spriteHeight));
+        return static_cast<uint8>(drawLoresSprite(Vx, Vy, memory, I_reg, SPRITE_DXYN_WIDTH, n));
     }
     else
     {
+        const uint8 spriteWidth = n == 0 ? SPRITE_DXY0_WIDTH : SPRITE_DXYN_WIDTH;
+        const uint8 spriteHeight = n == 0 ? SPRITE_DXY0_HEIGHT : n;
         return drawHiresSprite(Vx, Vy, memory, I_reg, spriteWidth, spriteHeight);
     }
 }
