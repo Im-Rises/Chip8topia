@@ -68,53 +68,17 @@ auto SChip11Ppu::drawLoresSprite(uint8 Vx, uint8 Vy, const std::array<uint8, Cpu
 }
 
 auto SChip11Ppu::drawHiresSprite(uint8 Vx, uint8 Vy, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint16 I_reg, uint8 width, uint8 height) -> uint8 {
-    int collisionCount = 0;
-    int rowsClippedCount = 0;
-
-    // Wrap around the screen if out of bounds
-    Vx %= PpuBase::SCREEN_HIRES_MODE_WIDTH;
-    Vy %= PpuBase::SCREEN_HIRES_MODE_HEIGHT;
-
     for (auto i = 0; i < height; ++i)
     {
-        bool collision = false;
         const auto spriteByte = memory[I_reg + i];
         for (auto j = 0; j < width; j++)
         {
-            if (((spriteByte) & (0x1 << (7 - j))) != 0)
-            {
-                // Clip the sprite if it goes out of bounds
-                if (((Vx + j) >= PpuBase::SCREEN_HIRES_MODE_WIDTH && j > 0) || ((Vy + i) >= PpuBase::SCREEN_HIRES_MODE_HEIGHT && i > 0))
-                {
-                    continue;
-                }
-
-                // Draw the pixel
-                const auto index = (Vx + j) % PpuBase::SCREEN_HIRES_MODE_WIDTH + ((Vy + i) % PpuBase::SCREEN_HIRES_MODE_HEIGHT) * PpuBase::SCREEN_HIRES_MODE_WIDTH;
-                if (m_hiresVideoMemory[index] == PIXEL_ON)
-                {
-                    m_hiresVideoMemory[index] = PIXEL_OFF;
-                    collision = true;
-                }
-                else
-                {
-                    m_hiresVideoMemory[index] = PIXEL_ON;
-                }
-            }
-        }
-
-        if (collision)
-        {
-            collisionCount++;
-        }
-
-        if (Vy + i >= PpuBase::SCREEN_HIRES_MODE_HEIGHT)
-        {
-            rowsClippedCount++;
+            // const auto memoryIndex = (Vx + j) % PpuBase::SCREEN_HIRES_MODE_WIDTH + ((Vy + i) % PpuBase::SCREEN_HIRES_MODE_HEIGHT) * PpuBase::SCREEN_HIRES_MODE_WIDTH;
+            const auto memoryIndex = (Vx + j) + (Vy + i) * PpuBase::SCREEN_HIRES_MODE_WIDTH;
         }
     }
 
-    return collisionCount + rowsClippedCount;
+    return 0;
 }
 
 void SChip11Ppu::scrollDown(uint8 n) {
