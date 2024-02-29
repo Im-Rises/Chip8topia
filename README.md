@@ -72,12 +72,15 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [-] Add imgui.ini to the .data emscripten build
 - [x] Add the rom name on the window title and the Chip8 emulated version
 - [x] Add a way to choose the version of the chip8 to emulate
+- [x] Correct the minimized window not putting windows at the top when unminimizing
+- [x] Correct all the PPU, it should display 8xn sprites, n is a nibble so from 0 to 15 it can be 16 pixels high then
+- [x] Correct display in HIRES mode which is doing weird things
+- [x] Check the test roms, currently quirks test is perfect for the SCHIPC Modern and not for the SCHIP1.1, need to add
+- [x] Copy the core of SCHIP1.1 before the display wait and it will be the perfect SCHIPC Modern (need to change the CPU
 
-- [ ] Correct all the PPU, it should display 8xn sprites, n is a nibble so from 0 to 15 it can be 16 pixels high then
-- [ ] Correct display in HIRES mode which is doing weird things
-- [ ] Check the test roms, currently quirks test is perfect for the SCHIPC Modern and not for the SCHIP1.1, need to add
+- [ ] Finish SCHIPC Modern
+- [ ] Check emscripten canvas resize
   display wait :)
-- [ ] Copy the core of SCHIP1.1 before the display wait and it will be the perfect SCHIPC Modern (need to change the CPU
   for it)
 
 - [ ] Add break, run, step to the debugger

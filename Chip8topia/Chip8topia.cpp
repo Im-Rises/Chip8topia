@@ -153,8 +153,8 @@ auto Chip8topia::init() -> int {
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;  // Enable Gamepad Controls
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;     // Enable Docking
     io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;   // Enable Multi-Viewport / Platform Windows
-    // io.ConfigViewportsNoAutoMerge = true;
-    // io.ConfigViewportsNoTaskBarIcon = true;
+    io.ConfigViewportsNoTaskBarIcon = true;               // Disable TaskBar icon for secondary viewports
+    // io.ConfigViewportsNoAutoMerge = true;              // Enable Multi-Viewport auto-merge
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
@@ -221,7 +221,10 @@ void Chip8topia::handleUi(const float /*deltaTime*/) {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
-    m_chip8topiaUi.drawUi(*this);
+    if (!getWindowMinimized())
+    {
+        m_chip8topiaUi.drawUi(*this);
+    }
     ImGui::Render();
 }
 
@@ -314,6 +317,7 @@ void Chip8topia::toggleTurboMode() {
 
 #ifndef __EMSCRIPTEN__
 void Chip8topia::setWindowIcon() {
+    // TODO:Correct this code which gives strange results
     int chip8topiaIconWidth = 0, chip8topiaIconHeight = 0, channelsInFile = 0;
     unsigned char* imagePixels = stbi_load_from_memory(CHIP8TOPIA_ICON_DATA.data(), static_cast<int>(CHIP8TOPIA_ICON_DATA.size()), &chip8topiaIconWidth, &chip8topiaIconHeight, &channelsInFile, 0);
     GLFWimage images;
@@ -346,6 +350,10 @@ auto Chip8topia::getIsTurboMode() const -> bool {
 
 auto Chip8topia::getWindowDimensions() const -> std::pair<int, int> {
     return { m_currentWidth, m_currentHeight };
+}
+
+auto Chip8topia::getWindowMinimized() const -> bool {
+    return glfwGetWindowAttrib(m_window, GLFW_ICONIFIED) != 0;
 }
 
 auto Chip8topia::getOpenGLVendor() -> std::string_view {
@@ -418,4 +426,5 @@ void Chip8topia::loadDebugRom() {
         std::cerr << e.what() << '\n';
     }
 }
+
 #endif
