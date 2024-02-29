@@ -10,7 +10,7 @@ class Input;
 class CpuBase {
 public:
     static constexpr uint16 START_ADDRESS = 0x200;
-    static constexpr uint16 CLOCK_FREQUENCY = 600; // 500Hz normally
+    static constexpr uint16 CLOCK_FREQUENCY = 1800; // 600 // 500Hz normally // 100Hz in SCHIP 1.1 validate the display wait
     static constexpr size_t MEMORY_SIZE = 0x1000;
     static constexpr size_t ROM_SIZE = MEMORY_SIZE - START_ADDRESS;
     static constexpr size_t REGISTER_V_SIZE = 16;

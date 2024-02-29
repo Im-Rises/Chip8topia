@@ -51,9 +51,10 @@ void Chip8EmulationUi::drawEmulationSettings(Chip8topia* chip8topia) {
     {
         m_selectedCore = Chip8CoreType::SChip11;
     }
-    //    if (ImGui::Selectable("SChipC (Modern)", emulator.getCoreType() == Chip8CoreType::SChipC))
-    //    {
-    //    }
+    if (ImGui::Selectable("SChipC (Modern)", emulator.getCoreType() == Chip8CoreType::SChipC))
+    {
+        m_selectedCore = Chip8CoreType::SChipC;
+    }
     //    if (ImGui::Selectable("Xo-Chip", emulator.getCoreType() == Chip8CoreType::XoChip))
     //    {
     //    }

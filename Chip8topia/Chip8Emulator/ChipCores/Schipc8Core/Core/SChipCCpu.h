@@ -3,18 +3,17 @@
 #include "../../../Chip8CoreBase/Core/CpuBase.h"
 
 class SChip11Ppu;
-class SChip11Cpu final : public CpuBase {
+class SChipCCpu final : public CpuBase {
 public:
-    SChip11Cpu();
-    SChip11Cpu(const SChip11Cpu&) = delete;
-    SChip11Cpu(SChip11Cpu&&) = delete;
-    auto operator=(const SChip11Cpu&) -> SChip11Cpu& = delete;
-    auto operator=(SChip11Cpu&&) -> SChip11Cpu& = delete;
-    ~SChip11Cpu() final = default;
+    SChipCCpu();
+    SChipCCpu(const SChipCCpu&) = delete;
+    SChipCCpu(SChipCCpu&&) = delete;
+    auto operator=(const SChipCCpu&) -> SChipCCpu& = delete;
+    auto operator=(SChipCCpu&&) -> SChipCCpu& = delete;
+    ~SChipCCpu() final = default;
 
 public:
     void reset() final;
-    void requestDisableHalt() { m_requestDisableHalt = true; }
 
 private:
     void computeOpcode(const uint16 opcode) final;
@@ -42,10 +41,7 @@ private:
 
 private:
     // TODO: Change to something else
-    //     SChip11Ppu* m_ppuCasted;
+    //     SChipCPpu* m_ppuCasted;
 
     std::array<uint8, REGISTER_V_SIZE> m_savedV;
-    
-    bool m_isHalted;
-    bool m_requestDisableHalt;
 };
