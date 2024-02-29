@@ -7,7 +7,6 @@ SChip11Core::SChip11Core() : Chip8CoreBase(std::make_unique<SChip11Cpu>(), std::
 }
 
 void SChip11Core::clock() {
-    // TODO: Add display wait here
     while (m_clockCounter < CpuBase::CLOCK_FREQUENCY / SCREEN_AND_TIMERS_FREQUENCY)
     {
         m_cpu->clock();

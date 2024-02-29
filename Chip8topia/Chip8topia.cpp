@@ -153,7 +153,7 @@ auto Chip8topia::init() -> int {
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;  // Enable Gamepad Controls
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;     // Enable Docking
     io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;   // Enable Multi-Viewport / Platform Windows
-    io.ConfigViewportsNoTaskBarIcon = true;               // Disable TaskBar icon for secondary viewports
+    // io.ConfigViewportsNoTaskBarIcon = true;            // Disable TaskBar icon for secondary viewports
     // io.ConfigViewportsNoAutoMerge = true;              // Enable Multi-Viewport auto-merge
 
     // Setup Dear ImGui style
@@ -221,10 +221,10 @@ void Chip8topia::handleUi(const float /*deltaTime*/) {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
-    if (!getWindowMinimized())
-    {
-        m_chip8topiaUi.drawUi(*this);
-    }
+    //    if (!getWindowMinimized())
+    //    {
+    m_chip8topiaUi.drawUi(*this);
+    //    }
     ImGui::Render();
 }
 
@@ -352,9 +352,9 @@ auto Chip8topia::getWindowDimensions() const -> std::pair<int, int> {
     return { m_currentWidth, m_currentHeight };
 }
 
-auto Chip8topia::getWindowMinimized() const -> bool {
-    return glfwGetWindowAttrib(m_window, GLFW_ICONIFIED) != 0;
-}
+// auto Chip8topia::getWindowMinimized() const -> bool {
+//     return glfwGetWindowAttrib(m_window, GLFW_ICONIFIED) != 0;
+// }
 
 auto Chip8topia::getOpenGLVendor() -> std::string_view {
     return reinterpret_cast<const char*>(glGetString(GL_RENDERER));

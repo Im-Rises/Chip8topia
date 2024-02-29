@@ -17,6 +17,7 @@ void Chip8Disassembler::drawDisassembly(const std::array<uint8, Chip8Cpu::MEMORY
     clipper.Begin(Chip8Cpu::MEMORY_SIZE - 1);
     while (clipper.Step())
     {
+        // TODO: Correct, it should be 2 bytes per opcode (at the moment we are incrementing by 1 so we are printing opcodes that doesn't exist)
         for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
         {
             uint16 opcode = (memory[i] << 8) | memory[i + 1];
@@ -41,6 +42,13 @@ void Chip8Disassembler::drawDisassembly(const std::array<uint8, Chip8Cpu::MEMORY
         }
     }
 
+    if (m_breakpoints[pc] && m_previousPC != pc)
+    {
+        std::cout << "Breakpoint hit at " << std::hex << pc << std::endl;
+        Chip8topiaInputHandler::getInstance().m_BreakEmulationEvent.trigger();
+        ImGui::SetScrollY(pc * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
+    }
+
     if (m_previousPC != pc && m_followPC && !currentPcInViewport)
     {
         ImGui::SetScrollY(pc * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
@@ -52,24 +60,25 @@ void Chip8Disassembler::drawDisassembly(const std::array<uint8, Chip8Cpu::MEMORY
 void Chip8Disassembler::drawDisassemblyControls() {
     // TODO: Implement the Step, Run, Break, Load and Save buttons
 
-    if (ImGui::Checkbox("Follow PC", &m_followPC))
-    {
-    }
+    ImGui::Checkbox("Follow PC", &m_followPC);
 
     if (ImGui::Button("Step"))
     {
+        Chip8topiaInputHandler::getInstance().m_StepEmulationEvent.trigger();
     }
 
     ImGui::SameLine();
 
     if (ImGui::Button("Run"))
     {
+        Chip8topiaInputHandler::getInstance().m_RunEmulationEvent.trigger();
     }
 
     ImGui::SameLine();
 
     if (ImGui::Button("Break"))
     {
+        Chip8topiaInputHandler::getInstance().m_BreakEmulationEvent.trigger();
     }
 
     ImGui::SameLine();
@@ -88,15 +97,15 @@ void Chip8Disassembler::drawDisassemblyControls() {
 
     ImGui::SameLine();
 
-    if (ImGui::Button("Load"))
-    {
-    }
-
-    ImGui::SameLine();
-
-    if (ImGui::Button("Save"))
-    {
-    }
+    //    if (ImGui::Button("Load"))
+    //    {
+    //    }
+    //
+    //    ImGui::SameLine();
+    //
+    //    if (ImGui::Button("Save"))
+    //    {
+    //    }
 }
 
 void Chip8Disassembler::clearBreakpoints() {

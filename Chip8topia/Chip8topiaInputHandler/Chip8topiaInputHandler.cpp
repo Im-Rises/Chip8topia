@@ -29,7 +29,7 @@ void Chip8topiaInputHandler::key_callback(GLFWwindow* /*window*/, int key, int /
         case GLFW_KEY_F12: inputHandler.m_DebugRomFastLoadEvent.trigger(); break;
 #endif
 
-        case GLFW_KEY_P: inputHandler.m_PauseEmulationEvent.trigger(); break;
+            //        case GLFW_KEY_P: inputHandler.m_PauseEmulationEvent.trigger(); break;
         case GLFW_KEY_L: inputHandler.m_RestartEmulationEvent.trigger(); break;
         case GLFW_KEY_O: inputHandler.m_OpenRomExplorerEvent.trigger(); break;
 

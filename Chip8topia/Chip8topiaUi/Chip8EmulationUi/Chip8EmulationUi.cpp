@@ -16,10 +16,10 @@ void Chip8EmulationUi::drawEmulationMenu(Chip8topia& chip8topia) {
             chip8topia.toggleTurboMode();
         }
 
-        if (ImGui::MenuItem(chip8topia.getChip8Emulator().getIsPaused() ? "Resume" : "Pause", "P"))
-        {
-            Chip8topiaInputHandler::getInstance().m_PauseEmulationEvent.trigger();
-        }
+        //        if (ImGui::MenuItem(chip8topia.getChip8Emulator().getIsPaused() ? "Resume" : "Pause", "P"))
+        //        {
+        //            Chip8topiaInputHandler::getInstance().m_PauseEmulationEvent.trigger();
+        //        }
 
         if (ImGui::MenuItem("Restart", "L"))
         {

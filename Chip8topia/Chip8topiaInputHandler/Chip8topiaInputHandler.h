@@ -26,20 +26,23 @@ public:
 
 public:
 #ifndef __EMSCRIPTEN__
-    [[maybe_unused]] SingleSubscriberEvent<> m_ExitChip8topiaEvent;
-    [[maybe_unused]] SingleSubscriberEvent<> m_ToggleMainBarEvent;
-    [[maybe_unused]] SingleSubscriberEvent<> m_ToggleWindowsVisibilityEvent;
-    [[maybe_unused]] SingleSubscriberEvent<> m_ToggleTurboModeEvent;
-    [[maybe_unused]] SingleSubscriberEvent<> m_CenterWindowEvent;
-    [[maybe_unused]] SingleSubscriberEvent<> m_ToggleFullScreenEvent;
+    SingleSubscriberEvent<> m_ExitChip8topiaEvent;
+    SingleSubscriberEvent<> m_ToggleMainBarEvent;
+    SingleSubscriberEvent<> m_ToggleWindowsVisibilityEvent;
+    SingleSubscriberEvent<> m_ToggleTurboModeEvent;
+    SingleSubscriberEvent<> m_CenterWindowEvent;
+    SingleSubscriberEvent<> m_ToggleFullScreenEvent;
 #endif
 #if !defined(BUILD_RELEASE)
-    [[maybe_unused]] SingleSubscriberEvent<> m_DebugRomFastLoadEvent;
+    SingleSubscriberEvent<> m_DebugRomFastLoadEvent;
 #endif
+    SingleSubscriberEvent<> m_StepEmulationEvent;
+    SingleSubscriberEvent<> m_RunEmulationEvent;
+    SingleSubscriberEvent<> m_BreakEmulationEvent;
 
-    [[maybe_unused]] SingleSubscriberEvent<> m_PauseEmulationEvent;
-    [[maybe_unused]] SingleSubscriberEvent<> m_RestartEmulationEvent;
-    [[maybe_unused]] SingleSubscriberEvent<> m_OpenRomExplorerEvent;
+    //    SingleSubscriberEvent<> m_PauseEmulationEvent; // TODO: Maybe pause is useless, we have break?
+    SingleSubscriberEvent<> m_RestartEmulationEvent;
+    SingleSubscriberEvent<> m_OpenRomExplorerEvent;
 
-    [[maybe_unused]] SingleSubscriberEvent<const uint8, const bool> m_GameInput;
+    SingleSubscriberEvent<const uint8, const bool> m_GameInput;
 };

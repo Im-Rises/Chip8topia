@@ -21,10 +21,10 @@ public:
     void update(const float deltaTime);
     void render();
 
-    void togglePause();
+    //    void togglePause();
 
     void setIsTurboMode(const bool isTurboMode);
-    [[nodiscard]] auto getIsPaused() const -> bool;
+    //    [[nodiscard]] auto getIsPaused() const -> bool;
     [[nodiscard]] auto getChip8Core() -> Chip8CoreBase*;
     [[nodiscard]] auto getChip8VideoEmulation() -> Chip8VideoEmulation&;
 
@@ -36,6 +36,13 @@ public:
     [[nodiscard]] auto getCoreType() const -> Chip8CoreType;
     void switchFrequency(const Chip8Frequency frequency);
     [[nodiscard]] auto getFrequency() const -> Chip8Frequency;
+
+    void stepEmulation() {
+        m_isBreak = true;
+        m_stepNextFrame = true;
+    }
+    void runEmulation() { m_isBreak = false; }
+    void breakEmulation() { m_isBreak = true; }
 
 private:
     void OnInput(const uint8 key, const bool isPressed);
@@ -49,7 +56,10 @@ private:
 
     bool m_isRomLoaded = false;
     bool m_isTurboMode = false;
-    bool m_isPaused = false;
+    //    bool m_isPaused = false;
 
     float m_accumulator = 0.0F;
+
+    bool m_isBreak = false;
+    bool m_stepNextFrame = false;
 };
