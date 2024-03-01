@@ -10,7 +10,7 @@
 void Chip8Disassembler::drawDisassembly(const std::array<uint8, Chip8Cpu::MEMORY_SIZE>& memory, uint16 pc) {
     // Maybe Change the storage to use real bool not a bitset ? This way we don't need the ImGui::IsItemClicked() and we can use directly the value of the array
 
-    static constexpr int OPCODE_SIZE = 2;
+    static constexpr int OPCODE_SIZE = 2; // TODO: Move to the Chip8BaseCpu class
 
     bool currentPcInViewport = false;
 
@@ -97,18 +97,6 @@ void Chip8Disassembler::drawDisassemblyControls() {
     {
         clearBreakpoints();
     }
-
-    //    ImGui::SameLine();
-
-    //    if (ImGui::Button("Load"))
-    //    {
-    //    }
-    //
-    //    ImGui::SameLine();
-    //
-    //    if (ImGui::Button("Save"))
-    //    {
-    //    }
 }
 
 void Chip8Disassembler::drawBreakpoints() {
@@ -121,22 +109,23 @@ void Chip8Disassembler::drawBreakpoints() {
         return;
     }
 
-    ImGuiListClipper clipper;
-    clipper.Begin(Chip8Cpu::MEMORY_SIZE);
-    while (clipper.Step())
-    {
-        for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
-        {
-            if (m_breakpoints[i])
-            {
-                if (ImGui::IsItemClicked())
-                {
-                    ImGui::Text("0x{:04X}", i);
-                    m_breakpoints[i] = false;
-                }
-            }
-        }
-    }
+    //    ImGuiListClipper clipper;
+    //    clipper.Begin(Chip8Cpu::MEMORY_SIZE);
+    //    while (clipper.Step())
+    //    {
+    //        for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
+    //        {
+    //            if (m_breakpoints[i])
+    //            {
+    //                ImGui::Text("0x{:04X}", i);
+    //
+    //                if (ImGui::IsItemClicked())
+    //                {
+    //                    m_breakpoints[i] = false;
+    //                }
+    //            }
+    //        }
+    //    }
 }
 
 void Chip8Disassembler::clearBreakpoints() {
