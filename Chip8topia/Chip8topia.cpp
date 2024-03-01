@@ -21,6 +21,7 @@
 #include <fmt/format.h>
 #include <chrono>
 #include <iostream>
+#include <spdlog/spdlog.h>
 
 #include "Chip8Emulator/Chip8Emulator/Chip8RomLoader.h"
 #include "res/chip8topiaIconResource.h"
@@ -390,10 +391,18 @@ void Chip8topia::printDependenciesInfos() {
               << " - Glad version " << Chip8topia::getGladVersion() << '\n'
               << " - ImGui version " << Chip8topia::getImGuiVersion() << '\n'
               << '\n';
+
+    //    spdlog::info("System and dependencies infos:");
+    //    spdlog::info(" - OpenGL vendor {}", Chip8topia::getOpenGLVendor());
+    //    spdlog::info(" - OpenGL version {}", Chip8topia::getOpenGLVersion());
+    //    spdlog::info(" - OpenGL GLSL version {}", Chip8topia::getGLSLVersion());
+    //    spdlog::info(" - GLFW version {}", Chip8topia::getGLFWVersion());
+    //    spdlog::info(" - Glad version {}", Chip8topia::getGladVersion());
+    //    spdlog::info(" - ImGui version {}", Chip8topia::getImGuiVersion());
 }
 
 void Chip8topia::glfw_error_callback(int error, const char* description) {
-    std::cerr << "Glfw Error " << error << ": " << description << '\n';
+    spdlog::error("Glfw Error {}: {}", error, description);
 }
 
 void Chip8topia::glfw_drop_callback(GLFWwindow* window, int count, const char** paths) {
@@ -410,7 +419,7 @@ void Chip8topia::glfw_drop_callback(GLFWwindow* window, int count, const char** 
     }
     catch (const std::exception& e)
     {
-        std::cerr << e.what() << '\n';
+        spdlog::error(e.what());
     }
 }
 
@@ -423,7 +432,7 @@ void Chip8topia::loadDebugRom() {
     }
     catch (const std::exception& e)
     {
-        std::cerr << e.what() << '\n';
+        spdlog::error(e.what());
     }
 }
 

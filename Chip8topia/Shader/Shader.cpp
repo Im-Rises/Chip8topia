@@ -1,9 +1,9 @@
 #include "Shader.h"
 
-#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <array>
+#include <spdlog/spdlog.h>
 
 // #if defined(__EMSCRIPTEN__)
 // Shader::Shader(const char* vertexCode, const char* fragmentCode) : m_ID(0) {
@@ -54,7 +54,7 @@ void Shader::compileFromFiles(const char* vertexPath, const char* fragmentPath) 
     }
     catch (std::ifstream::failure& e)
     {
-        std::cerr << "ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ: " << e.what() << '\n';
+        spdlog::error("ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ: {}", e.what());
     }
 }
 
@@ -88,9 +88,7 @@ void Shader::checkCompileErrors(unsigned int shader, const std::string& type) {
         if (success == 0)
         {
             glGetShaderInfoLog(shader, 1024, nullptr, infoLog.data());
-            std::cerr << "ERROR::SHADER_COMPILATION_ERROR of type: " << type << "\n"
-                      << infoLog.data()
-                      << "\n -- --------------------------------------------------- -- " << std::endl;
+            spdlog::error("ERROR::SHADER_COMPILATION_ERROR of type: {} \n {}", type, infoLog.data());
         }
     }
     else
@@ -99,9 +97,7 @@ void Shader::checkCompileErrors(unsigned int shader, const std::string& type) {
         if (success == 0)
         {
             glGetProgramInfoLog(shader, 1024, nullptr, infoLog.data());
-            std::cerr << "ERROR::PROGRAM_LINKING_ERROR of type: " << type << "\n"
-                      << infoLog.data()
-                      << "\n -- --------------------------------------------------- -- " << std::endl;
+            spdlog::error("ERROR::PROGRAM_LINKING_ERROR of type: {} \n {}", type, infoLog.data());
         }
     }
 }

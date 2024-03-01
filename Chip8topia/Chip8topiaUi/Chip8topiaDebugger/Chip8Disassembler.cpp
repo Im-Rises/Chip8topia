@@ -2,7 +2,7 @@
 
 #include <imgui.h>
 #include <fmt/format.h>
-#include <iostream>
+#include <spdlog/spdlog.h>
 
 #include "../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
 #include "../Chip8Emulator/Disassembly/CpuDisassembly.h"
@@ -10,48 +10,52 @@
 void Chip8Disassembler::drawDisassembly(const std::array<uint8, Chip8Cpu::MEMORY_SIZE>& memory, uint16 pc) {
     // Maybe Change the storage to use real bool not a bitset ? This way we don't need the ImGui::IsItemClicked() and we can use directly the value of the array
 
+    static constexpr int OPCODE_SIZE = 2;
+
     bool currentPcInViewport = false;
 
     std::string buffer;
     ImGuiListClipper clipper;
-    clipper.Begin(Chip8Cpu::MEMORY_SIZE - 1);
+    clipper.Begin(Chip8Cpu::MEMORY_SIZE / OPCODE_SIZE);
     while (clipper.Step())
     {
         // TODO: Correct, it should be 2 bytes per opcode (at the moment we are incrementing by 1 so we are printing opcodes that doesn't exist)
         for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
         {
-            uint16 opcode = (memory[i] << 8) | memory[i + 1];
+            const int memoryIndex = i * OPCODE_SIZE;
+            uint16 opcode = (memory[memoryIndex] << 8) | memory[(memoryIndex) + 1];
 
-            buffer = fmt::format("  0x{:04X}: ({:04X}) {}", i, opcode, CpuDisassembly::disassembleOpcode(opcode));
-            if (pc == i)
+            buffer = fmt::format("  0x{:04X}: ({:04X}) {}", memoryIndex, opcode, CpuDisassembly::disassembleOpcode(opcode));
+
+            if (pc == memoryIndex)
             {
                 buffer[0] = '>';
                 currentPcInViewport = true;
             }
-            else if (m_breakpoints[i])
+            else if (m_breakpoints[memoryIndex])
             {
                 buffer[0] = '*';
             }
 
-            ImGui::Selectable(buffer.c_str(), m_breakpoints[i]);
+            ImGui::Selectable(buffer.c_str(), m_breakpoints[memoryIndex], ImGuiSelectableFlags_AllowDoubleClick);
 
             if (ImGui::IsItemClicked())
             {
-                m_breakpoints[i] = !m_breakpoints[i];
+                m_breakpoints[memoryIndex] = !m_breakpoints[memoryIndex];
             }
         }
     }
 
     if (m_breakpoints[pc] && m_previousPC != pc)
     {
-        std::cout << "Breakpoint hit at " << std::hex << pc << std::endl;
+        spdlog::info("Breakpoint hit at 0x{:04X}", pc);
         Chip8topiaInputHandler::getInstance().m_BreakEmulationEvent.trigger();
         ImGui::SetScrollY(pc * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
     }
 
     if (m_previousPC != pc && m_followPC && !currentPcInViewport)
     {
-        ImGui::SetScrollY(pc * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
+        ImGui::SetScrollY((pc / OPCODE_SIZE) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
     }
 
     m_previousPC = pc;

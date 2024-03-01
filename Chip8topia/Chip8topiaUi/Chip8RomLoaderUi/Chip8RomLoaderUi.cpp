@@ -2,7 +2,7 @@
 
 #include <imgui.h>
 #include <ImGuiFileDialog/ImGuiFileDialog.h>
-#include <iostream>
+#include <spdlog/spdlog.h>
 
 #if defined(__EMSCRIPTEN__)
 #include <emscripten_browser_file.h>
@@ -73,7 +73,7 @@ void Chip8RomLoaderUi::drawRomWindow(Chip8topia& chip8topia) {
             }
             catch (const std::exception& e)
             {
-                std::cerr << e.what() << '\n';
+                spdlog::error(e.what());
             }
         }
 
