@@ -42,12 +42,13 @@ private:
     MemoryEditor m_memoryEditor;
     Chip8Disassembler m_disassembler;
 
-    std::array<ImGuiMenuItemWindow<Chip8CoreBase>, 6> m_menuItems = {
+    std::array<ImGuiMenuItemWindow<Chip8CoreBase>, 7> m_menuItems = {
         "Registers", INITIAL_WINDOW_STATE, [this](Chip8CoreBase* chip8) { drawRegisters(chip8); },
         "Stack", INITIAL_WINDOW_STATE, [this](Chip8CoreBase* chip8) { drawStack(chip8); },
         "Memory Editor", INITIAL_WINDOW_STATE, [this](Chip8CoreBase* chip8) { drawMemory(chip8); },
         "Keypad", INITIAL_WINDOW_STATE, [this](Chip8CoreBase* chip8) { drawKeypad(chip8); },
         "Assembly", INITIAL_WINDOW_STATE, [this](Chip8CoreBase* chip8) { drawDisassembly(chip8); },
-        "Assembly Controls", INITIAL_WINDOW_STATE, [this](Chip8CoreBase* chip8) { drawDisassemblyControls(chip8); }
+        "Assembly Controls", INITIAL_WINDOW_STATE, [this](Chip8CoreBase* chip8) { drawDisassemblyControls(chip8); },
+        "Breakpoints", INITIAL_WINDOW_STATE, [this](Chip8CoreBase* chip8) { m_disassembler.drawBreakpoints(); }
     };
 };

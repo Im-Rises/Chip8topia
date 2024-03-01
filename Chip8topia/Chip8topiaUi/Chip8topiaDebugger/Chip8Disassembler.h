@@ -20,6 +20,8 @@ public:
 
     void drawDisassemblyControls();
 
+    void drawBreakpoints();
+
 private:
     void clearBreakpoints();
 

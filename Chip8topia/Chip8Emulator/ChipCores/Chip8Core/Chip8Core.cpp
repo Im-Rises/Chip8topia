@@ -6,7 +6,7 @@
 Chip8Core::Chip8Core() : Chip8CoreBase(std::make_unique<Chip8Cpu>(), std::make_shared<Chip8Ppu>()), m_cpuCasted(dynamic_cast<Chip8Cpu*>(m_cpu.get())) {
 }
 
-void Chip8Core::clock() {
+auto Chip8Core::clock() -> bool {
     m_cpu->clock();
     m_clockCounter++;
 
@@ -16,5 +16,9 @@ void Chip8Core::clock() {
         m_cpuCasted->requestDisableHalt();
         //    dynamic_cast<Cpu*>(m_cpu.get())->requestDisableHalt(); // TODO: Find a better solution...
         m_clockCounter = 0;
+
+        return true;
     }
+
+    return false;
 }

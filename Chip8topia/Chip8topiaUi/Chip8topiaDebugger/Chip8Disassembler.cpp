@@ -19,7 +19,6 @@ void Chip8Disassembler::drawDisassembly(const std::array<uint8, Chip8Cpu::MEMORY
     clipper.Begin(Chip8Cpu::MEMORY_SIZE / OPCODE_SIZE);
     while (clipper.Step())
     {
-        // TODO: Correct, it should be 2 bytes per opcode (at the moment we are incrementing by 1 so we are printing opcodes that doesn't exist)
         for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
         {
             const int memoryIndex = i * OPCODE_SIZE;
@@ -50,12 +49,12 @@ void Chip8Disassembler::drawDisassembly(const std::array<uint8, Chip8Cpu::MEMORY
     {
         spdlog::info("Breakpoint hit at 0x{:04X}", pc);
         Chip8topiaInputHandler::getInstance().m_BreakEmulationEvent.trigger();
-        ImGui::SetScrollY((pc / OPCODE_SIZE) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
+        ImGui::SetScrollY((static_cast<float>(pc) / OPCODE_SIZE) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
     }
 
     if (m_previousPC != pc && m_followPC && !currentPcInViewport)
     {
-        ImGui::SetScrollY((pc / OPCODE_SIZE) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
+        ImGui::SetScrollY((static_cast<float>(pc) / OPCODE_SIZE) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
     }
 
     m_previousPC = pc;
@@ -65,6 +64,13 @@ void Chip8Disassembler::drawDisassemblyControls() {
     // TODO: Implement the Step, Run, Break, Load and Save buttons
 
     ImGui::Checkbox("Follow PC", &m_followPC);
+
+    if (ImGui::Button("Break"))
+    {
+        Chip8topiaInputHandler::getInstance().m_BreakEmulationEvent.trigger();
+    }
+
+    ImGui::SameLine();
 
     if (ImGui::Button("Step"))
     {
@@ -80,13 +86,6 @@ void Chip8Disassembler::drawDisassemblyControls() {
 
     ImGui::SameLine();
 
-    if (ImGui::Button("Break"))
-    {
-        Chip8topiaInputHandler::getInstance().m_BreakEmulationEvent.trigger();
-    }
-
-    ImGui::SameLine();
-
     if (ImGui::Button("Restart"))
     {
         Chip8topiaInputHandler::getInstance().m_RestartEmulationEvent.trigger();
@@ -94,12 +93,12 @@ void Chip8Disassembler::drawDisassemblyControls() {
 
     ImGui::SameLine();
 
-    if (ImGui::Button("Clear"))
+    if (ImGui::Button("Clear Breakpoints"))
     {
         clearBreakpoints();
     }
 
-    ImGui::SameLine();
+    //    ImGui::SameLine();
 
     //    if (ImGui::Button("Load"))
     //    {
@@ -110,6 +109,34 @@ void Chip8Disassembler::drawDisassemblyControls() {
     //    if (ImGui::Button("Save"))
     //    {
     //    }
+}
+
+void Chip8Disassembler::drawBreakpoints() {
+    // TODO: Add a move to the breakpoint when clicked
+    // TODO: Maybe move this to the draw disassembly controls
+
+    if (m_breakpoints.none())
+    {
+        ImGui::Text("No breakpoints");
+        return;
+    }
+
+    ImGuiListClipper clipper;
+    clipper.Begin(Chip8Cpu::MEMORY_SIZE);
+    while (clipper.Step())
+    {
+        for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
+        {
+            if (m_breakpoints[i])
+            {
+                if (ImGui::IsItemClicked())
+                {
+                    ImGui::Text("0x{:04X}", i);
+                    m_breakpoints[i] = false;
+                }
+            }
+        }
+    }
 }
 
 void Chip8Disassembler::clearBreakpoints() {

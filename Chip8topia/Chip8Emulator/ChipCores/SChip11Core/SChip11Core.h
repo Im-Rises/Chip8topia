@@ -14,7 +14,7 @@ public:
 
 public:
     [[nodiscard]] auto getType() const -> Chip8CoreType final { return Chip8CoreType::SChip11; }
-    void clock() final;
+    auto clock() -> bool final;
 
 private:
     SChip11Cpu* m_cpuCasted; // TODO: Find a better solution...

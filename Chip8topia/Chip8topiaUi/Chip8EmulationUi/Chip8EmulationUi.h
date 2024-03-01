@@ -17,6 +17,8 @@ public:
     void drawEmulationMenu(Chip8topia& chip8topia);
     void drawEmulationWindows(Chip8topia& chip8topia);
 
+    // TODO: Add new window which indicate emulation stats (fps, frame time, etc.)
+
 private:
     void drawEmulationSettings(Chip8topia* chip8topia);
 

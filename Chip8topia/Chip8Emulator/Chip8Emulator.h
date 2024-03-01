@@ -41,7 +41,9 @@ public:
         m_isBreak = true;
         m_stepNextFrame = true;
     }
-    void runEmulation() { m_isBreak = false; }
+    void runEmulation() {
+        m_isBreak = false;
+    }
     void breakEmulation() { m_isBreak = true; }
 
 private:

@@ -18,7 +18,7 @@ void Chip8CoreBase::readRom(const std::vector<uint8>& rom) {
     m_cpu->readRom(rom);
 }
 
-void Chip8CoreBase::clock() {
+auto Chip8CoreBase::clock() -> bool {
     m_cpu->clock();
     m_clockCounter++;
 
@@ -26,7 +26,11 @@ void Chip8CoreBase::clock() {
     {
         m_cpu->clockTimers();
         m_clockCounter = 0;
+
+        return true;
     }
+
+    return false;
 }
 
 void Chip8CoreBase::updateKey(const uint8 key, const bool pressed) {
