@@ -34,7 +34,7 @@ public:
 public:
     [[nodiscard]] virtual auto getType() const -> Chip8CoreType = 0;
     void readRom(const std::vector<uint8>& rom);
-    virtual void clock() = 0;
+    virtual void clock();
     void updateKey(const uint8 key, const bool pressed);
     void reset();
 

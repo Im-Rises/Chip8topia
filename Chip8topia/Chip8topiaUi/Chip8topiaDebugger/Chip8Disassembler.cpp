@@ -50,7 +50,7 @@ void Chip8Disassembler::drawDisassembly(const std::array<uint8, Chip8Cpu::MEMORY
     {
         spdlog::info("Breakpoint hit at 0x{:04X}", pc);
         Chip8topiaInputHandler::getInstance().m_BreakEmulationEvent.trigger();
-        ImGui::SetScrollY(pc * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
+        ImGui::SetScrollY((pc / OPCODE_SIZE) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
     }
 
     if (m_previousPC != pc && m_followPC && !currentPcInViewport)

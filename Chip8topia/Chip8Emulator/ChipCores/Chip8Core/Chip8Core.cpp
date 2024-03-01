@@ -7,14 +7,14 @@ Chip8Core::Chip8Core() : Chip8CoreBase(std::make_unique<Chip8Cpu>(), std::make_s
 }
 
 void Chip8Core::clock() {
-    while (m_clockCounter < CpuBase::CLOCK_FREQUENCY / SCREEN_AND_TIMERS_FREQUENCY)
-    {
-        m_cpu->clock();
-        m_clockCounter++;
-    }
+    m_cpu->clock();
+    m_clockCounter++;
 
-    m_cpu->clockTimers();
-    //    dynamic_cast<Cpu*>(m_cpu.get())->requestDisableHalt(); // TODO: Find a better solution...
-    m_cpuCasted->requestDisableHalt();
-    m_clockCounter = 0;
+    if (m_clockCounter >= CpuBase::CLOCK_FREQUENCY / SCREEN_AND_TIMERS_FREQUENCY)
+    {
+        m_cpu->clockTimers();
+        m_cpuCasted->requestDisableHalt();
+        //    dynamic_cast<Cpu*>(m_cpu.get())->requestDisableHalt(); // TODO: Find a better solution...
+        m_clockCounter = 0;
+    }
 }

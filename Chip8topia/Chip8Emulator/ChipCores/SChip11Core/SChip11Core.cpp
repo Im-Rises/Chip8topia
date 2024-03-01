@@ -7,14 +7,14 @@ SChip11Core::SChip11Core() : Chip8CoreBase(std::make_unique<SChip11Cpu>(), std::
 }
 
 void SChip11Core::clock() {
-    while (m_clockCounter < CpuBase::CLOCK_FREQUENCY / SCREEN_AND_TIMERS_FREQUENCY)
-    {
-        m_cpu->clock();
-        m_clockCounter++;
-    }
+    m_cpu->clock();
+    m_clockCounter++;
 
-    m_cpu->clockTimers();
-    m_cpuCasted->requestDisableHalt();
-    //   dynamic_cast<Cpu*>(m_cpu.get())->requestDisableHalt(); // TODO: Find a better solution...
-    m_clockCounter = 0;
+    if (m_clockCounter >= CpuBase::CLOCK_FREQUENCY / SCREEN_AND_TIMERS_FREQUENCY)
+    {
+        m_cpu->clockTimers();
+        m_cpuCasted->requestDisableHalt();
+        //   dynamic_cast<Cpu*>(m_cpu.get())->requestDisableHalt(); // TODO: Find a better solution...
+        m_clockCounter = 0;
+    }
 }
