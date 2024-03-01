@@ -70,6 +70,7 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [x] Correct all preprocessing directives for emscripten for key inputs
 - [-] Creer une struct qui définie le nom de la touche shortcut avec le string et le keycode
 - [-] Add imgui.ini to the .data emscripten build
+- [-] Change to init m_chip8topiaUi and m_chip8emulator in the game loop
 - [x] Add the rom name on the window title and the Chip8 emulated version
 - [x] Add a way to choose the version of the chip8 to emulate
 - [x] Correct the minimized window not putting windows at the top when unminimizing
@@ -77,18 +78,19 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [x] Correct display in HIRES mode which is doing weird things
 - [x] Check the test roms, currently quirks test is perfect for the SCHIPC Modern and not for the SCHIP1.1, need to add
 - [x] Copy the core of SCHIP1.1 before the display wait and it will be the perfect SCHIPC Modern (need to change the CPU
-
+- [x] Handle spdlog or iosstream for logging
+- [x] Ajouter bouton au desassembleur pour suivre le point de debug. Et surtout en pas à pas faire qu'on le suive tout
+  le temps !!!!!!!
+- [x] Add break, run, step to the debugger
+-
 - [ ] Finish SCHIPC Modern
 - [ ] Check emscripten canvas resize
-- [ ] Handle spdlog or iosstream for logging
 
-- [ ] Add break, run, step to the debugger
-- [ ] Change to init m_chip8topiaUi and m_chip8emulator in the game loop
+- [ ] The getPC and getPc are not named the same, correct that
 - [ ] Add emulation sound
-- [ ] Add save states ? (if yes create a window with an image preview of the save state)
+- [ ] Add save states ? (if yes create a window with an image preview of the save state) ajouter dans la section File de
+  main bar
 - [ ] For the std::vector use ref or move... For the rom loading
-- [ ] Ajouter bouton au desassembleur pour suivre le point de debug. Et surtout en pas à pas faire qu'on le suive tout
-  le temps !!!!!!!
 - [ ] Dans la section Émulation rajouter une window "émulation info" avec les fps, etc...
 - [ ] Is aucune chip8 n'est chargé alors on draw avec un shader dans Chip8topia. Ce dernier aura l'image en background.
   (Faire un tableau 1d dans le .h avec les valeurs 0 à 1 ou 255.

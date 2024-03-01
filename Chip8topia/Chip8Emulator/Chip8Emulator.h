@@ -1,6 +1,9 @@
 #pragma once
 
+#include <bitset>
+
 #include "ChipCores/Chip8Core/Chip8Core.h"
+#include "Chip8CoreBase/Core/CpuBase.h"
 #include "Chip8Emulator/Chip8VideoEmulation.h"
 // #include "Chip8Emulation/Chip8SoundEmulation.h"
 
@@ -37,13 +40,18 @@ public:
     void switchFrequency(const Chip8Frequency frequency);
     [[nodiscard]] auto getFrequency() const -> Chip8Frequency;
 
+    auto getBreakpoints() -> std::bitset<CpuBase::MEMORY_SIZE>& { return m_breakpoints; }
+    void clearBreakpoints() { m_breakpoints.reset(); }
+
     void stepEmulation() {
         m_isBreak = true;
         m_stepNextFrame = true;
     }
+
     void runEmulation() {
         m_isBreak = false;
     }
+
     void breakEmulation() { m_isBreak = true; }
 
 private:
@@ -58,10 +66,11 @@ private:
 
     bool m_isRomLoaded = false;
     bool m_isTurboMode = false;
-    //    bool m_isPaused = false;
 
     float m_accumulator = 0.0F;
 
     bool m_isBreak = false;
     bool m_stepNextFrame = false;
+
+    std::bitset<CpuBase::MEMORY_SIZE> m_breakpoints;
 };

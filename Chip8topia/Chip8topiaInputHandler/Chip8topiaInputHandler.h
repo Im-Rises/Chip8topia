@@ -36,12 +36,12 @@ public:
 #if !defined(BUILD_RELEASE)
     SingleSubscriberEvent<> m_DebugRomFastLoadEvent;
 #endif
+    SingleSubscriberEvent<> m_BreakEmulationEvent;
     SingleSubscriberEvent<> m_StepEmulationEvent;
     SingleSubscriberEvent<> m_RunEmulationEvent;
-    SingleSubscriberEvent<> m_BreakEmulationEvent;
-
-    //    SingleSubscriberEvent<> m_PauseEmulationEvent; // TODO: Maybe pause is useless, we have break?
+    SingleSubscriberEvent<> m_ClearBreakpointsEvent;
     SingleSubscriberEvent<> m_RestartEmulationEvent;
+
     SingleSubscriberEvent<> m_OpenRomExplorerEvent;
 
     SingleSubscriberEvent<const uint8, const bool> m_GameInput;
