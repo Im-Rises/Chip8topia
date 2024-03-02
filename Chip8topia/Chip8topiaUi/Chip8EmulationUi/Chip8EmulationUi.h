@@ -1,5 +1,7 @@
 #pragma once
 
+#include <array>
+
 #include "../ImGuiHelper/ImGuiHelper.h"
 #include "../../Chip8Emulator/Chip8CoreBase/Chip8CoreBase.h"
 
@@ -15,21 +17,26 @@ public:
 
 public:
     void drawEmulationMenu(Chip8topia& chip8topia);
+
     void drawEmulationWindows(Chip8topia& chip8topia);
 
+    void closeAllWindows();
     // TODO: Add new window which indicate emulation stats (fps, frame time, etc.)
 
 private:
+    void drawEmulationStats(Chip8topia& chip8topia);
     void drawEmulationSettings(Chip8topia* chip8topia);
 
 private:
-    ImGuiMenuItemWindow<Chip8topia> m_Chip8SettingsMenuItem = { "Chip8 Settings",
 #if defined(BUILD_RELEASE)
-        true,
+    static constexpr auto INITIAL_WINDOW_CHIP8_SETTINGS = true;
 #else
-        false,
+    static constexpr auto INITIAL_WINDOW_CHIP8_SETTINGS = false;
 #endif
-        [this](Chip8topia* chip8topia) { drawEmulationSettings(chip8topia); } };
+    std::array<ImGuiMenuItemWindow<Chip8topia>, 2> m_menuItems = {
+        "Emulation Stats", true, [this](Chip8topia* chip8topia) { drawEmulationStats(*chip8topia); },
+        "Chip8 Settings", INITIAL_WINDOW_CHIP8_SETTINGS, [this](Chip8topia* chip8topia) { drawEmulationSettings(chip8topia); }
+    };
 
     Chip8CoreType m_selectedCore = Chip8CoreType::Chip8;
     Chip8Frequency m_selectedFrequency = Chip8Frequency::FREQ_1200_HZ;

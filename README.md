@@ -154,12 +154,14 @@ emmake make -C build
 - [x] Add break, run, step to the debugger
 - [x] Correct break which still break on run
 - [x] Finish SCHIPC
+- [x] Correct to not link or use spdlog in release mode
+- [x] The getPC and getPc are not named the same, correct that
+- [x] Dans la section Émulation rajouter une window "émulation info" avec les fps, etc...
 
-- [ ] The getPC and getPc are not named the same, correct that
-- [ ] Correct to not link or use spdlog in release mode
-- [ ] Dans la section Émulation rajouter une window "émulation info" avec les fps, etc...
 - [ ] Add a way to change the frequency of the emulator
+
 - [ ] Add Xo-Chip emulation
+- [ ] Reorder code between events and direct call to emulator
 - [ ] Check emscripten canvas resize
 - [ ] Adapt view to still be in 16:9 ratio
 - [ ] Add emulation sound

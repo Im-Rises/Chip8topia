@@ -12,6 +12,7 @@ Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<Chip8Core>()) {
     inputHandler.m_GameInput.subscribe(this, &Chip8Emulator::OnInput);
     inputHandler.m_RestartEmulationEvent.subscribe(this, &Chip8Emulator::restart);
 
+    //    inputHandler.m_StopEmulationEvent.subscribe(this, &Chip8Emulator::stop);
     inputHandler.m_BreakEmulationEvent.subscribe(this, &Chip8Emulator::breakEmulation);
     inputHandler.m_StepEmulationEvent.subscribe(this, &Chip8Emulator::stepEmulation);
     inputHandler.m_RunEmulationEvent.subscribe(this, &Chip8Emulator::runEmulation);
@@ -23,6 +24,7 @@ Chip8Emulator::~Chip8Emulator() {
     inputHandler.m_GameInput.unsubscribe(this, &Chip8Emulator::OnInput);
     inputHandler.m_RestartEmulationEvent.unsubscribe(this, &Chip8Emulator::restart);
 
+    //    inputHandler.m_StopEmulationEvent.unsubscribe(this, &Chip8Emulator::stop);
     inputHandler.m_BreakEmulationEvent.unsubscribe(this, &Chip8Emulator::breakEmulation);
     inputHandler.m_StepEmulationEvent.unsubscribe(this, &Chip8Emulator::stepEmulation);
     inputHandler.m_RunEmulationEvent.unsubscribe(this, &Chip8Emulator::runEmulation);
@@ -80,6 +82,10 @@ void Chip8Emulator::render() {
     // But because there is no real vsync, its no use
     m_videoEmulation.updateTexture(m_core);
     m_videoEmulation.update(m_core);
+}
+
+void Chip8Emulator::stop() {
+    m_isRomLoaded = false;
 }
 
 void Chip8Emulator::setIsTurboMode(const bool isTurboMode) {

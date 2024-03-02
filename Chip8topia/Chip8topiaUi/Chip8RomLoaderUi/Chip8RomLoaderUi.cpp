@@ -41,6 +41,11 @@ void Chip8RomLoaderUi::drawFileMenu(Chip8topia& chip8topia) {
         }
 #endif
 
+        if (ImGui::MenuItem("Eject rom", "E"))
+        {
+            chip8topia.getChip8Emulator().stop();
+        }
+
 #ifndef __EMSCRIPTEN__
         if (ImGui::MenuItem("Exit", "ESCAPE"))
         {
@@ -107,6 +112,10 @@ void Chip8RomLoaderUi::handle_upload_file(std::string const& filename, std::stri
     }
 }
 #endif
+
+void Chip8RomLoaderUi::closeAllWindows() {
+    ImGuiFileDialog::Instance()->Close();
+}
 
 void Chip8RomLoaderUi::openRomWindow() {
     IGFD::FileDialogConfig config;

@@ -17,6 +17,7 @@ public:
 public:
     void drawVideoMenu();
     void drawVideoWindows(Chip8Emulator& emulator);
+    void closeAllWindows();
 
 private:
     void drawBackgroundColor(Chip8Emulator* emulator);

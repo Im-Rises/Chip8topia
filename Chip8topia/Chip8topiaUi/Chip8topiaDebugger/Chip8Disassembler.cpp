@@ -52,24 +52,24 @@ void Chip8Disassembler::drawDisassembly(Chip8Emulator* emulator) {
         }
     }
 
-    if (m_previousPC != pc && m_followPC && !currentPcInViewport)
+    if (m_previousPc != pc && m_followPc && !currentPcInViewport)
     {
         ImGui::SetScrollY((static_cast<float>(pc) / OPCODE_SIZE) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
     }
 
-    if (m_requestMoveToPC)
+    if (m_requestMoveToPc)
     {
-        m_requestMoveToPC = false;
-        ImGui::SetScrollY((static_cast<float>(m_requestedPC) / OPCODE_SIZE) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
+        m_requestMoveToPc = false;
+        ImGui::SetScrollY((static_cast<float>(m_requestedPc) / OPCODE_SIZE) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
     }
 
-    m_previousPC = pc;
+    m_previousPc = pc;
 }
 
 void Chip8Disassembler::drawDisassemblyControls(Chip8Emulator* emulator) {
     Chip8topiaInputHandler& inputHandler = Chip8topiaInputHandler::getInstance();
 
-    ImGui::Checkbox("Follow PC", &m_followPC);
+    ImGui::Checkbox("Follow PC", &m_followPc);
 
     ImGui::SameLine();
 
@@ -133,9 +133,9 @@ void Chip8Disassembler::drawBreakpoints(Chip8Emulator* emulator) {
                 ImGui::TableSetColumnIndex(1);
                 if (ImGui::Button(fmt::format("Goto##{}", i).c_str()))
                 {
-                    m_requestMoveToPC = true;
-                    m_requestedPC = i;
-                    m_followPC = false;
+                    m_requestMoveToPc = true;
+                    m_requestedPc = i;
+                    m_followPc = false;
                 }
                 ImGui::TableSetColumnIndex(2);
                 if (ImGui::Button(fmt::format("X##{}", i).c_str()))

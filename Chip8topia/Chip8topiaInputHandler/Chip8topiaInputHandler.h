@@ -25,6 +25,14 @@ public:
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
 public:
+    /* UI Events */
+    //    SingleSubscriberEvent<> m_StopEmulationEvent;
+    SingleSubscriberEvent<> m_BreakEmulationEvent;
+    SingleSubscriberEvent<> m_StepEmulationEvent;
+    SingleSubscriberEvent<> m_RunEmulationEvent;
+    SingleSubscriberEvent<> m_ClearBreakpointsEvent;
+
+    /* Input Events */
 #ifndef __EMSCRIPTEN__
     SingleSubscriberEvent<> m_ExitChip8topiaEvent;
     SingleSubscriberEvent<> m_ToggleTurboModeEvent;
@@ -34,17 +42,9 @@ public:
 #if !defined(BUILD_RELEASE)
     SingleSubscriberEvent<> m_DebugRomFastLoadEvent;
 #endif
-
     SingleSubscriberEvent<> m_ToggleMainBarEvent;
-    SingleSubscriberEvent<> m_ToggleWindowsVisibilityEvent;
-    SingleSubscriberEvent<> m_BreakEmulationEvent;
-    SingleSubscriberEvent<> m_StepEmulationEvent;
-    SingleSubscriberEvent<> m_RunEmulationEvent;
-    SingleSubscriberEvent<> m_ClearBreakpointsEvent;
+    SingleSubscriberEvent<> m_CloseAllWindowsEvent;
     SingleSubscriberEvent<> m_RestartEmulationEvent;
-    //    SingleSubscriberEvent<> m_ToggleCanBreakEvent;
-
     SingleSubscriberEvent<> m_OpenRomExplorerEvent;
-
     SingleSubscriberEvent<const uint8, const bool> m_GameInput;
 };

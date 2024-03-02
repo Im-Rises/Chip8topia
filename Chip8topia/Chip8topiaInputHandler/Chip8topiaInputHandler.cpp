@@ -17,6 +17,10 @@ void Chip8topiaInputHandler::key_callback(GLFWwindow* /*window*/, int key, int /
     {
         switch (key)
         {
+        case GLFW_KEY_U: inputHandler.m_ToggleMainBarEvent.trigger(); break;
+        case GLFW_KEY_I: inputHandler.m_CloseAllWindowsEvent.trigger(); break;
+        case GLFW_KEY_L: inputHandler.m_RestartEmulationEvent.trigger(); break;
+        case GLFW_KEY_O: inputHandler.m_OpenRomExplorerEvent.trigger(); break;
 #ifndef __EMSCRIPTEN__
         case GLFW_KEY_ESCAPE: inputHandler.m_ExitChip8topiaEvent.trigger(); break;
         case GLFW_KEY_Y: inputHandler.m_ToggleTurboModeEvent.trigger(); break;
@@ -26,11 +30,6 @@ void Chip8topiaInputHandler::key_callback(GLFWwindow* /*window*/, int key, int /
 #if !defined(BUILD_RELEASE)
         case GLFW_KEY_F12: inputHandler.m_DebugRomFastLoadEvent.trigger(); break;
 #endif
-
-        case GLFW_KEY_U: inputHandler.m_ToggleMainBarEvent.trigger(); break;
-        case GLFW_KEY_I: inputHandler.m_ToggleWindowsVisibilityEvent.trigger(); break;
-        case GLFW_KEY_L: inputHandler.m_RestartEmulationEvent.trigger(); break;
-        case GLFW_KEY_O: inputHandler.m_OpenRomExplorerEvent.trigger(); break;
 
         case GLFW_KEY_1: inputHandler.m_GameInput.trigger(0x1, true); break;
         case GLFW_KEY_2: inputHandler.m_GameInput.trigger(0x2, true); break;

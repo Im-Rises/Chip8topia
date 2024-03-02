@@ -8,14 +8,14 @@ Chip8topiaUi::Chip8topiaUi() {
 #ifndef __EMSCRIPTEN__
     Chip8topiaInputHandler::getInstance().m_ToggleMainBarEvent.subscribe(this, &Chip8topiaUi::toggleMenuBarVisibility);
 #endif
-    Chip8topiaInputHandler::getInstance().m_ToggleWindowsVisibilityEvent.subscribe(this, &Chip8topiaUi::toggleWindowsVisibility);
+    Chip8topiaInputHandler::getInstance().m_CloseAllWindowsEvent.subscribe(this, &Chip8topiaUi::closeAllWindows);
 }
 
 Chip8topiaUi::~Chip8topiaUi() {
 #ifndef __EMSCRIPTEN__
     Chip8topiaInputHandler::getInstance().m_ToggleMainBarEvent.unsubscribe(this, &Chip8topiaUi::toggleMenuBarVisibility);
 #endif
-    Chip8topiaInputHandler::getInstance().m_ToggleWindowsVisibilityEvent.unsubscribe(this, &Chip8topiaUi::toggleWindowsVisibility);
+    Chip8topiaInputHandler::getInstance().m_CloseAllWindowsEvent.unsubscribe(this, &Chip8topiaUi::closeAllWindows);
 }
 
 void Chip8topiaUi::drawUi(Chip8topia& chip8topia) {
@@ -35,19 +35,16 @@ void Chip8topiaUi::drawMainMenuBar(Chip8topia& chip8topia) {
         ImGui::EndMainMenuBar();
     }
 
-    if (m_areWindowsVisible)
-    {
-        m_chip8VideoUi.drawVideoWindows(chip8topia.getChip8Emulator());
-        m_chip8topiaDebugger.drawDebuggerWindows(chip8topia.getChip8Emulator());
+    m_chip8VideoUi.drawVideoWindows(chip8topia.getChip8Emulator());
+    m_chip8topiaDebugger.drawDebuggerWindows(chip8topia.getChip8Emulator());
 
-        m_chip8RomLoaderUi.drawRomWindow(chip8topia);
-        m_chip8EmulationUi.drawEmulationWindows(chip8topia);
-        m_chip8About.drawAboutWindows();
+    m_chip8RomLoaderUi.drawRomWindow(chip8topia);
+    m_chip8EmulationUi.drawEmulationWindows(chip8topia);
+    m_chip8About.drawAboutWindows();
 
 #if !defined(BUILD_RELEASE)
-        ImGui::ShowDemoWindow();
+    ImGui::ShowDemoWindow();
 #endif
-    }
 }
 
 void Chip8topiaUi::drawViewMenu(Chip8topia& chip8topia) {
@@ -55,9 +52,9 @@ void Chip8topiaUi::drawViewMenu(Chip8topia& chip8topia) {
     {
         ImGui::MenuItem("Show/Hide MenuBar", "U", &m_isMenuBarOpen);
 
-        if (ImGui::MenuItem("Show/Hide Windows", "I"))
+        if (ImGui::MenuItem("Close all Windows", "I"))
         {
-            // set to off/on all windows
+            closeAllWindows();
         }
 
 #ifndef __EMSCRIPTEN__
@@ -80,6 +77,10 @@ void Chip8topiaUi::toggleMenuBarVisibility() {
     m_isMenuBarOpen = !m_isMenuBarOpen;
 }
 
-void Chip8topiaUi::toggleWindowsVisibility() {
-    m_areWindowsVisible = !m_areWindowsVisible;
+void Chip8topiaUi::closeAllWindows() {
+    m_chip8VideoUi.closeAllWindows();
+    m_chip8topiaDebugger.closeAllWindows();
+    m_chip8RomLoaderUi.closeAllWindows();
+    m_chip8EmulationUi.closeAllWindows();
+    //    m_chip8About.closeAboutWindows();
 }

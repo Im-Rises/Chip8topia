@@ -9,17 +9,15 @@
 void Chip8EmulationUi::drawEmulationMenu(Chip8topia& chip8topia) {
     if (ImGui::BeginMenu("Engine/Emulation"))
     {
-        m_Chip8SettingsMenuItem.drawMenuItem();
+        for (auto& menuItem : m_menuItems)
+        {
+            menuItem.drawMenuItem();
+        }
 
         if (ImGui::MenuItem(fmt::format("Toggle turbo mode : {}", chip8topia.getIsTurboMode() ? "ON " : "OFF").c_str(), "Y"))
         {
             chip8topia.toggleTurboMode();
         }
-
-        //        if (ImGui::MenuItem(chip8topia.getChip8Emulator().getIsPaused() ? "Resume" : "Pause", "P"))
-        //        {
-        //            Chip8topiaInputHandler::getInstance().m_PauseEmulationEvent.trigger();
-        //        }
 
         if (ImGui::MenuItem("Restart", "L"))
         {
@@ -31,7 +29,25 @@ void Chip8EmulationUi::drawEmulationMenu(Chip8topia& chip8topia) {
 }
 
 void Chip8EmulationUi::drawEmulationWindows(Chip8topia& chip8topia) {
-    m_Chip8SettingsMenuItem.drawWindow(&chip8topia);
+    for (auto& menuItem : m_menuItems)
+    {
+        menuItem.drawWindow(&chip8topia);
+    }
+}
+
+void Chip8EmulationUi::closeAllWindows() {
+    for (auto& menuItem : m_menuItems)
+    {
+        menuItem.m_isOpen = false;
+    }
+}
+
+void Chip8EmulationUi::drawEmulationStats(Chip8topia& chip8topia) {
+    ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);                     // TODO: Use the chip8topia's fps
+    ImGui::Text("Frame time: %.3f ms", 1000.0F / ImGui::GetIO().Framerate); // Same as above
+    ImGui::Text("Clock count this frame: %llu", chip8topia.getChip8Emulator().getClockCountThisFrame());
+    //    ImGui::Text("Total frames: %llu", chip8topia.getChip8Emulator().getTotalFrames());
+    //    ImGui::Text("Get total clock count: %llu", chip8topia.getChip8Emulator().getTotalCycles());
 }
 
 void Chip8EmulationUi::drawEmulationSettings(Chip8topia* chip8topia) {
@@ -65,20 +81,23 @@ void Chip8EmulationUi::drawEmulationSettings(Chip8topia* chip8topia) {
     ImGui::TextColored(ImVec4(1.0F, 1.0F, 0.0F, 1.0F), "Emulation Speed");
     if (ImGui::Selectable("600HZ", m_selectedFrequency == Chip8Frequency::FREQ_600_HZ))
     {
+        m_selectedFrequency = Chip8Frequency::FREQ_600_HZ;
     }
 
     if (ImGui::Selectable("1200HZ", m_selectedFrequency == Chip8Frequency::FREQ_1200_HZ))
     {
+        m_selectedFrequency = Chip8Frequency::FREQ_1200_HZ;
     }
 
     if (ImGui::Selectable("1800HZ", m_selectedFrequency == Chip8Frequency::FREQ_1800_HZ))
     {
+        m_selectedFrequency = Chip8Frequency::FREQ_1800_HZ;
     }
 
     ImGui::Separator();
     if (ImGui::Button("Apply"))
     {
         emulator.switchCore(m_selectedCore);
-        m_Chip8SettingsMenuItem.m_isOpen = false;
+        emulator.switchFrequency(m_selectedFrequency);
     }
 }

@@ -24,6 +24,7 @@ public:
     void update(const float deltaTime);
     void render();
 
+    void stop();
     //    void togglePause();
 
     void setIsTurboMode(const bool isTurboMode);
@@ -39,6 +40,8 @@ public:
     [[nodiscard]] auto getCoreType() const -> Chip8CoreType;
     void switchFrequency(const Chip8Frequency frequency);
     [[nodiscard]] auto getFrequency() const -> Chip8Frequency;
+
+    auto getClockCountThisFrame() -> uint32 { return m_core->getClockCountThisFrame(); }
 
     auto getCanBreak() -> bool* { return &m_canBreak; }
 

@@ -41,6 +41,7 @@ public:
     virtual auto clock() -> bool;
     void updateKey(const uint8 key, const bool pressed);
     void reset();
+    auto getClockCountThisFrame() -> uint32 { return m_clockCounter; }
 
 public:
     [[nodiscard]] auto getCpu() -> std::unique_ptr<CpuBase>& { return m_cpu; }
