@@ -3,6 +3,8 @@
 #include <imgui.h>
 #include <functional>
 
+// TODO: Create common base class for ImGuiMenuItemWindow and ImGuiMenuItemPopup
+
 template <typename... Args>
 struct ImGuiMenuItemWindow {
     const char* m_name;

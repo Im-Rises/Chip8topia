@@ -8,12 +8,14 @@ Chip8topiaUi::Chip8topiaUi() {
 #ifndef __EMSCRIPTEN__
     Chip8topiaInputHandler::getInstance().m_ToggleMainBarEvent.subscribe(this, &Chip8topiaUi::toggleMenuBarVisibility);
 #endif
+    Chip8topiaInputHandler::getInstance().m_ToggleWindowsVisibilityEvent.subscribe(this, &Chip8topiaUi::toggleWindowsVisibility);
 }
 
 Chip8topiaUi::~Chip8topiaUi() {
 #ifndef __EMSCRIPTEN__
     Chip8topiaInputHandler::getInstance().m_ToggleMainBarEvent.unsubscribe(this, &Chip8topiaUi::toggleMenuBarVisibility);
 #endif
+    Chip8topiaInputHandler::getInstance().m_ToggleWindowsVisibilityEvent.unsubscribe(this, &Chip8topiaUi::toggleWindowsVisibility);
 }
 
 void Chip8topiaUi::drawUi(Chip8topia& chip8topia) {
@@ -33,17 +35,19 @@ void Chip8topiaUi::drawMainMenuBar(Chip8topia& chip8topia) {
         ImGui::EndMainMenuBar();
     }
 
+    if (m_areWindowsVisible)
+    {
+        m_chip8VideoUi.drawVideoWindows(chip8topia.getChip8Emulator());
+        m_chip8topiaDebugger.drawDebuggerWindows(chip8topia.getChip8Emulator());
 
-    m_chip8VideoUi.drawVideoWindows(chip8topia.getChip8Emulator());
-    m_chip8topiaDebugger.drawDebuggerWindows(chip8topia.getChip8Emulator());
-
-    m_chip8RomLoaderUi.drawRomWindow(chip8topia);
-    m_chip8EmulationUi.drawEmulationWindows(chip8topia);
-    m_chip8About.drawAboutWindows();
+        m_chip8RomLoaderUi.drawRomWindow(chip8topia);
+        m_chip8EmulationUi.drawEmulationWindows(chip8topia);
+        m_chip8About.drawAboutWindows();
 
 #if !defined(BUILD_RELEASE)
-    ImGui::ShowDemoWindow();
+        ImGui::ShowDemoWindow();
 #endif
+    }
 }
 
 void Chip8topiaUi::drawViewMenu(Chip8topia& chip8topia) {
@@ -74,4 +78,8 @@ void Chip8topiaUi::drawViewMenu(Chip8topia& chip8topia) {
 
 void Chip8topiaUi::toggleMenuBarVisibility() {
     m_isMenuBarOpen = !m_isMenuBarOpen;
+}
+
+void Chip8topiaUi::toggleWindowsVisibility() {
+    m_areWindowsVisible = !m_areWindowsVisible;
 }
