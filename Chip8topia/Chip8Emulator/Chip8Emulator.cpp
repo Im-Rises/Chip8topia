@@ -2,11 +2,9 @@
 
 #include "../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
 
-// TODO: Change this to create right instance of the core
 #include "ChipCores/Chip8Core/Chip8Core.h"
 #include "ChipCores/SChip11Core/SChip11Core.h"
-// TODO: Remove the line below
-#include "Chip8CoreBase/Core/CpuBase.h"
+#include "ChipCores/SchipCCore/SChipCCore.h"
 #include <spdlog/spdlog.h>
 
 // Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<SChip11Core>()) {
@@ -65,8 +63,8 @@ void Chip8Emulator::update(const float deltaTime) {
         if (m_isTurboMode || m_accumulator >= 1.0F / Chip8Core::SCREEN_AND_TIMERS_FREQUENCY)
         {
             m_accumulator = 0.0F;
-            bool screenUpdated = false;          // TODO: Rename this variable
-            while (!screenUpdated && !m_isBreak) // TODO: Use the screenUpdated variable its also stopping the loop?
+            bool screenUpdated = false;
+            while (!screenUpdated && !m_isBreak)
             {
                 screenUpdated = m_core->clock();
                 if (m_breakpoints[m_core->getCpu()->getPc()] && m_canBreak)
@@ -108,6 +106,7 @@ void Chip8Emulator::switchCore(const Chip8CoreType coreType) {
         m_core = std::make_unique<SChip11Core>();
         break;
     case Chip8CoreType::SChipC:
+        m_core = std::make_unique<SChipCCore>();
         break;
     case Chip8CoreType::XoChip:
         break;

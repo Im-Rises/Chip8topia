@@ -43,17 +43,18 @@ void Chip8EmulationUi::drawEmulationSettings(Chip8topia* chip8topia) {
 
     ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Console version");
     ImGui::Text("Current core: %d", emulator.getCoreType());
-    if (ImGui::Selectable("Chip8", m_selectedCore == Chip8CoreType::Chip8))
+    Chip8CoreType selectedCore = emulator.getCoreType();
+    if (ImGui::Selectable("Chip8", selectedCore == Chip8CoreType::Chip8))
     {
-        m_selectedCore = Chip8CoreType::Chip8;
+        selectedCore = Chip8CoreType::Chip8;
     }
-    if (ImGui::Selectable("SChip 1.1 (Legacy)", m_selectedCore == Chip8CoreType::SChip11))
+    if (ImGui::Selectable("SChip 1.1 (Legacy)", selectedCore == Chip8CoreType::SChip11))
     {
-        m_selectedCore = Chip8CoreType::SChip11;
+        selectedCore = Chip8CoreType::SChip11;
     }
-    if (ImGui::Selectable("SChipC (Modern)", emulator.getCoreType() == Chip8CoreType::SChipC))
+    if (ImGui::Selectable("SChipC (Modern)", selectedCore == Chip8CoreType::SChipC))
     {
-        m_selectedCore = Chip8CoreType::SChipC;
+        selectedCore = Chip8CoreType::SChipC;
     }
     //    if (ImGui::Selectable("Xo-Chip", emulator.getCoreType() == Chip8CoreType::XoChip))
     //    {
@@ -69,7 +70,7 @@ void Chip8EmulationUi::drawEmulationSettings(Chip8topia* chip8topia) {
     ImGui::Separator();
     if (ImGui::Button("Apply"))
     {
-        emulator.switchCore(m_selectedCore);
+        emulator.switchCore(selectedCore);
         m_Chip8SettingsMenuItem.m_isOpen = false;
     }
 }

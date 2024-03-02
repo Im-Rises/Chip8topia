@@ -41,6 +41,7 @@ public:
     SingleSubscriberEvent<> m_RunEmulationEvent;
     SingleSubscriberEvent<> m_ClearBreakpointsEvent;
     SingleSubscriberEvent<> m_RestartEmulationEvent;
+    //    SingleSubscriberEvent<> m_ToggleCanBreakEvent;
 
     SingleSubscriberEvent<> m_OpenRomExplorerEvent;
 

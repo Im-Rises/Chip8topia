@@ -16,10 +16,13 @@ public:
 
 public:
     void drawDisassembly(Chip8Emulator* emulator);
-    void drawDisassemblyControls();
+    void drawDisassemblyControls(Chip8Emulator* emulator);
     void drawBreakpoints(Chip8Emulator* emulator);
 
 private:
     bool m_followPC = true;
     uint16 m_previousPC = 0;
+
+    bool m_requestMoveToPC = false;
+    uint16 m_requestedPC = 0;
 };

@@ -36,7 +36,7 @@ private:
     void drawMemory(Chip8CoreBase* chip8);
     void drawKeypad(Chip8CoreBase* chip8);
     void drawDisassembly(Chip8Emulator* emulator);
-    void drawDisassemblyControls();
+    void drawDisassemblyControls(Chip8Emulator* emulator);
 
 private:
     MemoryEditor m_memoryEditor;
@@ -48,7 +48,7 @@ private:
         "Memory Editor", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator) { drawMemory(emulator->getChip8Core()); },
         "Keypad", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator) { drawKeypad(emulator->getChip8Core()); },
         "Assembly", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator) { drawDisassembly(emulator); },
-        "Assembly Controls", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator) { drawDisassemblyControls(); },
+        "Assembly Controls", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator) { drawDisassemblyControls(emulator); },
         "Breakpoints", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator) { m_disassembler.drawBreakpoints(emulator); }
     };
 };

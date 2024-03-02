@@ -55,17 +55,23 @@ void Chip8Disassembler::drawDisassembly(Chip8Emulator* emulator) {
         ImGui::SetScrollY((static_cast<float>(pc) / OPCODE_SIZE) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
     }
 
+    if (m_requestMoveToPC)
+    {
+        m_requestMoveToPC = false;
+        ImGui::SetScrollY((static_cast<float>(m_requestedPC) / OPCODE_SIZE) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
+    }
+
     m_previousPC = pc;
 }
 
-void Chip8Disassembler::drawDisassemblyControls() {
+void Chip8Disassembler::drawDisassemblyControls(Chip8Emulator* emulator) {
     Chip8topiaInputHandler& inputHandler = Chip8topiaInputHandler::getInstance();
 
     ImGui::Checkbox("Follow PC", &m_followPC);
-    //    if(ImGui::Checkbox("Can break", &m_canBreak))
-    //    {
-    //        inputHandler.m_CanBreakEvent.trigger(m_canBreak);
-    //    }
+
+    ImGui::SameLine();
+
+    ImGui::Checkbox("Can break", emulator->getCanBreak());
 
     if (ImGui::Button("Break"))
     {
@@ -103,30 +109,40 @@ void Chip8Disassembler::drawDisassemblyControls() {
 }
 
 void Chip8Disassembler::drawBreakpoints(Chip8Emulator* emulator) {
-    // TODO: Add a move to the breakpoint when clicked
     // TODO: Maybe move this to the draw disassembly controls
+    // TODO: Add breakpoints move to the breakpoint when clicked
 
-    //    if (m_breakpoints.none())
-    //    {
-    //        ImGui::Text("No breakpoints");
-    //        return;
-    //    }
+    std::bitset<CpuBase::MEMORY_SIZE>& breakpoints = emulator->getBreakpoints();
 
-    //    ImGuiListClipper clipper;
-    //    clipper.Begin(Chip8Cpu::MEMORY_SIZE);
-    //    while (clipper.Step())
-    //    {
-    //        for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
-    //        {
-    //            if (m_breakpoints[i])
-    //            {
-    //                ImGui::Text("0x{:04X}", i);
-    //
-    //                if (ImGui::IsItemClicked())
-    //                {
-    //                    m_breakpoints[i] = false;
-    //                }
-    //            }
-    //        }
-    //    }
+    if (ImGui::BeginTable("Breakpoints", 3, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_Resizable))
+    {
+        ImGui::TableSetupColumn("Address");
+        ImGui::TableSetupColumn("Move to");
+        ImGui::TableSetupColumn("Remove");
+        ImGui::TableHeadersRow();
+
+        for (int i = 0; i < CpuBase::MEMORY_SIZE; i++)
+        {
+            if (breakpoints[i])
+            {
+                ImGui::TableNextRow();
+                ImGui::TableSetColumnIndex(0);
+                ImGui::Text(fmt::format("0x{:04X}", i).c_str());
+                ImGui::TableSetColumnIndex(1);
+                if (ImGui::Button(fmt::format("Goto##{}", i).c_str()))
+                {
+                    m_requestMoveToPC = true;
+                    m_requestedPC = i;
+                    m_followPC = false;
+                }
+                ImGui::TableSetColumnIndex(2);
+                if (ImGui::Button(fmt::format("X##{}", i).c_str()))
+                {
+                    breakpoints[i] = false;
+                }
+            }
+        }
+
+        ImGui::EndTable();
+    }
 }
