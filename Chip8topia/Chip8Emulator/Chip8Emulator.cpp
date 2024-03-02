@@ -62,37 +62,17 @@ void Chip8Emulator::update(const float deltaTime) {
     {
         m_accumulator += deltaTime;
 
-        //        if (m_isTurboMode || m_accumulator >= 1.0F / Chip8Core::SCREEN_AND_TIMERS_FREQUENCY)
-        //        {
-        //            m_accumulator = 0.0F;
-        //            while (!m_core->clock() && !m_isBreak)
-        //            {
-        //                if (m_breakpoints[m_core->getCpu()->getPc()])
-        //                {
-        //                    m_isBreak = true;
-        //                    spdlog::info("Breakpoint hit at 0x{:04X}", m_core->getCpu()->getPc());
-        //                }
-        //            }
-        //
-        //            // Put sound emulation here at the same time as the video emulation
-        //        }
-
         if (m_isTurboMode || m_accumulator >= 1.0F / Chip8Core::SCREEN_AND_TIMERS_FREQUENCY)
         {
             m_accumulator = 0.0F;
-            bool screenUpdated = false; // TODO: Rename this variable
-            while (!screenUpdated)
+            bool screenUpdated = false;          // TODO: Rename this variable
+            while (!screenUpdated && !m_isBreak) // TODO: Use the screenUpdated variable its also stopping the loop?
             {
-                const uint16 pc = m_core->getCpu()->getPc();
-
-                if (m_breakpoints[pc])
+                screenUpdated = m_core->clock();
+                if (m_breakpoints[m_core->getCpu()->getPc()] && m_canBreak)
                 {
                     m_isBreak = true;
                     spdlog::info("Breakpoint hit at 0x{:04X}", m_core->getCpu()->getPc());
-                }
-                else
-                {
-                    screenUpdated = m_core->clock();
                 }
             }
         }

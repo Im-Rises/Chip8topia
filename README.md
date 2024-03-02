@@ -82,7 +82,8 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [x] Ajouter bouton au desassembleur pour suivre le point de debug. Et surtout en pas à pas faire qu'on le suive tout
   le temps !!!!!!!
 - [x] Add break, run, step to the debugger
--
+
+- [ ] Correct break which still break on run
 - [ ] Finish SCHIPC Modern
 - [ ] Check emscripten canvas resize
 

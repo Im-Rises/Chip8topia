@@ -62,6 +62,10 @@ void Chip8Disassembler::drawDisassemblyControls() {
     Chip8topiaInputHandler& inputHandler = Chip8topiaInputHandler::getInstance();
 
     ImGui::Checkbox("Follow PC", &m_followPC);
+    //    if(ImGui::Checkbox("Can break", &m_canBreak))
+    //    {
+    //        inputHandler.m_CanBreakEvent.trigger(m_canBreak);
+    //    }
 
     if (ImGui::Button("Break"))
     {

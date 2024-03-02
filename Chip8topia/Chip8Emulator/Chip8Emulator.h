@@ -40,6 +40,8 @@ public:
     void switchFrequency(const Chip8Frequency frequency);
     [[nodiscard]] auto getFrequency() const -> Chip8Frequency;
 
+    auto getCanBreak() -> bool { return m_canBreak; }
+
     auto getBreakpoints() -> std::bitset<CpuBase::MEMORY_SIZE>& { return m_breakpoints; }
     void clearBreakpoints() { m_breakpoints.reset(); }
 
@@ -71,6 +73,7 @@ private:
 
     bool m_isBreak = false;
     bool m_stepNextFrame = false;
+    bool m_canBreak = true;
 
     std::bitset<CpuBase::MEMORY_SIZE> m_breakpoints;
 };
