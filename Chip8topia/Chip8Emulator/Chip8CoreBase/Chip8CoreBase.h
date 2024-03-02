@@ -12,8 +12,11 @@ enum class Chip8CoreType : uint8 {
     XoChip   // XO-Chip
 };
 
-enum class Chip8Frequency : uint8 {
-    FREQ_600_HZ
+enum class Chip8Frequency : int {
+    FREQ_600_HZ = 600,
+    //    FREQ_1000_HZ = 1000,
+    FREQ_1200_HZ = 1200,
+    FREQ_1800_HZ = 1800
 };
 
 class CpuBase;
@@ -33,8 +36,9 @@ public:
 
 public:
     [[nodiscard]] virtual auto getType() const -> Chip8CoreType = 0;
+    [[nodiscard]] virtual auto getConsoleName() const -> const char* const = 0;
     void readRom(const std::vector<uint8>& rom);
-    virtual void clock() = 0;
+    virtual auto clock() -> bool;
     void updateKey(const uint8 key, const bool pressed);
     void reset();
 

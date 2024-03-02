@@ -3,18 +3,17 @@
 #include "../../../Chip8CoreBase/Core/CpuBase.h"
 
 class SChip11Ppu;
-class SChip11Cpu final : public CpuBase {
+class SChipCCpu final : public CpuBase {
 public:
-    SChip11Cpu();
-    SChip11Cpu(const SChip11Cpu&) = delete;
-    SChip11Cpu(SChip11Cpu&&) = delete;
-    auto operator=(const SChip11Cpu&) -> SChip11Cpu& = delete;
-    auto operator=(SChip11Cpu&&) -> SChip11Cpu& = delete;
-    ~SChip11Cpu() final = default;
+    SChipCCpu();
+    SChipCCpu(const SChipCCpu&) = delete;
+    SChipCCpu(SChipCCpu&&) = delete;
+    auto operator=(const SChipCCpu&) -> SChipCCpu& = delete;
+    auto operator=(SChipCCpu&&) -> SChipCCpu& = delete;
+    ~SChipCCpu() final = default;
 
 public:
     void reset() final;
-    void requestDisableHalt() { m_requestDisableHalt = true; }
 
 private:
     void computeOpcode(const uint16 opcode) final;
@@ -29,23 +28,20 @@ private:
     void SHR_Vx_Vy(const uint8 x, const uint8 y);                        // 8xy6
     void SUBN_Vx_Vy(const uint8 x, const uint8 y);                       // 8xy7
     void SHL_Vx_Vy(const uint8 x, const uint8 y);                        // 8xyE
+    void JP_V0_addr(const uint16 address);                               // Bxnn
 
-    void SCD(const uint8 n);                              // 00CN
-    void SCR(const uint8 n);                              // 00FB
-    void SCL(const uint8 n);                              // 00FC
-    void LORES();                                         // 00FE
-    void HIRES();                                         // 00FF
-    void JP_Vx_addr(const uint8 x, const uint16 address); // Bxnn
-    void LD_HF_Vx(const uint8 x);                         // Fx30
-    void LD_R_Vx(const uint8 x);                          // Fx75
-    void LD_Vx_R(const uint8 x);                          // Fx85
+    void SCD(const uint8 n);      // 00CN
+    void SCR(const uint8 n);      // 00FB
+    void SCL(const uint8 n);      // 00FC
+    void LORES();                 // 00FE
+    void HIRES();                 // 00FF
+    void LD_HF_Vx(const uint8 x); // Fx30
+    void LD_R_Vx(const uint8 x);  // Fx75
+    void LD_Vx_R(const uint8 x);  // Fx85
 
 private:
     // TODO: Change to something else
-    //     SChip11Ppu* m_ppuCasted;
+    //     SChipCPpu* m_ppuCasted;
 
     std::array<uint8, REGISTER_V_SIZE> m_savedV;
-    
-    bool m_isHalted;
-    bool m_requestDisableHalt;
 };

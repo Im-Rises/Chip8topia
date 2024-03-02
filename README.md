@@ -1,20 +1,90 @@
 # Chip8topia
 
-https://en.wikipedia.org/wiki/CHIP-8#Further_reading
+## Description
 
-http://devernay.free.fr/hacks/chip8/C8TECH10.HTM
+This is a Chip8 emulator written in C++ for Windows, Linux and WebAssembly. It uses OpenGL for the rendering and ImGui
+for the UI.
 
-http://tobiasvl.github.io/blog/write-a-chip-8-emulator/
+It can emulate the original Chip8, the SCHIP1.1 and the SCHIPC. I will add the Xo-Chip in the future.
 
-https://www.laurencescotford.net/2020/07/19/chip-8-on-the-cosmac-vip-arithmetic-and-logic-instructions/
+## Screenshots
 
+## Documentation
+
+### Main resources
+
+http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#Dxyn
+https://chip8.gulrak.net/#quirk4
 https://github.com/Timendus/chip8-test-suite
+https://chip-8.github.io/extensions/#chip-48
+https://tobiasvl.github.io/blog/write-a-chip-8-emulator/
 
+### Other resources
+
+https://en.wikipedia.org/wiki/CHIP-8#Further_reading
+http://devernay.free.fr/hacks/chip8/C8TECH10.HTM
+http://tobiasvl.github.io/blog/write-a-chip-8-emulator/
+https://www.laurencescotford.net/2020/07/19/chip-8-on-the-cosmac-vip-arithmetic-and-logic-instructions/
+https://github.com/Timendus/chip8-test-suite
 https://www.laurencescotford.net/2020/07/19/chip-8-on-the-cosmac-vip-drawing-sprites/
-
 https://chip8.gulrak.net/
-
 https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
+
+## Dependencies
+
+- [GLFW](https://www.glfw.org/)
+- [GLAD](https://glad.dav1d.de/)
+- [stb](https://github.com/nothings/stb)
+- [ImGui](https://github.com/ocornut/imgui)
+- [ImGuiFileDialog](https://github.com/aiekick/ImGuiFileDialog)
+- [ImGui Memory Editor](https://github.com/ocornut/imgui_club/tree/main/imgui_memory_editor)
+- [spdlog](https://github.com/gabime/spdlog)
+- [Vcpkg](https://vcpkg.io/en)
+
+### Other docs
+
+https://emscripten.org/docs/porting/files/packaging_files.html
+https://webgl2fundamentals.org/webgl/lessons/webgl-data-textures.html
+https://emscripten.org/docs/porting/files/index.html
+https://emscripten.org/docs/porting/files/file_systems_overview.html#file-system-overview
+https://emscripten.org/docs/porting/files/Synchronous-Virtual-XHR-Backed-File-System-Usage.html#synchronous-virtual-xhr-backed-file-system-usage
+https://github.com/marketplace/actions/upload-release-asset
+https://github.com/mymindstorm/setup-emsdk
+https://github.com/Armchair-Software/emscripten-browser-file
+
+## Build
+
+### Submodule:
+
+```bash
+git clone --recurse-submodules
+```
+
+```bash
+git submodule update --remote
+git submodule update --init --recursive
+```
+
+### Vcpkg:
+
+In order to use vcpkg with CMake outside an IDE, you can use the toolchain file:
+
+```bash
+cmake -B [build directory] -S . -DCMAKE_TOOLCHAIN_FILE=[path to vcpkg]/scripts/buildsystems/vcpkg.cmake
+```
+
+Then build with:
+
+```bash
+cmake --build [build directory]
+```
+
+### Emscripten
+
+```bash
+emcmake cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=~/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=${EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -DVCPKG_TARGET_TRIPLET=wasm32-emscripten "-DCMAKE_EXE_LINKER_FLAGS=-s USE_GLFW=3 -s FULL_ES3=1 -s WASM=1 -s EXPORTED_RUNTIME_METHODS=[ccall] -s ALLOW_MEMORY_GROWTH=1 -s EXPORTED_FUNCTIONS=[_main,_malloc,_free] --preload-file ../../Chip8Games --preload-file ../../shaders" -DCMAKE_BUILD_TYPE=Release
+emmake make -C build
+```
 
 ## TODO
 
@@ -70,94 +140,31 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [x] Correct all preprocessing directives for emscripten for key inputs
 - [-] Creer une struct qui définie le nom de la touche shortcut avec le string et le keycode
 - [-] Add imgui.ini to the .data emscripten build
+- [-] Change to init m_chip8topiaUi and m_chip8emulator in the game loop
 - [x] Add the rom name on the window title and the Chip8 emulated version
 - [x] Add a way to choose the version of the chip8 to emulate
-
-- [ ] Correct all the PPU, it should display 8xn sprites, n is a nibble so from 0 to 15 it can be 16 pixels high then
-- [ ] Correct display in HIRES mode which is doing weird things
-- [ ] Check the test roms, currently quirks test is perfect for the SCHIPC Modern and not for the SCHIP1.1, need to add
-  display wait :)
-- [ ] Copy the core of SCHIP1.1 before the display wait and it will be the perfect SCHIPC Modern (need to change the CPU
-  for it)
-
-- [ ] Add break, run, step to the debugger
-- [ ] Change to init m_chip8topiaUi and m_chip8emulator in the game loop
-- [ ] Add emulation sound
-- [ ] Add save states ?
-- [ ] For the std::vector use ref or move... For the rom loading
-- [ ] Ajouter bouton au desassembleur pour suivre le point de debug. Et surtout en pas à pas faire qu'on le suive tout
+- [x] Correct the minimized window not putting windows at the top when unminimizing
+- [x] Correct all the PPU, it should display 8xn sprites, n is a nibble so from 0 to 15 it can be 16 pixels high then
+- [x] Correct display in HIRES mode which is doing weird things
+- [x] Check the test roms, currently quirks test is perfect for the SCHIPC Modern and not for the SCHIP1.1, need to add
+- [x] Copy the core of SCHIP1.1 before the display wait and it will be the perfect SCHIPC Modern (need to change the CPU
+- [x] Handle spdlog or iosstream for logging
+- [x] Ajouter bouton au desassembleur pour suivre le point de debug. Et surtout en pas à pas faire qu'on le suive tout
   le temps !!!!!!!
+- [x] Add break, run, step to the debugger
+- [x] Correct break which still break on run
+- [x] Finish SCHIPC
+
+- [ ] The getPC and getPc are not named the same, correct that
+- [ ] Correct to not link or use spdlog in release mode
 - [ ] Dans la section Émulation rajouter une window "émulation info" avec les fps, etc...
-- [ ] Is aucune chip8 n'est chargé alors on draw avec un shader dans Chip8topia. Ce dernier aura l'image en background.
-  (Faire un tableau 1d dans le .h avec les valeurs 0 à 1 ou 255.
-  Le draw chaque frame]
-
-Check later
-
-- [ ] Add emulation for the SuperChip8 and the XO-Chip ?
-- [ ] Add a way to change the used version of the chip8 (ask with a window like the About window, which block user intil
-  he decides which version to use) and make it changeable before running a game and when the game is running (restart
-  the game when the version is changed while the game is running)
 - [ ] Add a way to change the frequency of the emulator
-- [ ] Faire une fenêtre imgui quand on démarre pour sélectionner la version de chip8
-- [ ] Faire héritage cpp pour cpu et pour selection et peut être Chip8Core
-- [ ] Faire un switch case qui démarre la version de Core sélectionné avec la création de Chip8Core m_core; en
-  tant que unique_ptr
-- [ ] Pour les load rom être sûr de bien utiliser std::move pour les vecteurs et des && pour les paramètres de
-  fonctions
-- [ ] Pour la partie emulation faire des surcharges de fonctions avec comme paramètre const SuperChip8Core& core,
-  const Chip8Core& core, const XOChip8Core& core, de cette façon on pourra définir trois fonctions différentes pour
-  chaque version de Core et le prendra autmaotiquement lors de l'appel ?
-- [ ] Faire des fonctions virtuel et les override dans chaque cpu ! Pas pure virtual, pour que si c'est pas override ça
-  appelle "assert" !
+- [ ] Add Xo-Chip emulation
+- [ ] Check emscripten canvas resize
+- [ ] Adapt view to still be in 16:9 ratio
+- [ ] Add emulation sound
+- [ ] Add save states ? (if yes create a window with an image preview of the save state) ajouter dans la section File de
+  main bar
+- [ ] For the std::vector use ref or move... For the rom loading
+- [ ] if none of the roms are loaded, we should display a background with written Chip8 and Im-Rises
 
-## Dependencies
-
-- [GLFW](https://www.glfw.org/)
-- [GLAD](https://glad.dav1d.de/)
-- [stb](https://github.com/nothings/stb)
-- [ImGui](https://github.com/ocornut/imgui)
-- [ImGuiFileDialog](https://github.com/aiekick/ImGuiFileDialog)
-- [ImGui Memory Editor](https://github.com/ocornut/imgui_club/tree/main/imgui_memory_editor)
-- [Vcpkg](https://vcpkg.io/en)
-
-### Other docs
-
-https://emscripten.org/docs/porting/files/packaging_files.html
-https://webgl2fundamentals.org/webgl/lessons/webgl-data-textures.html
-https://emscripten.org/docs/porting/files/index.html
-https://emscripten.org/docs/porting/files/file_systems_overview.html#file-system-overview
-https://emscripten.org/docs/porting/files/Synchronous-Virtual-XHR-Backed-File-System-Usage.html#synchronous-virtual-xhr-backed-file-system-usage
-https://github.com/marketplace/actions/upload-release-asset
-https://github.com/mymindstorm/setup-emsdk
-https://github.com/Armchair-Software/emscripten-browser-file
-
-## Commands
-
-### Submodule:
-
-```bash
-git submodule update --remote
-git submodule update --init --recursive
-```
-
-### Vcpkg:
-
-In order to use vcpkg with CMake outside of an IDE, you can use the toolchain file:
-
-```bash
-cmake -B [build directory] -S . -DCMAKE_TOOLCHAIN_FILE=[path to vcpkg]/scripts/buildsystems/vcpkg.cmake
-```
-
-Then build with:
-
-```bash
-cmake --build [build directory]
-```
-
-### Emscripten
-
-```bash
-emcmake cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=~/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=${EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -DVCPKG_TARGET_TRIPLET=wasm32-emscripten "-DCMAKE_EXE_LINKER_FLAGS=-s USE_GLFW=3 -s FULL_ES3=1 -s WASM=1 -s EXPORTED_RUNTIME_METHODS=[ccall] -s ALLOW_MEMORY_GROWTH=1 -s EXPORTED_FUNCTIONS=[_main,_malloc,_free] --preload-file ../../Chip8Games --preload-file ../../shaders" -DCMAKE_BUILD_TYPE=Release
-emmake make -C build
-```

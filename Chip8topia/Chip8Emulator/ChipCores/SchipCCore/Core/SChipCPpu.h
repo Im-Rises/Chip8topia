@@ -2,14 +2,14 @@
 
 #include "../../../Chip8CoreBase/Core/PpuBase.h"
 
-class SChip11Ppu final : public PpuBase {
+class SChipCPpu final : public PpuBase {
 public:
-    SChip11Ppu();
-    SChip11Ppu(const SChip11Ppu&) = delete;
-    SChip11Ppu(SChip11Ppu&&) = delete;
-    auto operator=(const SChip11Ppu&) -> SChip11Ppu& = delete;
-    auto operator=(SChip11Ppu&&) -> SChip11Ppu& = delete;
-    ~SChip11Ppu() final = default;
+    SChipCPpu();
+    SChipCPpu(const SChipCPpu&) = delete;
+    SChipCPpu(SChipCPpu&&) = delete;
+    auto operator=(const SChipCPpu&) -> SChipCPpu& = delete;
+    auto operator=(SChipCPpu&&) -> SChipCPpu& = delete;
+    ~SChipCPpu() final = default;
 
 public:
     void clearScreen() final;

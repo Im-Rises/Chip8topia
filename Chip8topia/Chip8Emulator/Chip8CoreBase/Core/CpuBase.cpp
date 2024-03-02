@@ -21,7 +21,7 @@ void CpuBase::reset() {
     m_I = 0;
     m_DT = 0;
     m_ST = 0;
-    // Maybe for the ram we can reset everything except the rom location so it can be reloaded
+    // TODO: Maybe for the ram we can reset everything except the rom location so it can be reloaded
     //    m_memory = {};
     //    std::copy(FONTSET.begin(), FONTSET.end(), m_memory.begin());
     m_V = {};

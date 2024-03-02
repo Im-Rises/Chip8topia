@@ -1,11 +1,10 @@
 #pragma once
 
 #include <binaryLib/binaryLib.h>
-#include <array>
 #include <string>
-#include <bitset>
 #include "../../Chip8Emulator/ChipCores/Chip8Core/Core/Chip8Cpu.h"
 
+class Chip8Emulator;
 class Chip8Disassembler {
 public:
     Chip8Disassembler() = default;
@@ -16,15 +15,14 @@ public:
     ~Chip8Disassembler() = default;
 
 public:
-    void drawDisassembly(const std::array<uint8, Chip8Cpu::MEMORY_SIZE>& memory, uint16 pc);
-
-    void drawDisassemblyControls();
-
-private:
-    void clearBreakpoints();
+    void drawDisassembly(Chip8Emulator* emulator);
+    void drawDisassemblyControls(Chip8Emulator* emulator);
+    void drawBreakpoints(Chip8Emulator* emulator);
 
 private:
-    std::bitset<Chip8Cpu::MEMORY_SIZE> m_breakpoints;
     bool m_followPC = true;
     uint16 m_previousPC = 0;
+
+    bool m_requestMoveToPC = false;
+    uint16 m_requestedPC = 0;
 };

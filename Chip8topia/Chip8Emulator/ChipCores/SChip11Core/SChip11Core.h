@@ -2,8 +2,7 @@
 
 #include "../../Chip8CoreBase/Chip8CoreBase.h"
 
-#include <memory>
-
+class SChip11Cpu;
 class SChip11Core final : public Chip8CoreBase {
 public:
     SChip11Core();
@@ -15,5 +14,9 @@ public:
 
 public:
     [[nodiscard]] auto getType() const -> Chip8CoreType final { return Chip8CoreType::SChip11; }
-    void clock() final;
+    [[nodiscard]] auto getConsoleName() const -> const char* const final { return "SChip11"; }
+    auto clock() -> bool final;
+
+private:
+    SChip11Cpu* m_cpuCasted; // TODO: Find a better solution...
 };

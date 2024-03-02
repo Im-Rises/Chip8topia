@@ -1,18 +1,16 @@
-#include "SChip11Cpu.h"
+#include "SChipCCpu.h"
 
-#include "SChip11Ppu.h"
+#include "SChipCPpu.h"
 
-// SChip11Cpu::SChip11Cpu() : m_ppuCasted(dynamic_cast<SChip11Ppu*>(m_ppu.get())) {
-SChip11Cpu::SChip11Cpu() : m_isHalted(false), m_requestDisableHalt(false) {
+// SChipCCpu::SChipCCpu() : m_ppuCasted(dynamic_cast<SChipCPpu*>(m_ppu.get())) {
+SChipCCpu::SChipCCpu() {
 }
 
-void SChip11Cpu::reset() {
+void SChipCCpu::reset() {
     CpuBase::reset();
-    m_isHalted = false;
-    m_requestDisableHalt = false;
 }
 
-void SChip11Cpu::computeOpcode(const uint16 opcode) {
+void SChipCCpu::computeOpcode(const uint16 opcode) {
     const uint8 nibble4 = (opcode & 0xF000) >> 12;
     const uint8 nibble3 = (opcode & 0x0F00) >> 8;
     const uint8 nibble2 = (opcode & 0x00F0) >> 4;
@@ -72,7 +70,7 @@ void SChip11Cpu::computeOpcode(const uint16 opcode) {
     }
     case 0x9: SNE_Vx_Vy(nibble3, nibble2); break;            // 9XY0
     case 0xA: LD_I_addr(opcode & 0x0FFF); break;             // ANNN
-    case 0xB: JP_Vx_addr(nibble3, opcode & 0x0FFF); break;   // Bxnn
+    case 0xB: JP_V0_addr(opcode & 0x0FFF); break;            // Bxnn
     case 0xC: RND_Vx_nn(nibble3, opcode & 0x00FF); break;    // CXNN
     case 0xD: DRW_Vx_Vy_n(nibble3, nibble2, nibble1); break; // Dxyn
     case 0xE: {
@@ -123,115 +121,103 @@ void SChip11Cpu::computeOpcode(const uint16 opcode) {
     }
 }
 
-void SChip11Cpu::EXIT() {
+void SChipCCpu::EXIT() {
     m_pc -= 2;
 }
 
-void SChip11Cpu::OR_Vx_Vy(const uint8 x, const uint8 y) {
+void SChipCCpu::OR_Vx_Vy(const uint8 x, const uint8 y) {
     m_V[x] |= m_V[y];
+    m_V[0xF] = 0;
 }
 
-void SChip11Cpu::AND_Vx_Vy(const uint8 x, const uint8 y) {
+void SChipCCpu::AND_Vx_Vy(const uint8 x, const uint8 y) {
     m_V[x] &= m_V[y];
+    m_V[0xF] = 0;
 }
 
-void SChip11Cpu::XOR_Vx_Vy(const uint8 x, const uint8 y) {
+void SChipCCpu::XOR_Vx_Vy(const uint8 x, const uint8 y) {
     m_V[x] ^= m_V[y];
+    m_V[0xF] = 0;
 }
 
-void SChip11Cpu::DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) {
-    if (m_ppu->getMode() == PpuBase::PpuMode::LORES)
-    {
-        m_isHalted = true;
-
-        if (m_requestDisableHalt)
-        {
-            m_isHalted = false;
-            m_requestDisableHalt = false;
-        }
-
-        if (m_isHalted)
-        {
-            m_pc -= 2;
-            return;
-        }
-    }
-
-    m_V[0xF] = static_cast<uint8>(m_ppu->drawSprite(m_V[x], m_V[y], n, m_memory, m_I));
-}
-
-void SChip11Cpu::LD_aI_Vx(const uint8 x) {
-    for (int i = 0; i <= x; i++)
-    {
-        m_memory[m_I + i] = m_V[i];
-    }
-}
-
-void SChip11Cpu::LD_Vx_aI(const uint8 x) {
-    for (int i = 0; i <= x; i++)
-    {
-        m_V[i] = m_memory[m_I + i];
-    }
-}
-
-void SChip11Cpu::SHR_Vx_Vy(const uint8 x, const uint8 y) {
-    const uint8 flag = m_V[x] & 0x1;
-    m_V[x] >>= 1;
+void SChipCCpu::SHR_Vx_Vy(const uint8 x, const uint8 y) {
+    const uint8 flag = m_V[y] & 0x1;
+    m_V[x] = m_V[y] >> 1;
     m_V[0xF] = flag;
 }
 
-void SChip11Cpu::SUBN_Vx_Vy(const uint8 x, const uint8 y) {
+void SChipCCpu::SUBN_Vx_Vy(const uint8 x, const uint8 y) {
     const auto flag = static_cast<uint8>(m_V[y] >= m_V[x]);
     m_V[x] = m_V[y] - m_V[x];
     m_V[0xF] = flag;
 }
 
-void SChip11Cpu::SHL_Vx_Vy(const uint8 x, const uint8 y) {
+void SChipCCpu::SHL_Vx_Vy(const uint8 x, const uint8 y) {
     const uint8 flag = (m_V[x] & 0x80) >> 7;
-    m_V[x] <<= 1;
+    m_V[x] = m_V[y] << 1;
     m_V[0xF] = flag;
 }
 
-void SChip11Cpu::SCD(const uint8 n) {
+void SChipCCpu::JP_V0_addr(const uint16 address) {
+    m_pc = m_V[0] + address;
+}
+
+void SChipCCpu::DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) {
+    m_V[0xF] = static_cast<uint8>(m_ppu->drawSprite(m_V[x], m_V[y], n, m_memory, m_I));
+}
+
+void SChipCCpu::LD_aI_Vx(const uint8 x) {
+    for (int i = 0; i <= x; i++)
+    {
+        m_memory[m_I + i] = m_V[i];
+    }
+    m_I += x + 1;
+}
+
+void SChipCCpu::LD_Vx_aI(const uint8 x) {
+    for (int i = 0; i <= x; i++)
+    {
+        m_V[i] = m_memory[m_I + i];
+    }
+    m_I += x + 1;
+}
+
+void SChipCCpu::SCD(const uint8 n) {
     //    m_ppuCasted->scrollDown(n);
-    dynamic_cast<SChip11Ppu*>(m_ppu.get())->scrollDown(n);
+    dynamic_cast<SChipCPpu*>(m_ppu.get())->scrollDown(n);
 }
 
-void SChip11Cpu::SCR(const uint8 n) {
+void SChipCCpu::SCR(const uint8 n) {
     //    m_ppuCasted->scrollRight(n);
-    dynamic_cast<SChip11Ppu*>(m_ppu.get())->scrollRight(n);
+    dynamic_cast<SChipCPpu*>(m_ppu.get())->scrollRight(n);
 }
 
-void SChip11Cpu::SCL(const uint8 n) {
+void SChipCCpu::SCL(const uint8 n) {
     //    m_ppuCasted->scrollLeft(n);
-    dynamic_cast<SChip11Ppu*>(m_ppu.get())->scrollLeft(n);
+    dynamic_cast<SChipCPpu*>(m_ppu.get())->scrollLeft(n);
 }
 
-void SChip11Cpu::LORES() {
+void SChipCCpu::LORES() {
     m_ppu->setMode(PpuBase::PpuMode::LORES);
 }
 
-void SChip11Cpu::HIRES() {
+void SChipCCpu::HIRES() {
     m_ppu->setMode(PpuBase::PpuMode::HIRES);
 }
 
-void SChip11Cpu::JP_Vx_addr(const uint8 x, const uint16 address) {
-    m_pc = m_V[x] + address;
-}
-
-void SChip11Cpu::LD_HF_Vx(const uint8 x) {
+void SChipCCpu::LD_HF_Vx(const uint8 x) {
     // TODO: Check if this is correct
     m_I = m_V[x] * 10;
 }
 
-void SChip11Cpu::LD_R_Vx(const uint8 x) {
+void SChipCCpu::LD_R_Vx(const uint8 x) {
     for (int i = 0; i <= x; i++)
     {
         m_savedV[i] = m_V[i];
     }
 }
 
-void SChip11Cpu::LD_Vx_R(const uint8 x) {
+void SChipCCpu::LD_Vx_R(const uint8 x) {
     for (int i = 0; i <= x; i++)
     {
         m_V[i] = m_savedV[i];

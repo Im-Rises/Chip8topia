@@ -21,6 +21,9 @@
 #include <fmt/format.h>
 #include <chrono>
 #include <iostream>
+#if !defined(BUILD_RELEASE)
+#include <spdlog/spdlog.h>
+#endif
 
 #include "Chip8Emulator/Chip8Emulator/Chip8RomLoader.h"
 #include "res/chip8topiaIconResource.h"
@@ -153,8 +156,8 @@ auto Chip8topia::init() -> int {
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;  // Enable Gamepad Controls
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;     // Enable Docking
     io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;   // Enable Multi-Viewport / Platform Windows
-    // io.ConfigViewportsNoAutoMerge = true;
-    // io.ConfigViewportsNoTaskBarIcon = true;
+    // io.ConfigViewportsNoTaskBarIcon = true;            // Disable TaskBar icon for secondary viewports
+    // io.ConfigViewportsNoAutoMerge = true;              // Enable Multi-Viewport auto-merge
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
@@ -221,7 +224,10 @@ void Chip8topia::handleUi(const float /*deltaTime*/) {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
+    //    if (!getWindowMinimized())
+    //    {
     m_chip8topiaUi.drawUi(*this);
+    //    }
     ImGui::Render();
 }
 
@@ -314,6 +320,7 @@ void Chip8topia::toggleTurboMode() {
 
 #ifndef __EMSCRIPTEN__
 void Chip8topia::setWindowIcon() {
+    // TODO:Correct this code which gives strange results
     int chip8topiaIconWidth = 0, chip8topiaIconHeight = 0, channelsInFile = 0;
     unsigned char* imagePixels = stbi_load_from_memory(CHIP8TOPIA_ICON_DATA.data(), static_cast<int>(CHIP8TOPIA_ICON_DATA.size()), &chip8topiaIconWidth, &chip8topiaIconHeight, &channelsInFile, 0);
     GLFWimage images;
@@ -347,6 +354,10 @@ auto Chip8topia::getIsTurboMode() const -> bool {
 auto Chip8topia::getWindowDimensions() const -> std::pair<int, int> {
     return { m_currentWidth, m_currentHeight };
 }
+
+// auto Chip8topia::getWindowMinimized() const -> bool {
+//     return glfwGetWindowAttrib(m_window, GLFW_ICONIFIED) != 0;
+// }
 
 auto Chip8topia::getOpenGLVendor() -> std::string_view {
     return reinterpret_cast<const char*>(glGetString(GL_RENDERER));
@@ -382,10 +393,20 @@ void Chip8topia::printDependenciesInfos() {
               << " - Glad version " << Chip8topia::getGladVersion() << '\n'
               << " - ImGui version " << Chip8topia::getImGuiVersion() << '\n'
               << '\n';
+
+    //    spdlog::info("System and dependencies infos:");
+    //    spdlog::info(" - OpenGL vendor {}", Chip8topia::getOpenGLVendor());
+    //    spdlog::info(" - OpenGL version {}", Chip8topia::getOpenGLVersion());
+    //    spdlog::info(" - OpenGL GLSL version {}", Chip8topia::getGLSLVersion());
+    //    spdlog::info(" - GLFW version {}", Chip8topia::getGLFWVersion());
+    //    spdlog::info(" - Glad version {}", Chip8topia::getGladVersion());
+    //    spdlog::info(" - ImGui version {}", Chip8topia::getImGuiVersion());
 }
 
 void Chip8topia::glfw_error_callback(int error, const char* description) {
-    std::cerr << "Glfw Error " << error << ": " << description << '\n';
+#if !defined(BUILD_RELEASE)
+    spdlog::error("Glfw Error {}: {}", error, description);
+#endif
 }
 
 void Chip8topia::glfw_drop_callback(GLFWwindow* window, int count, const char** paths) {
@@ -402,7 +423,9 @@ void Chip8topia::glfw_drop_callback(GLFWwindow* window, int count, const char** 
     }
     catch (const std::exception& e)
     {
-        std::cerr << e.what() << '\n';
+#if !defined(BUILD_RELEASE)
+        spdlog::error(e.what());
+#endif
     }
 }
 
@@ -415,7 +438,10 @@ void Chip8topia::loadDebugRom() {
     }
     catch (const std::exception& e)
     {
-        std::cerr << e.what() << '\n';
+#if !defined(BUILD_RELEASE)
+        spdlog::error(e.what());
+#endif
     }
 }
+
 #endif

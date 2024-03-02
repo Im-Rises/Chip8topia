@@ -1,8 +1,6 @@
 #pragma once
 
 #include <array>
-#include <cassert>
-#include <iostream>
 
 #include "CpuBase.h"
 

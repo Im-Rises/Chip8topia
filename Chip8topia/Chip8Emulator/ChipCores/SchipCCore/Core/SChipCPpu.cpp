@@ -1,9 +1,9 @@
-#include "SChip11Ppu.h"
+#include "SChipCPpu.h"
 
-SChip11Ppu::SChip11Ppu() {
+SChipCPpu::SChipCPpu() {
 }
 
-void SChip11Ppu::clearScreen() {
+void SChipCPpu::clearScreen() {
     if (getMode() == PpuMode::LORES)
     {
         std::fill(m_loresVideoMemory.begin(), m_loresVideoMemory.end(), 0);
@@ -14,7 +14,7 @@ void SChip11Ppu::clearScreen() {
     }
 }
 
-auto SChip11Ppu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint16 I_reg) -> uint8 {
+auto SChipCPpu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint16 I_reg) -> uint8 {
     //  The original SCHIP-1.1 in hires mode set VF to the number of sprite rows with collisions plus the number of rows clipped at the bottom border
 
     if ((getMode() == PpuMode::LORES) || (getMode() == PpuMode::HIRES && n != 0)) // Draw 8xN sprite
@@ -27,9 +27,8 @@ auto SChip11Ppu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8,
     }
 }
 
-auto SChip11Ppu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint8 n, uint8* videoMemory) -> bool {
-    uint8 rowCollisionCount = 0;
-    uint8 rowClippedCount = 0;
+auto SChipCPpu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint8 n, uint8* videoMemory) -> bool {
+    bool collision = false;
 
     const int screenWidth = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
     const int screenHeight = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
@@ -47,7 +46,6 @@ auto SChip11Ppu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::arra
                 // Clip the sprite if it goes out of bounds
                 if (((Vx + j) >= screenWidth && j > 0) || ((Vy + i) >= screenHeight && i > 0))
                 {
-                    rowClippedCount++;
                     continue;
                 }
 
@@ -56,7 +54,7 @@ auto SChip11Ppu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::arra
                 if (videoMemory[index] == PIXEL_ON)
                 {
                     videoMemory[index] = PIXEL_OFF;
-                    rowCollisionCount++;
+                    collision = true;
                 }
                 else
                 {
@@ -66,15 +64,11 @@ auto SChip11Ppu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::arra
         }
     }
 
-    if (getMode() == PpuMode::HIRES)
-        return static_cast<uint8>(rowCollisionCount + rowClippedCount);
-    else // LORES
-        return (rowClippedCount + rowCollisionCount) > 0 ? 1 : 0;
+    return collision;
 }
 
-auto SChip11Ppu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory) -> uint8 {
-    uint8 rowCollisionCount = 0;
-    uint8 rowClippedCount = 0;
+auto SChipCPpu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory) -> uint8 {
+    bool collision = false;
 
     for (int i = 0; i < 16; i++) // 16 rows
     {
@@ -89,14 +83,13 @@ auto SChip11Ppu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::ar
 
                     if (x >= PpuBase::SCREEN_HIRES_MODE_WIDTH || y >= PpuBase::SCREEN_HIRES_MODE_HEIGHT)
                     {
-                        rowClippedCount++;
                         continue;
                     }
 
                     if (m_hiresVideoMemory[y * PpuBase::SCREEN_HIRES_MODE_WIDTH + x] == PIXEL_ON)
                     {
                         m_hiresVideoMemory[y * PpuBase::SCREEN_HIRES_MODE_WIDTH + x] = PIXEL_OFF;
-                        rowCollisionCount++;
+                        collision = true;
                     }
                     else
                     {
@@ -107,13 +100,10 @@ auto SChip11Ppu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::ar
         }
     }
 
-    if (getMode() == PpuMode::HIRES)
-        return static_cast<uint8>(rowCollisionCount + rowClippedCount);
-    else // LORES
-        return (rowClippedCount + rowCollisionCount) > 0 ? 1 : 0;
+    return static_cast<uint8>(collision);
 }
 
-void SChip11Ppu::scrollDown(uint8 n) {
+void SChipCPpu::scrollDown(uint8 n) {
     const int width = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
     const int height = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
     uint8* videoMemory = getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data();
@@ -129,7 +119,7 @@ void SChip11Ppu::scrollDown(uint8 n) {
     }
 }
 
-void SChip11Ppu::scrollRight(uint8 n) {
+void SChipCPpu::scrollRight(uint8 n) {
     const int width = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
     const int height = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
     uint8* videoMemory = getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data();
@@ -145,7 +135,7 @@ void SChip11Ppu::scrollRight(uint8 n) {
     }
 }
 
-void SChip11Ppu::scrollLeft(uint8 n) {
+void SChipCPpu::scrollLeft(uint8 n) {
     const int width = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
     const int height = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
     uint8* videoMemory = getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data();

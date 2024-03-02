@@ -2,7 +2,10 @@
 
 #include <imgui.h>
 #include <ImGuiFileDialog/ImGuiFileDialog.h>
+#if !defined(BUILD_RELEASE)
+#include <spdlog/spdlog.h>
 #include <iostream>
+#endif
 
 #if defined(__EMSCRIPTEN__)
 #include <emscripten_browser_file.h>
@@ -73,7 +76,9 @@ void Chip8RomLoaderUi::drawRomWindow(Chip8topia& chip8topia) {
             }
             catch (const std::exception& e)
             {
-                std::cerr << e.what() << '\n';
+#if !defined(BUILD_RELEASE)
+                spdlog::error(e.what());
+#endif
             }
         }
 
@@ -83,7 +88,10 @@ void Chip8RomLoaderUi::drawRomWindow(Chip8topia& chip8topia) {
 
 #if defined(__EMSCRIPTEN__)
 void Chip8RomLoaderUi::handle_upload_file(std::string const& filename, std::string const& mime_type, std::string_view buffer, void* chip8emulator) {
+#if !defined(BUILD_RELEASE)
     std::cout << "File uploaded: " << filename << " (" << mime_type << ")" << '\n';
+#endif
+
     Chip8Emulator* chip8Emulator = static_cast<Chip8Emulator*>(chip8emulator);
 
     try
@@ -93,7 +101,9 @@ void Chip8RomLoaderUi::handle_upload_file(std::string const& filename, std::stri
     }
     catch (const std::exception& e)
     {
+#if !defined(BUILD_RELEASE)
         std::cerr << e.what() << '\n';
+#endif
     }
 }
 #endif

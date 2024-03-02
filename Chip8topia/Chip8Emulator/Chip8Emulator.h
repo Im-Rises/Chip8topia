@@ -1,6 +1,9 @@
 #pragma once
 
+#include <bitset>
+
 #include "ChipCores/Chip8Core/Chip8Core.h"
+#include "Chip8CoreBase/Core/CpuBase.h"
 #include "Chip8Emulator/Chip8VideoEmulation.h"
 // #include "Chip8Emulation/Chip8SoundEmulation.h"
 
@@ -21,21 +24,37 @@ public:
     void update(const float deltaTime);
     void render();
 
-    void togglePause();
+    //    void togglePause();
 
     void setIsTurboMode(const bool isTurboMode);
-    [[nodiscard]] auto getIsPaused() const -> bool;
+    //    [[nodiscard]] auto getIsPaused() const -> bool;
     [[nodiscard]] auto getChip8Core() -> Chip8CoreBase*;
     [[nodiscard]] auto getChip8VideoEmulation() -> Chip8VideoEmulation&;
 
     void setRomName(const std::string& romName) { m_romName = romName; }
     [[nodiscard]] auto getRomName() const -> std::string { return m_romName; }
-    [[nodiscard]] static auto getConsoleName() -> std::string { return "Chip8"; } // TODO: Move to a more appropriate place
+    [[nodiscard]] auto getConsoleName() -> std::string { return m_core->getConsoleName(); }
 
     void switchCore(const Chip8CoreType coreType);
     [[nodiscard]] auto getCoreType() const -> Chip8CoreType;
     void switchFrequency(const Chip8Frequency frequency);
     [[nodiscard]] auto getFrequency() const -> Chip8Frequency;
+
+    auto getCanBreak() -> bool* { return &m_canBreak; }
+
+    auto getBreakpoints() -> std::bitset<CpuBase::MEMORY_SIZE>& { return m_breakpoints; }
+    void clearBreakpoints() { m_breakpoints.reset(); }
+
+    void stepEmulation() {
+        m_isBreak = true;
+        m_stepNextFrame = true;
+    }
+
+    void runEmulation() {
+        m_isBreak = false;
+    }
+
+    void breakEmulation() { m_isBreak = true; }
 
 private:
     void OnInput(const uint8 key, const bool isPressed);
@@ -49,7 +68,12 @@ private:
 
     bool m_isRomLoaded = false;
     bool m_isTurboMode = false;
-    bool m_isPaused = false;
 
     float m_accumulator = 0.0F;
+
+    bool m_isBreak = false;
+    bool m_stepNextFrame = false;
+    bool m_canBreak = true;
+
+    std::bitset<CpuBase::MEMORY_SIZE> m_breakpoints;
 };
