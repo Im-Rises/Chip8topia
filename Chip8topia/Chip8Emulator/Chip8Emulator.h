@@ -33,7 +33,7 @@ public:
 
     void setRomName(const std::string& romName) { m_romName = romName; }
     [[nodiscard]] auto getRomName() const -> std::string { return m_romName; }
-    [[nodiscard]] static auto getConsoleName() -> std::string { return "Chip8"; } // TODO: Move to a more appropriate place
+    [[nodiscard]] auto getConsoleName() -> std::string { return m_core->getConsoleName(); }
 
     void switchCore(const Chip8CoreType coreType);
     [[nodiscard]] auto getCoreType() const -> Chip8CoreType;

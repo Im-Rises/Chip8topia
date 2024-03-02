@@ -62,10 +62,18 @@ void Chip8EmulationUi::drawEmulationSettings(Chip8topia* chip8topia) {
 
     ImGui::Separator();
 
-    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Emulation Speed");
-    ImGui::Selectable("600HZ", false);
-    ImGui::Selectable("400HZ", false);
-    ImGui::Selectable("200HZ", false);
+    ImGui::TextColored(ImVec4(1.0F, 1.0F, 0.0F, 1.0F), "Emulation Speed");
+    if (ImGui::Selectable("600HZ", m_selectedFrequency == Chip8Frequency::FREQ_600_HZ))
+    {
+    }
+
+    if (ImGui::Selectable("1200HZ", m_selectedFrequency == Chip8Frequency::FREQ_1200_HZ))
+    {
+    }
+
+    if (ImGui::Selectable("1800HZ", m_selectedFrequency == Chip8Frequency::FREQ_1800_HZ))
+    {
+    }
 
     ImGui::Separator();
     if (ImGui::Button("Apply"))

@@ -70,7 +70,7 @@ void SChipCCpu::computeOpcode(const uint16 opcode) {
     }
     case 0x9: SNE_Vx_Vy(nibble3, nibble2); break;            // 9XY0
     case 0xA: LD_I_addr(opcode & 0x0FFF); break;             // ANNN
-    case 0xB: JP_Vx_addr(nibble3, opcode & 0x0FFF); break;   // Bxnn
+    case 0xB: JP_V0_addr(opcode & 0x0FFF); break;            // Bxnn
     case 0xC: RND_Vx_nn(nibble3, opcode & 0x00FF); break;    // CXNN
     case 0xD: DRW_Vx_Vy_n(nibble3, nibble2, nibble1); break; // Dxyn
     case 0xE: {
@@ -127,37 +127,22 @@ void SChipCCpu::EXIT() {
 
 void SChipCCpu::OR_Vx_Vy(const uint8 x, const uint8 y) {
     m_V[x] |= m_V[y];
+    m_V[0xF] = 0;
 }
 
 void SChipCCpu::AND_Vx_Vy(const uint8 x, const uint8 y) {
     m_V[x] &= m_V[y];
+    m_V[0xF] = 0;
 }
 
 void SChipCCpu::XOR_Vx_Vy(const uint8 x, const uint8 y) {
     m_V[x] ^= m_V[y];
-}
-
-void SChipCCpu::DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) {
-    m_V[0xF] = static_cast<uint8>(m_ppu->drawSprite(m_V[x], m_V[y], n, m_memory, m_I));
-}
-
-void SChipCCpu::LD_aI_Vx(const uint8 x) {
-    for (int i = 0; i <= x; i++)
-    {
-        m_memory[m_I + i] = m_V[i];
-    }
-}
-
-void SChipCCpu::LD_Vx_aI(const uint8 x) {
-    for (int i = 0; i <= x; i++)
-    {
-        m_V[i] = m_memory[m_I + i];
-    }
+    m_V[0xF] = 0;
 }
 
 void SChipCCpu::SHR_Vx_Vy(const uint8 x, const uint8 y) {
-    const uint8 flag = m_V[x] & 0x1;
-    m_V[x] >>= 1;
+    const uint8 flag = m_V[y] & 0x1;
+    m_V[x] = m_V[y] >> 1;
     m_V[0xF] = flag;
 }
 
@@ -169,8 +154,32 @@ void SChipCCpu::SUBN_Vx_Vy(const uint8 x, const uint8 y) {
 
 void SChipCCpu::SHL_Vx_Vy(const uint8 x, const uint8 y) {
     const uint8 flag = (m_V[x] & 0x80) >> 7;
-    m_V[x] <<= 1;
+    m_V[x] = m_V[y] << 1;
     m_V[0xF] = flag;
+}
+
+void SChipCCpu::JP_V0_addr(const uint16 address) {
+    m_pc = m_V[0] + address;
+}
+
+void SChipCCpu::DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) {
+    m_V[0xF] = static_cast<uint8>(m_ppu->drawSprite(m_V[x], m_V[y], n, m_memory, m_I));
+}
+
+void SChipCCpu::LD_aI_Vx(const uint8 x) {
+    for (int i = 0; i <= x; i++)
+    {
+        m_memory[m_I + i] = m_V[i];
+    }
+    m_I += x + 1;
+}
+
+void SChipCCpu::LD_Vx_aI(const uint8 x) {
+    for (int i = 0; i <= x; i++)
+    {
+        m_V[i] = m_memory[m_I + i];
+    }
+    m_I += x + 1;
 }
 
 void SChipCCpu::SCD(const uint8 n) {
@@ -194,10 +203,6 @@ void SChipCCpu::LORES() {
 
 void SChipCCpu::HIRES() {
     m_ppu->setMode(PpuBase::PpuMode::HIRES);
-}
-
-void SChipCCpu::JP_Vx_addr(const uint8 x, const uint16 address) {
-    m_pc = m_V[x] + address;
 }
 
 void SChipCCpu::LD_HF_Vx(const uint8 x) {

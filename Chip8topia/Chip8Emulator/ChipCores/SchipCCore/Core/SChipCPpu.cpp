@@ -68,8 +68,7 @@ auto SChipCPpu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array
 }
 
 auto SChipCPpu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory) -> uint8 {
-    uint8 rowCollisionCount = 0;
-    uint8 rowClippedCount = 0;
+    bool collision = false;
 
     for (int i = 0; i < 16; i++) // 16 rows
     {
@@ -84,14 +83,13 @@ auto SChipCPpu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::arr
 
                     if (x >= PpuBase::SCREEN_HIRES_MODE_WIDTH || y >= PpuBase::SCREEN_HIRES_MODE_HEIGHT)
                     {
-                        rowClippedCount++;
                         continue;
                     }
 
                     if (m_hiresVideoMemory[y * PpuBase::SCREEN_HIRES_MODE_WIDTH + x] == PIXEL_ON)
                     {
                         m_hiresVideoMemory[y * PpuBase::SCREEN_HIRES_MODE_WIDTH + x] = PIXEL_OFF;
-                        rowCollisionCount++;
+                        collision = true;
                     }
                     else
                     {
@@ -102,7 +100,7 @@ auto SChipCPpu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::arr
         }
     }
 
-    return static_cast<uint8>(rowCollisionCount + rowClippedCount);
+    return static_cast<uint8>(collision);
 }
 
 void SChipCPpu::scrollDown(uint8 n) {

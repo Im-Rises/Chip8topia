@@ -14,6 +14,7 @@ public:
 
 public:
     [[nodiscard]] auto getType() const -> Chip8CoreType final { return Chip8CoreType::Chip8; }
+    [[nodiscard]] auto getConsoleName() const -> const char* const final { return "Chip8"; }
     auto clock() -> bool final;
 
 private:

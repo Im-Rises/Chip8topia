@@ -26,4 +26,5 @@ private:
     ImGuiMenuItemWindow<Chip8topia> m_Chip8SettingsMenuItem = { "Chip8 Settings", false, [this](Chip8topia* chip8topia) { drawEmulationSettings(chip8topia); } };
 
     Chip8CoreType m_selectedCore = Chip8CoreType::Chip8;
+    Chip8Frequency m_selectedFrequency = Chip8Frequency::FREQ_1200_HZ;
 };

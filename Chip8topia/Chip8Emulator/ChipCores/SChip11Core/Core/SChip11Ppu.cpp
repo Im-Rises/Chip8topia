@@ -28,7 +28,8 @@ auto SChip11Ppu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8,
 }
 
 auto SChip11Ppu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint8 n, uint8* videoMemory) -> bool {
-    bool collision = false;
+    uint8 rowCollisionCount = 0;
+    uint8 rowClippedCount = 0;
 
     const int screenWidth = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
     const int screenHeight = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
@@ -46,6 +47,7 @@ auto SChip11Ppu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::arra
                 // Clip the sprite if it goes out of bounds
                 if (((Vx + j) >= screenWidth && j > 0) || ((Vy + i) >= screenHeight && i > 0))
                 {
+                    rowClippedCount++;
                     continue;
                 }
 
@@ -54,7 +56,7 @@ auto SChip11Ppu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::arra
                 if (videoMemory[index] == PIXEL_ON)
                 {
                     videoMemory[index] = PIXEL_OFF;
-                    collision = true;
+                    rowCollisionCount++;
                 }
                 else
                 {
@@ -64,7 +66,10 @@ auto SChip11Ppu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::arra
         }
     }
 
-    return collision;
+    if (getMode() == PpuMode::HIRES)
+        return static_cast<uint8>(rowCollisionCount + rowClippedCount);
+    else // LORES
+        return (rowClippedCount + rowCollisionCount) > 0 ? 1 : 0;
 }
 
 auto SChip11Ppu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory) -> uint8 {
@@ -102,7 +107,10 @@ auto SChip11Ppu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::ar
         }
     }
 
-    return static_cast<uint8>(rowCollisionCount + rowClippedCount);
+    if (getMode() == PpuMode::HIRES)
+        return static_cast<uint8>(rowCollisionCount + rowClippedCount);
+    else // LORES
+        return (rowClippedCount + rowCollisionCount) > 0 ? 1 : 0;
 }
 
 void SChip11Ppu::scrollDown(uint8 n) {
