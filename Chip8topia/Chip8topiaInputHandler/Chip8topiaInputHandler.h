@@ -27,8 +27,6 @@ public:
 public:
 #ifndef __EMSCRIPTEN__
     SingleSubscriberEvent<> m_ExitChip8topiaEvent;
-    SingleSubscriberEvent<> m_ToggleMainBarEvent;
-    SingleSubscriberEvent<> m_ToggleWindowsVisibilityEvent;
     SingleSubscriberEvent<> m_ToggleTurboModeEvent;
     SingleSubscriberEvent<> m_CenterWindowEvent;
     SingleSubscriberEvent<> m_ToggleFullScreenEvent;
@@ -36,6 +34,9 @@ public:
 #if !defined(BUILD_RELEASE)
     SingleSubscriberEvent<> m_DebugRomFastLoadEvent;
 #endif
+
+    SingleSubscriberEvent<> m_ToggleMainBarEvent;
+    SingleSubscriberEvent<> m_ToggleWindowsVisibilityEvent;
     SingleSubscriberEvent<> m_BreakEmulationEvent;
     SingleSubscriberEvent<> m_StepEmulationEvent;
     SingleSubscriberEvent<> m_RunEmulationEvent;

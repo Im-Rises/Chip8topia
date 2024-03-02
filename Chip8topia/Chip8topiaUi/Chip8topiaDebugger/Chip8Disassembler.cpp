@@ -2,7 +2,9 @@
 
 #include <imgui.h>
 #include <fmt/format.h>
+#if !defined(BUILD_RELEASE)
 #include <spdlog/spdlog.h>
+#endif
 
 #include "../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
 #include "../Chip8Emulator/Disassembly/CpuDisassembly.h"
@@ -127,7 +129,7 @@ void Chip8Disassembler::drawBreakpoints(Chip8Emulator* emulator) {
             {
                 ImGui::TableNextRow();
                 ImGui::TableSetColumnIndex(0);
-                ImGui::Text(fmt::format("0x{:04X}", i).c_str());
+                ImGui::Text("%s", fmt::format("0x{:04X}", i).c_str());
                 ImGui::TableSetColumnIndex(1);
                 if (ImGui::Button(fmt::format("Goto##{}", i).c_str()))
                 {

@@ -5,7 +5,6 @@
 #include "ChipCores/Chip8Core/Chip8Core.h"
 #include "ChipCores/SChip11Core/SChip11Core.h"
 #include "ChipCores/SchipCCore/SChipCCore.h"
-#include <spdlog/spdlog.h>
 
 // Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<SChip11Core>()) {
 Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<Chip8Core>()) {
@@ -70,7 +69,6 @@ void Chip8Emulator::update(const float deltaTime) {
                 if (m_breakpoints[m_core->getCpu()->getPc()] && m_canBreak)
                 {
                     m_isBreak = true;
-                    spdlog::info("Breakpoint hit at 0x{:04X}", m_core->getCpu()->getPc());
                 }
             }
         }

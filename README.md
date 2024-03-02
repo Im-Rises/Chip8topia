@@ -156,6 +156,7 @@ emmake make -C build
 - [x] Finish SCHIPC
 
 - [ ] The getPC and getPc are not named the same, correct that
+- [ ] Correct to not link or use spdlog in release mode
 - [ ] Dans la section Émulation rajouter une window "émulation info" avec les fps, etc...
 - [ ] Add a way to change the frequency of the emulator
 - [ ] Add Xo-Chip emulation

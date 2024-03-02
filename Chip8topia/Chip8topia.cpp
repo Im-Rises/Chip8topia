@@ -21,7 +21,9 @@
 #include <fmt/format.h>
 #include <chrono>
 #include <iostream>
+#if !defined(BUILD_RELEASE)
 #include <spdlog/spdlog.h>
+#endif
 
 #include "Chip8Emulator/Chip8Emulator/Chip8RomLoader.h"
 #include "res/chip8topiaIconResource.h"
@@ -402,7 +404,9 @@ void Chip8topia::printDependenciesInfos() {
 }
 
 void Chip8topia::glfw_error_callback(int error, const char* description) {
+#if !defined(BUILD_RELEASE)
     spdlog::error("Glfw Error {}: {}", error, description);
+#endif
 }
 
 void Chip8topia::glfw_drop_callback(GLFWwindow* window, int count, const char** paths) {
@@ -419,7 +423,9 @@ void Chip8topia::glfw_drop_callback(GLFWwindow* window, int count, const char** 
     }
     catch (const std::exception& e)
     {
+#if !defined(BUILD_RELEASE)
         spdlog::error(e.what());
+#endif
     }
 }
 
@@ -432,7 +438,9 @@ void Chip8topia::loadDebugRom() {
     }
     catch (const std::exception& e)
     {
+#if !defined(BUILD_RELEASE)
         spdlog::error(e.what());
+#endif
     }
 }
 

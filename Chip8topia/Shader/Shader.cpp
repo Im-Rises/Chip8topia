@@ -3,7 +3,9 @@
 #include <fstream>
 #include <sstream>
 #include <array>
+#if !defined(BUILD_RELEASE)
 #include <spdlog/spdlog.h>
+#endif
 
 // #if defined(__EMSCRIPTEN__)
 // Shader::Shader(const char* vertexCode, const char* fragmentCode) : m_ID(0) {
@@ -54,7 +56,9 @@ void Shader::compileFromFiles(const char* vertexPath, const char* fragmentPath) 
     }
     catch (std::ifstream::failure& e)
     {
+#if !defined(BUILD_RELEASE)
         spdlog::error("ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ: {}", e.what());
+#endif
     }
 }
 
@@ -88,7 +92,9 @@ void Shader::checkCompileErrors(unsigned int shader, const std::string& type) {
         if (success == 0)
         {
             glGetShaderInfoLog(shader, 1024, nullptr, infoLog.data());
+#if !defined(BUILD_RELEASE)
             spdlog::error("ERROR::SHADER_COMPILATION_ERROR of type: {} \n {}", type, infoLog.data());
+#endif
         }
     }
     else
@@ -97,7 +103,9 @@ void Shader::checkCompileErrors(unsigned int shader, const std::string& type) {
         if (success == 0)
         {
             glGetProgramInfoLog(shader, 1024, nullptr, infoLog.data());
+#if !defined(BUILD_RELEASE)
             spdlog::error("ERROR::PROGRAM_LINKING_ERROR of type: {} \n {}", type, infoLog.data());
+#endif
         }
     }
 }

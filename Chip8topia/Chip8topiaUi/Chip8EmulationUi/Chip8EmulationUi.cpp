@@ -42,7 +42,7 @@ void Chip8EmulationUi::drawEmulationSettings(Chip8topia* chip8topia) {
     ImGui::Separator();
 
     ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Console version");
-    ImGui::Text("Current core: %d", emulator.getCoreType());
+    ImGui::Text("Current core: %hhu", static_cast<uint8>(emulator.getCoreType()));
 
     if (ImGui::Selectable("Chip8", m_selectedCore == Chip8CoreType::Chip8))
     {

@@ -37,7 +37,8 @@
     },
     {
       "name": "spdlog",
-      "version>=": "1.13.0"
+      "version>=": "1.13.0",
+      "platform": "!emscripten"
     }
   ]
 }

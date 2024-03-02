@@ -45,8 +45,10 @@ target_link_libraries(${PROJECT_NAME} PRIVATE imgui::imgui)
 find_package(fmt CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt)
 
-find_package(spdlog CONFIG REQUIRED)
-target_link_libraries(${PROJECT_NAME} PRIVATE spdlog::spdlog)
+if (NOT CMAKE_BUILD_TYPE STREQUAL "Release" AND NOT EMSCRIPTEN)
+    find_package(spdlog CONFIG REQUIRED)
+    target_link_libraries(${PROJECT_NAME} PRIVATE spdlog::spdlog)
+endif ()
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_compile_definitions(${PROJECT_NAME} PRIVATE BUILD_DEBUG)
