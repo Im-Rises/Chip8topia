@@ -82,10 +82,11 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [x] Ajouter bouton au desassembleur pour suivre le point de debug. Et surtout en pas à pas faire qu'on le suive tout
   le temps !!!!!!!
 - [x] Add break, run, step to the debugger
+- [x] Correct break which still break on run
 
-- [ ] Correct break which still break on run
 - [ ] Finish SCHIPC Modern
 - [ ] Check emscripten canvas resize
+- [ ] Adapt view to still be in 16:9 ratio
 
 - [ ] The getPC and getPc are not named the same, correct that
 - [ ] Add emulation sound
@@ -96,25 +97,10 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [ ] Is aucune chip8 n'est chargé alors on draw avec un shader dans Chip8topia. Ce dernier aura l'image en background.
   (Faire un tableau 1d dans le .h avec les valeurs 0 à 1 ou 255.
   Le draw chaque frame]
-
-Check later
-
-- [ ] Add emulation for the SuperChip8 and the XO-Chip ?
-- [ ] Add a way to change the used version of the chip8 (ask with a window like the About window, which block user intil
-  he decides which version to use) and make it changeable before running a game and when the game is running (restart
-  the game when the version is changed while the game is running)
+- [ ] Add emulation for the O-Chip
 - [ ] Add a way to change the frequency of the emulator
-- [ ] Faire une fenêtre imgui quand on démarre pour sélectionner la version de chip8
-- [ ] Faire héritage cpp pour cpu et pour selection et peut être Chip8Core
-- [ ] Faire un switch case qui démarre la version de Core sélectionné avec la création de Chip8Core m_core; en
-  tant que unique_ptr
 - [ ] Pour les load rom être sûr de bien utiliser std::move pour les vecteurs et des && pour les paramètres de
   fonctions
-- [ ] Pour la partie emulation faire des surcharges de fonctions avec comme paramètre const SuperChip8Core& core,
-  const Chip8Core& core, const XOChip8Core& core, de cette façon on pourra définir trois fonctions différentes pour
-  chaque version de Core et le prendra autmaotiquement lors de l'appel ?
-- [ ] Faire des fonctions virtuel et les override dans chaque cpu ! Pas pure virtual, pour que si c'est pas override ça
-  appelle "assert" !
 
 ## Dependencies
 
