@@ -19,7 +19,7 @@ Checks: >
   -readability-redundant-access-specifiers,
   -readability-braces-around-statements,
   -readability-identifier-length,
-  -misc-non-private-member-variables-in-classes,
+#  -misc-non-private-member-variables-in-classes,
   -clang-diagnostic-uninitialized-union,
   -cppcoreguidelines-avoid-magic-numbers,
   -bugprone-easily-swappable-parameters,
@@ -29,6 +29,7 @@ Checks: >
   -readability-avoid-const-params-in-decls,
   -modernize-use-trailing-return-type,
   -readability-named-parameter,
+
 
 # Turn all the warnings from the checks above into errors.
 WarningsAsErrors: "*"

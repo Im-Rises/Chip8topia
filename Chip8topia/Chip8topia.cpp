@@ -13,8 +13,6 @@
 #include <emscripten/html5.h>
 #else
 #include <glad/glad.h>
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
 #endif
 #include <GLFW/glfw3.h>
 
@@ -123,7 +121,7 @@ auto Chip8topia::init() -> int {
 
     // Get canvas size
 #if defined(__EMSCRIPTEN__)
-    emscripten_get_canvas_element_size("#canvas", &m_currentWidth, &m_currentHeight);
+    emscripten_get_canvas_element_size(WEB_CANVAS_ID, &m_currentWidth, &m_currentHeight);
 #endif
 
     // Create window with graphics context
@@ -174,7 +172,7 @@ auto Chip8topia::init() -> int {
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(m_window, true);
     // #ifdef __EMSCRIPTEN__
-    //     ImGui_ImplGlfw_InstallEmscriptenCanvasResizeCallback("#canvas");
+    //     ImGui_ImplGlfw_InstallEmscriptenCanvasResizeCallback(WEB_CANVAS_ID);
     // #endif
     ImGui_ImplOpenGL3_Init(glsl_version);
 
@@ -224,10 +222,7 @@ void Chip8topia::handleUi(const float /*deltaTime*/) {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
-    //    if (!getWindowMinimized())
-    //    {
     m_chip8topiaUi.drawUi(*this);
-    //    }
     ImGui::Render();
 }
 
@@ -245,15 +240,17 @@ void Chip8topia::handleScreenUpdate() {
     }
 
 #if defined(__EMSCRIPTEN__)
-    emscripten_get_canvas_element_size("#canvas", &m_currentWidth, &m_currentHeight);
+    emscripten_get_canvas_element_size(WEB_CANVAS_ID, &m_currentWidth, &m_currentHeight);
 #else
     glfwGetFramebufferSize(m_window, &m_currentWidth, &m_currentHeight);
 #endif
     glViewport(0, 0, m_currentWidth, m_currentHeight);
-    glClearColor(CLEAR_COLOR.x * CLEAR_COLOR.w, CLEAR_COLOR.y * CLEAR_COLOR.w, CLEAR_COLOR.z * CLEAR_COLOR.w, CLEAR_COLOR.w);
+    //    glClearColor(CLEAR_COLOR.x * CLEAR_COLOR.w, CLEAR_COLOR.y * CLEAR_COLOR.w, CLEAR_COLOR.z * CLEAR_COLOR.w, CLEAR_COLOR.w);
+    ImVec4& clearColor = m_chip8Emulator->getChip8VideoEmulation().getBackgroundColor();
+    glClearColor(clearColor.x * clearColor.w, clearColor.y * clearColor.w, clearColor.z * clearColor.w, clearColor.w);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    m_chip8Emulator->render();
+    m_chip8Emulator->render(static_cast<float>(m_currentWidth), static_cast<float>(m_currentHeight));
 
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -320,15 +317,11 @@ void Chip8topia::toggleTurboMode() {
 
 #ifndef __EMSCRIPTEN__
 void Chip8topia::setWindowIcon() {
-    // TODO:Correct this code which gives strange results
-    int chip8topiaIconWidth = 0, chip8topiaIconHeight = 0, channelsInFile = 0;
-    unsigned char* imagePixels = stbi_load_from_memory(CHIP8TOPIA_ICON_DATA.data(), static_cast<int>(CHIP8TOPIA_ICON_DATA.size()), &chip8topiaIconWidth, &chip8topiaIconHeight, &channelsInFile, 0);
     GLFWimage images;
-    images.width = chip8topiaIconWidth;
-    images.height = chip8topiaIconHeight;
-    images.pixels = imagePixels;
+    images.width = chiptopia_img_res::CHIPTOPIA_ICON_WIDTH;
+    images.height = chiptopia_img_res::CHIPTOPIA_ICON_HEIGHT;
+    images.pixels = chiptopia_img_res::getChip8topiaIconData().data();
     glfwSetWindowIcon(m_window, 1, &images);
-    stbi_image_free(imagePixels);
 }
 
 void Chip8topia::setWindowTitle(const float fps) {
@@ -353,6 +346,13 @@ auto Chip8topia::getIsTurboMode() const -> bool {
 
 auto Chip8topia::getWindowDimensions() const -> std::pair<int, int> {
     return { m_currentWidth, m_currentHeight };
+}
+
+auto Chip8topia::getWindowWidth() const -> int {
+    return m_currentWidth;
+}
+auto Chip8topia::getWindowHeight() const -> int {
+    return m_currentHeight;
 }
 
 // auto Chip8topia::getWindowMinimized() const -> bool {
@@ -443,5 +443,4 @@ void Chip8topia::loadDebugRom() {
 #endif
     }
 }
-
 #endif

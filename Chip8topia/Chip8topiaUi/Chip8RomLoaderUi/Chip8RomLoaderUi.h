@@ -23,6 +23,7 @@ public:
 public:
     void drawFileMenu(Chip8topia& chip8topia);
     void drawRomWindow(Chip8topia& chip8topia);
+    void closeAllWindows();
 
 private:
 #if defined(__EMSCRIPTEN__)

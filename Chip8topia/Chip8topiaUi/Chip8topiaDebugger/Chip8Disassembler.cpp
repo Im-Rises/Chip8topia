@@ -7,7 +7,10 @@
 #endif
 
 #include "../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
-#include "../Chip8Emulator/Disassembly/CpuDisassembly.h"
+#include "../Chip8Emulator/Disassembly/disassemblySettings.h"
+#include "../Chip8Emulator/Disassembly/Chip8CpuDisassembly.h"
+#include "../Chip8Emulator/Disassembly/SChip11CpuDisassembly.h"
+#include "../Chip8Emulator/Disassembly/SChipCCpuDisassembly.h"
 #include "../../Chip8Emulator/Chip8Emulator.h"
 
 void Chip8Disassembler::drawDisassembly(Chip8Emulator* emulator) {
@@ -17,7 +20,20 @@ void Chip8Disassembler::drawDisassembly(Chip8Emulator* emulator) {
     std::bitset<CpuBase::MEMORY_SIZE>& m_breakpoints = emulator->getBreakpoints();
     uint16 pc = emulator->getChip8Core()->getCpu()->getPc();
 
-    static constexpr int OPCODE_SIZE = 2; // TODO: Move to the Chip8BaseCpu class
+    std::function<std::string(const uint16 opcode)> disassembler;
+    switch (emulator->getCoreType())
+    {
+    case Chip8CoreType::Chip8:
+        disassembler = Chip8CpuDisassembly::disassembleOpcode;
+        break;
+    case Chip8CoreType::SChip11:
+        disassembler = SChip11CpuDisassembly::disassembleOpcode;
+        break;
+    case Chip8CoreType::SChipC:
+        disassembler = SChipCCpuDisassembly::disassembleOpcode;
+        break;
+    case Chip8CoreType::XoChip: break;
+    }
 
     bool currentPcInViewport = false;
 
@@ -31,7 +47,7 @@ void Chip8Disassembler::drawDisassembly(Chip8Emulator* emulator) {
             const int memoryIndex = i * OPCODE_SIZE;
             uint16 opcode = (memory[memoryIndex] << 8) | memory[(memoryIndex) + 1];
 
-            buffer = fmt::format("  0x{:04X}: ({:04X}) {}", memoryIndex, opcode, CpuDisassembly::disassembleOpcode(opcode));
+            buffer = fmt::format("  0x{:04X}: ({:04X}) {}", memoryIndex, opcode, disassembler(opcode));
 
             if (pc == memoryIndex)
             {
@@ -52,24 +68,24 @@ void Chip8Disassembler::drawDisassembly(Chip8Emulator* emulator) {
         }
     }
 
-    if (m_previousPC != pc && m_followPC && !currentPcInViewport)
+    if (m_previousPc != pc && m_followPc && !currentPcInViewport)
     {
         ImGui::SetScrollY((static_cast<float>(pc) / OPCODE_SIZE) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
     }
 
-    if (m_requestMoveToPC)
+    if (m_requestMoveToPc)
     {
-        m_requestMoveToPC = false;
-        ImGui::SetScrollY((static_cast<float>(m_requestedPC) / OPCODE_SIZE) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
+        m_requestMoveToPc = false;
+        ImGui::SetScrollY((static_cast<float>(m_requestedPc) / OPCODE_SIZE) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
     }
 
-    m_previousPC = pc;
+    m_previousPc = pc;
 }
 
 void Chip8Disassembler::drawDisassemblyControls(Chip8Emulator* emulator) {
     Chip8topiaInputHandler& inputHandler = Chip8topiaInputHandler::getInstance();
 
-    ImGui::Checkbox("Follow PC", &m_followPC);
+    ImGui::Checkbox("Follow PC", &m_followPc);
 
     ImGui::SameLine();
 
@@ -111,9 +127,6 @@ void Chip8Disassembler::drawDisassemblyControls(Chip8Emulator* emulator) {
 }
 
 void Chip8Disassembler::drawBreakpoints(Chip8Emulator* emulator) {
-    // TODO: Maybe move this to the draw disassembly controls
-    // TODO: Add breakpoints move to the breakpoint when clicked
-
     std::bitset<CpuBase::MEMORY_SIZE>& breakpoints = emulator->getBreakpoints();
 
     if (ImGui::BeginTable("Breakpoints", 3, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_Resizable))
@@ -133,9 +146,9 @@ void Chip8Disassembler::drawBreakpoints(Chip8Emulator* emulator) {
                 ImGui::TableSetColumnIndex(1);
                 if (ImGui::Button(fmt::format("Goto##{}", i).c_str()))
                 {
-                    m_requestMoveToPC = true;
-                    m_requestedPC = i;
-                    m_followPC = false;
+                    m_requestMoveToPc = true;
+                    m_requestedPc = i;
+                    m_followPc = false;
                 }
                 ImGui::TableSetColumnIndex(2);
                 if (ImGui::Button(fmt::format("X##{}", i).c_str()))

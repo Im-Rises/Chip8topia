@@ -154,15 +154,20 @@ emmake make -C build
 - [x] Add break, run, step to the debugger
 - [x] Correct break which still break on run
 - [x] Finish SCHIPC
+- [x] Correct to not link or use spdlog in release mode
+- [x] The getPC and getPc are not named the same, correct that
+- [x] Dans la section Émulation rajouter une window "émulation info" avec les fps, etc...
+- [x] Add a way to change the frequency of the emulator
+- [x] Add disassembly for SCHIPC and SCHIP1.1
+- [x] Check emscripten canvas resize
+- [x] Adapt view to still be in 16:9 ratio
 
-- [ ] The getPC and getPc are not named the same, correct that
-- [ ] Correct to not link or use spdlog in release mode
-- [ ] Dans la section Émulation rajouter une window "émulation info" avec les fps, etc...
-- [ ] Add a way to change the frequency of the emulator
+- [ ] Correct icon in desktop
+
 - [ ] Add Xo-Chip emulation
-- [ ] Check emscripten canvas resize
-- [ ] Adapt view to still be in 16:9 ratio
-- [ ] Add emulation sound
+- [ ] Add modern SCHIP1.1 and test it with the quirks test
+- [ ] Add audio for chip8 and SCHIP series
+- [ ] Reorder code between events and direct call to emulator
 - [ ] Add save states ? (if yes create a window with an image preview of the save state) ajouter dans la section File de
   main bar
 - [ ] For the std::vector use ref or move... For the rom loading

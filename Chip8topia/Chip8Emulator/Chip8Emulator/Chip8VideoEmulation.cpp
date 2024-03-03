@@ -21,13 +21,27 @@ void Chip8VideoEmulation::updateTexture(const std::unique_ptr<Chip8CoreBase>& co
     }
 }
 
-void Chip8VideoEmulation::update(const std::unique_ptr<Chip8CoreBase>& core) {
-    if (core->getPpu()->getMode() == PpuBase::PpuMode::LORES)
+void Chip8VideoEmulation::update(const std::unique_ptr<Chip8CoreBase>& core, const float screenWidth, const float screenHeight, const float chip8AspectRatio) {
+    float screenAspectRatio = screenWidth / screenHeight;
+
+    float scaleX = 1.0F;
+    float scaleY = 1.0F;
+
+    if (chip8AspectRatio > screenAspectRatio)
     {
-        m_shaderLores.update();
+        scaleY = screenAspectRatio / chip8AspectRatio;
     }
     else
     {
-        m_shaderHires.update();
+        scaleX = chip8AspectRatio / screenAspectRatio;
+    }
+
+    if (core->getPpu()->getMode() == PpuBase::PpuMode::LORES)
+    {
+        m_shaderLores.update(m_backgroundColor, m_foregroundColor, scaleX, scaleY);
+    }
+    else
+    {
+        m_shaderHires.update(m_backgroundColor, m_foregroundColor, scaleX, scaleY);
     }
 }

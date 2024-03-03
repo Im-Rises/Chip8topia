@@ -48,7 +48,6 @@ void Chip8Cpu::computeOpcode(const uint16 opcode) {
         case 0x6: SHR_Vx_Vy(nibble3, nibble2); break;  // 8XY6
         case 0x7: SUBN_Vx_Vy(nibble3, nibble2); break; // 8XY7
         case 0xE: SHL_Vx_Vy(nibble3, nibble2); break;  // 8XYE
-        default: /* Invalid opcode */ break;
         }
         break;
     }
@@ -62,7 +61,6 @@ void Chip8Cpu::computeOpcode(const uint16 opcode) {
         {
         case 0xE: SKP_Vx(nibble3); break;  // EX9E
         case 0x1: SKNP_Vx(nibble3); break; // EXA1
-        default: /* Invalid opcode */ break;
         }
         break;
     }
@@ -74,7 +72,6 @@ void Chip8Cpu::computeOpcode(const uint16 opcode) {
             {
             case 0x7: LD_Vx_DT(nibble3); break; // FX07
             case 0xA: LD_Vx_K(nibble3); break;  // FX0A
-            default: break;
             }
             break;
         case 0x1:
@@ -83,14 +80,12 @@ void Chip8Cpu::computeOpcode(const uint16 opcode) {
             case 0x5: LD_DT_Vx(nibble3); break; // FX15
             case 0x8: LD_ST_Vx(nibble3); break; // FX18
             case 0xE: ADD_I_Vx(nibble3); break; // FX1E
-            default: break;
             }
             break;
         case 0x2: LD_F_Vx(nibble3); break;  // FX29
         case 0x3: LD_B_Vx(nibble3); break;  // FX33
         case 0x5: LD_aI_Vx(nibble3); break; // FX55
         case 0x6: LD_Vx_aI(nibble3); break; // FX65
-        default: /* Invalid opcode */ break;
         }
         break;
     }

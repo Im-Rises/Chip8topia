@@ -21,6 +21,13 @@ void Chip8topiaDebugger::drawDebuggerWindows(Chip8Emulator& emulator) {
     }
 }
 
+void Chip8topiaDebugger::closeAllWindows() {
+    for (auto& menuItem : m_menuItems)
+    {
+        menuItem.m_isOpen = false;
+    }
+}
+
 void Chip8topiaDebugger::drawRegisters(Chip8CoreBase* chip8) {
     std::unique_ptr<CpuBase>& cpu = chip8->getCpu();
 

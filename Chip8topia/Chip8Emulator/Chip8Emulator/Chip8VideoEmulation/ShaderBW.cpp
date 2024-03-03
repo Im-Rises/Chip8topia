@@ -11,7 +11,7 @@ ShaderBW::ShaderBW(int width, int height) : m_width(width), m_height(height),
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
     glBufferData(GL_ARRAY_BUFFER, VERTICES.size() * sizeof(float), VERTICES.data(), GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
     glEnableVertexAttribArray(0);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -44,14 +44,15 @@ void ShaderBW::updateTexture(const uint8* data) {
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void ShaderBW::update() {
+void ShaderBW::update(const ImVec4& backgroundColor, const ImVec4& foregroundColor, const float xScale, const float yScale) {
     m_shader.use();
     glBindVertexArray(m_VAO);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_texture);
-    m_shader.setVec4("u_backgroundColor", m_backgroundColor.x, m_backgroundColor.y, m_backgroundColor.z, m_backgroundColor.w);
-    m_shader.setVec4("u_foregroundColor", m_foregroundColor.x, m_foregroundColor.y, m_foregroundColor.z, m_foregroundColor.w);
-    glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(VERTICES.size() / 3));
+    m_shader.setVec4("u_backgroundColor", backgroundColor.x, backgroundColor.y, backgroundColor.z, backgroundColor.w);
+    m_shader.setVec4("u_foregroundColor", foregroundColor.x, foregroundColor.y, foregroundColor.z, foregroundColor.w);
+    m_shader.setVec2("u_scaleFactor", xScale, yScale);
+    glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(VERTICES.size() / 2));
     glBindTexture(GL_TEXTURE_2D, 0);
     glBindVertexArray(0);
 }

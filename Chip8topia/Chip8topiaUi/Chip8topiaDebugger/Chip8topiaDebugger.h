@@ -29,6 +29,7 @@ public:
 public:
     void drawDebuggerMenu();
     void drawDebuggerWindows(Chip8Emulator& emulator);
+    void closeAllWindows();
 
 private:
     void drawRegisters(Chip8CoreBase* chip8);
