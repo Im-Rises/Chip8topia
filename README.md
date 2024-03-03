@@ -160,10 +160,10 @@ emmake make -C build
 - [x] Add a way to change the frequency of the emulator
 - [x] Add disassembly for SCHIPC and SCHIP1.1
 - [x] Check emscripten canvas resize
-
-- [ ] Adapt view to still be in 16:9 ratio
+- [x] Adapt view to still be in 16:9 ratio
 
 - [ ] Correct icon in desktop
+
 - [ ] Add Xo-Chip emulation
 - [ ] Add modern SCHIP1.1 and test it with the quirks test
 - [ ] Add audio for chip8 and SCHIP series

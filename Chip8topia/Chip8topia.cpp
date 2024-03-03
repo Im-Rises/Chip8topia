@@ -13,8 +13,6 @@
 #include <emscripten/html5.h>
 #else
 #include <glad/glad.h>
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
 #endif
 #include <GLFW/glfw3.h>
 
@@ -319,15 +317,35 @@ void Chip8topia::toggleTurboMode() {
 
 #ifndef __EMSCRIPTEN__
 void Chip8topia::setWindowIcon() {
-    // TODO:Correct this code which gives strange results
-    int chip8topiaIconWidth = 0, chip8topiaIconHeight = 0, channelsInFile = 0;
-    unsigned char* imagePixels = stbi_load_from_memory(CHIP8TOPIA_ICON_DATA.data(), static_cast<int>(CHIP8TOPIA_ICON_DATA.size()), &chip8topiaIconWidth, &chip8topiaIconHeight, &channelsInFile, 0);
+    uint8 chip8Icon[24 * 24 * 4];
+    for (int i = 0; i < 24 * 24; i++)
+    {
+        //        chip8Icon[i * 4] = CHIP8TOPIA_ICON_DATA[i];
+        //        chip8Icon[i * 4 + 1] = CHIP8TOPIA_ICON_DATA[i];
+        //        chip8Icon[i * 4 + 2] = CHIP8TOPIA_ICON_DATA[i];
+        //        chip8Icon[i * 4 + 3] = 255;
+
+        if (CHIP8TOPIA_ICON_DATA[i] > 0)
+        {
+            chip8Icon[i * 4] = 0;
+            chip8Icon[i * 4 + 1] = 0;
+            chip8Icon[i * 4 + 2] = 0;
+            chip8Icon[i * 4 + 3] = 255;
+        }
+        else
+        {
+            chip8Icon[i * 4] = 255;
+            chip8Icon[i * 4 + 1] = 255;
+            chip8Icon[i * 4 + 2] = 255;
+            chip8Icon[i * 4 + 3] = 0;
+        }
+    }
+
     GLFWimage images;
-    images.width = chip8topiaIconWidth;
-    images.height = chip8topiaIconHeight;
-    images.pixels = imagePixels;
+    images.width = 24;
+    images.height = 24;
+    images.pixels = chip8Icon;
     glfwSetWindowIcon(m_window, 1, &images);
-    stbi_image_free(imagePixels);
 }
 
 void Chip8topia::setWindowTitle(const float fps) {

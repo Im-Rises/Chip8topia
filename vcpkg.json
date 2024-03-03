@@ -19,11 +19,6 @@
       "platform": "!emscripten"
     },
     {
-      "name": "stb",
-      "version>=": "2023-04-11#1",
-      "platform": "!emscripten"
-    },
-    {
       "name": "imgui",
       "version>=": "1.90#3",
       "features": [
@@ -39,11 +34,6 @@
     {
       "name": "spdlog",
       "version>=": "1.13.0",
-      "platform": "!emscripten"
-    },
-    {
-      "name": "openal-soft",
-      "version>=": "1.23.1",
       "platform": "!emscripten"
     }
   ]
