@@ -6,7 +6,7 @@
 #include "ChipCores/SChip11Core/SChip11Core.h"
 #include "ChipCores/SchipCCore/SChipCCore.h"
 
-Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<Chip8Core>(Chip8Frequency::FREQ_1200_HZ)) {
+Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<Chip8Core>(DEFAULT_FREQUENCY)) {
     Chip8topiaInputHandler& inputHandler = Chip8topiaInputHandler::getInstance();
     inputHandler.m_GameInput.subscribe(this, &Chip8Emulator::OnInput);
     inputHandler.m_RestartEmulationEvent.subscribe(this, &Chip8Emulator::restart);
@@ -76,11 +76,11 @@ void Chip8Emulator::update(const float deltaTime) {
     }
 }
 
-void Chip8Emulator::render() {
+void Chip8Emulator::render(const float screenWidth, const float screenHeight) {
     // Another way to do this would be to use a trap of the opcode (check if the opcode is render and if not then use the switch case to compute the opcode)
     // But because there is no real vsync, its no use
     m_videoEmulation.updateTexture(m_core);
-    m_videoEmulation.update(m_core);
+    m_videoEmulation.update(m_core, screenWidth, screenHeight, CHIP8_ASPECT_RATIO);
 }
 
 void Chip8Emulator::stop() {

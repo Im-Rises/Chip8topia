@@ -46,7 +46,7 @@ public:
 
 public:
     void updateTexture(const uint8* data);
-    void update(const ImVec4& backgroundColor, const ImVec4& foregroundColor);
+    void update(const ImVec4& backgroundColor, const ImVec4& foregroundColor, const float xScale, const float yScale);
     void reset();
 
 private:

@@ -44,13 +44,16 @@ void ShaderBW::updateTexture(const uint8* data) {
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void ShaderBW::update(const ImVec4& backgroundColor, const ImVec4& foregroundColor) {
+void ShaderBW::update(const ImVec4& backgroundColor, const ImVec4& foregroundColor, const float xScale, const float yScale) {
+
     m_shader.use();
     glBindVertexArray(m_VAO);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_texture);
     m_shader.setVec4("u_backgroundColor", backgroundColor.x, backgroundColor.y, backgroundColor.z, backgroundColor.w);
     m_shader.setVec4("u_foregroundColor", foregroundColor.x, foregroundColor.y, foregroundColor.z, foregroundColor.w);
+    m_shader.setFloat("u_xScale", xScale);
+    m_shader.setFloat("u_yScale", yScale);
     glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(VERTICES.size() / 3));
     glBindTexture(GL_TEXTURE_2D, 0);
     glBindVertexArray(0);

@@ -66,6 +66,8 @@ public:
     [[nodiscard]] auto getIsTurboMode() const -> bool;
 
     [[nodiscard]] auto getWindowDimensions() const -> std::pair<int, int>;
+    [[nodiscard]] auto getWindowWidth() const -> int;
+    [[nodiscard]] auto getWindowHeight() const -> int;
     //    [[nodiscard]] auto getWindowMinimized() const -> bool;
 
 private:

@@ -23,7 +23,7 @@ public:
 public:
     void reset();
     void updateTexture(const std::unique_ptr<Chip8CoreBase>& core);
-    void update(const std::unique_ptr<Chip8CoreBase>& core);
+    void update(const std::unique_ptr<Chip8CoreBase>& core, const float screenWidth, const float screenHeight, const float chip8AspectRatio);
 
     [[nodiscard]] auto getBackgroundColor() -> ImVec4& { return m_backgroundColor; }
     [[nodiscard]] auto getForegroundColor() -> ImVec4& { return m_foregroundColor; }

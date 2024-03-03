@@ -241,7 +241,6 @@ void Chip8topia::handleScreenUpdate() {
         glfwGetWindowSize(m_window, &m_windowedWidth, &m_windowedHeight);
     }
 
-    std::cout << "m_currentWidth: " << m_currentWidth << " m_currentHeight: " << m_currentHeight << std::endl;
 #if defined(__EMSCRIPTEN__)
     emscripten_get_canvas_element_size(WEB_CANVAS_ID, &m_currentWidth, &m_currentHeight);
 #else
@@ -251,7 +250,7 @@ void Chip8topia::handleScreenUpdate() {
     glClearColor(CLEAR_COLOR.x * CLEAR_COLOR.w, CLEAR_COLOR.y * CLEAR_COLOR.w, CLEAR_COLOR.z * CLEAR_COLOR.w, CLEAR_COLOR.w);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    m_chip8Emulator->render();
+    m_chip8Emulator->render(static_cast<float>(m_currentWidth), static_cast<float>(m_currentHeight));
 
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -353,6 +352,13 @@ auto Chip8topia::getWindowDimensions() const -> std::pair<int, int> {
     return { m_currentWidth, m_currentHeight };
 }
 
+auto Chip8topia::getWindowWidth() const -> int {
+    return m_currentWidth;
+}
+auto Chip8topia::getWindowHeight() const -> int {
+    return m_currentHeight;
+}
+
 // auto Chip8topia::getWindowMinimized() const -> bool {
 //     return glfwGetWindowAttrib(m_window, GLFW_ICONIFIED) != 0;
 // }
@@ -441,5 +447,4 @@ void Chip8topia::loadDebugRom() {
 #endif
     }
 }
-
 #endif

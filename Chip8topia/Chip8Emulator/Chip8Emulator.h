@@ -9,6 +9,12 @@
 
 class Chip8Emulator {
 public:
+    static constexpr auto CHIP8_ASPECT_RATIO = 2.0F;
+
+private:
+    static constexpr auto DEFAULT_FREQUENCY = Chip8Frequency::FREQ_1200_HZ;
+
+public:
     Chip8Emulator();
     Chip8Emulator(const Chip8Emulator&) = delete;
     Chip8Emulator(Chip8Emulator&&) = delete;
@@ -22,7 +28,7 @@ public:
     void loadRom(const std::vector<uint8_t>& romData);
 
     void update(const float deltaTime);
-    void render();
+    void render(const float screenWidth, const float screenHeight);
 
     void stop();
     //    void togglePause();
@@ -32,9 +38,15 @@ public:
     [[nodiscard]] auto getChip8Core() -> Chip8CoreBase*;
     [[nodiscard]] auto getChip8VideoEmulation() -> Chip8VideoEmulation&;
 
-    void setRomName(const std::string& romName) { m_romName = romName; }
-    [[nodiscard]] auto getRomName() const -> std::string { return m_romName; }
-    [[nodiscard]] auto getConsoleName() -> std::string { return m_core->getConsoleName(); }
+    void setRomName(const std::string& romName) {
+        m_romName = romName;
+    }
+    [[nodiscard]] auto getRomName() const -> std::string {
+        return m_romName;
+    }
+    [[nodiscard]] auto getConsoleName() -> std::string {
+        return m_core->getConsoleName();
+    }
 
     //    void switchCore(const Chip8CoreType coreType);
     [[nodiscard]] auto getCoreType() const -> Chip8CoreType;
@@ -42,12 +54,20 @@ public:
     [[nodiscard]] auto getFrequency() const -> Chip8Frequency;
     void switchCoreFrequency(const Chip8CoreType coreType, const Chip8Frequency frequency);
 
-    auto getClockCountThisFrame() -> uint32 { return m_core->getClockCountThisFrame(); }
+    auto getClockCountThisFrame() -> uint32 {
+        return m_core->getClockCountThisFrame();
+    }
 
-    auto getCanBreak() -> bool* { return &m_canBreak; }
+    auto getCanBreak() -> bool* {
+        return &m_canBreak;
+    }
 
-    auto getBreakpoints() -> std::bitset<CpuBase::MEMORY_SIZE>& { return m_breakpoints; }
-    void clearBreakpoints() { m_breakpoints.reset(); }
+    auto getBreakpoints() -> std::bitset<CpuBase::MEMORY_SIZE>& {
+        return m_breakpoints;
+    }
+    void clearBreakpoints() {
+        m_breakpoints.reset();
+    }
 
     void stepEmulation() {
         m_isBreak = true;
@@ -58,7 +78,9 @@ public:
         m_isBreak = false;
     }
 
-    void breakEmulation() { m_isBreak = true; }
+    void breakEmulation() {
+        m_isBreak = true;
+    }
 
 private:
     void OnInput(const uint8 key, const bool isPressed);

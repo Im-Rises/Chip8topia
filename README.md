@@ -162,8 +162,10 @@ emmake make -C build
 - [x] Check emscripten canvas resize
 
 - [ ] Adapt view to still be in 16:9 ratio
+
 - [ ] Correct icon in desktop
 - [ ] Add Xo-Chip emulation
+- [ ] Add modern SCHIP1.1 and test it with the quirks test
 - [ ] Add audio for chip8 and SCHIP series
 - [ ] Reorder code between events and direct call to emulator
 - [ ] Add save states ? (if yes create a window with an image preview of the save state) ajouter dans la section File de
