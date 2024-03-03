@@ -317,20 +317,10 @@ void Chip8topia::toggleTurboMode() {
 
 #ifndef __EMSCRIPTEN__
 void Chip8topia::setWindowIcon() {
-    static constexpr uint8 IMAGE_CHANNELS = 4;
-    uint8 chip8Icon[CHIPTOPIA_ICON_WIDTH * CHIPTOPIA_ICON_HEIGHT * 4];
-    for (int i = 0; i < CHIPTOPIA_ICON_WIDTH * CHIPTOPIA_ICON_HEIGHT; i++)
-    {
-        chip8Icon[i * IMAGE_CHANNELS] = CHIP8TOPIA_ICON_DATA[i];
-        chip8Icon[i * IMAGE_CHANNELS + 1] = CHIP8TOPIA_ICON_DATA[i];
-        chip8Icon[i * IMAGE_CHANNELS + 2] = CHIP8TOPIA_ICON_DATA[i];
-        chip8Icon[i * IMAGE_CHANNELS + 3] = CHIP8TOPIA_ICON_DATA[i] > 0 ? 0 : 255;
-    }
-
     GLFWimage images;
-    images.width = CHIPTOPIA_ICON_WIDTH;
-    images.height = CHIPTOPIA_ICON_HEIGHT;
-    images.pixels = chip8Icon;
+    images.width = chiptopia_img_res::CHIPTOPIA_ICON_WIDTH;
+    images.height = chiptopia_img_res::CHIPTOPIA_ICON_HEIGHT;
+    images.pixels = chiptopia_img_res::getChip8topiaIconData().data();
     glfwSetWindowIcon(m_window, 1, &images);
 }
 
