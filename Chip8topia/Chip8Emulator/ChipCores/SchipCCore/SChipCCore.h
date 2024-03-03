@@ -4,7 +4,7 @@
 
 class SChipCCore final : public Chip8CoreBase {
 public:
-    SChipCCore();
+    explicit SChipCCore(unsigned int cpuClockFrequency);
     SChipCCore(const SChipCCore&) = delete;
     SChipCCore(SChipCCore&&) = delete;
     auto operator=(const SChipCCore&) -> SChipCCore& = delete;
@@ -13,5 +13,5 @@ public:
 
 public:
     [[nodiscard]] auto getType() const -> Chip8CoreType final { return Chip8CoreType::SChipC; }
-    [[nodiscard]] auto getConsoleName() const -> const char* const final { return "SChipC"; }
+    [[nodiscard]] auto getConsoleName() const -> const char* final { return "SChipC"; }
 };

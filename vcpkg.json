@@ -39,6 +39,11 @@
       "name": "spdlog",
       "version>=": "1.13.0",
       "platform": "!emscripten"
+    },
+    {
+      "name": "openal-soft",
+      "version>=": "1.23.1",
+      "platform": "!emscripten"
     }
   ]
 }

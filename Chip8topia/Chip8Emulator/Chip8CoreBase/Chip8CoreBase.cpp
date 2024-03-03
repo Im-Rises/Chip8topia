@@ -6,10 +6,11 @@
 #include "Core/CpuBase.h"
 #include "Core/PpuBase.h"
 
-Chip8CoreBase::Chip8CoreBase(std::unique_ptr<CpuBase> cpu, std::shared_ptr<PpuBase> ppu) : m_cpu(std::move(cpu)),
-                                                                                           m_ppu(std::move(ppu)),
-                                                                                           m_input(std::make_shared<Input>()),
-                                                                                           m_clockCounter(0) {
+Chip8CoreBase::Chip8CoreBase(unsigned int cpuClockFrequency, std::unique_ptr<CpuBase> cpu, std::shared_ptr<PpuBase> ppu) : m_cpuClockFrequency(cpuClockFrequency),
+                                                                                                                           m_cpu(std::move(cpu)),
+                                                                                                                           m_ppu(std::move(ppu)),
+                                                                                                                           m_input(std::make_shared<Input>()),
+                                                                                                                           m_clockCounter(0) {
     m_cpu->setPpu(m_ppu);
     m_cpu->setInput(m_input);
 }
@@ -22,7 +23,7 @@ auto Chip8CoreBase::clock() -> bool {
     m_cpu->clock();
     m_clockCounter++;
 
-    if (m_clockCounter >= CpuBase::CLOCK_FREQUENCY / SCREEN_AND_TIMERS_FREQUENCY)
+    if (m_clockCounter >= m_cpuClockFrequency / SCREEN_AND_TIMERS_FREQUENCY)
     {
         m_cpu->clockTimers();
         m_clockCounter = 0;

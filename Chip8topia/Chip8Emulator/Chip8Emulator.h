@@ -36,10 +36,11 @@ public:
     [[nodiscard]] auto getRomName() const -> std::string { return m_romName; }
     [[nodiscard]] auto getConsoleName() -> std::string { return m_core->getConsoleName(); }
 
-    void switchCore(const Chip8CoreType coreType);
+    //    void switchCore(const Chip8CoreType coreType);
     [[nodiscard]] auto getCoreType() const -> Chip8CoreType;
-    void switchFrequency(const Chip8Frequency frequency);
+    //    void switchFrequency(const Chip8Frequency frequency);
     [[nodiscard]] auto getFrequency() const -> Chip8Frequency;
+    void switchCoreFrequency(const Chip8CoreType coreType, const Chip8Frequency frequency);
 
     auto getClockCountThisFrame() -> uint32 { return m_core->getClockCountThisFrame(); }
 

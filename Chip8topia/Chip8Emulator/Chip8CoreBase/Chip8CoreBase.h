@@ -12,9 +12,8 @@ enum class Chip8CoreType : uint8 {
     XoChip   // XO-Chip
 };
 
-enum class Chip8Frequency : int {
+enum class Chip8Frequency : unsigned int {
     FREQ_600_HZ = 600,
-    //    FREQ_1000_HZ = 1000,
     FREQ_1200_HZ = 1200,
     FREQ_1800_HZ = 1800
 };
@@ -27,7 +26,7 @@ public:
     static constexpr unsigned int SCREEN_AND_TIMERS_FREQUENCY = 60;
 
 public:
-    Chip8CoreBase(std::unique_ptr<CpuBase> cpu, std::shared_ptr<PpuBase> ppu);
+    Chip8CoreBase(unsigned int cpuClockFrequency, std::unique_ptr<CpuBase> cpu, std::shared_ptr<PpuBase> ppu); // TODO: Maybe use a Chip8Frequency not an unsigned int
     Chip8CoreBase(const Chip8CoreBase&) = delete;
     Chip8CoreBase(Chip8CoreBase&&) = delete;
     auto operator=(const Chip8CoreBase&) -> Chip8CoreBase& = delete;
@@ -36,12 +35,12 @@ public:
 
 public:
     [[nodiscard]] virtual auto getType() const -> Chip8CoreType = 0;
-    [[nodiscard]] virtual auto getConsoleName() const -> const char* const = 0;
+    [[nodiscard]] virtual auto getConsoleName() const -> const char* = 0;
     void readRom(const std::vector<uint8>& rom);
     virtual auto clock() -> bool;
     void updateKey(const uint8 key, const bool pressed);
     void reset();
-    auto getClockCountThisFrame() -> uint32 { return m_clockCounter; }
+    [[nodiscard]] auto getClockCountThisFrame() const -> uint32 { return m_clockCounter; }
 
 public:
     [[nodiscard]] auto getCpu() -> std::unique_ptr<CpuBase>& { return m_cpu; }
@@ -54,4 +53,5 @@ protected:
     std::shared_ptr<Input> m_input;
 
     unsigned int m_clockCounter;
+    const unsigned int m_cpuClockFrequency;
 };

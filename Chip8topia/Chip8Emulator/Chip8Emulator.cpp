@@ -6,8 +6,7 @@
 #include "ChipCores/SChip11Core/SChip11Core.h"
 #include "ChipCores/SchipCCore/SChipCCore.h"
 
-// Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<SChip11Core>()) {
-Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<Chip8Core>()) {
+Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<Chip8Core>((unsigned int)Chip8Frequency::FREQ_1200_HZ)) {
     Chip8topiaInputHandler& inputHandler = Chip8topiaInputHandler::getInstance();
     inputHandler.m_GameInput.subscribe(this, &Chip8Emulator::OnInput);
     inputHandler.m_RestartEmulationEvent.subscribe(this, &Chip8Emulator::restart);
@@ -100,40 +99,31 @@ auto Chip8Emulator::getChip8VideoEmulation() -> Chip8VideoEmulation& {
     return m_videoEmulation;
 }
 
-void Chip8Emulator::switchCore(const Chip8CoreType coreType) {
+auto Chip8Emulator::getCoreType() const -> Chip8CoreType {
+    return m_core->getType();
+}
+
+auto Chip8Emulator::getFrequency() const -> Chip8Frequency {
+    return Chip8Frequency::FREQ_600_HZ;
+}
+
+void Chip8Emulator::switchCoreFrequency(const Chip8CoreType coreType, const Chip8Frequency frequency) {
     switch (coreType)
     {
     case Chip8CoreType::Chip8:
-        m_core = std::make_unique<Chip8Core>();
+        m_core = std::make_unique<Chip8Core>((unsigned int)frequency);
         break;
     case Chip8CoreType::SChip11:
-        m_core = std::make_unique<SChip11Core>();
+        m_core = std::make_unique<SChip11Core>((unsigned int)frequency);
         break;
     case Chip8CoreType::SChipC:
-        m_core = std::make_unique<SChipCCore>();
+        m_core = std::make_unique<SChipCCore>((unsigned int)frequency);
         break;
     case Chip8CoreType::XoChip:
         break;
     }
 
     m_isRomLoaded = false;
-    //    m_isBreak = true; //TODO: Check if this is necessary (click on run to start the emulation) ?
-}
-
-auto Chip8Emulator::getCoreType() const -> Chip8CoreType {
-    return m_core->getType();
-}
-
-void Chip8Emulator::switchFrequency(const Chip8Frequency frequency) {
-    switch (frequency)
-    {
-    case Chip8Frequency::FREQ_600_HZ:
-        break;
-    }
-}
-
-auto Chip8Emulator::getFrequency() const -> Chip8Frequency {
-    return Chip8Frequency::FREQ_600_HZ;
 }
 
 void Chip8Emulator::OnInput(const uint8 key, const bool isPressed) {

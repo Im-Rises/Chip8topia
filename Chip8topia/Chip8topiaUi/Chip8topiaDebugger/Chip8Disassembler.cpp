@@ -111,9 +111,6 @@ void Chip8Disassembler::drawDisassemblyControls(Chip8Emulator* emulator) {
 }
 
 void Chip8Disassembler::drawBreakpoints(Chip8Emulator* emulator) {
-    // TODO: Maybe move this to the draw disassembly controls
-    // TODO: Add breakpoints move to the breakpoint when clicked
-
     std::bitset<CpuBase::MEMORY_SIZE>& breakpoints = emulator->getBreakpoints();
 
     if (ImGui::BeginTable("Breakpoints", 3, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_Resizable))

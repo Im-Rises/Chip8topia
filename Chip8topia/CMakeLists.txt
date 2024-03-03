@@ -32,6 +32,9 @@ if (NOT EMSCRIPTEN)
     find_package(Stb REQUIRED)
     target_include_directories(${PROJECT_NAME} PRIVATE ${Stb_INCLUDE_DIR})
 
+    find_package(OpenAL REQUIRED)
+    target_link_libraries(${PROJECT_NAME} PRIVATE OpenAL::OpenAL)
+
     if (WIN32)
         target_link_libraries(${PROJECT_NAME} PUBLIC winmm.lib)
     endif ()

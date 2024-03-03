@@ -97,7 +97,6 @@ void Chip8EmulationUi::drawEmulationSettings(Chip8topia* chip8topia) {
     ImGui::Separator();
     if (ImGui::Button("Apply"))
     {
-        emulator.switchCore(m_selectedCore);
-        emulator.switchFrequency(m_selectedFrequency);
+        emulator.switchCoreFrequency(m_selectedCore, m_selectedFrequency);
     }
 }
