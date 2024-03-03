@@ -46,11 +46,8 @@ public:
 
 public:
     void updateTexture(const uint8* data);
-    void update();
+    void update(const ImVec4& backgroundColor, const ImVec4& foregroundColor);
     void reset();
-
-    auto getBackgroundColorRef() -> ImVec4& { return m_backgroundColor; }
-    auto getForegroundColorRef() -> ImVec4& { return m_foregroundColor; }
 
 private:
     GLuint m_VAO;
@@ -60,10 +57,4 @@ private:
 
     int m_width;
     int m_height;
-
-    ImVec4 m_backgroundColor = { 0.3F, 0.3F, 0.3F, 1.0F };
-    ImVec4 m_foregroundColor = { 0.8F, 0.8F, 0.8F, 1.0F };
-
-    //    ImVec4 m_backgroundColor = { 0.0F, 0.0F, 0.0F, 1.0F };
-    //    ImVec4 m_foregroundColor = { 1.0F, 1.0F, 1.0F, 1.0F };
 };

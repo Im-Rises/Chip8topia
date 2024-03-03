@@ -160,12 +160,13 @@ emmake make -C build
 - [x] Add a way to change the frequency of the emulator
 - [x] Add disassembly for SCHIPC and SCHIP1.1
 
-- [ ] Add Xo-Chip emulation
-- [ ] Add audio for chip8 and SCHIP series
-- [ ] Reorder code between events and direct call to emulator
 - [ ] Check emscripten canvas resize
 - [ ] Adapt view to still be in 16:9 ratio
 - [ ] Correct icon in desktop
+
+- [ ] Add Xo-Chip emulation
+- [ ] Add audio for chip8 and SCHIP series
+- [ ] Reorder code between events and direct call to emulator
 - [ ] Add save states ? (if yes create a window with an image preview of the save state) ajouter dans la section File de
   main bar
 - [ ] For the std::vector use ref or move... For the rom loading

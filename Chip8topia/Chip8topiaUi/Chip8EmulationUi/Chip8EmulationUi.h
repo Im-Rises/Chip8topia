@@ -29,13 +29,13 @@ private:
 
 private:
 #if defined(BUILD_RELEASE)
-    static constexpr auto INITIAL_WINDOW_CHIP8_SETTINGS = true;
+    static constexpr auto INITIAL_WINDOW_STATE = true;
 #else
-    static constexpr auto INITIAL_WINDOW_CHIP8_SETTINGS = false;
+    static constexpr auto INITIAL_WINDOW_STATE = false;
 #endif
     std::array<ImGuiMenuItemWindow<Chip8topia>, 2> m_menuItems = {
-        "Emulation Stats", true, [this](Chip8topia* chip8topia) { drawEmulationStats(*chip8topia); },
-        "Chip8 Settings", INITIAL_WINDOW_CHIP8_SETTINGS, [this](Chip8topia* chip8topia) { drawEmulationSettings(chip8topia); }
+        "Emulation Stats", INITIAL_WINDOW_STATE, [this](Chip8topia* chip8topia) { drawEmulationStats(*chip8topia); },
+        "Chip8 Settings", INITIAL_WINDOW_STATE, [this](Chip8topia* chip8topia) { drawEmulationSettings(chip8topia); }
     };
 
     Chip8CoreType m_selectedCore = Chip8CoreType::Chip8;

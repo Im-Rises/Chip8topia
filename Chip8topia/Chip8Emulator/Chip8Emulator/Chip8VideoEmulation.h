@@ -25,7 +25,13 @@ public:
     void updateTexture(const std::unique_ptr<Chip8CoreBase>& core);
     void update(const std::unique_ptr<Chip8CoreBase>& core);
 
+    [[nodiscard]] auto getBackgroundColor() -> ImVec4& { return m_backgroundColor; }
+    [[nodiscard]] auto getForegroundColor() -> ImVec4& { return m_foregroundColor; }
+
 private:
     ShaderBW m_shaderLores;
     ShaderBW m_shaderHires;
+
+    ImVec4 m_backgroundColor = { 0.3F, 0.3F, 0.3F, 1.0F };
+    ImVec4 m_foregroundColor = { 0.8F, 0.8F, 0.8F, 1.0F };
 };

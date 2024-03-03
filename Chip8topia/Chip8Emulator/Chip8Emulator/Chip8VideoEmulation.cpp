@@ -24,10 +24,10 @@ void Chip8VideoEmulation::updateTexture(const std::unique_ptr<Chip8CoreBase>& co
 void Chip8VideoEmulation::update(const std::unique_ptr<Chip8CoreBase>& core) {
     if (core->getPpu()->getMode() == PpuBase::PpuMode::LORES)
     {
-        m_shaderLores.update();
+        m_shaderLores.update(m_backgroundColor, m_foregroundColor);
     }
     else
     {
-        m_shaderHires.update();
+        m_shaderHires.update(m_backgroundColor, m_foregroundColor);
     }
 }

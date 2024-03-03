@@ -121,10 +121,10 @@ auto Chip8topia::init() -> int {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);           // 3.0+ only
 #endif
 
-    // Get canvas size
-#if defined(__EMSCRIPTEN__)
-    emscripten_get_canvas_element_size("#canvas", &m_currentWidth, &m_currentHeight);
-#endif
+    //    // Get canvas size
+    // #if defined(__EMSCRIPTEN__)
+    //    emscripten_get_canvas_element_size("#canvas", &m_currentWidth, &m_currentHeight);
+    // #endif
 
     // Create window with graphics context
     m_window = glfwCreateWindow(m_currentWidth, m_currentHeight, PROJECT_NAME, nullptr, nullptr);
