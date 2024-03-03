@@ -2,6 +2,8 @@
 
 #include <fmt/format.h>
 
+#include "disassemblySettings.h"
+
 auto SChipCCpuDisassembly::disassembleOpcode(const uint16 opcode) -> std::string {
     const uint8 nibble4 = (opcode & 0xF000) >> 12;
     const uint8 nibble3 = (opcode & 0x0F00) >> 8;
@@ -111,4 +113,6 @@ auto SChipCCpuDisassembly::disassembleOpcode(const uint16 opcode) -> std::string
         break;
     }
     }
+
+    return INVALID_OPCODE_TEXT;
 }

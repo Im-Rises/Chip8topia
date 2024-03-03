@@ -63,7 +63,6 @@ void SChipCCpu::computeOpcode(const uint16 opcode) {
         case 0x6: SHR_Vx_Vy(nibble3, nibble2); break;  // 8XY6
         case 0x7: SUBN_Vx_Vy(nibble3, nibble2); break; // 8XY7
         case 0xE: SHL_Vx_Vy(nibble3, nibble2); break;  // 8XYE
-        default: /* Invalid opcode */ break;
         }
         break;
     }
@@ -88,7 +87,6 @@ void SChipCCpu::computeOpcode(const uint16 opcode) {
             {
             case 0x7: LD_Vx_DT(nibble3); break; // FX07
             case 0xA: LD_Vx_K(nibble3); break;  // FX0A
-            default: break;
             }
             break;
         case 0x1:
@@ -97,7 +95,6 @@ void SChipCCpu::computeOpcode(const uint16 opcode) {
             case 0x5: LD_DT_Vx(nibble3); break; // FX15
             case 0x8: LD_ST_Vx(nibble3); break; // FX18
             case 0xE: ADD_I_Vx(nibble3); break; // FX1E
-            default: break;
             }
             break;
         case 0x2: LD_F_Vx(nibble3); break; // FX29
@@ -113,7 +110,6 @@ void SChipCCpu::computeOpcode(const uint16 opcode) {
         case 0x6: LD_Vx_aI(nibble3); break; // FX65
         case 0x7: LD_R_Vx(nibble3); break;  // FX75
         case 0x8: LD_Vx_R(nibble3); break;  // FX85
-        default: /* Invalid opcode */ break;
         }
         break;
     }

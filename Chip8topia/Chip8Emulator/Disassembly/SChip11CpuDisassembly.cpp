@@ -2,6 +2,8 @@
 
 #include <fmt/format.h>
 
+#include "disassemblySettings.h"
+
 auto SChip11CpuDisassembly::disassembleOpcode(const uint16 opcode) -> std::string {
     const uint8 nibble4 = (opcode & 0xF000) >> 12;
     const uint8 nibble3 = (opcode & 0x0F00) >> 8;
@@ -56,7 +58,6 @@ auto SChip11CpuDisassembly::disassembleOpcode(const uint16 opcode) -> std::strin
         case 0x6: return fmt::format("SHR V{}, V{}", nibble3, nibble2);  // 8XY6
         case 0x7: return fmt::format("SUBN V{}, V{}", nibble3, nibble2); // 8XY7
         case 0xE: return fmt::format("SHL V{}, V{}", nibble3, nibble2);  // 8XYE
-        default: /* Invalid opcode */ break;
         }
         break;
     }
@@ -81,7 +82,6 @@ auto SChip11CpuDisassembly::disassembleOpcode(const uint16 opcode) -> std::strin
             {
             case 0x7: return fmt::format("LD V{}, DT", nibble3); // FX07
             case 0xA: return fmt::format("LD V{}, K", nibble3);  // FX0A
-            default: break;
             }
             break;
         case 0x1:
@@ -90,7 +90,6 @@ auto SChip11CpuDisassembly::disassembleOpcode(const uint16 opcode) -> std::strin
             case 0x5: return fmt::format("LD DT, V{}", nibble3); // FX15
             case 0x8: return fmt::format("LD ST, V{}", nibble3); // FX18
             case 0xE: return fmt::format("ADD I, V{}", nibble3); // FX1E
-            default: break;
             }
             break;
         case 0x2: return fmt::format("LD F, V{}", nibble3); // FX29
@@ -106,9 +105,10 @@ auto SChip11CpuDisassembly::disassembleOpcode(const uint16 opcode) -> std::strin
         case 0x6: return fmt::format("LD V{}, [I]", nibble3); // FX65
         case 0x7: return fmt::format("LD R, V{}", nibble3);   // FX75
         case 0x8: return fmt::format("LD V{}, R", nibble3);   // FX85
-        default: /* Invalid opcode */ break;
         }
         break;
     }
     }
+
+    return INVALID_OPCODE_TEXT;
 }
