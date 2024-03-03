@@ -5,7 +5,7 @@
 class SChip11Cpu;
 class SChip11Core final : public Chip8CoreBase {
 public:
-    explicit SChip11Core(unsigned int cpuClockFrequency);
+    explicit SChip11Core(Chip8Frequency cpuClockFrequency);
     SChip11Core(const SChip11Core&) = delete;
     SChip11Core(SChip11Core&&) = delete;
     auto operator=(const SChip11Core&) -> SChip11Core& = delete;

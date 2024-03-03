@@ -6,7 +6,7 @@
 #include "ChipCores/SChip11Core/SChip11Core.h"
 #include "ChipCores/SchipCCore/SChipCCore.h"
 
-Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<Chip8Core>((unsigned int)Chip8Frequency::FREQ_1200_HZ)) {
+Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<Chip8Core>(Chip8Frequency::FREQ_1200_HZ)) {
     Chip8topiaInputHandler& inputHandler = Chip8topiaInputHandler::getInstance();
     inputHandler.m_GameInput.subscribe(this, &Chip8Emulator::OnInput);
     inputHandler.m_RestartEmulationEvent.subscribe(this, &Chip8Emulator::restart);
@@ -111,13 +111,13 @@ void Chip8Emulator::switchCoreFrequency(const Chip8CoreType coreType, const Chip
     switch (coreType)
     {
     case Chip8CoreType::Chip8:
-        m_core = std::make_unique<Chip8Core>((unsigned int)frequency);
+        m_core = std::make_unique<Chip8Core>(frequency);
         break;
     case Chip8CoreType::SChip11:
-        m_core = std::make_unique<SChip11Core>((unsigned int)frequency);
+        m_core = std::make_unique<SChip11Core>(frequency);
         break;
     case Chip8CoreType::SChipC:
-        m_core = std::make_unique<SChipCCore>((unsigned int)frequency);
+        m_core = std::make_unique<SChipCCore>(frequency);
         break;
     case Chip8CoreType::XoChip:
         break;

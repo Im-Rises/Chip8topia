@@ -4,7 +4,7 @@
 
 class SChipCCore final : public Chip8CoreBase {
 public:
-    explicit SChipCCore(unsigned int cpuClockFrequency);
+    explicit SChipCCore(Chip8Frequency cpuClockFrequency);
     SChipCCore(const SChipCCore&) = delete;
     SChipCCore(SChipCCore&&) = delete;
     auto operator=(const SChipCCore&) -> SChipCCore& = delete;

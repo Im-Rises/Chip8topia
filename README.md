@@ -157,14 +157,14 @@ emmake make -C build
 - [x] Correct to not link or use spdlog in release mode
 - [x] The getPC and getPc are not named the same, correct that
 - [x] Dans la section Émulation rajouter une window "émulation info" avec les fps, etc...
+- [x] Add a way to change the frequency of the emulator
 
-- [ ] Add a way to change the frequency of the emulator
+- [ ] Add audio for chip8 and SCHIP series
 
 - [ ] Add Xo-Chip emulation
 - [ ] Reorder code between events and direct call to emulator
 - [ ] Check emscripten canvas resize
 - [ ] Adapt view to still be in 16:9 ratio
-- [ ] Add emulation sound
 - [ ] Add save states ? (if yes create a window with an image preview of the save state) ajouter dans la section File de
   main bar
 - [ ] For the std::vector use ref or move... For the rom loading

@@ -26,7 +26,7 @@ public:
     static constexpr unsigned int SCREEN_AND_TIMERS_FREQUENCY = 60;
 
 public:
-    Chip8CoreBase(unsigned int cpuClockFrequency, std::unique_ptr<CpuBase> cpu, std::shared_ptr<PpuBase> ppu); // TODO: Maybe use a Chip8Frequency not an unsigned int
+    Chip8CoreBase(Chip8Frequency cpuClockFrequency, std::unique_ptr<CpuBase> cpu, std::shared_ptr<PpuBase> ppu);
     Chip8CoreBase(const Chip8CoreBase&) = delete;
     Chip8CoreBase(Chip8CoreBase&&) = delete;
     auto operator=(const Chip8CoreBase&) -> Chip8CoreBase& = delete;

@@ -3,7 +3,7 @@
 #include "Core/Chip8Cpu.h"
 #include "Core/Chip8Ppu.h"
 
-Chip8Core::Chip8Core(unsigned int cpuClockFrequency) : Chip8CoreBase(cpuClockFrequency, std::make_unique<Chip8Cpu>(), std::make_shared<Chip8Ppu>()), m_cpuCasted(dynamic_cast<Chip8Cpu*>(m_cpu.get())) {
+Chip8Core::Chip8Core(Chip8Frequency cpuClockFrequency) : Chip8CoreBase(cpuClockFrequency, std::make_unique<Chip8Cpu>(), std::make_shared<Chip8Ppu>()), m_cpuCasted(dynamic_cast<Chip8Cpu*>(m_cpu.get())) {
 }
 
 auto Chip8Core::clock() -> bool {

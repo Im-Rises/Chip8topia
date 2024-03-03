@@ -5,7 +5,7 @@
 class Chip8Cpu;
 class Chip8Core final : public Chip8CoreBase {
 public:
-    explicit Chip8Core(unsigned int cpuClockFrequency);
+    explicit Chip8Core(Chip8Frequency cpuClockFrequency);
     Chip8Core(const Chip8Core&) = delete;
     Chip8Core(Chip8Core&&) = delete;
     auto operator=(const Chip8Core&) -> Chip8Core& = delete;
