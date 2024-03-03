@@ -34,7 +34,7 @@ private:
     static constexpr auto INITIAL_WINDOW_STATE = false;
 #endif
     std::array<ImGuiMenuItemWindow<Chip8topia>, 2> m_menuItems = {
-        "Emulation Stats", INITIAL_WINDOW_STATE, [this](Chip8topia* chip8topia) { drawEmulationStats(*chip8topia); },
+        "Emulation Stats", false, [this](Chip8topia* chip8topia) { drawEmulationStats(*chip8topia); },
         "Chip8 Settings", INITIAL_WINDOW_STATE, [this](Chip8topia* chip8topia) { drawEmulationSettings(chip8topia); }
     };
 

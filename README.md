@@ -159,11 +159,10 @@ emmake make -C build
 - [x] Dans la section Émulation rajouter une window "émulation info" avec les fps, etc...
 - [x] Add a way to change the frequency of the emulator
 - [x] Add disassembly for SCHIPC and SCHIP1.1
+- [x] Check emscripten canvas resize
 
-- [ ] Check emscripten canvas resize
 - [ ] Adapt view to still be in 16:9 ratio
 - [ ] Correct icon in desktop
-
 - [ ] Add Xo-Chip emulation
 - [ ] Add audio for chip8 and SCHIP series
 - [ ] Reorder code between events and direct call to emulator

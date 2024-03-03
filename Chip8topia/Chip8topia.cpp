@@ -121,10 +121,10 @@ auto Chip8topia::init() -> int {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);           // 3.0+ only
 #endif
 
-    //    // Get canvas size
-    // #if defined(__EMSCRIPTEN__)
-    //    emscripten_get_canvas_element_size("#canvas", &m_currentWidth, &m_currentHeight);
-    // #endif
+    // Get canvas size
+#if defined(__EMSCRIPTEN__)
+    emscripten_get_canvas_element_size(WEB_CANVAS_ID, &m_currentWidth, &m_currentHeight);
+#endif
 
     // Create window with graphics context
     m_window = glfwCreateWindow(m_currentWidth, m_currentHeight, PROJECT_NAME, nullptr, nullptr);
@@ -174,7 +174,7 @@ auto Chip8topia::init() -> int {
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(m_window, true);
     // #ifdef __EMSCRIPTEN__
-    //     ImGui_ImplGlfw_InstallEmscriptenCanvasResizeCallback("#canvas");
+    //     ImGui_ImplGlfw_InstallEmscriptenCanvasResizeCallback(WEB_CANVAS_ID);
     // #endif
     ImGui_ImplOpenGL3_Init(glsl_version);
 
@@ -241,8 +241,9 @@ void Chip8topia::handleScreenUpdate() {
         glfwGetWindowSize(m_window, &m_windowedWidth, &m_windowedHeight);
     }
 
+    std::cout << "m_currentWidth: " << m_currentWidth << " m_currentHeight: " << m_currentHeight << std::endl;
 #if defined(__EMSCRIPTEN__)
-    emscripten_get_canvas_element_size("#canvas", &m_currentWidth, &m_currentHeight);
+    emscripten_get_canvas_element_size(WEB_CANVAS_ID, &m_currentWidth, &m_currentHeight);
 #else
     glfwGetFramebufferSize(m_window, &m_currentWidth, &m_currentHeight);
 #endif
