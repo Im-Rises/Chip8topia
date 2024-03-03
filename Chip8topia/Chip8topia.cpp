@@ -317,33 +317,19 @@ void Chip8topia::toggleTurboMode() {
 
 #ifndef __EMSCRIPTEN__
 void Chip8topia::setWindowIcon() {
-    uint8 chip8Icon[24 * 24 * 4];
-    for (int i = 0; i < 24 * 24; i++)
+    static constexpr uint8 IMAGE_CHANNELS = 4;
+    uint8 chip8Icon[CHIPTOPIA_ICON_WIDTH * CHIPTOPIA_ICON_HEIGHT * 4];
+    for (int i = 0; i < CHIPTOPIA_ICON_WIDTH * CHIPTOPIA_ICON_HEIGHT; i++)
     {
-        //        chip8Icon[i * 4] = CHIP8TOPIA_ICON_DATA[i];
-        //        chip8Icon[i * 4 + 1] = CHIP8TOPIA_ICON_DATA[i];
-        //        chip8Icon[i * 4 + 2] = CHIP8TOPIA_ICON_DATA[i];
-        //        chip8Icon[i * 4 + 3] = 255;
-
-        if (CHIP8TOPIA_ICON_DATA[i] > 0)
-        {
-            chip8Icon[i * 4] = 0;
-            chip8Icon[i * 4 + 1] = 0;
-            chip8Icon[i * 4 + 2] = 0;
-            chip8Icon[i * 4 + 3] = 255;
-        }
-        else
-        {
-            chip8Icon[i * 4] = 255;
-            chip8Icon[i * 4 + 1] = 255;
-            chip8Icon[i * 4 + 2] = 255;
-            chip8Icon[i * 4 + 3] = 0;
-        }
+        chip8Icon[i * IMAGE_CHANNELS] = CHIP8TOPIA_ICON_DATA[i];
+        chip8Icon[i * IMAGE_CHANNELS + 1] = CHIP8TOPIA_ICON_DATA[i];
+        chip8Icon[i * IMAGE_CHANNELS + 2] = CHIP8TOPIA_ICON_DATA[i];
+        chip8Icon[i * IMAGE_CHANNELS + 3] = CHIP8TOPIA_ICON_DATA[i] > 0 ? 0 : 255;
     }
 
     GLFWimage images;
-    images.width = 24;
-    images.height = 24;
+    images.width = CHIPTOPIA_ICON_WIDTH;
+    images.height = CHIPTOPIA_ICON_HEIGHT;
     images.pixels = chip8Icon;
     glfwSetWindowIcon(m_window, 1, &images);
 }
