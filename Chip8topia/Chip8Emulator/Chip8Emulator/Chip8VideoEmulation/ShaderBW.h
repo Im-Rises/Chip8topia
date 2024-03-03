@@ -25,15 +25,15 @@ private:
     static constexpr auto FRAGMENT_SHADER_PATH = "shaders/Chip8topia.frag";
 #endif
 
-    static constexpr std::array<GLfloat, 18> VERTICES = {
+    static constexpr std::array<GLfloat, 12> VERTICES = {
         // first triangle
-        1.0F, 1.0F, 0.0F,  // top right
-        1.0F, -1.0F, 0.0F, // bottom right
-        -1.0F, 1.0F, 0.0F, // top left
+        1.0F, 1.0F,  // top right
+        1.0F, -1.0F, // bottom right
+        -1.0F, 1.0F, // top left
         // second triangle
-        1.0F, -1.0F, 0.0F,  // bottom right
-        -1.0F, -1.0F, 0.0F, // bottom left
-        -1.0F, 1.0F, 0.0F,  // top left
+        1.0F, -1.0F,  // bottom right
+        -1.0F, -1.0F, // bottom left
+        -1.0F, 1.0F,  // top left
     };
 
 public:
