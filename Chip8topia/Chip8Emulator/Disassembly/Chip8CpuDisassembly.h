@@ -3,6 +3,6 @@
 #include <binaryLib/binaryLib.h>
 #include <string>
 
-namespace CpuDisassembly {
+namespace Chip8CpuDisassembly {
     auto disassembleOpcode(const uint16 opcode) -> std::string;
 }

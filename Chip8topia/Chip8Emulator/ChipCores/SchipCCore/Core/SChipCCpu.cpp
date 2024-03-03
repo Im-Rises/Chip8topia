@@ -2,8 +2,7 @@
 
 #include "SChipCPpu.h"
 
-// SChipCCpu::SChipCCpu() : m_ppuCasted(dynamic_cast<SChipCPpu*>(m_ppu.get())) {
-SChipCCpu::SChipCCpu() {
+SChipCCpu::SChipCCpu() : m_savedV{} {
 }
 
 void SChipCCpu::reset() {

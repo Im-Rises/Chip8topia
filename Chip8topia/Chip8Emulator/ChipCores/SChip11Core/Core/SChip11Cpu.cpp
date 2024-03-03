@@ -2,7 +2,6 @@
 
 #include "SChip11Ppu.h"
 
-// SChip11Cpu::SChip11Cpu() : m_ppuCasted(dynamic_cast<SChip11Ppu*>(m_ppu.get())) {
 SChip11Cpu::SChip11Cpu() : m_isHalted(false), m_requestDisableHalt(false) {
 }
 

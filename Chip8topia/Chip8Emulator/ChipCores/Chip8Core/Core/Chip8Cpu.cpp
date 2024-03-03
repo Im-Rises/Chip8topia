@@ -74,7 +74,7 @@ void Chip8Cpu::computeOpcode(const uint16 opcode) {
             {
             case 0x7: LD_Vx_DT(nibble3); break; // FX07
             case 0xA: LD_Vx_K(nibble3); break;  // FX0A
-            default: break;
+            default: /* Invalid opcode */ break;
             }
             break;
         case 0x1:
@@ -83,7 +83,7 @@ void Chip8Cpu::computeOpcode(const uint16 opcode) {
             case 0x5: LD_DT_Vx(nibble3); break; // FX15
             case 0x8: LD_ST_Vx(nibble3); break; // FX18
             case 0xE: ADD_I_Vx(nibble3); break; // FX1E
-            default: break;
+            default: /* Invalid opcode */ break;
             }
             break;
         case 0x2: LD_F_Vx(nibble3); break;  // FX29

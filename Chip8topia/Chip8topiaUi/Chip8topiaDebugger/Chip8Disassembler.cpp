@@ -7,7 +7,10 @@
 #endif
 
 #include "../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
-#include "../Chip8Emulator/Disassembly/CpuDisassembly.h"
+#include "../Chip8Emulator/Disassembly/disassemblySettings.h"
+#include "../Chip8Emulator/Disassembly/Chip8CpuDisassembly.h"
+#include "../Chip8Emulator/Disassembly/SChip11CpuDisassembly.h"
+#include "../Chip8Emulator/Disassembly/SChipCCpuDisassembly.h"
 #include "../../Chip8Emulator/Chip8Emulator.h"
 
 void Chip8Disassembler::drawDisassembly(Chip8Emulator* emulator) {
@@ -17,7 +20,20 @@ void Chip8Disassembler::drawDisassembly(Chip8Emulator* emulator) {
     std::bitset<CpuBase::MEMORY_SIZE>& m_breakpoints = emulator->getBreakpoints();
     uint16 pc = emulator->getChip8Core()->getCpu()->getPc();
 
-    static constexpr int OPCODE_SIZE = 2; // TODO: Move to the Chip8BaseCpu class
+    std::function<std::string(const uint16 opcode)> disassembler;
+    switch (emulator->getCoreType())
+    {
+    case Chip8CoreType::Chip8:
+        disassembler = Chip8CpuDisassembly::disassembleOpcode;
+        break;
+    case Chip8CoreType::SChip11:
+        disassembler = SChip11CpuDisassembly::disassembleOpcode;
+        break;
+    case Chip8CoreType::SChipC:
+        disassembler = SChipCCpuDisassembly::disassembleOpcode;
+        break;
+    case Chip8CoreType::XoChip: break;
+    }
 
     bool currentPcInViewport = false;
 
@@ -31,7 +47,7 @@ void Chip8Disassembler::drawDisassembly(Chip8Emulator* emulator) {
             const int memoryIndex = i * OPCODE_SIZE;
             uint16 opcode = (memory[memoryIndex] << 8) | memory[(memoryIndex) + 1];
 
-            buffer = fmt::format("  0x{:04X}: ({:04X}) {}", memoryIndex, opcode, CpuDisassembly::disassembleOpcode(opcode));
+            buffer = fmt::format("  0x{:04X}: ({:04X}) {}", memoryIndex, opcode, disassembler(opcode));
 
             if (pc == memoryIndex)
             {

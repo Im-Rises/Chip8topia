@@ -224,10 +224,7 @@ void Chip8topia::handleUi(const float /*deltaTime*/) {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
-    //    if (!getWindowMinimized())
-    //    {
     m_chip8topiaUi.drawUi(*this);
-    //    }
     ImGui::Render();
 }
 
