@@ -87,7 +87,7 @@ private:
 #endif
 
 private:
-    static constexpr ImVec4 CLEAR_COLOR = ImVec4(0.45F, 0.55F, 0.60F, 1.00F);
+    //    static constexpr ImVec4 CLEAR_COLOR = ImVec4(0.45F, 0.55F, 0.60F, 1.00F);
 
     GLFWwindow* m_window;
     std::unique_ptr<Chip8Emulator> m_chip8Emulator;
