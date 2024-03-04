@@ -5,16 +5,20 @@
 class SChip11Ppu;
 class SChip11Cpu final : public CpuBase {
 public:
-    SChip11Cpu();
+    explicit SChip11Cpu(bool isModernMode);
     SChip11Cpu(const SChip11Cpu&) = delete;
     SChip11Cpu(SChip11Cpu&&) = delete;
     auto operator=(const SChip11Cpu&) -> SChip11Cpu& = delete;
     auto operator=(SChip11Cpu&&) -> SChip11Cpu& = delete;
     ~SChip11Cpu() final = default;
 
+    void setPpu(std::shared_ptr<PpuBase> ppu) final;
+
 public:
     void reset() final;
     void requestDisableHalt() { m_requestDisableHalt = true; }
+
+    [[nodiscard]] auto getIsModernMode() const -> bool { return m_isModernMode; }
 
 private:
     void computeOpcode(const uint16 opcode) final;
@@ -41,11 +45,9 @@ private:
     void LD_Vx_R(const uint8 x);                          // Fx85
 
 private:
-    // TODO: Change to something else
-    //     SChip11Ppu* m_ppuCasted;
-
+    SChip11Ppu* m_ppuCasted;
     std::array<uint8, REGISTER_V_SIZE> m_savedV;
-    
     bool m_isHalted;
     bool m_requestDisableHalt;
+    bool m_isModernMode;
 };

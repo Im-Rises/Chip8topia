@@ -161,15 +161,17 @@ emmake make -C build
 - [x] Add disassembly for SCHIPC and SCHIP1.1
 - [x] Check emscripten canvas resize
 - [x] Adapt view to still be in 16:9 ratio
-
-- [ ] Correct icon in desktop
+- [x] Correct icon in desktop
+- [x] Add modern SCHIP1.1 and test it with the quirks test and scroll test roms
+- [x] For the std::vector use ref or move... For the rom loading
 
 - [ ] Add Xo-Chip emulation
-- [ ] Add modern SCHIP1.1 and test it with the quirks test
-- [ ] Add audio for chip8 and SCHIP series
-- [ ] Reorder code between events and direct call to emulator
+- [ ] Add audio
 - [ ] Add save states ? (if yes create a window with an image preview of the save state) ajouter dans la section File de
   main bar
-- [ ] For the std::vector use ref or move... For the rom loading
-- [ ] if none of the roms are loaded, we should display a background with written Chip8 and Im-Rises
+- [ ] Do a general optimization of the code
 
+Minor:
+
+- [ ] if none of the roms are loaded, we should display a background with written Chip8 and Im-Rises
+- [ ] Reorder code between events and direct call to emulator

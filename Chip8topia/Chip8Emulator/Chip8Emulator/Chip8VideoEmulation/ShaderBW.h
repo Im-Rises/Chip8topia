@@ -11,10 +11,8 @@
 
 #include "../../../Shader/Shader.h"
 
-// TODO: Move imgui from here!!!
 #include <imgui.h>
 
-// TODO: Find another name for this class !!!
 class ShaderBW {
 private:
 #if defined(__EMSCRIPTEN__)

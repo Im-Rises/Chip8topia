@@ -1,11 +1,16 @@
 #version 300 es
 
-layout(location = 0) in vec3 a_texCoord;
+precision mediump float;
+
+layout (location = 0) in vec2 a_textCoord;
 
 out vec2 v_texCoord;
 
+uniform vec2 u_scaleFactor;
+
 void main()
 {
-    v_texCoord = vec2(a_texCoord.x * 0.5 + 0.5, 1.0 - (a_texCoord.y * 0.5 + 0.5));
-    gl_Position = vec4(a_texCoord.x, a_texCoord.y, a_texCoord.z, 1.0);
+    gl_Position = vec4(u_scaleFactor * a_textCoord, 0.0, 1.0);
+    vec2 screenCordinate = 0.5 * a_textCoord + 0.5;
+    v_texCoord = vec2(screenCordinate.x, 1.0 - screenCordinate.y);
 }

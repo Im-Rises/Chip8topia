@@ -113,8 +113,11 @@ void Chip8Emulator::switchCoreFrequency(const Chip8CoreType coreType, const Chip
     case Chip8CoreType::Chip8:
         m_core = std::make_unique<Chip8Core>(frequency);
         break;
-    case Chip8CoreType::SChip11:
-        m_core = std::make_unique<SChip11Core>(frequency);
+    case Chip8CoreType::SChip11Legacy:
+        m_core = std::make_unique<SChip11Core>(frequency, false);
+        break;
+    case Chip8CoreType::SChip11Modern:
+        m_core = std::make_unique<SChip11Core>(frequency, true);
         break;
     case Chip8CoreType::SChipC:
         m_core = std::make_unique<SChipCCore>(frequency);

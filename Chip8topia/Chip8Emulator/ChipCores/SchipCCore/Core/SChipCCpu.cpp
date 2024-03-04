@@ -5,6 +5,11 @@
 SChipCCpu::SChipCCpu() : m_savedV{} {
 }
 
+void SChipCCpu::setPpu(std::shared_ptr<PpuBase> ppu) {
+    CpuBase::setPpu(ppu);
+    m_ppuCasted = dynamic_cast<SChipCPpu*>(ppu.get());
+}
+
 void SChipCCpu::reset() {
     CpuBase::reset();
 }
@@ -178,31 +183,29 @@ void SChipCCpu::LD_Vx_aI(const uint8 x) {
 }
 
 void SChipCCpu::SCD(const uint8 n) {
-    //    m_ppuCasted->scrollDown(n);
-    dynamic_cast<SChipCPpu*>(m_ppu.get())->scrollDown(n);
+    m_ppuCasted->scrollDown(n);
 }
 
 void SChipCCpu::SCR(const uint8 n) {
-    //    m_ppuCasted->scrollRight(n);
-    dynamic_cast<SChipCPpu*>(m_ppu.get())->scrollRight(n);
+    m_ppuCasted->scrollRight(n);
 }
 
 void SChipCCpu::SCL(const uint8 n) {
-    //    m_ppuCasted->scrollLeft(n);
-    dynamic_cast<SChipCPpu*>(m_ppu.get())->scrollLeft(n);
+    m_ppuCasted->scrollLeft(n);
 }
 
 void SChipCCpu::LORES() {
+    m_ppu->clearScreen();
     m_ppu->setMode(PpuBase::PpuMode::LORES);
 }
 
 void SChipCCpu::HIRES() {
+    m_ppu->clearScreen();
     m_ppu->setMode(PpuBase::PpuMode::HIRES);
 }
 
 void SChipCCpu::LD_HF_Vx(const uint8 x) {
-    // TODO: Check if this is correct
-    m_I = m_V[x] * 10;
+    m_I = (m_V[x] * 10) + 0x50;
 }
 
 void SChipCCpu::LD_R_Vx(const uint8 x) {

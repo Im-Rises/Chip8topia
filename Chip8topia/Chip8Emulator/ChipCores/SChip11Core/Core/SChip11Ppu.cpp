@@ -1,8 +1,5 @@
 #include "SChip11Ppu.h"
 
-SChip11Ppu::SChip11Ppu() {
-}
-
 void SChip11Ppu::clearScreen() {
     if (getMode() == PpuMode::LORES)
     {
@@ -113,11 +110,11 @@ auto SChip11Ppu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::ar
         return (rowClippedCount + rowCollisionCount) > 0 ? 1 : 0;
 }
 
-void SChip11Ppu::scrollDown(uint8 n) {
+void SChip11Ppu::scrollDown(uint8 n, bool isModernMode) {
     const int width = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
     const int height = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
     uint8* videoMemory = getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data();
-    n = getMode() == PpuMode::LORES ? n / 2 : n;
+    n = getMode() == PpuMode::LORES && !isModernMode ? n / 2 : n;
 
     for (int row = height - n - 1; row >= 0; row--)
     {
@@ -129,11 +126,11 @@ void SChip11Ppu::scrollDown(uint8 n) {
     }
 }
 
-void SChip11Ppu::scrollRight(uint8 n) {
+void SChip11Ppu::scrollRight(uint8 n, bool isModernMode) {
     const int width = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
     const int height = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
     uint8* videoMemory = getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data();
-    n = getMode() == PpuMode::LORES ? 2 : 4;
+    n = getMode() == PpuMode::LORES && !isModernMode ? 2 : 4;
 
     for (int col = width - n - 1; col >= 0; col--)
     {
@@ -145,11 +142,11 @@ void SChip11Ppu::scrollRight(uint8 n) {
     }
 }
 
-void SChip11Ppu::scrollLeft(uint8 n) {
+void SChip11Ppu::scrollLeft(uint8 n, bool isModernMode) {
     const int width = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
     const int height = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
     uint8* videoMemory = getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data();
-    n = getMode() == PpuMode::LORES ? 2 : 4;
+    n = getMode() == PpuMode::LORES && !isModernMode ? 2 : 4;
 
     for (int col = 0; col < width - n; col++)
     {

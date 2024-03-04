@@ -2,7 +2,7 @@
 
 #include "../../../Chip8CoreBase/Core/CpuBase.h"
 
-class SChip11Ppu;
+class SChipCPpu;
 class SChipCCpu final : public CpuBase {
 public:
     SChipCCpu();
@@ -11,6 +11,8 @@ public:
     auto operator=(const SChipCCpu&) -> SChipCCpu& = delete;
     auto operator=(SChipCCpu&&) -> SChipCCpu& = delete;
     ~SChipCCpu() final = default;
+
+    void setPpu(std::shared_ptr<PpuBase> ppu) final;
 
 public:
     void reset() final;
@@ -40,8 +42,6 @@ private:
     void LD_Vx_R(const uint8 x);  // Fx85
 
 private:
-    // TODO: Change to something else
-    //     SChipCPpu* m_ppuCasted;
-
+    SChipCPpu* m_ppuCasted;
     std::array<uint8, REGISTER_V_SIZE> m_savedV;
 };

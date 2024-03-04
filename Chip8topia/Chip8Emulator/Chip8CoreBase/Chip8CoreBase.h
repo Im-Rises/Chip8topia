@@ -6,10 +6,11 @@
 #include <binaryLib/binaryLib.h>
 
 enum class Chip8CoreType : uint8 {
-    Chip8,   // Chip-8 (COSMAC VIP)
-    SChip11, // SuperChip 1.1 (SuperChip Legacy)
-    SChipC,  // SuperChipC (SuperChip Modern)
-    XoChip   // XO-Chip
+    Chip8,         // Chip-8 (COSMAC VIP)
+    SChip11Legacy, // SuperChip 1.1 (legacy)
+    SChip11Modern, // SuperChip 1.1 (modern)
+    SChipC,        // SuperChipC
+    XoChip         // XO-Chip
 };
 
 enum class Chip8Frequency : unsigned int {

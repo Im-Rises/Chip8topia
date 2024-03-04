@@ -82,6 +82,10 @@ public:
         m_isBreak = true;
     }
 
+    [[nodiscard]] auto getIsRomLoaded() const -> bool {
+        return m_isRomLoaded;
+    }
+
 private:
     void OnInput(const uint8 key, const bool isPressed);
 

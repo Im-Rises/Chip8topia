@@ -23,9 +23,10 @@ It was made to allow video games to be more easily programmed for said computers
 
     static constexpr auto WEB_CANVAS_ID = "#canvas";
 
+    //    static constexpr ImVec4 CLEAR_COLOR = ImVec4(0.45F, 0.55F, 0.60F, 1.00F);
 private:
 #if !defined(BUILD_RELEASE)
-    static constexpr auto DEBUG_ROM_PATH = "trash/5-quirks.ch8";
+    static constexpr auto DEBUG_ROM_PATH = "trash/8-scrolling.ch8";
 #endif
 
 public:
@@ -87,8 +88,6 @@ private:
 #endif
 
 private:
-    //    static constexpr ImVec4 CLEAR_COLOR = ImVec4(0.45F, 0.55F, 0.60F, 1.00F);
-
     GLFWwindow* m_window;
     std::unique_ptr<Chip8Emulator> m_chip8Emulator;
     Chip8topiaUi m_chip8topiaUi;

@@ -3,8 +3,8 @@
 #include "../../Chip8topia.h"
 
 Chip8About::Chip8About() : m_menuItem{
-                               { Chip8topia::PROJECT_NAME, false, [this]() { drawAboutChip8topia(); },
-                                   Chip8topia::PROJECT_EMULATION_CONSOLE_NAME, false, [this]() { drawAboutChip8(); } }
+                               { ImGuiMenuItemPopup<>(Chip8topia::PROJECT_NAME, false, [this]() { drawAboutChip8topia(); }),
+                                   ImGuiMenuItemPopup<>(Chip8topia::PROJECT_EMULATION_CONSOLE_NAME, false, [this]() { drawAboutChip8(); }) }
                            } {
 }
 

@@ -25,7 +25,7 @@ private:
 
 private:
     std::array<ImGuiMenuItemWindow<Chip8Emulator>, 2> m_menuItem = {
-        "Background color", false, [this](Chip8Emulator* chip8Emulator) { drawBackgroundColor(chip8Emulator); },
-        "Draw color", false, [this](Chip8Emulator* chip8Emulator) { drawDrawColor(chip8Emulator); }
+        ImGuiMenuItemWindow<Chip8Emulator>("Background color", false, [this](Chip8Emulator* chip8Emulator) { drawBackgroundColor(chip8Emulator); }),
+        ImGuiMenuItemWindow<Chip8Emulator>("Draw color", false, [this](Chip8Emulator* chip8Emulator) { drawDrawColor(chip8Emulator); })
     };
 };

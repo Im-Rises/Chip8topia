@@ -43,12 +43,10 @@ void Chip8EmulationUi::closeAllWindows() {
 }
 
 void Chip8EmulationUi::drawEmulationStats(Chip8topia& chip8topia) {
-    ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate); // TODO: Use the chip8topia's fps
+    ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
     ImGui::Text("Screen size: %dx%d", chip8topia.getWindowWidth(), chip8topia.getWindowHeight());
-    ImGui::Text("Frame time: %.3f ms", 1000.0F / ImGui::GetIO().Framerate); // Same as above
+    ImGui::Text("Frame time: %.3f ms", 1000.0F / ImGui::GetIO().Framerate);
     ImGui::Text("Clock count this frame: %u", chip8topia.getChip8Emulator().getClockCountThisFrame());
-    //    ImGui::Text("Total frames: %llu", chip8topia.getChip8Emulator().getTotalFrames());
-    //    ImGui::Text("Get total clock count: %llu", chip8topia.getChip8Emulator().getTotalCycles());
 }
 
 void Chip8EmulationUi::drawEmulationSettings(Chip8topia* chip8topia) {
@@ -65,9 +63,13 @@ void Chip8EmulationUi::drawEmulationSettings(Chip8topia* chip8topia) {
     {
         m_selectedCore = Chip8CoreType::Chip8;
     }
-    if (ImGui::Selectable("SChip 1.1", m_selectedCore == Chip8CoreType::SChip11))
+    if (ImGui::Selectable("SChip 1.1 (legacy)", m_selectedCore == Chip8CoreType::SChip11Legacy))
     {
-        m_selectedCore = Chip8CoreType::SChip11;
+        m_selectedCore = Chip8CoreType::SChip11Legacy;
+    }
+    if (ImGui::Selectable("SChip 1.1 (modern)", m_selectedCore == Chip8CoreType::SChip11Modern))
+    {
+        m_selectedCore = Chip8CoreType::SChip11Modern;
     }
     if (ImGui::Selectable("SChipC", m_selectedCore == Chip8CoreType::SChipC))
     {
@@ -99,5 +101,6 @@ void Chip8EmulationUi::drawEmulationSettings(Chip8topia* chip8topia) {
     if (ImGui::Button("Apply"))
     {
         emulator.switchCoreFrequency(m_selectedCore, m_selectedFrequency);
+        m_menuItems[1].m_isOpen = false;
     }
 }
