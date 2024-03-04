@@ -44,12 +44,12 @@ private:
     Chip8Disassembler m_disassembler;
 
     std::array<ImGuiMenuItemWindow<Chip8Emulator>, 7> m_menuItems = {
-        "Registers", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator) { drawRegisters(emulator->getChip8Core()); },
-        "Stack", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator) { drawStack(emulator->getChip8Core()); },
-        "Memory Editor", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator) { drawMemory(emulator->getChip8Core()); },
-        "Keypad", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator) { drawKeypad(emulator->getChip8Core()); },
-        "Assembly", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator) { drawDisassembly(emulator); },
-        "Assembly Controls", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator) { drawDisassemblyControls(emulator); },
-        "Breakpoints", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator) { m_disassembler.drawBreakpoints(emulator); }
+        ImGuiMenuItemWindow<Chip8Emulator>("Registers", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator) { drawRegisters(emulator->getChip8Core()); }),
+        ImGuiMenuItemWindow<Chip8Emulator>("Stack", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator) { drawStack(emulator->getChip8Core()); }),
+        ImGuiMenuItemWindow<Chip8Emulator>("Memory Editor", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator) { drawMemory(emulator->getChip8Core()); }),
+        ImGuiMenuItemWindow<Chip8Emulator>("Keypad", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator) { drawKeypad(emulator->getChip8Core()); }),
+        ImGuiMenuItemWindow<Chip8Emulator>("Assembly", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator) { drawDisassembly(emulator); }),
+        ImGuiMenuItemWindow<Chip8Emulator>("Assembly Controls", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator) { drawDisassemblyControls(emulator); }),
+        ImGuiMenuItemWindow<Chip8Emulator>("Breakpoints", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator) { m_disassembler.drawBreakpoints(emulator); })
     };
 };

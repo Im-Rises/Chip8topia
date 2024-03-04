@@ -45,10 +45,8 @@ void Chip8EmulationUi::closeAllWindows() {
 void Chip8EmulationUi::drawEmulationStats(Chip8topia& chip8topia) {
     ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
     ImGui::Text("Screen size: %dx%d", chip8topia.getWindowWidth(), chip8topia.getWindowHeight());
-    ImGui::Text("Frame time: %.3f ms", 1000.0F / ImGui::GetIO().Framerate); // Same as above
+    ImGui::Text("Frame time: %.3f ms", 1000.0F / ImGui::GetIO().Framerate);
     ImGui::Text("Clock count this frame: %u", chip8topia.getChip8Emulator().getClockCountThisFrame());
-    //    ImGui::Text("Total frames: %llu", chip8topia.getChip8Emulator().getTotalFrames());
-    //    ImGui::Text("Get total clock count: %llu", chip8topia.getChip8Emulator().getTotalCycles());
 }
 
 void Chip8EmulationUi::drawEmulationSettings(Chip8topia* chip8topia) {
