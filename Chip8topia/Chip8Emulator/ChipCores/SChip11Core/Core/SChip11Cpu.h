@@ -12,6 +12,8 @@ public:
     auto operator=(SChip11Cpu&&) -> SChip11Cpu& = delete;
     ~SChip11Cpu() final = default;
 
+    void setPpu(std::shared_ptr<PpuBase> ppu) final;
+
 public:
     void reset() final;
     void requestDisableHalt() { m_requestDisableHalt = true; }
@@ -43,11 +45,8 @@ private:
     void LD_Vx_R(const uint8 x);                          // Fx85
 
 private:
-    // TODO: Change to something else
-    //    SChip11Ppu* m_ppuCasted;
-
+    SChip11Ppu* m_ppuCasted;
     std::array<uint8, REGISTER_V_SIZE> m_savedV;
-
     bool m_isHalted;
     bool m_requestDisableHalt;
     bool m_isModernMode;

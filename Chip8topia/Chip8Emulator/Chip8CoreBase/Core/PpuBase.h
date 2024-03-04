@@ -4,8 +4,6 @@
 
 #include "CpuBase.h"
 
-// TODO: Change this class completely to only have the right video memory and mode
-
 class PpuBase {
 public:
     enum class PpuMode {
@@ -39,7 +37,6 @@ public:
     auto getHiresVideoMemory() -> std::array<uint8, SCREEN_HIRES_MODE_WIDTH * SCREEN_HIRES_MODE_HEIGHT>& { return m_hiresVideoMemory; }
 
 protected:
-    // TODO: Move to children classes and make private but create a pure virtual getter here (the parent class)
     PpuMode m_mode = PpuMode::LORES;
     std::array<uint8, SCREEN_LORES_MODE_WIDTH * SCREEN_LORES_MODE_HEIGHT> m_loresVideoMemory;
     std::array<uint8, SCREEN_HIRES_MODE_WIDTH * SCREEN_HIRES_MODE_HEIGHT> m_hiresVideoMemory;

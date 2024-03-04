@@ -21,7 +21,6 @@ void CpuBase::reset() {
     m_I = 0;
     m_DT = 0;
     m_ST = 0;
-    // TODO: Maybe for the ram we can reset everything except the rom location so it can be reloaded
     //    m_memory = {};
     //    std::copy(FONTSET.begin(), FONTSET.end(), m_memory.begin());
     m_V = {};
@@ -175,7 +174,6 @@ void CpuBase::ADD_I_Vx(const uint8 x) {
 }
 
 void CpuBase::LD_F_Vx(const uint8 x) {
-    // TODO: Check if this is correct
     m_I = m_V[x] * 5;
 }
 

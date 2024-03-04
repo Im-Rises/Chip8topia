@@ -325,14 +325,7 @@ void Chip8topia::setWindowIcon() {
 }
 
 void Chip8topia::setWindowTitle(const float fps) {
-    if (m_chip8Emulator == nullptr)
-    {
-        glfwSetWindowTitle(m_window, fmt::format("{}", PROJECT_NAME).c_str());
-    }
-    else
-    {
-        glfwSetWindowTitle(m_window, fmt::format("{} - {} - {} - {:.2f} fps", PROJECT_NAME, m_chip8Emulator->getConsoleName().c_str(), m_chip8Emulator->getRomName().c_str(), fps).c_str());
-    }
+    glfwSetWindowTitle(m_window, fmt::format("{} - {} - {} - {:.2f} fps", PROJECT_NAME, m_chip8Emulator->getConsoleName().c_str(), m_chip8Emulator->getRomName().c_str(), fps).c_str());
 }
 #endif
 
@@ -393,14 +386,6 @@ void Chip8topia::printDependenciesInfos() {
               << " - Glad version " << Chip8topia::getGladVersion() << '\n'
               << " - ImGui version " << Chip8topia::getImGuiVersion() << '\n'
               << '\n';
-
-    //    spdlog::info("System and dependencies infos:");
-    //    spdlog::info(" - OpenGL vendor {}", Chip8topia::getOpenGLVendor());
-    //    spdlog::info(" - OpenGL version {}", Chip8topia::getOpenGLVersion());
-    //    spdlog::info(" - OpenGL GLSL version {}", Chip8topia::getGLSLVersion());
-    //    spdlog::info(" - GLFW version {}", Chip8topia::getGLFWVersion());
-    //    spdlog::info(" - Glad version {}", Chip8topia::getGladVersion());
-    //    spdlog::info(" - ImGui version {}", Chip8topia::getImGuiVersion());
 }
 
 void Chip8topia::glfw_error_callback(int error, const char* description) {

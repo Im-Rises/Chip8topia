@@ -43,7 +43,7 @@ public:
     auto operator=(CpuBase&&) -> CpuBase& = delete;
     virtual ~CpuBase() = default;
 
-    void setPpu(std::shared_ptr<PpuBase> ppu) { m_ppu = std::move(ppu); }
+    virtual void setPpu(std::shared_ptr<PpuBase> ppu) { m_ppu = std::move(ppu); }
     void setInput(std::shared_ptr<Input> input) { m_input = std::move(input); }
 
 public:
@@ -58,8 +58,6 @@ private:
 protected:
     virtual void computeOpcode(const uint16 opcode) = 0;
 
-    // TODO: Can it be put inlined?
-    // TODO: Check if for all versions of the chip8 they have all these opcodes
     void CLS();                                                                // 00E0
     void RET();                                                                // 00EE
     void JP_addr(const uint16 addr);                                           // 1nnn

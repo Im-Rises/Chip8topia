@@ -5,6 +5,11 @@
 SChip11Cpu::SChip11Cpu(bool isModernMode) : m_isModernMode(isModernMode), m_isHalted(false), m_requestDisableHalt(false), m_savedV{} {
 }
 
+void SChip11Cpu::setPpu(std::shared_ptr<PpuBase> ppu) {
+    CpuBase::setPpu(ppu);
+    m_ppuCasted = dynamic_cast<SChip11Ppu*>(ppu.get());
+}
+
 void SChip11Cpu::reset() {
     CpuBase::reset();
     m_isHalted = false;
@@ -188,18 +193,15 @@ void SChip11Cpu::SHL_Vx_Vy(const uint8 x, const uint8 y) {
 }
 
 void SChip11Cpu::SCD(const uint8 n) {
-    //    m_ppuCasted->scrollDown(n, m_isModernMode);
-    dynamic_cast<SChip11Ppu*>(m_ppu.get())->scrollDown(n, m_isModernMode);
+    m_ppuCasted->scrollDown(n, m_isModernMode);
 }
 
 void SChip11Cpu::SCR(const uint8 n) {
-    //    m_ppuCasted->scrollRight(n, m_isModernMode);
-    dynamic_cast<SChip11Ppu*>(m_ppu.get())->scrollRight(n, m_isModernMode);
+    m_ppuCasted->scrollRight(n, m_isModernMode);
 }
 
 void SChip11Cpu::SCL(const uint8 n) {
-    //    m_ppuCasted->scrollLeft(n, m_isModernMode);
-    dynamic_cast<SChip11Ppu*>(m_ppu.get())->scrollLeft(n, m_isModernMode);
+    m_ppuCasted->scrollLeft(n, m_isModernMode);
 }
 
 void SChip11Cpu::LORES() {
@@ -217,8 +219,7 @@ void SChip11Cpu::JP_Vx_addr(const uint8 x, const uint16 address) {
 }
 
 void SChip11Cpu::LD_HF_Vx(const uint8 x) {
-    // TODO: Check if this is correct
-    m_I = m_V[x] * 10;
+    m_I = (m_V[x] * 10) + 0x50;
 }
 
 void SChip11Cpu::LD_R_Vx(const uint8 x) {

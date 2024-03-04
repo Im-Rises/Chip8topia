@@ -18,5 +18,5 @@ public:
     auto clock() -> bool final;
 
 private:
-    Chip8Cpu* m_cpuCasted; // TODO: Find a better solution...
+    Chip8Cpu* m_cpuCasted;
 };

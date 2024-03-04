@@ -148,6 +148,5 @@ void Chip8topiaDebugger::drawDisassembly(Chip8Emulator* emulator) {
 }
 
 void Chip8topiaDebugger::drawDisassemblyControls(Chip8Emulator* emulator) {
-    // TODO: Implement with a Chip8Emulator as parameter...
     m_disassembler.drawDisassemblyControls(emulator);
 }

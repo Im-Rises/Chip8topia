@@ -19,5 +19,5 @@ public:
     auto clock() -> bool final;
 
 private:
-    SChip11Cpu* m_cpuCasted; // TODO: Find a better solution...
+    SChip11Cpu* m_cpuCasted;
 };
