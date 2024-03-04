@@ -65,9 +65,13 @@ void Chip8EmulationUi::drawEmulationSettings(Chip8topia* chip8topia) {
     {
         m_selectedCore = Chip8CoreType::Chip8;
     }
-    if (ImGui::Selectable("SChip 1.1", m_selectedCore == Chip8CoreType::SChip11))
+    if (ImGui::Selectable("SChip 1.1 (legacy)", m_selectedCore == Chip8CoreType::SChip11Legacy))
     {
-        m_selectedCore = Chip8CoreType::SChip11;
+        m_selectedCore = Chip8CoreType::SChip11Legacy;
+    }
+    if (ImGui::Selectable("SChip 1.1 (modern)", m_selectedCore == Chip8CoreType::SChip11Modern))
+    {
+        m_selectedCore = Chip8CoreType::SChip11Modern;
     }
     if (ImGui::Selectable("SChipC", m_selectedCore == Chip8CoreType::SChipC))
     {
@@ -99,5 +103,6 @@ void Chip8EmulationUi::drawEmulationSettings(Chip8topia* chip8topia) {
     if (ImGui::Button("Apply"))
     {
         emulator.switchCoreFrequency(m_selectedCore, m_selectedFrequency);
+        m_menuItems[1].m_isOpen = false;
     }
 }

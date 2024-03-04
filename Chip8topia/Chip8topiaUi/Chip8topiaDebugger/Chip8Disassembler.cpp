@@ -26,7 +26,8 @@ void Chip8Disassembler::drawDisassembly(Chip8Emulator* emulator) {
     case Chip8CoreType::Chip8:
         disassembler = Chip8CpuDisassembly::disassembleOpcode;
         break;
-    case Chip8CoreType::SChip11:
+    case Chip8CoreType::SChip11Legacy:
+    case Chip8CoreType::SChip11Modern:
         disassembler = SChip11CpuDisassembly::disassembleOpcode;
         break;
     case Chip8CoreType::SChipC:

@@ -1,9 +1,8 @@
 #include "SChip11Core.h"
 
-#include "Core/SChip11Cpu.h"
 #include "Core/SChip11Ppu.h"
 
-SChip11Core::SChip11Core(Chip8Frequency cpuClockFrequency) : Chip8CoreBase(cpuClockFrequency, std::make_unique<SChip11Cpu>(), std::make_shared<SChip11Ppu>()), m_cpuCasted(dynamic_cast<SChip11Cpu*>(m_cpu.get())) {
+SChip11Core::SChip11Core(Chip8Frequency cpuClockFrequency, bool isModernMode) : Chip8CoreBase(cpuClockFrequency, std::make_unique<SChip11Cpu>(isModernMode), std::make_shared<SChip11Ppu>()), m_cpuCasted(dynamic_cast<SChip11Cpu*>(m_cpu.get())) {
 }
 
 auto SChip11Core::clock() -> bool {
