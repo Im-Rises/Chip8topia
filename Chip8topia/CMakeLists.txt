@@ -11,6 +11,10 @@ add_executable(${PROJECT_NAME}
         ${SRCS_IMGUI_FILEDIALOG}
 )
 
+if (WIN32)
+    target_sources(${PROJECT_NAME} PRIVATE app.rc)
+endif ()
+
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/dependencies")
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/dependencies/imgui_club")
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/dependencies/emscripten-browser-file")

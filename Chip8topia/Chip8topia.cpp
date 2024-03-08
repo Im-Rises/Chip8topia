@@ -317,11 +317,11 @@ void Chip8topia::toggleTurboMode() {
 
 #ifndef __EMSCRIPTEN__
 void Chip8topia::setWindowIcon() {
-    GLFWimage images;
-    images.width = chiptopia_img_res::CHIPTOPIA_ICON_WIDTH;
-    images.height = chiptopia_img_res::CHIPTOPIA_ICON_HEIGHT;
-    images.pixels = chiptopia_img_res::getChip8topiaIconData().data();
-    glfwSetWindowIcon(m_window, 1, &images);
+    //    GLFWimage images;
+    //    images.width = chiptopia_img_res::CHIPTOPIA_ICON_WIDTH;
+    //    images.height = chiptopia_img_res::CHIPTOPIA_ICON_HEIGHT;
+    //    images.pixels = chiptopia_img_res::getChip8topiaIconData().data();
+    //    glfwSetWindowIcon(m_window, 1, &images);
 }
 
 void Chip8topia::setWindowTitle(const float fps) {
