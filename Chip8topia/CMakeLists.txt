@@ -33,6 +33,9 @@ if (NOT EMSCRIPTEN)
     find_package(OpenGL 3.3 REQUIRED)
     target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL)
 
+    find_package(Stb REQUIRED)
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${STB_LIBRARIES})
+
     if (WIN32)
         target_link_libraries(${PROJECT_NAME} PUBLIC winmm.lib)
     endif ()

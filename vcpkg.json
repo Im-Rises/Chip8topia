@@ -35,6 +35,11 @@
       "name": "spdlog",
       "version>=": "1.13.0",
       "platform": "!emscripten"
+    },
+    {
+      "name": "stb",
+      "version>=": "2023-04-11#1",
+      "platform": "!emscripten"
     }
   ]
 }

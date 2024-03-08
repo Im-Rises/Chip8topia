@@ -13,6 +13,8 @@
 #include <emscripten/html5.h>
 #else
 #include <glad/glad.h>
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
 #endif
 #include <GLFW/glfw3.h>
 
@@ -24,7 +26,6 @@
 #endif
 
 #include "Chip8Emulator/Chip8Emulator/Chip8RomLoader.h"
-#include "res/chip8topiaIconResource.h"
 
 #ifdef __EMSCRIPTEN__
 #include <imgui_emscripten/imgui_emscripten.h>
@@ -317,11 +318,24 @@ void Chip8topia::toggleTurboMode() {
 
 #ifndef __EMSCRIPTEN__
 void Chip8topia::setWindowIcon() {
-    //    GLFWimage images;
-    //    images.width = chiptopia_img_res::CHIPTOPIA_ICON_WIDTH;
-    //    images.height = chiptopia_img_res::CHIPTOPIA_ICON_HEIGHT;
-    //    images.pixels = chiptopia_img_res::getChip8topiaIconData().data();
-    //    glfwSetWindowIcon(m_window, 1, &images);
+    //    int chip8topiaIconWidth = 0, chip8topiaIconHeight = 0, channelsInFile = 0;
+    //    unsigned char* imagePixels = stbi_load_from_memory(CHIP8TOPIA_ICON_DATA.data(), static_cast<int>(CHIP8TOPIA_ICON_DATA.size()), &chip8topiaIconWidth, &chip8topiaIconHeight, &channelsInFile, 0);
+
+    int width = 0, height = 0, channelsCount = 0;
+    unsigned char* imagePixels = stbi_load(CHIP8TOPIA_ICON_PATH, &width, &height, &channelsCount, 0);
+    if (imagePixels == nullptr)
+    {
+#if !defined(BUILD_RELEASE)
+        spdlog::error("Failed to load image from path");
+#endif
+        return;
+    }
+
+    GLFWimage images;
+    images.width = width;
+    images.height = height;
+    images.pixels = imagePixels;
+    glfwSetWindowIcon(m_window, 1, &images);
 }
 
 void Chip8topia::setWindowTitle(const float fps) {
