@@ -138,9 +138,6 @@ emmake make -C build
 - [x] Reformater le code des touches, changer par de vrais noms de touches
 - [x] Correct openfiledialog not having good size on the web
 - [x] Correct all preprocessing directives for emscripten for key inputs
-- [-] Creer une struct qui définie le nom de la touche shortcut avec le string et le keycode
-- [-] Add imgui.ini to the .data emscripten build
-- [-] Change to init m_chip8topiaUi and m_chip8emulator in the game loop
 - [x] Add the rom name on the window title and the Chip8 emulated version
 - [x] Add a way to choose the version of the chip8 to emulate
 - [x] Correct the minimized window not putting windows at the top when unminimizing
@@ -164,8 +161,12 @@ emmake make -C build
 - [x] Correct icon in desktop
 - [x] Add modern SCHIP1.1 and test it with the quirks test and scroll test roms
 - [x] For the std::vector use ref or move... For the rom loading
-
+- [x] Correct disassembly, we can reach an odd pc value
+- [ ] Load correct font depending on the version of the chip8
 - [ ] Add Xo-Chip emulation
+- [ ] Correct icon when building in release mode (its all buggy)
+
+- [ ] Add different test to not crash even with a bad rom (checks on rom, stack, etc...)
 - [ ] Add audio
 - [ ] Add save states ? (if yes create a window with an image preview of the save state) ajouter dans la section File de
   main bar
@@ -175,3 +176,8 @@ Minor:
 
 - [ ] if none of the roms are loaded, we should display a background with written Chip8 and Im-Rises
 - [ ] Reorder code between events and direct call to emulator
+
+- [-] Creer une struct qui définie le nom de la touche shortcut avec le string et le keycode
+- [-] Add imgui.ini to the .data emscripten build
+- [-] Change to init m_chip8topiaUi and m_chip8emulator in the game loop
+- [-] Add a way to change the input keys
