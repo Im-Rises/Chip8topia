@@ -13,6 +13,11 @@ Chip8Error::~Chip8Error() {
 }
 
 void Chip8Error::triggerError(const std::string& message) {
+    if (m_errorQueue.size() >= MAX_ERRORS)
+    {
+        clearErrorQueue();
+        m_errorQueue.emplace(TOO_MANY_ERRORS_MESSAGE);
+    }
     m_errorQueue.push(message);
 }
 
@@ -22,15 +27,25 @@ void Chip8Error::showError() {
         return;
     }
 
-    ImGui::OpenPopup("Error");
-    if (ImGui::BeginPopupModal("Error", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+    static constexpr int BUTTON_WIDTH = 120;
+    ImGui::OpenPopup(ERROR_TITLE);
+    if (ImGui::BeginPopupModal(ERROR_TITLE, nullptr, ImGuiWindowFlags_AlwaysAutoResize))
     {
         ImGui::Text("%s", m_errorQueue.front().c_str());
-        if (ImGui::Button("OK", ImVec2(120, 0)))
+        ImGui::NewLine();
+        ImGui::SetCursorPosX((ImGui::GetWindowSize().x - BUTTON_WIDTH) * 0.5f);
+        if (ImGui::Button("OK", ImVec2(BUTTON_WIDTH, 0)))
         {
             ImGui::CloseCurrentPopup();
             m_errorQueue.pop();
         }
         ImGui::EndPopup();
+    }
+}
+
+void Chip8Error::clearErrorQueue() {
+    while (!m_errorQueue.empty())
+    {
+        m_errorQueue.pop();
     }
 }
