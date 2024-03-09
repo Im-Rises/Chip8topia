@@ -162,7 +162,9 @@ emmake make -C build
 - [x] Add modern SCHIP1.1 and test it with the quirks test and scroll test roms
 - [x] For the std::vector use ref or move... For the rom loading
 - [x] Correct disassembly, we can reach an odd pc value
+- [x] Added error system
 - [ ] Load correct font depending on the version of the chip8
+- [ ] Correct assembly to print hexa values where it should
 - [ ] Add Xo-Chip emulation
 - [ ] Correct icon when building in release mode (its all buggy)
 

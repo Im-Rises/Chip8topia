@@ -326,7 +326,7 @@ void Chip8topia::setWindowIcon() {
     if (imagePixels == nullptr)
     {
 #if !defined(BUILD_RELEASE)
-        spdlog::error("Failed to load image from path");
+        Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(fmt::format("Failed to load window icon: {}", CHIP8TOPIA_ICON_PATH));
 #endif
         return;
     }
@@ -404,7 +404,7 @@ void Chip8topia::printDependenciesInfos() {
 
 void Chip8topia::glfw_error_callback(int error, const char* description) {
 #if !defined(BUILD_RELEASE)
-    spdlog::error("Glfw Error {}: {}", error, description);
+    Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(fmt::format("Glfw Error {}: {}", error, description));
 #endif
 }
 
@@ -423,7 +423,7 @@ void Chip8topia::glfw_drop_callback(GLFWwindow* window, int count, const char** 
     catch (const std::exception& e)
     {
 #if !defined(BUILD_RELEASE)
-        spdlog::error(e.what());
+        Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(e.what());
 #endif
     }
 }
@@ -438,7 +438,7 @@ void Chip8topia::loadDebugRom() {
     catch (const std::exception& e)
     {
 #if !defined(BUILD_RELEASE)
-        spdlog::error(e.what());
+        Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(e.what());
 #endif
     }
 }
