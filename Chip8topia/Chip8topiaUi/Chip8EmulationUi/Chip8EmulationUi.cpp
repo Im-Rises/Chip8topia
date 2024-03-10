@@ -14,9 +14,14 @@ void Chip8EmulationUi::drawEmulationMenu(Chip8topia& chip8topia) {
             menuItem.drawMenuItem();
         }
 
-        if (ImGui::MenuItem(fmt::format("Toggle turbo mode : {}", chip8topia.getIsTurboMode() ? "ON " : "OFF").c_str(), "Y"))
+        if (ImGui::MenuItem(fmt::format("Toggle turbo mode : {}", chip8topia.getIsTurboMode() ? "ON " : "OFF").c_str(), "Y", chip8topia.getIsTurboMode()))
         {
             chip8topia.toggleTurboMode();
+        }
+
+        if (ImGui::MenuItem("Toggle Pause", "P", chip8topia.getChip8Emulator().getIsBreak()))
+        {
+            Chip8topiaInputHandler::getInstance().m_TogglePauseEmulationEvent.trigger();
         }
 
         if (ImGui::MenuItem("Restart", "L"))
@@ -54,6 +59,7 @@ void Chip8EmulationUi::drawEmulationSettings(Chip8topia* chip8topia) {
 
     ImGui::TextColored(ImVec4(1.0F, 1.0F, 0.0F, 1.0F), "Console version");
     ImGui::Text("Current core: %s", emulator.getConsoleName().c_str());
+    ImGui::Text("Current frequency: %uHZ", static_cast<unsigned int>(emulator.getFrequency()));
 
     if (ImGui::Selectable("Chip8", m_selectedCore == Chip8CoreType::Chip8))
     {
@@ -78,19 +84,19 @@ void Chip8EmulationUi::drawEmulationSettings(Chip8topia* chip8topia) {
     ImGui::Separator();
 
     ImGui::TextColored(ImVec4(1.0F, 1.0F, 0.0F, 1.0F), "Emulation Speed");
-    if (ImGui::Selectable("600HZ", m_selectedFrequency == Chip8Frequency::FREQ_600_HZ))
+    if (ImGui::Selectable("600HZ", m_selectedFrequency == Chip8Frequency::Freq600Hz))
     {
-        m_selectedFrequency = Chip8Frequency::FREQ_600_HZ;
+        m_selectedFrequency = Chip8Frequency::Freq600Hz;
     }
 
-    if (ImGui::Selectable("1200HZ", m_selectedFrequency == Chip8Frequency::FREQ_1200_HZ))
+    if (ImGui::Selectable("1200HZ", m_selectedFrequency == Chip8Frequency::Freq1200Hz))
     {
-        m_selectedFrequency = Chip8Frequency::FREQ_1200_HZ;
+        m_selectedFrequency = Chip8Frequency::Freq1200Hz;
     }
 
-    if (ImGui::Selectable("1800HZ", m_selectedFrequency == Chip8Frequency::FREQ_1800_HZ))
+    if (ImGui::Selectable("1800HZ", m_selectedFrequency == Chip8Frequency::Freq1800Hz))
     {
-        m_selectedFrequency = Chip8Frequency::FREQ_1800_HZ;
+        m_selectedFrequency = Chip8Frequency::Freq1800Hz;
     }
 
     ImGui::Separator();

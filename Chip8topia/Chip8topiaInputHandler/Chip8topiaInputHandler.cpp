@@ -19,6 +19,7 @@ void Chip8topiaInputHandler::key_callback(GLFWwindow* /*window*/, int key, int /
         {
         case GLFW_KEY_U: inputHandler.m_ToggleMainBarEvent.trigger(); break;
         case GLFW_KEY_I: inputHandler.m_CloseAllWindowsEvent.trigger(); break;
+        case GLFW_KEY_P: inputHandler.m_TogglePauseEmulationEvent.trigger(); break;
         case GLFW_KEY_L: inputHandler.m_RestartEmulationEvent.trigger(); break;
         case GLFW_KEY_O: inputHandler.m_OpenRomExplorerEvent.trigger(); break;
 #ifndef __EMSCRIPTEN__

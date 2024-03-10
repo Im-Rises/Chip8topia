@@ -9,6 +9,7 @@
 Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<Chip8Core>(DEFAULT_FREQUENCY)) {
     Chip8topiaInputHandler& inputHandler = Chip8topiaInputHandler::getInstance();
     inputHandler.m_GameInput.subscribe(this, &Chip8Emulator::OnInput);
+    inputHandler.m_TogglePauseEmulationEvent.subscribe(this, &Chip8Emulator::toggleBreakEmulation);
     inputHandler.m_RestartEmulationEvent.subscribe(this, &Chip8Emulator::restart);
 
     //    inputHandler.m_StopEmulationEvent.subscribe(this, &Chip8Emulator::stop);
@@ -21,6 +22,7 @@ Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<Chip8Core>(DEFAULT_FREQ
 Chip8Emulator::~Chip8Emulator() {
     Chip8topiaInputHandler& inputHandler = Chip8topiaInputHandler::getInstance();
     inputHandler.m_GameInput.unsubscribe(this, &Chip8Emulator::OnInput);
+    inputHandler.m_TogglePauseEmulationEvent.unsubscribe(this, &Chip8Emulator::toggleBreakEmulation);
     inputHandler.m_RestartEmulationEvent.unsubscribe(this, &Chip8Emulator::restart);
 
     //    inputHandler.m_StopEmulationEvent.unsubscribe(this, &Chip8Emulator::stop);
@@ -104,7 +106,7 @@ auto Chip8Emulator::getCoreType() const -> Chip8CoreType {
 }
 
 auto Chip8Emulator::getFrequency() const -> Chip8Frequency {
-    return Chip8Frequency::FREQ_600_HZ;
+    return m_core->getFrequency();
 }
 
 void Chip8Emulator::switchCoreFrequency(const Chip8CoreType coreType, const Chip8Frequency frequency) {
@@ -131,4 +133,9 @@ void Chip8Emulator::switchCoreFrequency(const Chip8CoreType coreType, const Chip
 
 void Chip8Emulator::OnInput(const uint8 key, const bool isPressed) {
     m_core->updateKey(key, isPressed);
+}
+
+void Chip8Emulator::errorCallback(const std::string& errorMessage) {
+    m_isRomLoaded = false;
+    Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(errorMessage);
 }

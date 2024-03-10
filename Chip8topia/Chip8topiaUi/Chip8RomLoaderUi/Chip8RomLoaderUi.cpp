@@ -2,10 +2,6 @@
 
 #include <imgui.h>
 #include <ImGuiFileDialog/ImGuiFileDialog.h>
-#if !defined(BUILD_RELEASE)
-#include <spdlog/spdlog.h>
-#include <iostream>
-#endif
 
 #if defined(__EMSCRIPTEN__)
 #include <emscripten_browser_file.h>

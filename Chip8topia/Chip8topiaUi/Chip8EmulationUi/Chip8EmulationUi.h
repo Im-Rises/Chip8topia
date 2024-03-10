@@ -3,7 +3,7 @@
 #include <array>
 
 #include "../ImGuiHelper/ImGuiHelper.h"
-#include "../../Chip8Emulator/Chip8CoreBase/Chip8CoreBase.h"
+#include "../../Chip8Emulator/Chip8Emulator.h"
 
 class Chip8topia;
 class Chip8EmulationUi {
@@ -35,6 +35,6 @@ private:
         ImGuiMenuItemWindow<Chip8topia>("Chip8 Settings", true, [this](Chip8topia* chip8topia) { drawEmulationSettings(chip8topia); })
     };
 
-    Chip8CoreType m_selectedCore = Chip8CoreType::Chip8;
-    Chip8Frequency m_selectedFrequency = Chip8Frequency::FREQ_1200_HZ;
+    Chip8CoreType m_selectedCore = Chip8Emulator::DEFAULT_CORE_TYPE;
+    Chip8Frequency m_selectedFrequency = Chip8Emulator::DEFAULT_FREQUENCY;
 };

@@ -45,6 +45,7 @@ public:
 #endif
     SingleSubscriberEvent<> m_ToggleMainBarEvent;
     SingleSubscriberEvent<> m_CloseAllWindowsEvent;
+    SingleSubscriberEvent<> m_TogglePauseEmulationEvent;
     SingleSubscriberEvent<> m_RestartEmulationEvent;
     SingleSubscriberEvent<> m_OpenRomExplorerEvent;
     SingleSubscriberEvent<const std::string&> m_ErrorEvent;

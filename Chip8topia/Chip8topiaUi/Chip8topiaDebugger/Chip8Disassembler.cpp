@@ -2,12 +2,8 @@
 
 #include <imgui.h>
 #include <fmt/format.h>
-#if !defined(BUILD_RELEASE)
-#include <spdlog/spdlog.h>
-#endif
 
 #include "../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
-#include "../Chip8Emulator/Disassembly/disassemblySettings.h"
 #include "../Chip8Emulator/Disassembly/Chip8CpuDisassembly.h"
 #include "../Chip8Emulator/Disassembly/SChip11CpuDisassembly.h"
 #include "../Chip8Emulator/Disassembly/SChipCCpuDisassembly.h"
@@ -117,7 +113,6 @@ void Chip8Disassembler::drawDisassemblyControls(Chip8Emulator* emulator) {
 
     if (ImGui::Button("Clear Breakpoints"))
     {
-
         inputHandler.m_ClearBreakpointsEvent.trigger();
     }
 

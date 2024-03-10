@@ -167,6 +167,7 @@ emmake make -C build
 - [x] Correct icon when building in release mode (its all buggy)
 - [x] Correct assembly to print hexa values where it should
 - [ ] Correct disassembly to show the odd or even pc value correctly
+- [ ] Add a way to put front the windows on the main window click
 - [ ] Add Xo-Chip emulation
 - [ ] Add different test to not crash even with a bad rom (checks on rom, stack, etc...)
 - [ ] Add audio

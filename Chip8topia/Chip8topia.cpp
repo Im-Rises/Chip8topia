@@ -21,9 +21,6 @@
 #include <fmt/format.h>
 #include <chrono>
 #include <iostream>
-#if !defined(BUILD_RELEASE)
-#include <spdlog/spdlog.h>
-#endif
 
 #include "Chip8Emulator/Chip8Emulator/Chip8RomLoader.h"
 
