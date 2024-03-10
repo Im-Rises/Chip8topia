@@ -22,7 +22,7 @@ It was initially used on the COSMAC VIP and Telmac 1800 8-bit microcomputers in 
 It was made to allow video games to be more easily programmed for said computers.)";
 
     static constexpr auto WEB_CANVAS_ID = "#canvas";
-    static constexpr auto CHIP8TOPIA_ICON_PATH = "ress/icon.png";
+    static constexpr auto CHIP8TOPIA_ICON_PATH = "res/icon.png";
 
     //    static constexpr ImVec4 CLEAR_COLOR = ImVec4(0.45F, 0.55F, 0.60F, 1.00F);
 private:

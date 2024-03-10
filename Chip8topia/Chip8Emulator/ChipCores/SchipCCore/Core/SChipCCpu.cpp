@@ -3,6 +3,7 @@
 #include "SChipCPpu.h"
 
 SChipCCpu::SChipCCpu() : m_savedV{} {
+    std::copy(SCHIP_FONTSET.begin(), SCHIP_FONTSET.end(), m_memory.begin());
 }
 
 void SChipCCpu::setPpu(std::shared_ptr<PpuBase> ppu) {

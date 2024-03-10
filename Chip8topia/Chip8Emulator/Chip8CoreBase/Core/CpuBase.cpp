@@ -11,8 +11,7 @@ CpuBase::CpuBase() : m_pc(START_ADDRESS),
                      m_memory{},
                      m_V{},
                      m_stack{},
-                     m_u8NumberRandomGenerator(0, 255) {
-    std::copy(FONTSET.begin(), FONTSET.end(), m_memory.begin());
+                     m_u8NumberRandomGenerator(0, 0xFF) {
 }
 
 void CpuBase::reset() {

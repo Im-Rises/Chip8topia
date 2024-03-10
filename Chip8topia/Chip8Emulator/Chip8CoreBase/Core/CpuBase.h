@@ -5,6 +5,8 @@
 #include <array>
 #include <RandomGenerator/RandomGenerator.h>
 
+#include "../chip8Fonts.h"
+
 class PpuBase;
 class Input;
 class CpuBase {
