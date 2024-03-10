@@ -163,11 +163,11 @@ emmake make -C build
 - [x] For the std::vector use ref or move... For the rom loading
 - [x] Correct disassembly, we can reach an odd pc value
 - [x] Added error system
-- [ ] Load correct font depending on the version of the chip8
-- [ ] Correct assembly to print hexa values where it should
+- [x] Load correct font depending on the version of the chip8
+- [x] Correct icon when building in release mode (its all buggy)
+- [x] Correct assembly to print hexa values where it should
+- [ ] Correct disassembly to show the odd or even pc value correctly
 - [ ] Add Xo-Chip emulation
-- [ ] Correct icon when building in release mode (its all buggy)
-
 - [ ] Add different test to not crash even with a bad rom (checks on rom, stack, etc...)
 - [ ] Add audio
 - [ ] Add save states ? (if yes create a window with an image preview of the save state) ajouter dans la section File de
@@ -176,9 +176,8 @@ emmake make -C build
 
 Minor:
 
-- [ ] if none of the roms are loaded, we should display a background with written Chip8 and Im-Rises
-- [ ] Reorder code between events and direct call to emulator
-
+- [-] if none of the roms are loaded, we should display a background with written Chip8 and Im-Rises
+- [-] Reorder code between events and direct call to emulator
 - [-] Creer une struct qui définie le nom de la touche shortcut avec le string et le keycode
 - [-] Add imgui.ini to the .data emscripten build
 - [-] Change to init m_chip8topiaUi and m_chip8emulator in the game loop

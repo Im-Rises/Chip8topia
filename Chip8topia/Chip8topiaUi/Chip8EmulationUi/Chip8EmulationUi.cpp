@@ -46,18 +46,13 @@ void Chip8EmulationUi::drawEmulationStats(Chip8topia& chip8topia) {
     ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
     ImGui::Text("Screen size: %dx%d", chip8topia.getWindowWidth(), chip8topia.getWindowHeight());
     ImGui::Text("Frame time: %.3f ms", 1000.0F / ImGui::GetIO().Framerate);
-    ImGui::Text("Clock count this frame: %u", chip8topia.getChip8Emulator().getClockCountThisFrame());
+    //    ImGui::Text("Total cycles: %d", chip8topia.getChip8Emulator().getTotalCycles());
 }
 
 void Chip8EmulationUi::drawEmulationSettings(Chip8topia* chip8topia) {
     Chip8Emulator& emulator = chip8topia->getChip8Emulator();
 
-    //    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Emulation Settings");
-
-    //    ImGui::Separator();
-
-    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Console version");
-    //    ImGui::Text("Current core: %s", static_cast<uint8>(emulator.getConsoleName().c_str()));
+    ImGui::TextColored(ImVec4(1.0F, 1.0F, 0.0F, 1.0F), "Console version");
     ImGui::Text("Current core: %s", emulator.getConsoleName().c_str());
 
     if (ImGui::Selectable("Chip8", m_selectedCore == Chip8CoreType::Chip8))
