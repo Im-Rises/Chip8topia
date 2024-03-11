@@ -78,7 +78,7 @@ void Chip8RomLoaderUi::drawRomWindow(Chip8topia& chip8topia) {
             catch (const std::exception& e)
             {
 #if !defined(BUILD_RELEASE)
-                Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(e.what());
+                Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(e.what(), nullptr);
 #endif
             }
         }

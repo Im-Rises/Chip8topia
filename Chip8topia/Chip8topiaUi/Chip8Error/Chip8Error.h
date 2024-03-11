@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <string>
 #include <queue>
 
@@ -8,6 +9,13 @@ private:
     static constexpr auto ERROR_TITLE = "Error";
     static constexpr auto MAX_ERRORS = 10;
     static constexpr auto TOO_MANY_ERRORS_MESSAGE = "Too many errors, please restart the application.";
+
+private:
+    struct ErrorData {
+        //        std::string title = ERROR_TITLE;
+        std::string message;
+        std::function<void()> callback;
+    };
 
 public:
     Chip8Error();
@@ -18,12 +26,12 @@ public:
     ~Chip8Error();
 
 public:
-    void triggerError(const std::string& message);
+    void triggerError(const std::string& message, std::function<void()> callback = nullptr);
     void showError();
 
 private:
     void clearErrorQueue();
 
 private:
-    std::queue<std::string> m_errorQueue;
+    std::queue<ErrorData> m_errorQueue;
 };

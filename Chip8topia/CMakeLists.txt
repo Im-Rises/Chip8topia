@@ -62,6 +62,12 @@ else ()
     #    target_compile_definitions(${PROJECT_NAME} PRIVATE BUILD_CONFIG "$<$<CONFIG:Release>:Release>")
 endif ()
 
+if (TRUE)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE BUILD_PARAM_SAFE)
+else ()
+    target_compile_definitions(${PROJECT_NAME} PRIVATE BUILD_PARAM_UNSAFE)
+endif ()
+
 if (WIN32)
     target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_WINDOWS)
     target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_NAME="Windows")

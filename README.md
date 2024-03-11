@@ -1,9 +1,14 @@
 # Chip8topia
 
+<p align="center">
+      <img src="README_files/Logos/cmake_logo.png" alt="cmakeLogo" style="height:60px;"/>
+      <img src="https://img.shields.io/badge/C%2B%2B-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white" alt="cppLogo" style="height:60px;"/>
+</p>
+
 ## Description
 
-This is a Chip8 emulator written in C++ for Windows, Linux and WebAssembly. It uses OpenGL for the rendering and ImGui
-for the UI.
+Chip8topia is a Chip8 emulator written in C++ for Windows, Linux and WebAssembly. It uses OpenGL/WebGL for the rendering
+and ImGui for the UI.
 
 It can emulate the original Chip8, the SCHIP1.1 and the SCHIPC. I will add the Xo-Chip in the future.
 
@@ -166,20 +171,23 @@ emmake make -C build
 - [x] Load correct font depending on the version of the chip8
 - [x] Correct icon when building in release mode (its all buggy)
 - [x] Correct assembly to print hexa values where it should
-- [ ] Correct disassembly to show the odd or even pc value correctly
+- [x] Correct disassembly to show the odd or even pc value correctly
 - [ ] Add a way to put front the windows on the main window click
+- [ ] Add safe and unsafe code version
 - [ ] Add Xo-Chip emulation
+
 - [ ] Add different test to not crash even with a bad rom (checks on rom, stack, etc...)
 - [ ] Add audio
 - [ ] Add save states ? (if yes create a window with an image preview of the save state) ajouter dans la section File de
   main bar
 - [ ] Do a general optimization of the code
 
-Minor:
+Why not:
 
 - [-] if none of the roms are loaded, we should display a background with written Chip8 and Im-Rises
-- [-] Reorder code between events and direct call to emulator
-- [-] Creer une struct qui définie le nom de la touche shortcut avec le string et le keycode
-- [-] Add imgui.ini to the .data emscripten build
-- [-] Change to init m_chip8topiaUi and m_chip8emulator in the game loop
 - [-] Add a way to change the input keys
+
+OSEF:
+
+- [-] Creer une struct qui définie le nom de la touche shortcut avec le string et le keycode
+- [-] Change to init m_chip8topiaUi and m_chip8emulator in the game loop

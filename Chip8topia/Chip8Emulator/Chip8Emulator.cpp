@@ -135,7 +135,10 @@ void Chip8Emulator::OnInput(const uint8 key, const bool isPressed) {
     m_core->updateKey(key, isPressed);
 }
 
+#if defined(BUILD_PARAM_SAFE)
 void Chip8Emulator::errorCallback(const std::string& errorMessage) {
+    // TODO: Pass this function to the Chip8Cores
     m_isRomLoaded = false;
-    Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(errorMessage);
+    Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(errorMessage, nullptr);
 }
+#endif

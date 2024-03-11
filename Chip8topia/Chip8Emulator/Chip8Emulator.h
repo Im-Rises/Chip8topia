@@ -86,8 +86,9 @@ public:
 
 private:
     void OnInput(const uint8 key, const bool isPressed);
-
+#if defined(BUILD_PARAM_SAFE)
     void errorCallback(const std::string& errorMessage);
+#endif
 
 private:
     std::string m_romName = "ROM";

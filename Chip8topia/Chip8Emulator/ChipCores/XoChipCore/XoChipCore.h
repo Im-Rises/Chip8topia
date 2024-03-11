@@ -1,4 +1,7 @@
 #pragma once
 
-class XoChipCore {
+#include "../../Chip8CoreBase/Chip8CoreBase.h"
+
+class XoChipCore : public Chip8CoreBase {
+public:
 };
