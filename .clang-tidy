@@ -14,7 +14,7 @@ Checks: >
   -*non-private-member-variables-in-classes,
   -*readability-identifier-length,
   -*avoid-const-params-in-decls,
-#  -*readability-magic-numbers,
+  -*magic-numbers,
 #  -google-readability-namespace-comments,
 #  -google-runtime-int,
 #  -google-runtime-references,

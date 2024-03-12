@@ -11,6 +11,7 @@
 #include <GLES3/gl3.h>
 #include <emscripten.h>
 #include <emscripten/html5.h>
+#include <imgui_emscripten/imgui_emscripten.h>
 #else
 #include <glad/glad.h>
 #define STB_IMAGE_IMPLEMENTATION
@@ -21,13 +22,13 @@
 #include <fmt/format.h>
 #include <chrono>
 #include <iostream>
+#include <fstream>
+#include <spdlog/spdlog.h>
+
+#include <ImGuiNotify.hpp>
+#include <IconsFontAwesome6.h>
 
 #include "Chip8Emulator/Chip8Emulator/Chip8RomLoader.h"
-
-#ifdef __EMSCRIPTEN__
-#include <imgui_emscripten/imgui_emscripten.h>
-#endif
-
 
 Chip8topia::Chip8topia() : m_window(nullptr) {
 }
@@ -169,15 +170,36 @@ auto Chip8topia::init() -> int {
 
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(m_window, true);
-    // #ifdef __EMSCRIPTEN__
-    //     ImGui_ImplGlfw_InstallEmscriptenCanvasResizeCallback(WEB_CANVAS_ID);
-    // #endif
     ImGui_ImplOpenGL3_Init(glsl_version);
 
+    // Setup ImGuiNotify and IconFontCppHeaders
+    io.Fonts->AddFontDefault();
+
+    float baseFontSize = 16.0F;                      // Default font size
+    float iconFontSize = baseFontSize * 2.0F / 3.0F; // FontAwesome fonts need to have their sizes reduced by 2.0f/3.0f in order to align correctly
+
+    // Check if FONT_ICON_FILE_NAME_FAS is a valid path
+    std::ifstream fontAwesomeFile(FONT_ICON_FILE_NAME_FAS);
+
+    if (!fontAwesomeFile.good())
+    {
+        spdlog::error("Could not find font awesome file: {}", FONT_ICON_FILE_NAME_FAS);
+        return 1;
+    }
+
+    static const ImWchar iconsRanges[] = { ICON_MIN_FA, ICON_MAX_16_FA, 0 };
+    ImFontConfig iconsConfig;
+    iconsConfig.MergeMode = true;
+    iconsConfig.PixelSnapH = true;
+    iconsConfig.GlyphMinAdvanceX = iconFontSize;
+    io.Fonts->AddFontFromFileTTF(FONT_ICON_FILE_NAME_FAS, iconFontSize, &iconsConfig, iconsRanges);
+
+    // Set window icon
 #ifndef __EMSCRIPTEN__
     setWindowIcon();
 #endif
 
+    // Set input callbacks
 #ifndef __EMSCRIPTEN__
     m_chip8topiaInputHandler.m_ExitChip8topiaEvent.subscribe(this, &Chip8topia::closeRequest);
     m_chip8topiaInputHandler.m_ToggleTurboModeEvent.subscribe(this, &Chip8topia::toggleTurboMode);
@@ -221,6 +243,7 @@ void Chip8topia::handleUi(const float /*deltaTime*/) {
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
     m_chip8topiaUi.drawUi(*this);
+    ImGui::RenderNotifications();
     ImGui::Render();
 }
 
@@ -431,6 +454,7 @@ void Chip8topia::loadDebugRom() {
     {
         std::vector<uint8> rom = Chip8RomLoader::loadRomFromPath(DEBUG_ROM_PATH);
         m_chip8Emulator->loadRom(rom);
+        ImGui::InsertNotification({ ImGuiToastType::Success, 3000, "Debug rom loaded!" });
     }
     catch (const std::exception& e)
     {

@@ -40,11 +40,15 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [GLFW](https://www.glfw.org/)
 - [GLAD](https://glad.dav1d.de/)
 - [stb](https://github.com/nothings/stb)
+- [spdlog](https://github.com/gabime/spdlog)
+- [Vcpkg](https://vcpkg.io/en)
 - [ImGui](https://github.com/ocornut/imgui)
 - [ImGuiFileDialog](https://github.com/aiekick/ImGuiFileDialog)
 - [ImGui Memory Editor](https://github.com/ocornut/imgui_club/tree/main/imgui_memory_editor)
-- [spdlog](https://github.com/gabime/spdlog)
-- [Vcpkg](https://vcpkg.io/en)
+- [emscripten-browser-file](https://github.com/Armchair-Software/emscripten-browser-file)
+- [ImGuiNotify](https://github.com/TyomaVader/ImGuiNotify/tree/Dev)
+- [IconFontCppHeaders](https://github.com/juliettef/IconFontCppHeaders)
+- [Font-Awesome](https://github.com/FortAwesome/Font-Awesome)
 
 ### Other docs
 
@@ -172,10 +176,14 @@ emmake make -C build
 - [x] Correct icon when building in release mode (its all buggy)
 - [x] Correct assembly to print hexa values where it should
 - [x] Correct disassembly to show the odd or even pc value correctly
+
+- [ ] Adding toast system
+- [ ] Adding icon to the windows
 - [ ] Add a way to put front the windows on the main window click
 - [ ] Add safe and unsafe code version
 - [ ] Add Xo-Chip emulation
 
+- [ ] Replace all try catch with promises from C++23
 - [ ] Add different test to not crash even with a bad rom (checks on rom, stack, etc...)
 - [ ] Add audio
 - [ ] Add save states ? (if yes create a window with an image preview of the save state) ajouter dans la section File de

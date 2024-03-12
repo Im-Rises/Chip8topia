@@ -97,6 +97,7 @@ jobs:
           cp -r ${{ github.workspace }}/shaders ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}
           cp -r ${{ github.workspace }}/Chip8Games ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}
           cp -r ${{ github.workspace }}/res ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}
+          cp -r ${{ github.workspace }}/fonts ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ github.run_number }}
 
       - name: Copy artifacts ubuntu
         if: matrix.os == 'ubuntu-latest'
