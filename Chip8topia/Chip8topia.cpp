@@ -13,6 +13,7 @@
 #include <emscripten/html5.h>
 #include <imgui_emscripten/imgui_emscripten.h>
 #else
+#include <spdlog/spdlog.h>
 #include <glad/glad.h>
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -23,7 +24,6 @@
 #include <chrono>
 #include <iostream>
 #include <fstream>
-#include <spdlog/spdlog.h>
 
 #include <ImGuiNotify.hpp>
 #include <IconsFontAwesome6.h>
@@ -145,7 +145,10 @@ auto Chip8topia::init() -> int {
     // Initialize OpenGL loader
 #ifndef __EMSCRIPTEN__
     if (gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)) == 0)
+    {
+        spdlog::error("Failed to initialize OpenGL loader");
         return 1;
+    }
 #endif
 
     // Setup Dear ImGui context
@@ -183,7 +186,11 @@ auto Chip8topia::init() -> int {
 
     if (!fontAwesomeFile.good())
     {
+#if !defined(__EMSRIPTEN__)
         spdlog::error("Could not find font awesome file: {}", FONT_ICON_FILE_NAME_FAS);
+#else
+        std::cerr << "Could not find font awesome file: " << FONT_ICON_FILE_NAME_FAS << '\n';
+#endif
         return 1;
     }
 
@@ -217,8 +224,10 @@ auto Chip8topia::init() -> int {
 
     printDependenciesInfos();
 
+#if !defined(__EMSRIPTEN__)
     std::cout << "Logs:" << '\n';
     spdlog::info("Chip8topia initialized successfully");
+#endif
 
     return 0;
 }
@@ -353,9 +362,7 @@ void Chip8topia::setWindowIcon() {
     unsigned char* imagePixels = stbi_load(CHIP8TOPIA_ICON_PATH, &width, &height, &channelsCount, 0);
     if (imagePixels == nullptr)
     {
-#if !defined(BUILD_RELEASE)
-        Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(fmt::format("Failed to load window icon: {}", CHIP8TOPIA_ICON_PATH), nullptr);
-#endif
+        ImGui::InsertNotification({ ImGuiToastType::Error, 1000, "Failed to load window icon" });
         return;
     }
 
@@ -431,9 +438,9 @@ void Chip8topia::printDependenciesInfos() {
 }
 
 void Chip8topia::glfw_error_callback(int error, const char* description) {
-#if !defined(BUILD_RELEASE)
-    Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(fmt::format("Glfw Error {}: {}", error, description), nullptr);
-#endif
+    Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(fmt::format("Glfw Error {}: {}", error, description), []() {
+        exit(1);
+    });
 }
 
 void Chip8topia::glfw_drop_callback(GLFWwindow* window, int count, const char** paths) {
@@ -447,10 +454,11 @@ void Chip8topia::glfw_drop_callback(GLFWwindow* window, int count, const char** 
         auto* engine = reinterpret_cast<Chip8topia*>(glfwGetWindowUserPointer(window));
         engine->getChip8Emulator().loadRom(rom);
         engine->getChip8Emulator().setRomName(Chip8RomLoader::getRomNameFromPath(path));
+        ImGui::InsertNotification({ ImGuiToastType::Success, 1000, "Rom loaded successfully" });
     }
     catch (const std::exception& e)
     {
-        Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(e.what(), nullptr);
+        ImGui::InsertNotification({ ImGuiToastType::Error, 1000, e.what() });
     }
 }
 
@@ -460,10 +468,12 @@ void Chip8topia::loadDebugRom() {
     {
         std::vector<uint8> rom = Chip8RomLoader::loadRomFromPath(DEBUG_ROM_PATH);
         m_chip8Emulator->loadRom(rom);
+        m_chip8Emulator->setRomName(Chip8RomLoader::getRomNameFromPath(DEBUG_ROM_PATH));
+        ImGui::InsertNotification({ ImGuiToastType::Success, 1000, "Debug rom loaded successfully" });
     }
     catch (const std::exception& e)
     {
-        Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(e.what(), nullptr);
+        ImGui::InsertNotification({ ImGuiToastType::Error, 1000, e.what() });
     }
 }
 #endif

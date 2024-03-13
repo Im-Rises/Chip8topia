@@ -1,13 +1,13 @@
 #include "Chip8RomLoaderUi.h"
 
+#include <IconsFontAwesome6.h>
+#include <ImGuiNotify.hpp>
 #include <imgui.h>
 #include <ImGuiFileDialog/ImGuiFileDialog.h>
 
 #if defined(__EMSCRIPTEN__)
 #include <emscripten_browser_file.h>
 #endif
-
-#include <IconsFontAwesome6.h>
 
 #include "../Chip8Emulator/Chip8Emulator/Chip8RomLoader.h"
 #include "../../Chip8topia.h"
@@ -75,10 +75,11 @@ void Chip8RomLoaderUi::drawRomWindow(Chip8topia& chip8topia) {
                 std::vector<uint8> rom = Chip8RomLoader::loadRomFromPath(filePathName);
                 chip8topia.getChip8Emulator().loadRom(rom);
                 chip8topia.getChip8Emulator().setRomName(Chip8RomLoader::getRomNameFromPath(filePathName));
+                ImGui::InsertNotification({ ImGuiToastType::Success, 1000, "Rom loaded successfully" });
             }
             catch (const std::exception& e)
             {
-                Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(e.what(), nullptr);
+                ImGui::InsertNotification({ ImGuiToastType::Error, 1000, e.what() });
             }
         }
 
@@ -98,12 +99,11 @@ void Chip8RomLoaderUi::handle_upload_file(std::string const& filename, std::stri
     {
         std::vector<uint8> rom = Chip8RomLoader::loadRomFromData(buffer);
         chip8Emulator->loadRom(rom);
+        ImGui::InsertNotification({ ImGuiToastType::Success, 1000, "Rom loaded successfully" });
     }
     catch (const std::exception& e)
     {
-#if !defined(BUILD_RELEASE)
-        Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(e.what());
-#endif
+        ImGui::InsertNotification({ ImGuiToastType::Error, 1000, e.what() });
     }
 }
 #endif

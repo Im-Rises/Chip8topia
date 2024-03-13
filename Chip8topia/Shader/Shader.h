@@ -10,11 +10,7 @@
 
 class Shader {
 public:
-    // #if defined(__EMSCRIPTEN__)
-    //     Shader(const char* vertexCode, const char* fragmentCode);
-    // #else
     Shader(const char* vertexPath, const char* fragmentPath);
-    // #endif
     Shader(const Shader&) = delete;
     auto operator=(const Shader&) -> Shader& = delete;
     Shader(Shader&&) = delete;

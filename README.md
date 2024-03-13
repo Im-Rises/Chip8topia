@@ -178,14 +178,14 @@ emmake make -C build
 - [x] Correct disassembly to show the odd or even pc value correctly
 - [x] Adding toast system
 - [x] Adding icon to the windows
+- [x] Adding toast on rom load etc...
+- [x] Find balancing between the spdlog and the toast and the event error (Utiliser l'event Error pour les fatal errors,
+  utilsier le toast pour les erreurs non fatales et les warnings, et
+  utiliser le log pour les logs)
 
-- [ ] Adding toast on rom load etc...
 - [ ] Add a way to put front the windows on the main window click
-
-- [ ] Add safe and unsafe code version
+- [ ] Add safe and unsafe code version (set the callback error in Core and Cpu, and Ppu, the call it on error)
 - [ ] Add Xo-Chip emulation
-- [ ] Utiliser l'event Error pour les fatal errors, utilsier le toast pour les erreurs non fatales et les warnings, et
-  utiliser le log pour les logs
 
 - [ ] Replace all try catch with promises from C++23
 - [ ] Add different test to not crash even with a bad rom (checks on rom, stack, etc...)
