@@ -186,7 +186,7 @@ auto Chip8topia::init() -> int {
 
     if (!fontAwesomeFile.good())
     {
-#if !defined(__EMSRIPTEN__)
+#if !defined(__EMSCRIPTEN__)
         spdlog::error("Could not find font awesome file: {}", FONT_ICON_FILE_NAME_FAS);
 #else
         std::cerr << "Could not find font awesome file: " << FONT_ICON_FILE_NAME_FAS << '\n';
@@ -224,9 +224,11 @@ auto Chip8topia::init() -> int {
 
     printDependenciesInfos();
 
-#if !defined(__EMSRIPTEN__)
+#if !defined(__EMSCRIPTEN__)
     std::cout << "Logs:" << '\n';
     spdlog::info("Chip8topia initialized successfully");
+#else
+    std::cout << "Chip8topia initialized successfully" << '\n';
 #endif
 
     return 0;
@@ -251,7 +253,11 @@ void Chip8topia::cleanup() {
     glfwDestroyWindow(m_window);
     glfwTerminate();
 
+#if !defined(__EMSCRIPTEN__)
     spdlog::info("Chip8topia cleaned up successfully");
+#else
+    std::cout << "Chip8topia cleaned up successfully" << '\n';
+#endif
 }
 
 void Chip8topia::handleInputs() {
