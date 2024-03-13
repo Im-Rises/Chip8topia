@@ -10,9 +10,8 @@
 class Chip8Emulator {
 public:
     static constexpr auto CHIP8_ASPECT_RATIO = 2.0F;
-
-private:
-    static constexpr auto DEFAULT_FREQUENCY = Chip8Frequency::FREQ_1200_HZ;
+    static constexpr auto DEFAULT_CORE_TYPE = Chip8CoreType::Chip8;
+    static constexpr auto DEFAULT_FREQUENCY = Chip8Frequency::Freq1200Hz;
 
 public:
     Chip8Emulator();
@@ -24,17 +23,14 @@ public:
 
 public:
     void restart();
-    //    void loadRom(const std::string& romPath);
     void loadRom(const std::vector<uint8_t>& romData);
 
     void update(const float deltaTime);
     void render(const float screenWidth, const float screenHeight);
 
     void stop();
-    //    void togglePause();
 
     void setIsTurboMode(const bool isTurboMode);
-    //    [[nodiscard]] auto getIsPaused() const -> bool;
     [[nodiscard]] auto getChip8Core() -> Chip8CoreBase*;
     [[nodiscard]] auto getChip8VideoEmulation() -> Chip8VideoEmulation&;
 
@@ -48,15 +44,9 @@ public:
         return m_core->getConsoleName();
     }
 
-    //    void switchCore(const Chip8CoreType coreType);
     [[nodiscard]] auto getCoreType() const -> Chip8CoreType;
-    //    void switchFrequency(const Chip8Frequency frequency);
     [[nodiscard]] auto getFrequency() const -> Chip8Frequency;
     void switchCoreFrequency(const Chip8CoreType coreType, const Chip8Frequency frequency);
-
-    auto getClockCountThisFrame() -> uint32 {
-        return m_core->getClockCountThisFrame();
-    }
 
     auto getCanBreak() -> bool* {
         return &m_canBreak;
@@ -82,12 +72,23 @@ public:
         m_isBreak = true;
     }
 
+    void toggleBreakEmulation() {
+        m_isBreak = !m_isBreak;
+    }
+
+    auto getIsBreak() const -> bool {
+        return m_isBreak;
+    }
+
     [[nodiscard]] auto getIsRomLoaded() const -> bool {
         return m_isRomLoaded;
     }
 
 private:
     void OnInput(const uint8 key, const bool isPressed);
+#if defined(BUILD_PARAM_SAFE)
+    void errorCallback(const std::string& errorMessage);
+#endif
 
 private:
     std::string m_romName = "ROM";

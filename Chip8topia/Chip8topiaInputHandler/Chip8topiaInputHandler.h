@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include <binaryLib/binaryLib.h>
 #include <Singleton/Singleton.h>
 
@@ -44,7 +45,9 @@ public:
 #endif
     SingleSubscriberEvent<> m_ToggleMainBarEvent;
     SingleSubscriberEvent<> m_CloseAllWindowsEvent;
+    SingleSubscriberEvent<> m_TogglePauseEmulationEvent;
     SingleSubscriberEvent<> m_RestartEmulationEvent;
     SingleSubscriberEvent<> m_OpenRomExplorerEvent;
+    SingleSubscriberEvent<const std::string&, std::function<void()>> m_ErrorEvent;
     SingleSubscriberEvent<const uint8, const bool> m_GameInput;
 };

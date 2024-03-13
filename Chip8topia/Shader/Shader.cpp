@@ -3,19 +3,13 @@
 #include <fstream>
 #include <sstream>
 #include <array>
-#if !defined(BUILD_RELEASE)
-#include <spdlog/spdlog.h>
-#endif
+#include <fmt/format.h>
 
-// #if defined(__EMSCRIPTEN__)
-// Shader::Shader(const char* vertexCode, const char* fragmentCode) : m_ID(0) {
-//     compile(vertexCode, fragmentCode);
-// }
-// #else
+#include "../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
+
 Shader::Shader(const char* vertexPath, const char* fragmentPath) : m_ID(0) {
     compileFromFiles(vertexPath, fragmentPath);
 }
-// #endif
 
 Shader::~Shader() {
     glDeleteProgram(m_ID);
@@ -56,9 +50,7 @@ void Shader::compileFromFiles(const char* vertexPath, const char* fragmentPath) 
     }
     catch (std::ifstream::failure& e)
     {
-#if !defined(BUILD_RELEASE)
-        spdlog::error("ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ: {}", e.what());
-#endif
+        Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(fmt::format("ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ {}", e.what()), nullptr);
     }
 }
 
@@ -92,9 +84,7 @@ void Shader::checkCompileErrors(unsigned int shader, const std::string& type) {
         if (success == 0)
         {
             glGetShaderInfoLog(shader, 1024, nullptr, infoLog.data());
-#if !defined(BUILD_RELEASE)
-            spdlog::error("ERROR::SHADER_COMPILATION_ERROR of type: {} \n {}", type, infoLog.data());
-#endif
+            Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(fmt::format("ERROR::SHADER_COMPILATION_ERROR of type: {} \n {}", type, infoLog.data()), nullptr);
         }
     }
     else
@@ -103,9 +93,7 @@ void Shader::checkCompileErrors(unsigned int shader, const std::string& type) {
         if (success == 0)
         {
             glGetProgramInfoLog(shader, 1024, nullptr, infoLog.data());
-#if !defined(BUILD_RELEASE)
-            spdlog::error("ERROR::PROGRAM_LINKING_ERROR of type: {} \n {}", type, infoLog.data());
-#endif
+            Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(fmt::format("ERROR::PROGRAM_LINKING_ERROR of type: {} \n {}", type, infoLog.data()), nullptr);
         }
     }
 }

@@ -4,6 +4,7 @@
 
 Chip8Cpu::Chip8Cpu() : m_isHalted(false),
                        m_requestDisableHalt(false) {
+    std::copy(CHIP8_FONTSET.begin(), CHIP8_FONTSET.end(), m_memory.begin());
 }
 
 void Chip8Cpu::reset() {

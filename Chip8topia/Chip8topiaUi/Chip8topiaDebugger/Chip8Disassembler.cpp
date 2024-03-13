@@ -2,20 +2,14 @@
 
 #include <imgui.h>
 #include <fmt/format.h>
-#if !defined(BUILD_RELEASE)
-#include <spdlog/spdlog.h>
-#endif
 
 #include "../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
-#include "../Chip8Emulator/Disassembly/disassemblySettings.h"
 #include "../Chip8Emulator/Disassembly/Chip8CpuDisassembly.h"
 #include "../Chip8Emulator/Disassembly/SChip11CpuDisassembly.h"
 #include "../Chip8Emulator/Disassembly/SChipCCpuDisassembly.h"
 #include "../../Chip8Emulator/Chip8Emulator.h"
 
 void Chip8Disassembler::drawDisassembly(Chip8Emulator* emulator) {
-    // Maybe Change the storage to use real bool not a bitset ? This way we don't need the ImGui::IsItemClicked() and we can use directly the value of the array
-
     std::array<uint8, CpuBase::MEMORY_SIZE>& memory = emulator->getChip8Core()->getCpu()->getMemory();
     std::bitset<CpuBase::MEMORY_SIZE>& m_breakpoints = emulator->getBreakpoints();
     uint16 pc = emulator->getChip8Core()->getCpu()->getPc();
@@ -40,12 +34,14 @@ void Chip8Disassembler::drawDisassembly(Chip8Emulator* emulator) {
 
     std::string buffer;
     ImGuiListClipper clipper;
-    clipper.Begin(Chip8Cpu::MEMORY_SIZE / OPCODE_SIZE);
+    //    clipper.Begin(Chip8Cpu::MEMORY_SIZE / OPCODE_SIZE);
+    clipper.Begin(Chip8Cpu::MEMORY_SIZE - 1);
     while (clipper.Step())
     {
         for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
         {
-            const int memoryIndex = i * OPCODE_SIZE;
+            //            const int memoryIndex = i * OPCODE_SIZE;
+            const int memoryIndex = i;
             uint16 opcode = (memory[memoryIndex] << 8) | memory[(memoryIndex) + 1];
 
             buffer = fmt::format("  0x{:04X}: ({:04X}) {}", memoryIndex, opcode, disassembler(opcode));
@@ -71,13 +67,15 @@ void Chip8Disassembler::drawDisassembly(Chip8Emulator* emulator) {
 
     if (m_previousPc != pc && m_followPc && !currentPcInViewport)
     {
-        ImGui::SetScrollY((static_cast<float>(pc) / OPCODE_SIZE) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
+        //        ImGui::SetScrollY((static_cast<float>(pc) / OPCODE_SIZE) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
+        ImGui::SetScrollY((static_cast<float>(pc)) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
     }
 
     if (m_requestMoveToPc)
     {
         m_requestMoveToPc = false;
-        ImGui::SetScrollY((static_cast<float>(m_requestedPc) / OPCODE_SIZE) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
+        //        ImGui::SetScrollY((static_cast<float>(m_requestedPc) / OPCODE_SIZE) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
+        ImGui::SetScrollY((static_cast<float>(m_requestedPc)) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
     }
 
     m_previousPc = pc;
@@ -115,7 +113,6 @@ void Chip8Disassembler::drawDisassemblyControls(Chip8Emulator* emulator) {
 
     if (ImGui::Button("Clear Breakpoints"))
     {
-
         inputHandler.m_ClearBreakpointsEvent.trigger();
     }
 

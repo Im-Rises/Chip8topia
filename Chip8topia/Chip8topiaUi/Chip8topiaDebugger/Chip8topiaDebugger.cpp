@@ -1,9 +1,11 @@
 #include "Chip8topiaDebugger.h"
 
+#include <IconsFontAwesome6.h>
+
 #include "../../Chip8Emulator/Chip8CoreBase/Core/Input.h"
 
 void Chip8topiaDebugger::drawDebuggerMenu() {
-    if (ImGui::BeginMenu("Debugger"))
+    if (ImGui::BeginMenu(ICON_FA_BUG " Debugger"))
     {
         for (auto& menuItem : m_menuItems)
         {

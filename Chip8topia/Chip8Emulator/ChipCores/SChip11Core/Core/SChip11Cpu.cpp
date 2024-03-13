@@ -3,6 +3,7 @@
 #include "SChip11Ppu.h"
 
 SChip11Cpu::SChip11Cpu(bool isModernMode) : m_isModernMode(isModernMode), m_isHalted(false), m_requestDisableHalt(false), m_savedV{} {
+    std::copy(SCHIP_FONTSET.begin(), SCHIP_FONTSET.end(), m_memory.begin());
 }
 
 void SChip11Cpu::setPpu(std::shared_ptr<PpuBase> ppu) {

@@ -11,7 +11,13 @@ add_executable(${PROJECT_NAME}
         ${SRCS_IMGUI_FILEDIALOG}
 )
 
+if (WIN32)
+    target_sources(${PROJECT_NAME} PRIVATE app.rc)
+endif ()
+
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/dependencies")
+target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/dependencies/ImGuiNotify/unixExample/backends")
+target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/dependencies/IconFontCppHeaders")
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/dependencies/imgui_club")
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_SOURCE_DIR}/dependencies/emscripten-browser-file")
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/utils")
@@ -28,6 +34,9 @@ if (NOT EMSCRIPTEN)
     set(OpenGL_GL_PREFERENCE GLVND)
     find_package(OpenGL 3.3 REQUIRED)
     target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL)
+
+    find_package(Stb REQUIRED)
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${STB_LIBRARIES})
 
     if (WIN32)
         target_link_libraries(${PROJECT_NAME} PUBLIC winmm.lib)
@@ -53,6 +62,12 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
 else ()
     target_compile_definitions(${PROJECT_NAME} PRIVATE BUILD_RELEASE)
     #    target_compile_definitions(${PROJECT_NAME} PRIVATE BUILD_CONFIG "$<$<CONFIG:Release>:Release>")
+endif ()
+
+if (TRUE)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE BUILD_PARAM_SAFE)
+else ()
+    target_compile_definitions(${PROJECT_NAME} PRIVATE BUILD_PARAM_UNSAFE)
 endif ()
 
 if (WIN32)

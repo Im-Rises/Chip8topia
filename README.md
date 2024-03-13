@@ -1,9 +1,14 @@
 # Chip8topia
 
+<p align="center">
+      <img src="README_files/Logos/cmake_logo.png" alt="cmakeLogo" style="height:60px;"/>
+      <img src="https://img.shields.io/badge/C%2B%2B-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white" alt="cppLogo" style="height:60px;"/>
+</p>
+
 ## Description
 
-This is a Chip8 emulator written in C++ for Windows, Linux and WebAssembly. It uses OpenGL for the rendering and ImGui
-for the UI.
+Chip8topia is a Chip8 emulator written in C++ for Windows, Linux and WebAssembly. It uses OpenGL/WebGL for the rendering
+and ImGui for the UI.
 
 It can emulate the original Chip8, the SCHIP1.1 and the SCHIPC. I will add the Xo-Chip in the future.
 
@@ -35,11 +40,15 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [GLFW](https://www.glfw.org/)
 - [GLAD](https://glad.dav1d.de/)
 - [stb](https://github.com/nothings/stb)
+- [spdlog](https://github.com/gabime/spdlog)
+- [Vcpkg](https://vcpkg.io/en)
 - [ImGui](https://github.com/ocornut/imgui)
 - [ImGuiFileDialog](https://github.com/aiekick/ImGuiFileDialog)
 - [ImGui Memory Editor](https://github.com/ocornut/imgui_club/tree/main/imgui_memory_editor)
-- [spdlog](https://github.com/gabime/spdlog)
-- [Vcpkg](https://vcpkg.io/en)
+- [emscripten-browser-file](https://github.com/Armchair-Software/emscripten-browser-file)
+- [ImGuiNotify](https://github.com/TyomaVader/ImGuiNotify/tree/Dev)
+- [IconFontCppHeaders](https://github.com/juliettef/IconFontCppHeaders)
+- [Font-Awesome](https://github.com/FortAwesome/Font-Awesome)
 
 ### Other docs
 
@@ -138,9 +147,6 @@ emmake make -C build
 - [x] Reformater le code des touches, changer par de vrais noms de touches
 - [x] Correct openfiledialog not having good size on the web
 - [x] Correct all preprocessing directives for emscripten for key inputs
-- [-] Creer une struct qui définie le nom de la touche shortcut avec le string et le keycode
-- [-] Add imgui.ini to the .data emscripten build
-- [-] Change to init m_chip8topiaUi and m_chip8emulator in the game loop
 - [x] Add the rom name on the window title and the Chip8 emulated version
 - [x] Add a way to choose the version of the chip8 to emulate
 - [x] Correct the minimized window not putting windows at the top when unminimizing
@@ -164,14 +170,36 @@ emmake make -C build
 - [x] Correct icon in desktop
 - [x] Add modern SCHIP1.1 and test it with the quirks test and scroll test roms
 - [x] For the std::vector use ref or move... For the rom loading
+- [x] Correct disassembly, we can reach an odd pc value
+- [x] Added error system
+- [x] Load correct font depending on the version of the chip8
+- [x] Correct icon when building in release mode (its all buggy)
+- [x] Correct assembly to print hexa values where it should
+- [x] Correct disassembly to show the odd or even pc value correctly
+- [x] Adding toast system
+- [x] Adding icon to the windows
+- [x] Adding toast on rom load etc...
+- [x] Find balancing between the spdlog and the toast and the event error (Utiliser l'event Error pour les fatal errors,
+  utilsier le toast pour les erreurs non fatales et les warnings, et
+  utiliser le log pour les logs)
 
+- [ ] Add a way to put front the windows on the main window click
+- [ ] Add safe and unsafe code version (set the callback error in Core and Cpu, and Ppu, the call it on error)
 - [ ] Add Xo-Chip emulation
+
+- [ ] Replace all try catch with promises from C++23
+- [ ] Add different test to not crash even with a bad rom (checks on rom, stack, etc...)
 - [ ] Add audio
 - [ ] Add save states ? (if yes create a window with an image preview of the save state) ajouter dans la section File de
   main bar
 - [ ] Do a general optimization of the code
 
-Minor:
+Why not:
 
-- [ ] if none of the roms are loaded, we should display a background with written Chip8 and Im-Rises
-- [ ] Reorder code between events and direct call to emulator
+- [-] if none of the roms are loaded, we should display a background with written Chip8 and Im-Rises
+- [-] Add a way to change the input keys
+
+OSEF:
+
+- [-] Creer une struct qui définie le nom de la touche shortcut avec le string et le keycode
+- [-] Change to init m_chip8topiaUi and m_chip8emulator in the game loop

@@ -7,11 +7,13 @@
 #include "ChipCores/SchipCCore/SChipCCore.h"
 
 Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<Chip8Core>(DEFAULT_FREQUENCY)) {
+    // TODO: Set error callback
+
     Chip8topiaInputHandler& inputHandler = Chip8topiaInputHandler::getInstance();
     inputHandler.m_GameInput.subscribe(this, &Chip8Emulator::OnInput);
+    inputHandler.m_TogglePauseEmulationEvent.subscribe(this, &Chip8Emulator::toggleBreakEmulation);
     inputHandler.m_RestartEmulationEvent.subscribe(this, &Chip8Emulator::restart);
 
-    //    inputHandler.m_StopEmulationEvent.subscribe(this, &Chip8Emulator::stop);
     inputHandler.m_BreakEmulationEvent.subscribe(this, &Chip8Emulator::breakEmulation);
     inputHandler.m_StepEmulationEvent.subscribe(this, &Chip8Emulator::stepEmulation);
     inputHandler.m_RunEmulationEvent.subscribe(this, &Chip8Emulator::runEmulation);
@@ -21,9 +23,9 @@ Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<Chip8Core>(DEFAULT_FREQ
 Chip8Emulator::~Chip8Emulator() {
     Chip8topiaInputHandler& inputHandler = Chip8topiaInputHandler::getInstance();
     inputHandler.m_GameInput.unsubscribe(this, &Chip8Emulator::OnInput);
+    inputHandler.m_TogglePauseEmulationEvent.unsubscribe(this, &Chip8Emulator::toggleBreakEmulation);
     inputHandler.m_RestartEmulationEvent.unsubscribe(this, &Chip8Emulator::restart);
 
-    //    inputHandler.m_StopEmulationEvent.unsubscribe(this, &Chip8Emulator::stop);
     inputHandler.m_BreakEmulationEvent.unsubscribe(this, &Chip8Emulator::breakEmulation);
     inputHandler.m_StepEmulationEvent.unsubscribe(this, &Chip8Emulator::stepEmulation);
     inputHandler.m_RunEmulationEvent.unsubscribe(this, &Chip8Emulator::runEmulation);
@@ -104,7 +106,7 @@ auto Chip8Emulator::getCoreType() const -> Chip8CoreType {
 }
 
 auto Chip8Emulator::getFrequency() const -> Chip8Frequency {
-    return Chip8Frequency::FREQ_600_HZ;
+    return m_core->getFrequency();
 }
 
 void Chip8Emulator::switchCoreFrequency(const Chip8CoreType coreType, const Chip8Frequency frequency) {
@@ -126,9 +128,19 @@ void Chip8Emulator::switchCoreFrequency(const Chip8CoreType coreType, const Chip
         break;
     }
 
+    // TODO: Set error callback
+
     m_isRomLoaded = false;
 }
 
 void Chip8Emulator::OnInput(const uint8 key, const bool isPressed) {
     m_core->updateKey(key, isPressed);
 }
+
+#if defined(BUILD_PARAM_SAFE)
+void Chip8Emulator::errorCallback(const std::string& errorMessage) {
+    // TODO: Pass this function to the Chip8Cores
+    m_isRomLoaded = false;
+    Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(errorMessage, nullptr);
+}
+#endif

@@ -14,9 +14,9 @@ enum class Chip8CoreType : uint8 {
 };
 
 enum class Chip8Frequency : unsigned int {
-    FREQ_600_HZ = 600,
-    FREQ_1200_HZ = 1200,
-    FREQ_1800_HZ = 1800
+    Freq600Hz = 600,
+    Freq1200Hz = 1200,
+    Freq1800Hz = 1800
 };
 
 class CpuBase;
@@ -42,6 +42,7 @@ public:
     void updateKey(const uint8 key, const bool pressed);
     void reset();
     [[nodiscard]] auto getClockCountThisFrame() const -> uint32 { return m_clockCounter; }
+    [[nodiscard]] auto getFrequency() const -> Chip8Frequency { return static_cast<Chip8Frequency>(m_cpuClockFrequency); }
 
 public:
     [[nodiscard]] auto getCpu() -> std::unique_ptr<CpuBase>& { return m_cpu; }

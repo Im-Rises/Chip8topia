@@ -11,25 +11,24 @@
 #include <GLES3/gl3.h>
 #include <emscripten.h>
 #include <emscripten/html5.h>
+#include <imgui_emscripten/imgui_emscripten.h>
 #else
+#include <spdlog/spdlog.h>
 #include <glad/glad.h>
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
 #endif
 #include <GLFW/glfw3.h>
 
 #include <fmt/format.h>
 #include <chrono>
 #include <iostream>
-#if !defined(BUILD_RELEASE)
-#include <spdlog/spdlog.h>
-#endif
+#include <fstream>
+
+#include <ImGuiNotify.hpp>
+#include <IconsFontAwesome6.h>
 
 #include "Chip8Emulator/Chip8Emulator/Chip8RomLoader.h"
-#include "res/chip8topiaIconResource.h"
-
-#ifdef __EMSCRIPTEN__
-#include <imgui_emscripten/imgui_emscripten.h>
-#endif
-
 
 Chip8topia::Chip8topia() : m_window(nullptr) {
 }
@@ -37,10 +36,11 @@ Chip8topia::Chip8topia() : m_window(nullptr) {
 Chip8topia::~Chip8topia() = default;
 
 auto Chip8topia::run() -> int {
-    if (init() != 0)
-        return 1;
-
-    printDependenciesInfos();
+    auto initErrorCode = init();
+    if (initErrorCode != 0)
+    {
+        return initErrorCode;
+    }
 
     auto lastTime = std::chrono::high_resolution_clock::now();
     auto currentTime = lastTime;
@@ -92,7 +92,7 @@ auto Chip8topia::run() -> int {
 
     cleanup();
 
-    return 0;
+    return SUCCESS_CODE;
 }
 
 #ifndef __EMSCRIPTEN__
@@ -104,7 +104,9 @@ void Chip8topia::closeRequest() {
 auto Chip8topia::init() -> int {
     glfwSetErrorCallback(glfw_error_callback);
     if (glfwInit() == 0)
-        return 1;
+    {
+        return GLFW_INIT_ERROR_CODE;
+    }
 
 #if defined(__EMSCRIPTEN__)
     const char* glsl_version = "#version 300 es";
@@ -127,7 +129,9 @@ auto Chip8topia::init() -> int {
     // Create window with graphics context
     m_window = glfwCreateWindow(m_currentWidth, m_currentHeight, PROJECT_NAME, nullptr, nullptr);
     if (m_window == nullptr)
-        return 1;
+    {
+        return WINDOW_INIT_ERROR_CODE;
+    }
     glfwMakeContextCurrent(m_window);
     glfwSwapInterval(m_isTurboMode ? 0 : 1); // 0 = no vsync, 1 = vsync
 
@@ -142,7 +146,10 @@ auto Chip8topia::init() -> int {
     // Initialize OpenGL loader
 #ifndef __EMSCRIPTEN__
     if (gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)) == 0)
-        return 1;
+    {
+        spdlog::error("Failed to initialize OpenGL loader");
+        return GLAD_INIT_ERROR_CODE;
+    }
 #endif
 
     // Setup Dear ImGui context
@@ -154,7 +161,7 @@ auto Chip8topia::init() -> int {
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;  // Enable Gamepad Controls
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;     // Enable Docking
     io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;   // Enable Multi-Viewport / Platform Windows
-    // io.ConfigViewportsNoTaskBarIcon = true;            // Disable TaskBar icon for secondary viewports
+    io.ConfigViewportsNoTaskBarIcon = true;               // Disable TaskBar icon for secondary viewports
     // io.ConfigViewportsNoAutoMerge = true;              // Enable Multi-Viewport auto-merge
 
     // Setup Dear ImGui style
@@ -169,17 +176,42 @@ auto Chip8topia::init() -> int {
         style.Colors[ImGuiCol_WindowBg].w = 1.0F;
     }
 
+    // Setup ImGuiNotify and IconFontCppHeaders
+    io.Fonts->AddFontDefault();
+
+    float baseFontSize = 16.0F;                      // Default font size
+    float iconFontSize = baseFontSize * 2.0F / 3.0F; // FontAwesome fonts need to have their sizes reduced by 2.0f/3.0f in order to align correctly
+
+    // Check if FONT_ICON_FILE_NAME_FAS is a valid path
+    std::ifstream fontAwesomeFile(FONT_ICON_FILE_NAME_FAS);
+
+    if (!fontAwesomeFile.good())
+    {
+#if !defined(__EMSCRIPTEN__)
+        spdlog::error("Could not find font awesome file: {}", FONT_ICON_FILE_NAME_FAS);
+#else
+        std::cerr << "Could not find font awesome file: " << FONT_ICON_FILE_NAME_FAS << '\n';
+#endif
+        return FONT_AWESOME_INIT_ERROR_CODE;
+    }
+
+    static const ImWchar iconsRanges[] = { ICON_MIN_FA, ICON_MAX_16_FA, 0 };
+    ImFontConfig iconsConfig;
+    iconsConfig.MergeMode = true;
+    iconsConfig.PixelSnapH = true;
+    iconsConfig.GlyphMinAdvanceX = iconFontSize;
+    io.Fonts->AddFontFromFileTTF(FONT_ICON_FILE_NAME_FAS, iconFontSize, &iconsConfig, iconsRanges);
+
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(m_window, true);
-    // #ifdef __EMSCRIPTEN__
-    //     ImGui_ImplGlfw_InstallEmscriptenCanvasResizeCallback(WEB_CANVAS_ID);
-    // #endif
     ImGui_ImplOpenGL3_Init(glsl_version);
 
+    // Set window icon
 #ifndef __EMSCRIPTEN__
     setWindowIcon();
 #endif
 
+    // Set input callbacks
 #ifndef __EMSCRIPTEN__
     m_chip8topiaInputHandler.m_ExitChip8topiaEvent.subscribe(this, &Chip8topia::closeRequest);
     m_chip8topiaInputHandler.m_ToggleTurboModeEvent.subscribe(this, &Chip8topia::toggleTurboMode);
@@ -191,7 +223,16 @@ auto Chip8topia::init() -> int {
     m_chip8topiaInputHandler.m_DebugRomFastLoadEvent.subscribe(this, &Chip8topia::loadDebugRom);
 #endif
 
-    return 0;
+    printDependenciesInfos();
+
+#if !defined(__EMSCRIPTEN__)
+    std::cout << "Logs:" << '\n';
+    spdlog::info("Chip8topia initialized successfully");
+#else
+    std::cout << "Chip8topia initialized successfully" << '\n';
+#endif
+
+    return SUCCESS_CODE;
 }
 
 void Chip8topia::cleanup() {
@@ -212,6 +253,12 @@ void Chip8topia::cleanup() {
 
     glfwDestroyWindow(m_window);
     glfwTerminate();
+
+#if !defined(__EMSCRIPTEN__)
+    spdlog::info("Chip8topia cleaned up successfully");
+#else
+    std::cout << "Chip8topia cleaned up successfully" << '\n';
+#endif
 }
 
 void Chip8topia::handleInputs() {
@@ -223,6 +270,7 @@ void Chip8topia::handleUi(const float /*deltaTime*/) {
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
     m_chip8topiaUi.drawUi(*this);
+    ImGui::RenderNotifications();
     ImGui::Render();
 }
 
@@ -317,10 +365,18 @@ void Chip8topia::toggleTurboMode() {
 
 #ifndef __EMSCRIPTEN__
 void Chip8topia::setWindowIcon() {
+    int width = 0, height = 0, channelsCount = 0;
+    unsigned char* imagePixels = stbi_load(CHIP8TOPIA_ICON_PATH, &width, &height, &channelsCount, 0);
+    if (imagePixels == nullptr)
+    {
+        ImGui::InsertNotification({ ImGuiToastType::Error, 1000, "Failed to load window icon" });
+        return;
+    }
+
     GLFWimage images;
-    images.width = chiptopia_img_res::CHIPTOPIA_ICON_WIDTH;
-    images.height = chiptopia_img_res::CHIPTOPIA_ICON_HEIGHT;
-    images.pixels = chiptopia_img_res::getChip8topiaIconData().data();
+    images.width = width;
+    images.height = height;
+    images.pixels = imagePixels;
     glfwSetWindowIcon(m_window, 1, &images);
 }
 
@@ -389,9 +445,9 @@ void Chip8topia::printDependenciesInfos() {
 }
 
 void Chip8topia::glfw_error_callback(int error, const char* description) {
-#if !defined(BUILD_RELEASE)
-    spdlog::error("Glfw Error {}: {}", error, description);
-#endif
+    Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(fmt::format("Glfw Error {}: {}", error, description), []() {
+        exit(1);
+    });
 }
 
 void Chip8topia::glfw_drop_callback(GLFWwindow* window, int count, const char** paths) {
@@ -405,12 +461,11 @@ void Chip8topia::glfw_drop_callback(GLFWwindow* window, int count, const char** 
         auto* engine = reinterpret_cast<Chip8topia*>(glfwGetWindowUserPointer(window));
         engine->getChip8Emulator().loadRom(rom);
         engine->getChip8Emulator().setRomName(Chip8RomLoader::getRomNameFromPath(path));
+        ImGui::InsertNotification({ ImGuiToastType::Success, 1000, "Rom loaded successfully" });
     }
     catch (const std::exception& e)
     {
-#if !defined(BUILD_RELEASE)
-        spdlog::error(e.what());
-#endif
+        ImGui::InsertNotification({ ImGuiToastType::Error, 1000, e.what() });
     }
 }
 
@@ -420,12 +475,12 @@ void Chip8topia::loadDebugRom() {
     {
         std::vector<uint8> rom = Chip8RomLoader::loadRomFromPath(DEBUG_ROM_PATH);
         m_chip8Emulator->loadRom(rom);
+        m_chip8Emulator->setRomName(Chip8RomLoader::getRomNameFromPath(DEBUG_ROM_PATH));
+        ImGui::InsertNotification({ ImGuiToastType::Success, 1000, "Debug rom loaded successfully" });
     }
     catch (const std::exception& e)
     {
-#if !defined(BUILD_RELEASE)
-        spdlog::error(e.what());
-#endif
+        ImGui::InsertNotification({ ImGuiToastType::Error, 1000, e.what() });
     }
 }
 #endif

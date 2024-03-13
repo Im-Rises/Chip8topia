@@ -4,22 +4,29 @@
 #include <fmt/format.h>
 
 #include "../../Chip8topia/Chip8topia.h"
-#include "../../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
 
 void Chip8EmulationUi::drawEmulationMenu(Chip8topia& chip8topia) {
-    if (ImGui::BeginMenu("Engine/Emulation"))
+    if (ImGui::BeginMenu(ICON_FA_GAMEPAD " Emulation"))
     {
         for (auto& menuItem : m_menuItems)
         {
             menuItem.drawMenuItem();
         }
 
-        if (ImGui::MenuItem(fmt::format("Toggle turbo mode : {}", chip8topia.getIsTurboMode() ? "ON " : "OFF").c_str(), "Y"))
+        if (ImGui::MenuItem(fmt::format(ICON_FA_ROCKET " Toggle turbo mode : {}", chip8topia.getIsTurboMode() ? "ON " : "OFF").c_str(), "Y", chip8topia.getIsTurboMode()))
         {
             chip8topia.toggleTurboMode();
         }
 
-        if (ImGui::MenuItem("Restart", "L"))
+        static constexpr const char* const PAUSE_TEXT = ICON_FA_PAUSE " Pause";
+        static constexpr const char* const RESUME_TEXT = ICON_FA_PLAY " Play";
+        const bool isPaused = chip8topia.getChip8Emulator().getIsBreak();
+        if (ImGui::MenuItem(isPaused ? RESUME_TEXT : PAUSE_TEXT, "P", isPaused))
+        {
+            Chip8topiaInputHandler::getInstance().m_TogglePauseEmulationEvent.trigger();
+        }
+
+        if (ImGui::MenuItem(ICON_FA_REPEAT " Restart", "L"))
         {
             Chip8topiaInputHandler::getInstance().m_RestartEmulationEvent.trigger();
         }
@@ -46,18 +53,15 @@ void Chip8EmulationUi::drawEmulationStats(Chip8topia& chip8topia) {
     ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
     ImGui::Text("Screen size: %dx%d", chip8topia.getWindowWidth(), chip8topia.getWindowHeight());
     ImGui::Text("Frame time: %.3f ms", 1000.0F / ImGui::GetIO().Framerate);
-    ImGui::Text("Clock count this frame: %u", chip8topia.getChip8Emulator().getClockCountThisFrame());
+    //    ImGui::Text("Total cycles: %d", chip8topia.getChip8Emulator().getTotalCycles());
 }
 
 void Chip8EmulationUi::drawEmulationSettings(Chip8topia* chip8topia) {
     Chip8Emulator& emulator = chip8topia->getChip8Emulator();
 
-    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Emulation Settings");
-
-    ImGui::Separator();
-
-    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "Console version");
-    ImGui::Text("Current core: %hhu", static_cast<uint8>(emulator.getCoreType()));
+    ImGui::TextColored(ImVec4(1.0F, 1.0F, 0.0F, 1.0F), "Console version");
+    ImGui::Text("Current core: %s", emulator.getConsoleName().c_str());
+    ImGui::Text("Current frequency: %uHZ", static_cast<unsigned int>(emulator.getFrequency()));
 
     if (ImGui::Selectable("Chip8", m_selectedCore == Chip8CoreType::Chip8))
     {
@@ -82,19 +86,19 @@ void Chip8EmulationUi::drawEmulationSettings(Chip8topia* chip8topia) {
     ImGui::Separator();
 
     ImGui::TextColored(ImVec4(1.0F, 1.0F, 0.0F, 1.0F), "Emulation Speed");
-    if (ImGui::Selectable("600HZ", m_selectedFrequency == Chip8Frequency::FREQ_600_HZ))
+    if (ImGui::Selectable("600HZ", m_selectedFrequency == Chip8Frequency::Freq600Hz))
     {
-        m_selectedFrequency = Chip8Frequency::FREQ_600_HZ;
+        m_selectedFrequency = Chip8Frequency::Freq600Hz;
     }
 
-    if (ImGui::Selectable("1200HZ", m_selectedFrequency == Chip8Frequency::FREQ_1200_HZ))
+    if (ImGui::Selectable("1200HZ", m_selectedFrequency == Chip8Frequency::Freq1200Hz))
     {
-        m_selectedFrequency = Chip8Frequency::FREQ_1200_HZ;
+        m_selectedFrequency = Chip8Frequency::Freq1200Hz;
     }
 
-    if (ImGui::Selectable("1800HZ", m_selectedFrequency == Chip8Frequency::FREQ_1800_HZ))
+    if (ImGui::Selectable("1800HZ", m_selectedFrequency == Chip8Frequency::Freq1800Hz))
     {
-        m_selectedFrequency = Chip8Frequency::FREQ_1800_HZ;
+        m_selectedFrequency = Chip8Frequency::Freq1800Hz;
     }
 
     ImGui::Separator();
