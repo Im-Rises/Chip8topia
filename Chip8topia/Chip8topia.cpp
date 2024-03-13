@@ -36,9 +36,10 @@ Chip8topia::Chip8topia() : m_window(nullptr) {
 Chip8topia::~Chip8topia() = default;
 
 auto Chip8topia::run() -> int {
-    if (init() != 0)
+    auto initErrorCode = init();
+    if (initErrorCode != 0)
     {
-        return 1;
+        return initErrorCode;
     }
 
     auto lastTime = std::chrono::high_resolution_clock::now();
@@ -91,7 +92,7 @@ auto Chip8topia::run() -> int {
 
     cleanup();
 
-    return 0;
+    return SUCCESS_CODE;
 }
 
 #ifndef __EMSCRIPTEN__
@@ -104,7 +105,7 @@ auto Chip8topia::init() -> int {
     glfwSetErrorCallback(glfw_error_callback);
     if (glfwInit() == 0)
     {
-        return 1;
+        return GLFW_INIT_ERROR_CODE;
     }
 
 #if defined(__EMSCRIPTEN__)
@@ -129,7 +130,7 @@ auto Chip8topia::init() -> int {
     m_window = glfwCreateWindow(m_currentWidth, m_currentHeight, PROJECT_NAME, nullptr, nullptr);
     if (m_window == nullptr)
     {
-        return 1;
+        return WINDOW_INIT_ERROR_CODE;
     }
     glfwMakeContextCurrent(m_window);
     glfwSwapInterval(m_isTurboMode ? 0 : 1); // 0 = no vsync, 1 = vsync
@@ -147,7 +148,7 @@ auto Chip8topia::init() -> int {
     if (gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)) == 0)
     {
         spdlog::error("Failed to initialize OpenGL loader");
-        return 1;
+        return GLAD_INIT_ERROR_CODE;
     }
 #endif
 
@@ -191,7 +192,7 @@ auto Chip8topia::init() -> int {
 #else
         std::cerr << "Could not find font awesome file: " << FONT_ICON_FILE_NAME_FAS << '\n';
 #endif
-        return 1;
+        return FONT_AWESOME_INIT_ERROR_CODE;
     }
 
     static const ImWchar iconsRanges[] = { ICON_MIN_FA, ICON_MAX_16_FA, 0 };
@@ -231,7 +232,7 @@ auto Chip8topia::init() -> int {
     std::cout << "Chip8topia initialized successfully" << '\n';
 #endif
 
-    return 0;
+    return SUCCESS_CODE;
 }
 
 void Chip8topia::cleanup() {

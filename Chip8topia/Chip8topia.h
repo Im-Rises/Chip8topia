@@ -26,6 +26,11 @@ It was made to allow video games to be more easily programmed for said computers
 
     //    static constexpr ImVec4 CLEAR_COLOR = ImVec4(0.45F, 0.55F, 0.60F, 1.00F);
 private:
+    static constexpr auto SUCCESS_CODE = 0;
+    static constexpr auto GLFW_INIT_ERROR_CODE = 1;
+    static constexpr auto WINDOW_INIT_ERROR_CODE = 2;
+    static constexpr auto GLAD_INIT_ERROR_CODE = 3;
+    static constexpr auto FONT_AWESOME_INIT_ERROR_CODE = 4;
 #if !defined(BUILD_RELEASE)
     static constexpr auto DEBUG_ROM_PATH = "trash/8-scrolling.ch8";
 #endif
