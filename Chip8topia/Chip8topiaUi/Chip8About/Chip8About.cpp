@@ -1,5 +1,7 @@
 #include "Chip8About.h"
 
+#include <IconsFontAwesome6.h>
+
 #include "../../Chip8topia.h"
 
 Chip8About::Chip8About() : m_menuItem{
@@ -8,9 +10,8 @@ Chip8About::Chip8About() : m_menuItem{
                            } {
 }
 
-
 void Chip8About::drawAboutMenu() {
-    if (ImGui::BeginMenu("About..."))
+    if (ImGui::BeginMenu(ICON_FA_INFO " About"))
     {
         for (auto& menuItem : m_menuItem)
         {

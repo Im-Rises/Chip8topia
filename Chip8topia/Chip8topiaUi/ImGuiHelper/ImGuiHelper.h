@@ -39,6 +39,11 @@ public:
     void drawWindow(Args*... args) override {
         if (this->m_isOpen)
         {
+            //            ImGuiWindowClass windowClass;
+            //            windowClass.ViewportFlagsOverrideSet = ImGuiViewportFlags_NoDecoration;
+            //            windowClass.ViewportFlagsOverrideSet = ImGuiViewportFlags_NoTaskBarIcon;
+            //            windowClass.ViewportFlagsOverrideSet = ImGuiViewportFlags_TopMost;
+            //            ImGui::SetNextWindowClass(&windowClass);
             ImGui::Begin(this->m_name, &this->m_isOpen);
             this->m_drawFunction(args...);
             ImGui::End();

@@ -1,6 +1,7 @@
 #include "Chip8topiaUi.h"
 
 #include <imgui.h>
+#include <IconsFontAwesome6.h>
 
 #include "../Chip8topia.h"
 
@@ -49,22 +50,22 @@ void Chip8topiaUi::drawMainMenuBar(Chip8topia& chip8topia) {
 }
 
 void Chip8topiaUi::drawViewMenu(Chip8topia& chip8topia) {
-    if (ImGui::BeginMenu("View"))
+    if (ImGui::BeginMenu(ICON_FA_EYE " View"))
     {
-        ImGui::MenuItem("Show/Hide MenuBar", "U", &m_isMenuBarOpen);
+        ImGui::MenuItem(ICON_FA_WINDOW_MINIMIZE " Show/Hide MenuBar", "U", &m_isMenuBarOpen);
 
-        if (ImGui::MenuItem("Close all Windows", "I"))
+        if (ImGui::MenuItem(ICON_FA_XMARK " Close all windows", "ESC"))
         {
             closeAllWindows();
         }
 
 #ifndef __EMSCRIPTEN__
-        if (ImGui::MenuItem("Center window", "F10"))
+        if (ImGui::MenuItem(ICON_FA_WINDOW_RESTORE " Center window", "F10"))
         {
             chip8topia.centerWindow();
         }
 
-        if (ImGui::MenuItem("FullScreen", "F11"))
+        if (ImGui::MenuItem(ICON_FA_WINDOW_MAXIMIZE " Fullscreen", "F11"))
         {
             chip8topia.toggleFullScreen();
         }

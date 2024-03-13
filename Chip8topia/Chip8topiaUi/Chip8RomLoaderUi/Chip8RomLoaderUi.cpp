@@ -7,6 +7,8 @@
 #include <emscripten_browser_file.h>
 #endif
 
+#include <IconsFontAwesome6.h>
+
 #include "../Chip8Emulator/Chip8Emulator/Chip8RomLoader.h"
 #include "../../Chip8topia.h"
 
@@ -19,31 +21,31 @@ Chip8RomLoaderUi::~Chip8RomLoaderUi() {
 }
 
 void Chip8RomLoaderUi::drawFileMenu(Chip8topia& chip8topia) {
-    if (ImGui::BeginMenu("File"))
+    if (ImGui::BeginMenu(ICON_FA_FILE " File"))
     {
 #if defined(__EMSCRIPTEN__)
-        if (ImGui::MenuItem("Open integrated rom..."))
+        if (ImGui::MenuItem(ICON_FA_FOLDER_OPEN " Open rom...", "O"))
 #else
-        if (ImGui::MenuItem("Open rom...", "O"))
+        if (ImGui::MenuItem(ICON_FA_FOLDER_OPEN " Open rom...", "O"))
 #endif
         {
             openRomWindow();
         }
 
 #if defined(__EMSCRIPTEN__)
-        if (ImGui::MenuItem("Open rom"))
+        if (ImGui::MenuItem(ICON_FA_UPLOAD " Upload rom...", "U"))
         {
             emscripten_browser_file::upload(Chip8RomLoader::CHIP8_ROM_FILE_EXTENSION, handle_upload_file, &chip8topia.getChip8Emulator());
         }
 #endif
 
-        if (ImGui::MenuItem("Eject rom", "E"))
+        if (ImGui::MenuItem(ICON_FA_EJECT " Eject rom", "E"))
         {
             chip8topia.getChip8Emulator().stop();
         }
 
 #ifndef __EMSCRIPTEN__
-        if (ImGui::MenuItem("Exit", "ESCAPE"))
+        if (ImGui::MenuItem(ICON_FA_XMARK " Exit", "ESCAPE"))
         {
             chip8topia.closeRequest();
         }
@@ -63,7 +65,6 @@ void Chip8RomLoaderUi::drawRomWindow(Chip8topia& chip8topia) {
 #endif
 
     if (ImGuiFileDialog::Instance()->Display(FILE_DIALOG_NAME, ImGuiWindowFlags_NoCollapse, windowDimensions))
-    //    if (ImGuiFileDialog::Instance()->Display(FILE_DIALOG_NAME, ImGuiWindowFlags_NoCollapse))
     {
         if (ImGuiFileDialog::Instance()->IsOk())
         {
@@ -77,9 +78,7 @@ void Chip8RomLoaderUi::drawRomWindow(Chip8topia& chip8topia) {
             }
             catch (const std::exception& e)
             {
-#if !defined(BUILD_RELEASE)
                 Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(e.what(), nullptr);
-#endif
             }
         }
 

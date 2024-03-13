@@ -15,6 +15,7 @@ Checks: >
   -*readability-identifier-length,
   -*avoid-const-params-in-decls,
   -*magic-numbers,
+  -*redundant-access-specifiers,
 #  -google-readability-namespace-comments,
 #  -google-runtime-int,
 #  -google-runtime-references,

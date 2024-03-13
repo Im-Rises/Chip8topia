@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <IconsFontAwesome6.h>
 
 #include "../ImGuiHelper/ImGuiHelper.h"
 
@@ -25,7 +26,7 @@ private:
 
 private:
     std::array<ImGuiMenuItemWindow<Chip8Emulator>, 2> m_menuItem = {
-        ImGuiMenuItemWindow<Chip8Emulator>("Background color", false, [this](Chip8Emulator* chip8Emulator) { drawBackgroundColor(chip8Emulator); }),
-        ImGuiMenuItemWindow<Chip8Emulator>("Draw color", false, [this](Chip8Emulator* chip8Emulator) { drawDrawColor(chip8Emulator); })
+        ImGuiMenuItemWindow<Chip8Emulator>(ICON_FA_PALETTE " Background color", false, [this](Chip8Emulator* chip8Emulator) { drawBackgroundColor(chip8Emulator); }),
+        ImGuiMenuItemWindow<Chip8Emulator>(ICON_FA_PALETTE " Draw color", false, [this](Chip8Emulator* chip8Emulator) { drawDrawColor(chip8Emulator); })
     };
 };

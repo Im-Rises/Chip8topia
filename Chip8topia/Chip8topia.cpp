@@ -37,9 +37,9 @@ Chip8topia::~Chip8topia() = default;
 
 auto Chip8topia::run() -> int {
     if (init() != 0)
+    {
         return 1;
-
-    printDependenciesInfos();
+    }
 
     auto lastTime = std::chrono::high_resolution_clock::now();
     auto currentTime = lastTime;
@@ -103,7 +103,9 @@ void Chip8topia::closeRequest() {
 auto Chip8topia::init() -> int {
     glfwSetErrorCallback(glfw_error_callback);
     if (glfwInit() == 0)
+    {
         return 1;
+    }
 
 #if defined(__EMSCRIPTEN__)
     const char* glsl_version = "#version 300 es";
@@ -126,7 +128,9 @@ auto Chip8topia::init() -> int {
     // Create window with graphics context
     m_window = glfwCreateWindow(m_currentWidth, m_currentHeight, PROJECT_NAME, nullptr, nullptr);
     if (m_window == nullptr)
+    {
         return 1;
+    }
     glfwMakeContextCurrent(m_window);
     glfwSwapInterval(m_isTurboMode ? 0 : 1); // 0 = no vsync, 1 = vsync
 
@@ -168,10 +172,6 @@ auto Chip8topia::init() -> int {
         style.Colors[ImGuiCol_WindowBg].w = 1.0F;
     }
 
-    // Setup Platform/Renderer backends
-    ImGui_ImplGlfw_InitForOpenGL(m_window, true);
-    ImGui_ImplOpenGL3_Init(glsl_version);
-
     // Setup ImGuiNotify and IconFontCppHeaders
     io.Fonts->AddFontDefault();
 
@@ -194,6 +194,10 @@ auto Chip8topia::init() -> int {
     iconsConfig.GlyphMinAdvanceX = iconFontSize;
     io.Fonts->AddFontFromFileTTF(FONT_ICON_FILE_NAME_FAS, iconFontSize, &iconsConfig, iconsRanges);
 
+    // Setup Platform/Renderer backends
+    ImGui_ImplGlfw_InitForOpenGL(m_window, true);
+    ImGui_ImplOpenGL3_Init(glsl_version);
+
     // Set window icon
 #ifndef __EMSCRIPTEN__
     setWindowIcon();
@@ -210,6 +214,11 @@ auto Chip8topia::init() -> int {
 #if !defined(BUILD_RELEASE)
     m_chip8topiaInputHandler.m_DebugRomFastLoadEvent.subscribe(this, &Chip8topia::loadDebugRom);
 #endif
+
+    printDependenciesInfos();
+
+    std::cout << "Logs:" << '\n';
+    spdlog::info("Chip8topia initialized successfully");
 
     return 0;
 }
@@ -232,6 +241,8 @@ void Chip8topia::cleanup() {
 
     glfwDestroyWindow(m_window);
     glfwTerminate();
+
+    spdlog::info("Chip8topia cleaned up successfully");
 }
 
 void Chip8topia::handleInputs() {
@@ -338,9 +349,6 @@ void Chip8topia::toggleTurboMode() {
 
 #ifndef __EMSCRIPTEN__
 void Chip8topia::setWindowIcon() {
-    //    int chip8topiaIconWidth = 0, chip8topiaIconHeight = 0, channelsInFile = 0;
-    //    unsigned char* imagePixels = stbi_load_from_memory(CHIP8TOPIA_ICON_DATA.data(), static_cast<int>(CHIP8TOPIA_ICON_DATA.size()), &chip8topiaIconWidth, &chip8topiaIconHeight, &channelsInFile, 0);
-
     int width = 0, height = 0, channelsCount = 0;
     unsigned char* imagePixels = stbi_load(CHIP8TOPIA_ICON_PATH, &width, &height, &channelsCount, 0);
     if (imagePixels == nullptr)
@@ -442,9 +450,7 @@ void Chip8topia::glfw_drop_callback(GLFWwindow* window, int count, const char** 
     }
     catch (const std::exception& e)
     {
-#if !defined(BUILD_RELEASE)
         Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(e.what(), nullptr);
-#endif
     }
 }
 
@@ -454,13 +460,10 @@ void Chip8topia::loadDebugRom() {
     {
         std::vector<uint8> rom = Chip8RomLoader::loadRomFromPath(DEBUG_ROM_PATH);
         m_chip8Emulator->loadRom(rom);
-        ImGui::InsertNotification({ ImGuiToastType::Success, 3000, "Debug rom loaded!" });
     }
     catch (const std::exception& e)
     {
-#if !defined(BUILD_RELEASE)
         Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(e.what(), nullptr);
-#endif
     }
 }
 #endif

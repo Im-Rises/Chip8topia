@@ -176,12 +176,16 @@ emmake make -C build
 - [x] Correct icon when building in release mode (its all buggy)
 - [x] Correct assembly to print hexa values where it should
 - [x] Correct disassembly to show the odd or even pc value correctly
+- [x] Adding toast system
+- [x] Adding icon to the windows
 
-- [ ] Adding toast system
-- [ ] Adding icon to the windows
+- [ ] Adding toast on rom load etc...
 - [ ] Add a way to put front the windows on the main window click
+
 - [ ] Add safe and unsafe code version
 - [ ] Add Xo-Chip emulation
+- [ ] Utiliser l'event Error pour les fatal errors, utilsier le toast pour les erreurs non fatales et les warnings, et
+  utiliser le log pour les logs
 
 - [ ] Replace all try catch with promises from C++23
 - [ ] Add different test to not crash even with a bad rom (checks on rom, stack, etc...)

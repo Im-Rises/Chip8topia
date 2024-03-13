@@ -3,7 +3,7 @@
 #include "../Chip8Emulator/Chip8Emulator.h"
 
 void Chip8VideoUi::drawVideoMenu() {
-    if (ImGui::BeginMenu("Video"))
+    if (ImGui::BeginMenu(ICON_FA_TV " Video"))
     {
         for (auto& menuItem : m_menuItem)
         {

@@ -4,27 +4,29 @@
 #include <fmt/format.h>
 
 #include "../../Chip8topia/Chip8topia.h"
-#include "../../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
 
 void Chip8EmulationUi::drawEmulationMenu(Chip8topia& chip8topia) {
-    if (ImGui::BeginMenu("Engine/Emulation"))
+    if (ImGui::BeginMenu(ICON_FA_GAMEPAD " Emulation"))
     {
         for (auto& menuItem : m_menuItems)
         {
             menuItem.drawMenuItem();
         }
 
-        if (ImGui::MenuItem(fmt::format("Toggle turbo mode : {}", chip8topia.getIsTurboMode() ? "ON " : "OFF").c_str(), "Y", chip8topia.getIsTurboMode()))
+        if (ImGui::MenuItem(fmt::format(ICON_FA_ROCKET " Toggle turbo mode : {}", chip8topia.getIsTurboMode() ? "ON " : "OFF").c_str(), "Y", chip8topia.getIsTurboMode()))
         {
             chip8topia.toggleTurboMode();
         }
 
-        if (ImGui::MenuItem("Toggle Pause", "P", chip8topia.getChip8Emulator().getIsBreak()))
+        static constexpr const char* const PAUSE_TEXT = ICON_FA_PAUSE " Pause";
+        static constexpr const char* const RESUME_TEXT = ICON_FA_PLAY " Play";
+        const bool isPaused = chip8topia.getChip8Emulator().getIsBreak();
+        if (ImGui::MenuItem(isPaused ? RESUME_TEXT : PAUSE_TEXT, "P", isPaused))
         {
             Chip8topiaInputHandler::getInstance().m_TogglePauseEmulationEvent.trigger();
         }
 
-        if (ImGui::MenuItem("Restart", "L"))
+        if (ImGui::MenuItem(ICON_FA_REPEAT " Restart", "L"))
         {
             Chip8topiaInputHandler::getInstance().m_RestartEmulationEvent.trigger();
         }
