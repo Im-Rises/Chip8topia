@@ -50,11 +50,13 @@ public:
     SingleSubscriberEvent<> m_TogglePauseEmulationEvent;
     SingleSubscriberEvent<> m_RestartEmulationEvent;
     SingleSubscriberEvent<> m_OpenRomExplorerEvent;
+
+    SingleSubscriberEvent<const uint8, const bool> m_GameInput;
+
     SingleSubscriberEvent<const std::string&, std::function<void()>> m_SuccessEvent;
     SingleSubscriberEvent<const std::string&, std::function<void()>> m_ErrorEvent;
     SingleSubscriberEvent<const std::string&, std::function<void()>> m_WarningEvent;
     SingleSubscriberEvent<const std::string&, std::function<void()>> m_InfoEvent;
-    SingleSubscriberEvent<const uint8, const bool> m_GameInput;
 
 private:
     bool m_inputEnabled = true;

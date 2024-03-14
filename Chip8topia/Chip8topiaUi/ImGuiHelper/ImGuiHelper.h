@@ -56,58 +56,26 @@ public:
 
 public:
     void drawMenuItem() override {
-        //        if (ImGui::Button("PoPup"))
-        if (ImGui::MenuItem("PoPup"))
-        {
-        }
+        ImGui::MenuItem(this->m_name);
 
         if (ImGui::IsItemClicked())
         {
-            ImGui::OpenPopup("PoPup");
+            this->m_isOpen = true;
         }
-
-        if (ImGui::BeginPopup("PoPup"))
-        {
-            ImGui::Text("Hello");
-            ImGui::EndPopup();
-        }
-        //        if (ImGui::MenuItem(this->m_name))
-        //        {
-        //            //            this->m_isOpen = true;
-        //            ImGui::OpenPopup(this->m_name);
-        //        }
-        //
-        //        if (this->m_isOpen)
-        //        {
-        //            if (ImGui::BeginPopup(this->m_name))
-        //            {
-        //                ImGui::Text("Hello");
-        //                ImGui::EndPopup();
-        //            }
-        //        }
     }
 
     void drawWindow(Args*... args) override {
-        //        if (this->m_isOpen)
-        //        {
-        //            ImGui::OpenPopup(this->m_name);
-        //        if (ImGui::BeginPopup(this->m_name))
-        //        //            if (ImGui::BeginPopupModal(this->m_name, &this->m_isOpen,
-        //        //                    ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize |
-        //        //                        ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings))
-        //        {
-        //            this->m_drawFunction(args...);
-        //            ImGui::EndPopup();
-        //        }
+        if (this->m_isOpen)
+        {
+            ImGui::OpenPopup(this->m_name);
+            this->m_isOpen = false;
+        }
 
-        //            // Center new window
-        //            ImGui::SetNextWindowPos(
-        //                ImVec2((ImGui::GetIO().DisplaySize.x - ImGui::GetWindowSize().x) * 0.5F, (ImGui::GetIO().DisplaySize.y - ImGui::GetWindowSize().y) * 0.5F),
-        //                ImGuiCond_FirstUseEver);
-        //            ImGui::Begin(this->m_name, &this->m_isOpen, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoDocking);
-        //            this->m_drawFunction(args...);
-        //            ImGui::End();
-        //        }
+        if (ImGui::BeginPopup(this->m_name, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings))
+        {
+            this->m_drawFunction(args...);
+            ImGui::EndPopup();
+        }
     }
 };
 
@@ -142,7 +110,7 @@ public:
 
         if (m_canPushMessage)
         {
-            m_messageQueue.push({ title, message, std::move(callback) });
+            m_messageQueue.emplace(title, message, std::move(callback));
         }
     }
 
@@ -178,6 +146,10 @@ public:
         {
             m_messageQueue.pop();
         }
+    }
+
+    [[nodiscard]] auto empty() const -> bool {
+        return m_messageQueue.empty();
     }
 
 private:

@@ -37,6 +37,7 @@ void Chip8MessageHandler::triggerSuccess(const std::string& message, std::functi
 
 void Chip8MessageHandler::showMessages() {
     m_messageQueue.showMessage();
+    Chip8topiaInputHandler::getInstance().setInputEnabled(m_messageQueue.empty());
 }
 
 void Chip8MessageHandler::clearMessageQueue() {

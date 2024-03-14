@@ -184,8 +184,8 @@ emmake make -C build
 - [x] Correct crash in webgl with ImGuiNotify
 
 - [ ] Add safe and unsafe code version (set the callback error in Core and Cpu, and Ppu, the call it on error)
-- [ ] Add a way to put front the windows on the main window click
 - [ ] Add Xo-Chip emulation
+- [ ] Add a way to put front the windows on the main window click
 
 - [ ] Replace all try catch with promises from C++23
 - [ ] Add different test to not crash even with a bad rom (checks on rom, stack, etc...)
