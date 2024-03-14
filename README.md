@@ -66,12 +66,11 @@ https://github.com/Armchair-Software/emscripten-browser-file
 ### Submodule:
 
 ```bash
-git clone --recurse-submodules
+git submodule update --init --recursive
 ```
 
 ```bash
 git submodule update --remote
-git submodule update --init --recursive
 ```
 
 ### Vcpkg:
@@ -182,8 +181,10 @@ emmake make -C build
 - [x] Find balancing between the spdlog and the toast and the event error (Utiliser l'event Error pour les fatal errors,
   utilsier le toast pour les erreurs non fatales et les warnings, et
   utiliser le log pour les logs)
+- [x] Correct crash in webgl with ImGuiNotify
 
 - [ ] Add a way to put front the windows on the main window click
+
 - [ ] Add safe and unsafe code version (set the callback error in Core and Cpu, and Ppu, the call it on error)
 - [ ] Add Xo-Chip emulation
 
