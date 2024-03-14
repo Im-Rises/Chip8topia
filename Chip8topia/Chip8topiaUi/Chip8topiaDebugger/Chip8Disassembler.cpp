@@ -79,6 +79,8 @@ void Chip8Disassembler::drawDisassembly(Chip8Emulator* emulator) {
         ImGui::SetScrollY((static_cast<float>(m_requestedPc)) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
     }
 
+    m_scrollY = ImGui::GetScrollY();
+
     m_previousPc = pc;
 }
 
@@ -145,6 +147,7 @@ void Chip8Disassembler::drawBreakpoints(Chip8Emulator* emulator) {
                 ImGui::TableSetColumnIndex(1);
                 const uint16 pc = emulator->getChip8Core()->getCpu()->getPc();
                 // TODO: Replace to change according if its in the viewport not the pc
+                //                if (ImGui::Button(m_scrollY < (static_cast<float>(i)) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y) ? fmt::format(ICON_FA_ARROW_DOWN "##{}", i).c_str() : fmt::format(ICON_FA_ARROW_UP "##{}", i).c_str()))
                 if (ImGui::Button(i >= pc ? fmt::format(ICON_FA_ARROW_DOWN "##{}", i).c_str() : fmt::format(ICON_FA_ARROW_UP "##{}", i).c_str()))
                 {
                     m_requestMoveToPc = true;
