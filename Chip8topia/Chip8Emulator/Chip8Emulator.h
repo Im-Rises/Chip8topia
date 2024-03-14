@@ -88,6 +88,7 @@ private:
     void OnInput(const uint8 key, const bool isPressed);
 #if defined(BUILD_PARAM_SAFE)
     void errorCallback(const std::string& errorMessage);
+    void warningCallback(const std::string& errorMessage);
 #endif
 
 private:

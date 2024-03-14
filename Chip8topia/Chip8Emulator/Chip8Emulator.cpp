@@ -143,4 +143,9 @@ void Chip8Emulator::errorCallback(const std::string& errorMessage) {
     m_isRomLoaded = false;
     Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(errorMessage, nullptr);
 }
+
+void Chip8Emulator::warningCallback(const std::string& errorMessage) {
+    m_isBreak = true;
+    Chip8topiaInputHandler::getInstance().m_WarningEvent.trigger(errorMessage, nullptr);
+}
 #endif

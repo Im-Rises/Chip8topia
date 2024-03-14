@@ -1,7 +1,9 @@
 #pragma once
 
-#include <imgui.h>
 #include <functional>
+#include <queue>
+#include <string>
+#include <imgui.h>
 
 template <typename... Args>
 class ImGuiMenuItemBase {
@@ -39,11 +41,6 @@ public:
     void drawWindow(Args*... args) override {
         if (this->m_isOpen)
         {
-            //            ImGuiWindowClass windowClass;
-            //            windowClass.ViewportFlagsOverrideSet = ImGuiViewportFlags_NoDecoration;
-            //            windowClass.ViewportFlagsOverrideSet = ImGuiViewportFlags_NoTaskBarIcon;
-            //            windowClass.ViewportFlagsOverrideSet = ImGuiViewportFlags_TopMost;
-            //            ImGui::SetNextWindowClass(&windowClass);
             ImGui::Begin(this->m_name, &this->m_isOpen);
             this->m_drawFunction(args...);
             ImGui::End();
@@ -59,23 +56,132 @@ public:
 
 public:
     void drawMenuItem() override {
-        if (ImGui::MenuItem(this->m_name))
+        //        if (ImGui::Button("PoPup"))
+        if (ImGui::MenuItem("PoPup"))
         {
-            this->m_isOpen = true;
         }
+
+        if (ImGui::IsItemClicked())
+        {
+            ImGui::OpenPopup("PoPup");
+        }
+
+        if (ImGui::BeginPopup("PoPup"))
+        {
+            ImGui::Text("Hello");
+            ImGui::EndPopup();
+        }
+        //        if (ImGui::MenuItem(this->m_name))
+        //        {
+        //            //            this->m_isOpen = true;
+        //            ImGui::OpenPopup(this->m_name);
+        //        }
+        //
+        //        if (this->m_isOpen)
+        //        {
+        //            if (ImGui::BeginPopup(this->m_name))
+        //            {
+        //                ImGui::Text("Hello");
+        //                ImGui::EndPopup();
+        //            }
+        //        }
     }
 
     void drawWindow(Args*... args) override {
-        if (this->m_isOpen)
+        //        if (this->m_isOpen)
+        //        {
+        //            ImGui::OpenPopup(this->m_name);
+        //        if (ImGui::BeginPopup(this->m_name))
+        //        //            if (ImGui::BeginPopupModal(this->m_name, &this->m_isOpen,
+        //        //                    ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize |
+        //        //                        ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings))
+        //        {
+        //            this->m_drawFunction(args...);
+        //            ImGui::EndPopup();
+        //        }
+
+        //            // Center new window
+        //            ImGui::SetNextWindowPos(
+        //                ImVec2((ImGui::GetIO().DisplaySize.x - ImGui::GetWindowSize().x) * 0.5F, (ImGui::GetIO().DisplaySize.y - ImGui::GetWindowSize().y) * 0.5F),
+        //                ImGuiCond_FirstUseEver);
+        //            ImGui::Begin(this->m_name, &this->m_isOpen, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoDocking);
+        //            this->m_drawFunction(args...);
+        //            ImGui::End();
+        //        }
+    }
+};
+
+class ImGuiMessageQueue {
+private:
+    static constexpr auto TOO_MANY_MESSAGES_TITLE = "Too many messages";
+    static constexpr auto TOO_MANY_MESSAGES_MESSAGE = "Skipping next messages.";
+
+    struct MessageData {
+        const std::string m_title;
+        const std::string m_message;
+        const std::function<void()> m_callback;
+    };
+
+public:
+    explicit ImGuiMessageQueue(const unsigned int maxMessages = 10)
+        : MAX_MESSAGES(maxMessages) {}
+    ImGuiMessageQueue(const ImGuiMessageQueue&) = delete;
+    ImGuiMessageQueue(ImGuiMessageQueue&&) = delete;
+    auto operator=(const ImGuiMessageQueue&) -> ImGuiMessageQueue& = delete;
+    auto operator=(ImGuiMessageQueue&&) -> ImGuiMessageQueue& = delete;
+    ~ImGuiMessageQueue() = default;
+
+public:
+    void pushMessage(const std::string& title, const std::string& message, std::function<void()> callback = nullptr) {
+        if (m_messageQueue.size() >= MAX_MESSAGES)
         {
-            ImGui::OpenPopup(this->m_name);
-            if (ImGui::BeginPopupModal(this->m_name, &this->m_isOpen,
-                    ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize |
-                        ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings))
-            {
-                this->m_drawFunction(args...);
-                ImGui::EndPopup();
-            }
+            clearMessageQueue();
+            m_canPushMessage = false;
+            m_messageQueue.emplace(TOO_MANY_MESSAGES_TITLE, TOO_MANY_MESSAGES_MESSAGE, [&]() { m_canPushMessage = true; });
+        }
+
+        if (m_canPushMessage)
+        {
+            m_messageQueue.push({ title, message, std::move(callback) });
         }
     }
+
+    void showMessage() {
+        if (m_messageQueue.empty())
+        {
+            return;
+        }
+
+        static constexpr int BUTTON_WIDTH = 120;
+        ImGui::OpenPopup(m_messageQueue.front().m_title.data());
+        if (ImGui::BeginPopupModal(m_messageQueue.front().m_title.data(), nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings))
+        {
+            ImGui::Text("%s", m_messageQueue.front().m_message.c_str());
+            ImGui::NewLine();
+            ImGui::SetCursorPosX((ImGui::GetWindowSize().x - BUTTON_WIDTH) * 0.5F);
+            if (ImGui::Button("OK", ImVec2(BUTTON_WIDTH, 0)))
+            {
+                if (m_messageQueue.front().m_callback)
+                {
+                    m_messageQueue.front().m_callback();
+                }
+
+                ImGui::CloseCurrentPopup();
+                m_messageQueue.pop();
+            }
+            ImGui::EndPopup();
+        }
+    }
+
+    void clearMessageQueue() {
+        while (!m_messageQueue.empty())
+        {
+            m_messageQueue.pop();
+        }
+    }
+
+private:
+    std::queue<MessageData> m_messageQueue;
+    const unsigned int MAX_MESSAGES;
+    bool m_canPushMessage = true;
 };

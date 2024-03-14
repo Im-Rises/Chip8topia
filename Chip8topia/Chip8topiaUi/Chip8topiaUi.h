@@ -8,7 +8,7 @@
 #include "Chip8About/Chip8About.h"
 #include "Chip8RomLoaderUi/Chip8RomLoaderUi.h"
 #include "Chip8EmulationUi/Chip8EmulationUi.h"
-#include "Chip8Error/Chip8Error.h"
+#include "Chip8Error/Chip8MessageHandler.h"
 
 class Chip8topia;
 class Chip8topiaUi {
@@ -37,7 +37,7 @@ private:
     Chip8VideoUi m_chip8VideoUi;
     Chip8topiaDebugger m_chip8topiaDebugger;
     Chip8About m_chip8About;
-    Chip8Error m_chip8Error;
+    Chip8MessageHandler m_chip8Error;
 
     bool m_isMenuBarOpen = true;
 };

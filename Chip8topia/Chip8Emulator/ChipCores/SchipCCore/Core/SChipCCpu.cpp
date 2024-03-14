@@ -13,6 +13,7 @@ void SChipCCpu::setPpu(std::shared_ptr<PpuBase> ppu) {
 
 void SChipCCpu::reset() {
     CpuBase::reset();
+    m_savedV.fill(0);
 }
 
 void SChipCCpu::computeOpcode(const uint16 opcode) {
@@ -124,6 +125,7 @@ void SChipCCpu::computeOpcode(const uint16 opcode) {
 
 void SChipCCpu::EXIT() {
     m_pc -= 2;
+    // TODO Call the error callback here and return (exit the program)
 }
 
 void SChipCCpu::OR_Vx_Vy(const uint8 x, const uint8 y) {

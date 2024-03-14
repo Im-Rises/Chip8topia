@@ -24,6 +24,8 @@ public:
 public:
     void update(GLFWwindow* window) const;
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+    [[nodiscard]] auto getInputEnabled() const -> bool { return m_inputEnabled; }
+    void setInputEnabled(const bool inputEnabled) { m_inputEnabled = inputEnabled; }
 
 public:
     /* UI Events */
@@ -48,6 +50,12 @@ public:
     SingleSubscriberEvent<> m_TogglePauseEmulationEvent;
     SingleSubscriberEvent<> m_RestartEmulationEvent;
     SingleSubscriberEvent<> m_OpenRomExplorerEvent;
+    SingleSubscriberEvent<const std::string&, std::function<void()>> m_SuccessEvent;
     SingleSubscriberEvent<const std::string&, std::function<void()>> m_ErrorEvent;
+    SingleSubscriberEvent<const std::string&, std::function<void()>> m_WarningEvent;
+    SingleSubscriberEvent<const std::string&, std::function<void()>> m_InfoEvent;
     SingleSubscriberEvent<const uint8, const bool> m_GameInput;
+
+private:
+    bool m_inputEnabled = true;
 };

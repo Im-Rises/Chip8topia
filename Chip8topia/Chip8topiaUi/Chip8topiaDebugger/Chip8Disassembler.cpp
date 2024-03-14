@@ -2,6 +2,7 @@
 
 #include <imgui.h>
 #include <fmt/format.h>
+#include <IconsFontAwesome6.h>
 
 #include "../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
 #include "../Chip8Emulator/Disassembly/Chip8CpuDisassembly.h"
@@ -142,14 +143,16 @@ void Chip8Disassembler::drawBreakpoints(Chip8Emulator* emulator) {
                 ImGui::TableSetColumnIndex(0);
                 ImGui::Text("%s", fmt::format("0x{:04X}", i).c_str());
                 ImGui::TableSetColumnIndex(1);
-                if (ImGui::Button(fmt::format("Goto##{}", i).c_str()))
+                const uint16 pc = emulator->getChip8Core()->getCpu()->getPc();
+                // TODO: Replace to change according if its in the viewport not the pc
+                if (ImGui::Button(i >= pc ? fmt::format(ICON_FA_ARROW_DOWN "##{}", i).c_str() : fmt::format(ICON_FA_ARROW_UP "##{}", i).c_str()))
                 {
                     m_requestMoveToPc = true;
                     m_requestedPc = i;
                     m_followPc = false;
                 }
                 ImGui::TableSetColumnIndex(2);
-                if (ImGui::Button(fmt::format("X##{}", i).c_str()))
+                if (ImGui::Button(fmt::format(ICON_FA_XMARK "##{}", i).c_str()))
                 {
                     breakpoints[i] = false;
                 }

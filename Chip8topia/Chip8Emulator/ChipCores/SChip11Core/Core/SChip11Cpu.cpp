@@ -13,6 +13,7 @@ void SChip11Cpu::setPpu(std::shared_ptr<PpuBase> ppu) {
 
 void SChip11Cpu::reset() {
     CpuBase::reset();
+    m_savedV.fill(0);
     m_isHalted = false;
     m_requestDisableHalt = false;
 }
@@ -126,6 +127,7 @@ void SChip11Cpu::computeOpcode(const uint16 opcode) {
 
 void SChip11Cpu::EXIT() {
     m_pc -= 2;
+    // TODO Call the error callback here and return (exit the program)
 }
 
 void SChip11Cpu::OR_Vx_Vy(const uint8 x, const uint8 y) {
