@@ -9,7 +9,7 @@ auto SChip11Core::clock() -> bool {
     m_cpu->clock();
     m_clockCounter++;
 
-    if (m_clockCounter >= m_cpuClockFrequency / SCREEN_AND_TIMERS_FREQUENCY)
+    if (m_clockCounter >= CPU_CLOCK_FREQUENCY / SCREEN_AND_TIMERS_FREQUENCY)
     {
         m_cpu->clockTimers();
         m_cpuCasted->requestDisableHalt();

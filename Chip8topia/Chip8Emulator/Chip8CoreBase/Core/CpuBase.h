@@ -4,6 +4,7 @@
 #include <binaryLib/binaryLib.h>
 #include <array>
 #include <RandomGenerator/RandomGenerator.h>
+#include <functional>
 
 #include "../chip8Fonts.h"
 
@@ -30,6 +31,9 @@ public:
 
 public:
     virtual void reset();
+#if defined(BUILD_PARAM_SAFE)
+    void setErrorCallback(const std::function<void(const std::string&)>& errorCallback);
+#endif
     void readRom(const std::vector<uint8>& rom);
     void clock();
     void clockTimers();
@@ -102,4 +106,8 @@ protected:
     std::shared_ptr<Input> m_input;
 
     RandomGenerator m_u8NumberRandomGenerator;
+
+#if defined(BUILD_PARAM_SAFE)
+    std::function<void(const std::string&)> m_errorCallback;
+#endif
 };

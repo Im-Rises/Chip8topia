@@ -16,6 +16,7 @@ Checks: >
   -*avoid-const-params-in-decls,
   -*magic-numbers,
   -*redundant-access-specifiers,
+  -*pro-bounds-constant-array-index,
 #  -google-readability-namespace-comments,
 #  -google-runtime-int,
 #  -google-runtime-references,

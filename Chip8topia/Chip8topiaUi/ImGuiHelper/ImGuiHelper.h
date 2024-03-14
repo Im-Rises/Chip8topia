@@ -157,3 +157,10 @@ private:
     const unsigned int MAX_MESSAGES;
     bool m_canPushMessage = true;
 };
+
+
+// Text on screen
+/*
+ * ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize |
+ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav))
+ */

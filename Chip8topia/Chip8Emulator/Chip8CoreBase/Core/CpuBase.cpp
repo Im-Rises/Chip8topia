@@ -26,6 +26,12 @@ void CpuBase::reset() {
     m_stack = {};
 }
 
+#if defined(BUILD_PARAM_SAFE)
+void CpuBase::setErrorCallback(const std::function<void(const std::string&)>& errorCallback) {
+    m_errorCallback = errorCallback;
+}
+#endif
+
 void CpuBase::readRom(const std::vector<uint8>& rom) {
     for (int i = 0; i < rom.size(); i++)
     {

@@ -8,6 +8,11 @@
 
 Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<Chip8Core>(DEFAULT_FREQUENCY)) {
     // TODO: Set error callback
+#if defined(BUILD_PARAM_SAFE)
+    m_core->setErrorCallback([&](const std::string& errorMessage) {
+        errorCallback(errorMessage);
+    });
+#endif
 
     Chip8topiaInputHandler& inputHandler = Chip8topiaInputHandler::getInstance();
     inputHandler.m_GameInput.subscribe(this, &Chip8Emulator::OnInput);
@@ -125,10 +130,13 @@ void Chip8Emulator::switchCoreFrequency(const Chip8CoreType coreType, const Chip
         m_core = std::make_unique<SChipCCore>(frequency);
         break;
     case Chip8CoreType::XoChip:
+        Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger("XoChip is not supported yet", nullptr);
         break;
     }
 
-    // TODO: Set error callback
+    m_core->setErrorCallback([&](const std::string& errorMessage) {
+        errorCallback(errorMessage);
+    });
 
     m_isRomLoaded = false;
 }
@@ -144,8 +152,8 @@ void Chip8Emulator::errorCallback(const std::string& errorMessage) {
     Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(errorMessage, nullptr);
 }
 
-void Chip8Emulator::warningCallback(const std::string& errorMessage) {
-    m_isBreak = true;
-    Chip8topiaInputHandler::getInstance().m_WarningEvent.trigger(errorMessage, nullptr);
-}
+// void Chip8Emulator::warningCallback(const std::string& errorMessage) {
+//     m_isBreak = true;
+//     Chip8topiaInputHandler::getInstance().m_WarningEvent.trigger(errorMessage, nullptr);
+// }
 #endif

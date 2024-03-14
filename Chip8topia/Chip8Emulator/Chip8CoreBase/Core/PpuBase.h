@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <functional>
 
 #include "CpuBase.h"
 
@@ -28,6 +29,9 @@ public:
     virtual ~PpuBase() = default;
 
 public:
+#if defined(BUILD_PARAM_SAFE)
+    void setErrorCallback(const std::function<void(const std::string&)>& errorCallback);
+#endif
     virtual void clearScreen() = 0;
     virtual auto drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint16 I_reg) -> uint8 = 0;
 
@@ -40,4 +44,8 @@ protected:
     PpuMode m_mode = PpuMode::LORES;
     std::array<uint8, SCREEN_LORES_MODE_WIDTH * SCREEN_LORES_MODE_HEIGHT> m_loresVideoMemory;
     std::array<uint8, SCREEN_HIRES_MODE_WIDTH * SCREEN_HIRES_MODE_HEIGHT> m_hiresVideoMemory;
+
+#if defined(BUILD_PARAM_SAFE)
+    std::function<void(const std::string&)> m_errorCallback;
+#endif
 };
