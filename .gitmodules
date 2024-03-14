@@ -7,9 +7,9 @@
 [submodule "dependencies/emscripten-browser-file"]
 	path = dependencies/emscripten-browser-file
 	url = https://github.com/Armchair-Software/emscripten-browser-file.git
-[submodule "dependencies/ImGuiNotify"]
-	path = dependencies/ImGuiNotify
-	url = https://github.com/TyomaVader/ImGuiNotify.git
 [submodule "dependencies/IconFontCppHeaders"]
 	path = dependencies/IconFontCppHeaders
 	url = https://github.com/juliettef/IconFontCppHeaders.git
+[submodule "dependencies/ImGuiNotify"]
+	path = dependencies/ImGuiNotify
+	url = https://github.com/Im-Rises/ImGuiNotify.git

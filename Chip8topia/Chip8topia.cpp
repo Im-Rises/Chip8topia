@@ -225,8 +225,8 @@ auto Chip8topia::init() -> int {
 
     printDependenciesInfos();
 
-#if !defined(__EMSCRIPTEN__)
     std::cout << "Logs:" << '\n';
+#if !defined(__EMSCRIPTEN__)
     spdlog::info("Chip8topia initialized successfully");
 #else
     std::cout << "Chip8topia initialized successfully" << '\n';
