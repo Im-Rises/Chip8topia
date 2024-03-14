@@ -128,6 +128,28 @@ void SChipCCpu::EXIT() {
     // TODO Call the error callback here and return (exit the program)
 }
 
+void SChipCCpu::SCD(const uint8 n) {
+    m_ppuCasted->scrollDown(n);
+}
+
+void SChipCCpu::SCR(const uint8 n) {
+    m_ppuCasted->scrollRight(n);
+}
+
+void SChipCCpu::SCL(const uint8 n) {
+    m_ppuCasted->scrollLeft(n);
+}
+
+void SChipCCpu::LORES() {
+    m_ppu->clearScreen();
+    m_ppu->setMode(PpuBase::PpuMode::LORES);
+}
+
+void SChipCCpu::HIRES() {
+    m_ppu->clearScreen();
+    m_ppu->setMode(PpuBase::PpuMode::HIRES);
+}
+
 void SChipCCpu::OR_Vx_Vy(const uint8 x, const uint8 y) {
     m_V[x] |= m_V[y];
     m_V[0xF] = 0;
@@ -169,6 +191,10 @@ void SChipCCpu::DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) {
     m_V[0xF] = static_cast<uint8>(m_ppu->drawSprite(m_V[x], m_V[y], n, m_memory, m_I));
 }
 
+void SChipCCpu::LD_HF_Vx(const uint8 x) {
+    m_I = (m_V[x] * 10) + 0x50;
+}
+
 void SChipCCpu::LD_aI_Vx(const uint8 x) {
     for (int i = 0; i <= x; i++)
     {
@@ -183,32 +209,6 @@ void SChipCCpu::LD_Vx_aI(const uint8 x) {
         m_V[i] = m_memory[m_I + i];
     }
     m_I += x + 1;
-}
-
-void SChipCCpu::SCD(const uint8 n) {
-    m_ppuCasted->scrollDown(n);
-}
-
-void SChipCCpu::SCR(const uint8 n) {
-    m_ppuCasted->scrollRight(n);
-}
-
-void SChipCCpu::SCL(const uint8 n) {
-    m_ppuCasted->scrollLeft(n);
-}
-
-void SChipCCpu::LORES() {
-    m_ppu->clearScreen();
-    m_ppu->setMode(PpuBase::PpuMode::LORES);
-}
-
-void SChipCCpu::HIRES() {
-    m_ppu->clearScreen();
-    m_ppu->setMode(PpuBase::PpuMode::HIRES);
-}
-
-void SChipCCpu::LD_HF_Vx(const uint8 x) {
-    m_I = (m_V[x] * 10) + 0x50;
 }
 
 void SChipCCpu::LD_R_Vx(const uint8 x) {

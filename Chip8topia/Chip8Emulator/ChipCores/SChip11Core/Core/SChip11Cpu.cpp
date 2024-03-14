@@ -130,6 +130,28 @@ void SChip11Cpu::EXIT() {
     // TODO Call the error callback here and return (exit the program)
 }
 
+void SChip11Cpu::SCD(const uint8 n) {
+    m_ppuCasted->scrollDown(n, m_isModernMode);
+}
+
+void SChip11Cpu::SCR(const uint8 n) {
+    m_ppuCasted->scrollRight(n, m_isModernMode);
+}
+
+void SChip11Cpu::SCL(const uint8 n) {
+    m_ppuCasted->scrollLeft(n, m_isModernMode);
+}
+
+void SChip11Cpu::LORES() {
+    m_ppu->clearScreen();
+    m_ppu->setMode(PpuBase::PpuMode::LORES);
+}
+
+void SChip11Cpu::HIRES() {
+    m_ppu->clearScreen();
+    m_ppu->setMode(PpuBase::PpuMode::HIRES);
+}
+
 void SChip11Cpu::OR_Vx_Vy(const uint8 x, const uint8 y) {
     m_V[x] |= m_V[y];
 }
@@ -140,27 +162,6 @@ void SChip11Cpu::AND_Vx_Vy(const uint8 x, const uint8 y) {
 
 void SChip11Cpu::XOR_Vx_Vy(const uint8 x, const uint8 y) {
     m_V[x] ^= m_V[y];
-}
-
-void SChip11Cpu::DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) {
-    if (m_ppu->getMode() == PpuBase::PpuMode::LORES && !m_isModernMode)
-    {
-        m_isHalted = true;
-
-        if (m_requestDisableHalt)
-        {
-            m_isHalted = false;
-            m_requestDisableHalt = false;
-        }
-
-        if (m_isHalted)
-        {
-            m_pc -= 2;
-            return;
-        }
-    }
-
-    m_V[0xF] = static_cast<uint8>(m_ppu->drawSprite(m_V[x], m_V[y], n, m_memory, m_I));
 }
 
 void SChip11Cpu::LD_aI_Vx(const uint8 x) {
@@ -195,30 +196,29 @@ void SChip11Cpu::SHL_Vx_Vy(const uint8 x, const uint8 y) {
     m_V[0xF] = flag;
 }
 
-void SChip11Cpu::SCD(const uint8 n) {
-    m_ppuCasted->scrollDown(n, m_isModernMode);
-}
-
-void SChip11Cpu::SCR(const uint8 n) {
-    m_ppuCasted->scrollRight(n, m_isModernMode);
-}
-
-void SChip11Cpu::SCL(const uint8 n) {
-    m_ppuCasted->scrollLeft(n, m_isModernMode);
-}
-
-void SChip11Cpu::LORES() {
-    m_ppu->clearScreen();
-    m_ppu->setMode(PpuBase::PpuMode::LORES);
-}
-
-void SChip11Cpu::HIRES() {
-    m_ppu->clearScreen();
-    m_ppu->setMode(PpuBase::PpuMode::HIRES);
-}
-
 void SChip11Cpu::JP_Vx_addr(const uint8 x, const uint16 address) {
     m_pc = m_V[x] + address;
+}
+
+void SChip11Cpu::DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) {
+    if (m_ppu->getMode() == PpuBase::PpuMode::LORES && !m_isModernMode)
+    {
+        m_isHalted = true;
+
+        if (m_requestDisableHalt)
+        {
+            m_isHalted = false;
+            m_requestDisableHalt = false;
+        }
+
+        if (m_isHalted)
+        {
+            m_pc -= 2;
+            return;
+        }
+    }
+
+    m_V[0xF] = static_cast<uint8>(m_ppu->drawSprite(m_V[x], m_V[y], n, m_memory, m_I));
 }
 
 void SChip11Cpu::LD_HF_Vx(const uint8 x) {
