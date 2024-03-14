@@ -79,7 +79,7 @@ void Chip8RomLoaderUi::drawRomWindow(Chip8topia& chip8topia) {
             }
             catch (const std::exception& e)
             {
-                ImGui::InsertNotification({ ImGuiToastType::Error, 1000, e.what() });
+                ImGui::InsertNotification({ ImGuiToastType::Error, 3000, e.what() });
             }
         }
 
@@ -103,7 +103,7 @@ void Chip8RomLoaderUi::handle_upload_file(std::string const& filename, std::stri
     }
     catch (const std::exception& e)
     {
-        ImGui::InsertNotification({ ImGuiToastType::Error, 1000, e.what() });
+        ImGui::InsertNotification({ ImGuiToastType::Error, 3000, e.what() });
     }
 }
 #endif

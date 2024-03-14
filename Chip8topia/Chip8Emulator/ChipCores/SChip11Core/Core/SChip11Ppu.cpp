@@ -16,7 +16,7 @@ auto SChip11Ppu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8,
 
     if ((getMode() == PpuMode::LORES) || (getMode() == PpuMode::HIRES && n != 0)) // Draw 8xN sprite
     {
-        return static_cast<uint8>(draw8xNSprite(Vx, Vy, I_reg, memory, n, getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data()));
+        return draw8xNSprite(Vx, Vy, I_reg, memory, n, getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data());
     }
     else // Draw 16x16 sprite
     {
@@ -24,7 +24,7 @@ auto SChip11Ppu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8,
     }
 }
 
-auto SChip11Ppu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint8 n, uint8* videoMemory) -> bool {
+auto SChip11Ppu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint8 n, uint8* videoMemory) -> uint8 {
     uint8 rowCollisionCount = 0;
     uint8 rowClippedCount = 0;
 
@@ -64,9 +64,12 @@ auto SChip11Ppu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::arra
     }
 
     if (getMode() == PpuMode::HIRES)
+    {
         return static_cast<uint8>(rowCollisionCount + rowClippedCount);
-    else // LORES
-        return (rowClippedCount + rowCollisionCount) > 0 ? 1 : 0;
+    }
+
+    // LORES
+    return (rowClippedCount + rowCollisionCount) > 0 ? 1 : 0;
 }
 
 auto SChip11Ppu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory) -> uint8 {
@@ -105,9 +108,12 @@ auto SChip11Ppu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::ar
     }
 
     if (getMode() == PpuMode::HIRES)
+    {
         return static_cast<uint8>(rowCollisionCount + rowClippedCount);
-    else // LORES
-        return (rowClippedCount + rowCollisionCount) > 0 ? 1 : 0;
+    }
+
+    // LORES
+    return (rowClippedCount + rowCollisionCount) > 0 ? 1 : 0;
 }
 
 void SChip11Ppu::scrollDown(uint8 n, bool isModernMode) {

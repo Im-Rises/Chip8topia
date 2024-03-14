@@ -183,9 +183,8 @@ emmake make -C build
   utiliser le log pour les logs)
 - [x] Correct crash in webgl with ImGuiNotify
 
-- [ ] Add a way to put front the windows on the main window click
-
 - [ ] Add safe and unsafe code version (set the callback error in Core and Cpu, and Ppu, the call it on error)
+- [ ] Add a way to put front the windows on the main window click
 - [ ] Add Xo-Chip emulation
 
 - [ ] Replace all try catch with promises from C++23

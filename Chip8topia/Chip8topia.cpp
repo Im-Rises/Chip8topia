@@ -369,7 +369,7 @@ void Chip8topia::setWindowIcon() {
     unsigned char* imagePixels = stbi_load(CHIP8TOPIA_ICON_PATH, &width, &height, &channelsCount, 0);
     if (imagePixels == nullptr)
     {
-        ImGui::InsertNotification({ ImGuiToastType::Error, 1000, "Failed to load window icon" });
+        ImGui::InsertNotification({ ImGuiToastType::Error, 3000, "Failed to load window icon" });
         return;
     }
 
@@ -465,7 +465,7 @@ void Chip8topia::glfw_drop_callback(GLFWwindow* window, int count, const char** 
     }
     catch (const std::exception& e)
     {
-        ImGui::InsertNotification({ ImGuiToastType::Error, 1000, e.what() });
+        ImGui::InsertNotification({ ImGuiToastType::Error, 3000, e.what() });
     }
 }
 
@@ -480,7 +480,7 @@ void Chip8topia::loadDebugRom() {
     }
     catch (const std::exception& e)
     {
-        ImGui::InsertNotification({ ImGuiToastType::Error, 1000, e.what() });
+        ImGui::InsertNotification({ ImGuiToastType::Error, 3000, e.what() });
     }
 }
 #endif
