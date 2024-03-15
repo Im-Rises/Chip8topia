@@ -5,9 +5,11 @@
 
 #include "CpuBase.h"
 
-class PpuBase {
+class PpuBase
+{
 public:
-    enum class PpuMode {
+    enum class PpuMode
+    {
         LORES,
         HIRES
     };
@@ -28,10 +30,11 @@ public:
     auto operator=(PpuBase&&) -> PpuBase& = delete;
     virtual ~PpuBase() = default;
 
-public:
 #if defined(BUILD_PARAM_SAFE)
     void setErrorCallback(const std::function<void(const std::string&)>& errorCallback);
 #endif
+
+public:
     virtual void clearScreen() = 0;
     virtual auto drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint16 I_reg) -> uint8 = 0;
 

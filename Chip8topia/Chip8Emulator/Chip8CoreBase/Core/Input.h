@@ -2,9 +2,11 @@
 
 #include <array>
 #include <bitset>
+#include <functional>
 #include <binaryLib/binaryLib.h>
 
-class Input {
+class Input
+{
 public:
     static constexpr auto KEY_COUNT = 16;
     static constexpr std::array<const uint8, KEY_COUNT> KEYS = {
@@ -29,6 +31,10 @@ public:
     auto operator=(Input&&) -> Input& = delete;
     ~Input() = default;
 
+#if defined(BUILD_PARAM_SAFE)
+    void setErrorCallback(const std::function<void(const std::string&)>& errorCallback);
+#endif
+
 public:
     void reset();
     [[nodiscard]] auto isAnyKeyPressed() const -> bool;
@@ -37,4 +43,7 @@ public:
 
 private:
     std::bitset<KEY_COUNT> m_pressedKeys{};
+#if defined(BUILD_PARAM_SAFE)
+    std::function<void(const std::string&)> m_errorCallback;
+#endif
 };

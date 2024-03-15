@@ -5,13 +5,13 @@
 #include "ChipCores/Chip8Core/Chip8Core.h"
 #include "ChipCores/SChip11Core/SChip11Core.h"
 #include "ChipCores/SchipCCore/SChipCCore.h"
+#include "ChipCores/XoChipCore/XoChipCore.h"
 
-Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<Chip8Core>(DEFAULT_FREQUENCY)) {
-    // TODO: Set error callback
+Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<Chip8Core>(DEFAULT_FREQUENCY))
+{
 #if defined(BUILD_PARAM_SAFE)
-    m_core->setErrorCallback([&](const std::string& errorMessage) {
-        errorCallback(errorMessage);
-    });
+    m_core->setErrorCallback([&](const std::string& errorMessage)
+        { errorCallback(errorMessage); });
 #endif
 
     Chip8topiaInputHandler& inputHandler = Chip8topiaInputHandler::getInstance();
@@ -25,7 +25,8 @@ Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<Chip8Core>(DEFAULT_FREQ
     inputHandler.m_ClearBreakpointsEvent.subscribe(this, &Chip8Emulator::clearBreakpoints);
 }
 
-Chip8Emulator::~Chip8Emulator() {
+Chip8Emulator::~Chip8Emulator()
+{
     Chip8topiaInputHandler& inputHandler = Chip8topiaInputHandler::getInstance();
     inputHandler.m_GameInput.unsubscribe(this, &Chip8Emulator::OnInput);
     inputHandler.m_TogglePauseEmulationEvent.unsubscribe(this, &Chip8Emulator::toggleBreakEmulation);
@@ -37,19 +38,22 @@ Chip8Emulator::~Chip8Emulator() {
     inputHandler.m_ClearBreakpointsEvent.unsubscribe(this, &Chip8Emulator::clearBreakpoints);
 }
 
-void Chip8Emulator::restart() {
+void Chip8Emulator::restart()
+{
     m_core->reset();
     m_videoEmulation.reset();
     m_accumulator = 0.0F;
 }
 
-void Chip8Emulator::loadRom(const std::vector<uint8_t>& romData) {
+void Chip8Emulator::loadRom(const std::vector<uint8_t>& romData)
+{
     m_core->reset();
     m_core->readRom(romData);
     m_isRomLoaded = true;
 }
 
-void Chip8Emulator::update(const float deltaTime) {
+void Chip8Emulator::update(const float deltaTime)
+{
     if (!m_isRomLoaded)
     {
         return;
@@ -83,38 +87,46 @@ void Chip8Emulator::update(const float deltaTime) {
     }
 }
 
-void Chip8Emulator::render(const float screenWidth, const float screenHeight) {
+void Chip8Emulator::render(const float screenWidth, const float screenHeight)
+{
     // Another way to do this would be to use a trap of the opcode (check if the opcode is render and if not then use the switch case to compute the opcode)
     // But because there is no real vsync, its no use
     m_videoEmulation.updateTexture(m_core);
     m_videoEmulation.update(m_core, screenWidth, screenHeight, CHIP8_ASPECT_RATIO);
 }
 
-void Chip8Emulator::stop() {
+void Chip8Emulator::stop()
+{
     m_isRomLoaded = false;
 }
 
-void Chip8Emulator::setIsTurboMode(const bool isTurboMode) {
+void Chip8Emulator::setIsTurboMode(const bool isTurboMode)
+{
     m_isTurboMode = isTurboMode;
 }
 
-auto Chip8Emulator::getChip8Core() -> Chip8CoreBase* {
+auto Chip8Emulator::getChip8Core() -> Chip8CoreBase*
+{
     return m_core.get();
 }
 
-auto Chip8Emulator::getChip8VideoEmulation() -> Chip8VideoEmulation& {
+auto Chip8Emulator::getChip8VideoEmulation() -> Chip8VideoEmulation&
+{
     return m_videoEmulation;
 }
 
-auto Chip8Emulator::getCoreType() const -> Chip8CoreType {
+auto Chip8Emulator::getCoreType() const -> Chip8CoreType
+{
     return m_core->getType();
 }
 
-auto Chip8Emulator::getFrequency() const -> Chip8Frequency {
+auto Chip8Emulator::getFrequency() const -> Chip8Frequency
+{
     return m_core->getFrequency();
 }
 
-void Chip8Emulator::switchCoreFrequency(const Chip8CoreType coreType, const Chip8Frequency frequency) {
+void Chip8Emulator::switchCoreFrequency(const Chip8CoreType coreType, const Chip8Frequency frequency)
+{
     switch (coreType)
     {
     case Chip8CoreType::Chip8:
@@ -130,23 +142,24 @@ void Chip8Emulator::switchCoreFrequency(const Chip8CoreType coreType, const Chip
         m_core = std::make_unique<SChipCCore>(frequency);
         break;
     case Chip8CoreType::XoChip:
-        Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger("XoChip is not supported yet", nullptr);
+        m_core = std::make_unique<XoChipCore>(frequency);
         break;
     }
 
-    m_core->setErrorCallback([&](const std::string& errorMessage) {
-        errorCallback(errorMessage);
-    });
+    m_core->setErrorCallback([&](const std::string& errorMessage)
+        { errorCallback(errorMessage); });
 
     m_isRomLoaded = false;
 }
 
-void Chip8Emulator::OnInput(const uint8 key, const bool isPressed) {
+void Chip8Emulator::OnInput(const uint8 key, const bool isPressed)
+{
     m_core->updateKey(key, isPressed);
 }
 
 #if defined(BUILD_PARAM_SAFE)
-void Chip8Emulator::errorCallback(const std::string& errorMessage) {
+void Chip8Emulator::errorCallback(const std::string& errorMessage)
+{
     // TODO: Pass this function to the Chip8Cores
     m_isRomLoaded = false;
     Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(errorMessage, nullptr);

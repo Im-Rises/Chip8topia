@@ -10,7 +10,8 @@
 #include "../Chip8Emulator/Disassembly/SChipCCpuDisassembly.h"
 #include "../../Chip8Emulator/Chip8Emulator.h"
 
-void Chip8Disassembler::drawDisassembly(Chip8Emulator* emulator) {
+void Chip8Disassembler::drawDisassembly(Chip8Emulator* emulator)
+{
     std::array<uint8, CpuBase::MEMORY_SIZE>& memory = emulator->getChip8Core()->getCpu()->getMemory();
     std::bitset<CpuBase::MEMORY_SIZE>& m_breakpoints = emulator->getBreakpoints();
     uint16 pc = emulator->getChip8Core()->getCpu()->getPc();
@@ -28,7 +29,9 @@ void Chip8Disassembler::drawDisassembly(Chip8Emulator* emulator) {
     case Chip8CoreType::SChipC:
         disassembler = SChipCCpuDisassembly::disassembleOpcode;
         break;
-    case Chip8CoreType::XoChip: break;
+    case Chip8CoreType::XoChip:
+        disassembler = SChipCCpuDisassembly::disassembleOpcode; // TODO: Add disassembler for XoChip
+        break;
     }
 
     bool currentPcInViewport = false;
@@ -84,7 +87,8 @@ void Chip8Disassembler::drawDisassembly(Chip8Emulator* emulator) {
     m_previousPc = pc;
 }
 
-void Chip8Disassembler::drawDisassemblyControls(Chip8Emulator* emulator) {
+void Chip8Disassembler::drawDisassemblyControls(Chip8Emulator* emulator)
+{
     Chip8topiaInputHandler& inputHandler = Chip8topiaInputHandler::getInstance();
 
     ImGui::Checkbox("Follow PC", &m_followPc);
@@ -127,7 +131,8 @@ void Chip8Disassembler::drawDisassemblyControls(Chip8Emulator* emulator) {
     }
 }
 
-void Chip8Disassembler::drawBreakpoints(Chip8Emulator* emulator) {
+void Chip8Disassembler::drawBreakpoints(Chip8Emulator* emulator)
+{
     std::bitset<CpuBase::MEMORY_SIZE>& breakpoints = emulator->getBreakpoints();
 
     if (ImGui::BeginTable("Breakpoints", 3, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_Resizable))

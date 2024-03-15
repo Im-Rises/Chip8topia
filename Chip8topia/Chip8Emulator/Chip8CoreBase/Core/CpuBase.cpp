@@ -15,6 +15,13 @@ CpuBase::CpuBase() : m_pc(START_ADDRESS),
 {
 }
 
+#if defined(BUILD_PARAM_SAFE)
+void CpuBase::setErrorCallback(const std::function<void(const std::string&)>& errorCallback)
+{
+    m_errorCallback = errorCallback;
+}
+#endif
+
 void CpuBase::reset()
 {
     m_pc = START_ADDRESS;
@@ -27,13 +34,6 @@ void CpuBase::reset()
     m_V = {};
     m_stack = {};
 }
-
-#if defined(BUILD_PARAM_SAFE)
-void CpuBase::setErrorCallback(const std::function<void(const std::string&)>& errorCallback)
-{
-    m_errorCallback = errorCallback;
-}
-#endif
 
 void CpuBase::readRom(const std::vector<uint8>& rom)
 {

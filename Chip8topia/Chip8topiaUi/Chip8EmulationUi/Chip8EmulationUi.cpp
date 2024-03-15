@@ -5,7 +5,8 @@
 
 #include "../../Chip8topia/Chip8topia.h"
 
-void Chip8EmulationUi::drawEmulationMenu(Chip8topia& chip8topia) {
+void Chip8EmulationUi::drawEmulationMenu(Chip8topia& chip8topia)
+{
     if (ImGui::BeginMenu(ICON_FA_GAMEPAD " Emulation"))
     {
         for (auto& menuItem : m_menuItems)
@@ -35,28 +36,32 @@ void Chip8EmulationUi::drawEmulationMenu(Chip8topia& chip8topia) {
     }
 }
 
-void Chip8EmulationUi::drawEmulationWindows(Chip8topia& chip8topia) {
+void Chip8EmulationUi::drawEmulationWindows(Chip8topia& chip8topia)
+{
     for (auto& menuItem : m_menuItems)
     {
         menuItem.drawWindow(&chip8topia);
     }
 }
 
-void Chip8EmulationUi::closeAllWindows() {
+void Chip8EmulationUi::closeAllWindows()
+{
     for (auto& menuItem : m_menuItems)
     {
         menuItem.m_isOpen = false;
     }
 }
 
-void Chip8EmulationUi::drawEmulationStats(Chip8topia& chip8topia) {
+void Chip8EmulationUi::drawEmulationStats(Chip8topia& chip8topia)
+{
     ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
     ImGui::Text("Screen size: %dx%d", chip8topia.getWindowWidth(), chip8topia.getWindowHeight());
     ImGui::Text("Frame time: %.3f ms", 1000.0F / ImGui::GetIO().Framerate);
     //    ImGui::Text("Total cycles: %d", chip8topia.getChip8Emulator().getTotalCycles());
 }
 
-void Chip8EmulationUi::drawEmulationSettings(Chip8topia* chip8topia) {
+void Chip8EmulationUi::drawEmulationSettings(Chip8topia* chip8topia)
+{
     Chip8Emulator& emulator = chip8topia->getChip8Emulator();
 
     ImGui::TextColored(ImVec4(1.0F, 1.0F, 0.0F, 1.0F), "Console version");
@@ -79,9 +84,10 @@ void Chip8EmulationUi::drawEmulationSettings(Chip8topia* chip8topia) {
     {
         m_selectedCore = Chip8CoreType::SChipC;
     }
-    //    if (ImGui::Selectable("Xo-Chip", emulator.getCoreType() == Chip8CoreType::XoChip))
-    //    {
-    //    }
+    if (ImGui::Selectable("Xo-Chip", emulator.getCoreType() == Chip8CoreType::XoChip))
+    {
+        m_selectedCore = Chip8CoreType::XoChip;
+    }
 
     ImGui::Separator();
 

@@ -6,7 +6,8 @@
 #include <binaryLib/binaryLib.h>
 #include <functional>
 
-enum class Chip8CoreType : uint8 {
+enum class Chip8CoreType : uint8
+{
     Chip8,         // Chip-8 (COSMAC VIP)
     SChip11Legacy, // SuperChip 1.1 (legacy)
     SChip11Modern, // SuperChip 1.1 (modern)
@@ -14,7 +15,8 @@ enum class Chip8CoreType : uint8 {
     XoChip         // XO-Chip
 };
 
-enum class Chip8Frequency : unsigned int {
+enum class Chip8Frequency : unsigned int
+{
     Freq600Hz = 600,
     Freq1200Hz = 1200,
     Freq1800Hz = 1800
@@ -23,7 +25,8 @@ enum class Chip8Frequency : unsigned int {
 class CpuBase;
 class PpuBase;
 class Input;
-class Chip8CoreBase {
+class Chip8CoreBase
+{
 public:
     static constexpr unsigned int SCREEN_AND_TIMERS_FREQUENCY = 60;
 
@@ -34,6 +37,10 @@ public:
     auto operator=(const Chip8CoreBase&) -> Chip8CoreBase& = delete;
     auto operator=(Chip8CoreBase&&) -> Chip8CoreBase& = delete;
     virtual ~Chip8CoreBase() = default;
+
+#if defined(BUILD_PARAM_SAFE)
+    void setErrorCallback(const std::function<void(const std::string&)>& errorCallback);
+#endif
 
 public:
     [[nodiscard]] virtual auto getType() const -> Chip8CoreType = 0;
@@ -48,10 +55,6 @@ public:
     [[nodiscard]] auto getCpu() -> std::unique_ptr<CpuBase>& { return m_cpu; }
     [[nodiscard]] auto getPpu() -> std::shared_ptr<PpuBase> { return m_ppu; }
     [[nodiscard]] auto getInput() -> std::shared_ptr<Input> { return m_input; }
-
-#if defined(BUILD_PARAM_SAFE)
-    void setErrorCallback(const std::function<void(const std::string&)>& errorCallback);
-#endif
 
 protected:
     std::unique_ptr<CpuBase> m_cpu;

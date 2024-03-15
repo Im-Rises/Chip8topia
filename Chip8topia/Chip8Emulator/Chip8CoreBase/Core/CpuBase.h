@@ -27,14 +27,15 @@ public:
     auto operator=(CpuBase&&) -> CpuBase& = delete;
     virtual ~CpuBase() = default;
 
+#if defined(BUILD_PARAM_SAFE)
+    void setErrorCallback(const std::function<void(const std::string&)>& errorCallback);
+#endif
+
     virtual void setPpu(std::shared_ptr<PpuBase> ppu) { m_ppu = std::move(ppu); }
     void setInput(std::shared_ptr<Input> input) { m_input = std::move(input); }
 
 public:
     virtual void reset();
-#if defined(BUILD_PARAM_SAFE)
-    void setErrorCallback(const std::function<void(const std::string&)>& errorCallback);
-#endif
     void readRom(const std::vector<uint8>& rom);
     void clock();
     void clockTimers();
