@@ -8,6 +8,7 @@
 #include "../Chip8Emulator/Disassembly/Chip8CpuDisassembly.h"
 #include "../Chip8Emulator/Disassembly/SChip11CpuDisassembly.h"
 #include "../Chip8Emulator/Disassembly/SChipCCpuDisassembly.h"
+#include "../Chip8Emulator/Disassembly/XoChipCpuDisassembly.h"
 #include "../../Chip8Emulator/Chip8Emulator.h"
 
 void Chip8Disassembler::drawDisassembly(Chip8Emulator* emulator)
@@ -30,7 +31,7 @@ void Chip8Disassembler::drawDisassembly(Chip8Emulator* emulator)
         disassembler = SChipCCpuDisassembly::disassembleOpcode;
         break;
     case Chip8CoreType::XoChip:
-        disassembler = SChipCCpuDisassembly::disassembleOpcode; // TODO: Add disassembler for XoChip
+        disassembler = XoChipCpuDisassembly::disassembleOpcode; // TODO: Add disassembler for XoChip
         break;
     }
 

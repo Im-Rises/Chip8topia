@@ -4,7 +4,7 @@
 
 XoChipCpu::XoChipCpu() : m_savedV{}
 {
-    //    std::copy(XO_FONTSET.begin(), XO_FONTSET.end(), m_memory.begin());
+    std::copy(XO_CHIP_FONTSET.begin(), XO_CHIP_FONTSET.end(), m_memory.begin());
 }
 
 void XoChipCpu::setPpu(std::shared_ptr<PpuBase> ppu)

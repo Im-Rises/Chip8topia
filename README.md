@@ -97,13 +97,18 @@ emmake make -C build
 
 ## TODO
 
+Major:
+
 - [-] Add Xo-Chip emulation
 - [-] Add safe and unsafe code version (set the callback error in Core and Cpu, and Ppu, the call it on error)
-- [ ] Add audio
+
+Minor:
+
 - [ ] Add a way to put front the windows on the main window click
-- [ ] Add save states ? (if yes create a window with an image preview of the save state) add in File main bar section
-- [ ] Do a general optimization of the code
 - [ ] Handle the issues with AZERTY keyboard and QWERTY keyboard (Desktop and Web)
 - [ ] Add a way to change the input keys
 - [ ] if none of the roms are loaded, we should display a background with written Chip8
+- [ ] Add audio
+- [ ] Add save states ? (if yes create a window with an image preview of the save state) add in File main bar section
+- [ ] Do a general optimization of the code
 
