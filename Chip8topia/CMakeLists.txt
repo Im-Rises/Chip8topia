@@ -64,10 +64,12 @@ else ()
     #    target_compile_definitions(${PROJECT_NAME} PRIVATE BUILD_CONFIG "$<$<CONFIG:Release>:Release>")
 endif ()
 
-if (TRUE)
+if (FALSE)
     target_compile_definitions(${PROJECT_NAME} PRIVATE BUILD_PARAM_SAFE)
+    message("Building with safe parameters")
 else ()
     target_compile_definitions(${PROJECT_NAME} PRIVATE BUILD_PARAM_UNSAFE)
+    message("Building with unsafe parameters")
 endif ()
 
 if (WIN32)

@@ -146,8 +146,10 @@ void Chip8Emulator::switchCoreFrequency(const Chip8CoreType coreType, const Chip
         break;
     }
 
+#if defined(BUILD_PARAM_SAFE)
     m_core->setErrorCallback([&](const std::string& errorMessage)
         { errorCallback(errorMessage); });
+#endif
 
     m_isRomLoaded = false;
 }
@@ -160,7 +162,6 @@ void Chip8Emulator::OnInput(const uint8 key, const bool isPressed)
 #if defined(BUILD_PARAM_SAFE)
 void Chip8Emulator::errorCallback(const std::string& errorMessage)
 {
-    // TODO: Pass this function to the Chip8Cores
     m_isRomLoaded = false;
     Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(errorMessage, nullptr);
 }

@@ -1,9 +1,11 @@
 #include "Input.h"
 
+#if defined(BUILD_PARAM_SAFE)
 void Input::setErrorCallback(const std::function<void(const std::string&)>& errorCallback)
 {
     m_errorCallback = errorCallback;
 }
+#endif
 
 void Input::reset()
 {
@@ -17,6 +19,14 @@ auto Input::isAnyKeyPressed() const -> bool
 
 auto Input::isKeyPressed(const uint8 Vx) const -> bool
 {
+#if defined(BUILD_PARAM_SAFE)
+    if (Vx >= KEY_COUNT)
+    {
+        m_errorCallback("Input::isKeyPressed - Vx out of range"); // TODO: Find a way to immediately return from here
+        return false;
+    }
+#endif
+
     return m_pressedKeys[Vx];
 }
 
