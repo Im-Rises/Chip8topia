@@ -1,7 +1,8 @@
 #include "Chip8Emulator.h"
 
-#include "../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
+#include <ImGuiNotify.hpp>
 
+#include "../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
 #include "ChipCores/Chip8Core/Chip8Core.h"
 #include "ChipCores/SChip11Core/SChip11Core.h"
 #include "ChipCores/SchipCCore/SChipCCore.h"
@@ -98,6 +99,7 @@ void Chip8Emulator::render(const float screenWidth, const float screenHeight)
 void Chip8Emulator::stop()
 {
     m_isRomLoaded = false;
+    ImGui::InsertNotification({ ImGuiToastType::Info, "Emulation stopped", "The emulation has been stopped. Please load a ROM to continue." });
 }
 
 void Chip8Emulator::setIsTurboMode(const bool isTurboMode)
@@ -152,6 +154,8 @@ void Chip8Emulator::switchCoreFrequency(const Chip8CoreType coreType, const Chip
 #endif
 
     m_isRomLoaded = false;
+
+    ImGui::InsertNotification({ ImGuiToastType::Info, "Core and frequency changed", "The core and frequency have been changed. Please load a ROM to continue." });
 }
 
 void Chip8Emulator::OnInput(const uint8 key, const bool isPressed)
