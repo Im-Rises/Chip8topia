@@ -2,23 +2,27 @@
 
 #include "SChip11Ppu.h"
 
-SChip11Cpu::SChip11Cpu(bool isModernMode) : m_isModernMode(isModernMode), m_isHalted(false), m_requestDisableHalt(false), m_savedV{} {
+SChip11Cpu::SChip11Cpu(bool isModernMode) : m_isModernMode(isModernMode), m_isHalted(false), m_requestDisableHalt(false), m_savedV{}
+{
     std::copy(SCHIP_FONTSET.begin(), SCHIP_FONTSET.end(), m_memory.begin());
 }
 
-void SChip11Cpu::setPpu(std::shared_ptr<PpuBase> ppu) {
+void SChip11Cpu::setPpu(std::shared_ptr<PpuBase> ppu)
+{
     CpuBase::setPpu(ppu);
     m_ppuCasted = dynamic_cast<SChip11Ppu*>(ppu.get());
 }
 
-void SChip11Cpu::reset() {
+void SChip11Cpu::reset()
+{
     CpuBase::reset();
     m_savedV.fill(0);
     m_isHalted = false;
     m_requestDisableHalt = false;
 }
 
-void SChip11Cpu::computeOpcode(const uint16 opcode) {
+void SChip11Cpu::computeOpcode(const uint16 opcode)
+{
     const uint8 nibble4 = (opcode & 0xF000) >> 12;
     const uint8 nibble3 = (opcode & 0x0F00) >> 8;
     const uint8 nibble2 = (opcode & 0x00F0) >> 4;
@@ -26,11 +30,13 @@ void SChip11Cpu::computeOpcode(const uint16 opcode) {
 
     switch (nibble4)
     {
-    case 0x0: {
+    case 0x0:
+    {
         switch (nibble2)
         {
         case 0xC: SCD(nibble1); break; // 00CN
-        case 0xE: {
+        case 0xE:
+        {
             switch (nibble1)
             {
             case 0x0: CLS(); break; // 00E0
@@ -38,7 +44,8 @@ void SChip11Cpu::computeOpcode(const uint16 opcode) {
             }
             break;
         }
-        case 0xF: {
+        case 0xF:
+        {
             switch (nibble1)
             {
             case 0xB: SCR(nibble1); break; // 00FB
@@ -60,7 +67,8 @@ void SChip11Cpu::computeOpcode(const uint16 opcode) {
     case 0x5: SE_Vx_Vy(nibble3, nibble2); break;          // 5XY0
     case 0x6: LD_Vx_nn(nibble3, opcode & 0x00FF); break;  // 6XNN
     case 0x7: ADD_Vx_nn(nibble3, opcode & 0x00FF); break; // 7XNN
-    case 0x8: {
+    case 0x8:
+    {
         switch (nibble1)
         {
         case 0x0: LD_Vx_Vy(nibble3, nibble2); break;   // 8XY0
@@ -80,7 +88,8 @@ void SChip11Cpu::computeOpcode(const uint16 opcode) {
     case 0xB: JP_Vx_addr(nibble3, opcode & 0x0FFF); break;   // Bxnn
     case 0xC: RND_Vx_nn(nibble3, opcode & 0x00FF); break;    // CXNN
     case 0xD: DRW_Vx_Vy_n(nibble3, nibble2, nibble1); break; // Dxyn
-    case 0xE: {
+    case 0xE:
+    {
         switch (nibble1)
         {
         case 0xE: SKP_Vx(nibble3); break;  // EX9E
@@ -88,7 +97,8 @@ void SChip11Cpu::computeOpcode(const uint16 opcode) {
         }
         break;
     }
-    case 0xF: {
+    case 0xF:
+    {
         switch (nibble2)
         {
         case 0x0:
@@ -107,7 +117,8 @@ void SChip11Cpu::computeOpcode(const uint16 opcode) {
             }
             break;
         case 0x2: LD_F_Vx(nibble3); break; // FX29
-        case 0x3: {
+        case 0x3:
+        {
             switch (nibble1)
             {
             case 0x0: LD_HF_Vx(nibble3); break; // FX30
@@ -125,82 +136,98 @@ void SChip11Cpu::computeOpcode(const uint16 opcode) {
     }
 }
 
-void SChip11Cpu::EXIT() {
+void SChip11Cpu::EXIT()
+{
     m_pc -= 2;
     // TODO Call the error callback here and return (exit the program)
 }
 
-void SChip11Cpu::SCD(const uint8 n) {
+void SChip11Cpu::SCD(const uint8 n)
+{
     m_ppuCasted->scrollDown(n, m_isModernMode);
 }
 
-void SChip11Cpu::SCR(const uint8 n) {
+void SChip11Cpu::SCR(const uint8 n)
+{
     m_ppuCasted->scrollRight(n, m_isModernMode);
 }
 
-void SChip11Cpu::SCL(const uint8 n) {
+void SChip11Cpu::SCL(const uint8 n)
+{
     m_ppuCasted->scrollLeft(n, m_isModernMode);
 }
 
-void SChip11Cpu::LORES() {
+void SChip11Cpu::LORES()
+{
     m_ppu->clearScreen();
     m_ppu->setMode(PpuBase::PpuMode::LORES);
 }
 
-void SChip11Cpu::HIRES() {
+void SChip11Cpu::HIRES()
+{
     m_ppu->clearScreen();
     m_ppu->setMode(PpuBase::PpuMode::HIRES);
 }
 
-void SChip11Cpu::OR_Vx_Vy(const uint8 x, const uint8 y) {
+void SChip11Cpu::OR_Vx_Vy(const uint8 x, const uint8 y)
+{
     m_V[x] |= m_V[y];
 }
 
-void SChip11Cpu::AND_Vx_Vy(const uint8 x, const uint8 y) {
+void SChip11Cpu::AND_Vx_Vy(const uint8 x, const uint8 y)
+{
     m_V[x] &= m_V[y];
 }
 
-void SChip11Cpu::XOR_Vx_Vy(const uint8 x, const uint8 y) {
+void SChip11Cpu::XOR_Vx_Vy(const uint8 x, const uint8 y)
+{
     m_V[x] ^= m_V[y];
 }
 
-void SChip11Cpu::LD_aI_Vx(const uint8 x) {
+void SChip11Cpu::LD_aI_Vx(const uint8 x)
+{
     for (int i = 0; i <= x; i++)
     {
         m_memory[m_I + i] = m_V[i];
     }
 }
 
-void SChip11Cpu::LD_Vx_aI(const uint8 x) {
+void SChip11Cpu::LD_Vx_aI(const uint8 x)
+{
     for (int i = 0; i <= x; i++)
     {
         m_V[i] = m_memory[m_I + i];
     }
 }
 
-void SChip11Cpu::SHR_Vx_Vy(const uint8 x, const uint8 y) {
+void SChip11Cpu::SHR_Vx_Vy(const uint8 x, const uint8 y)
+{
     const uint8 flag = m_V[x] & 0x1;
     m_V[x] >>= 1;
     m_V[0xF] = flag;
 }
 
-void SChip11Cpu::SUBN_Vx_Vy(const uint8 x, const uint8 y) {
+void SChip11Cpu::SUBN_Vx_Vy(const uint8 x, const uint8 y)
+{
     const auto flag = static_cast<uint8>(m_V[y] >= m_V[x]);
     m_V[x] = m_V[y] - m_V[x];
     m_V[0xF] = flag;
 }
 
-void SChip11Cpu::SHL_Vx_Vy(const uint8 x, const uint8 y) {
+void SChip11Cpu::SHL_Vx_Vy(const uint8 x, const uint8 y)
+{
     const uint8 flag = (m_V[x] & 0x80) >> 7;
     m_V[x] <<= 1;
     m_V[0xF] = flag;
 }
 
-void SChip11Cpu::JP_Vx_addr(const uint8 x, const uint16 address) {
+void SChip11Cpu::JP_Vx_addr(const uint8 x, const uint16 address)
+{
     m_pc = m_V[x] + address;
 }
 
-void SChip11Cpu::DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) {
+void SChip11Cpu::DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n)
+{
     if (m_ppu->getMode() == PpuBase::PpuMode::LORES && !m_isModernMode)
     {
         m_isHalted = true;
@@ -221,18 +248,21 @@ void SChip11Cpu::DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) {
     m_V[0xF] = static_cast<uint8>(m_ppu->drawSprite(m_V[x], m_V[y], n, m_memory, m_I));
 }
 
-void SChip11Cpu::LD_HF_Vx(const uint8 x) {
+void SChip11Cpu::LD_HF_Vx(const uint8 x)
+{
     m_I = (m_V[x] * 10) + 0x50;
 }
 
-void SChip11Cpu::LD_R_Vx(const uint8 x) {
+void SChip11Cpu::LD_R_Vx(const uint8 x)
+{
     for (int i = 0; i <= x; i++)
     {
         m_savedV[i] = m_V[i];
     }
 }
 
-void SChip11Cpu::LD_Vx_R(const uint8 x) {
+void SChip11Cpu::LD_Vx_R(const uint8 x)
+{
     for (int i = 0; i <= x; i++)
     {
         m_V[i] = m_savedV[i];

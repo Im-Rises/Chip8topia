@@ -8,10 +8,11 @@
 #include "Chip8About/Chip8About.h"
 #include "Chip8RomLoaderUi/Chip8RomLoaderUi.h"
 #include "Chip8EmulationUi/Chip8EmulationUi.h"
-#include "Chip8Error/Chip8MessageHandler.h"
+#include "Chip8MessageHandler/Chip8MessageHandler.h"
 
 class Chip8topia;
-class Chip8topiaUi {
+class Chip8topiaUi
+{
 public:
     Chip8topiaUi();
     Chip8topiaUi(const Chip8topiaUi&) = delete;
