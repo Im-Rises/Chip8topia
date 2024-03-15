@@ -33,6 +33,14 @@ https://github.com/Timendus/chip8-test-suite
 https://www.laurencescotford.net/2020/07/19/chip-8-on-the-cosmac-vip-drawing-sprites/
 https://chip8.gulrak.net/
 https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
+https://emscripten.org/docs/porting/files/packaging_files.html
+https://webgl2fundamentals.org/webgl/lessons/webgl-data-textures.html
+https://emscripten.org/docs/porting/files/index.html
+https://emscripten.org/docs/porting/files/file_systems_overview.html#file-system-overview
+https://emscripten.org/docs/porting/files/Synchronous-Virtual-XHR-Backed-File-System-Usage.html#synchronous-virtual-xhr-backed-file-system-usage
+https://github.com/marketplace/actions/upload-release-asset
+https://github.com/mymindstorm/setup-emsdk
+https://github.com/Armchair-Software/emscripten-browser-file
 
 ## Dependencies
 
@@ -48,17 +56,6 @@ https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
 - [ImGuiNotify](https://github.com/TyomaVader/ImGuiNotify/tree/Dev)
 - [IconFontCppHeaders](https://github.com/juliettef/IconFontCppHeaders)
 - [Font-Awesome](https://github.com/FortAwesome/Font-Awesome)
-
-### Other docs
-
-https://emscripten.org/docs/porting/files/packaging_files.html
-https://webgl2fundamentals.org/webgl/lessons/webgl-data-textures.html
-https://emscripten.org/docs/porting/files/index.html
-https://emscripten.org/docs/porting/files/file_systems_overview.html#file-system-overview
-https://emscripten.org/docs/porting/files/Synchronous-Virtual-XHR-Backed-File-System-Usage.html#synchronous-virtual-xhr-backed-file-system-usage
-https://github.com/marketplace/actions/upload-release-asset
-https://github.com/mymindstorm/setup-emsdk
-https://github.com/Armchair-Software/emscripten-browser-file
 
 ## Build
 
@@ -100,16 +97,13 @@ emmake make -C build
 
 ## TODO
 
-- [-] Add safe and unsafe code version (set the callback error in Core and Cpu, and Ppu, the call it on error)
 - [-] Add Xo-Chip emulation
-- [-] Add a way to put front the windows on the main window click
-
-- [ ] Replace all try catch with promises from C++23
+- [-] Add safe and unsafe code version (set the callback error in Core and Cpu, and Ppu, the call it on error)
 - [ ] Add audio
-- [ ] Add save states ? (if yes create a window with an image preview of the save state) ajouter dans la section File de
-  main bar
+- [ ] Add a way to put front the windows on the main window click
+- [ ] Add save states ? (if yes create a window with an image preview of the save state) add in File main bar section
 - [ ] Do a general optimization of the code
 - [ ] Handle the issues with AZERTY keyboard and QWERTY keyboard (Desktop and Web)
 - [ ] Add a way to change the input keys
-- [ ] if none of the roms are loaded, we should display a background with written Chip8 and Im-Rises
+- [ ] if none of the roms are loaded, we should display a background with written Chip8
 
