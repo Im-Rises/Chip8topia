@@ -70,6 +70,7 @@ void XoChipCpu::computeOpcode(const uint16 opcode)
         case 0x2: SV_RNG_Vx_Vy(nibble3, nibble2); break; // 5XY2
         case 0x3: LD_RNG_Vx_Vy(nibble3, nibble2); break; // 5XY3
         }
+        break;
     }
     case 0x6: LD_Vx_nn(nibble3, opcode & 0x00FF); break;  // 6XNN
     case 0x7: ADD_Vx_nn(nibble3, opcode & 0x00FF); break; // 7XNN
@@ -151,6 +152,7 @@ void XoChipCpu::computeOpcode(const uint16 opcode)
 void XoChipCpu::EXIT()
 {
     m_pc -= 2;
+    // TODO Call the error callback here and return (exit the program)
 }
 
 void XoChipCpu::SCD(const uint8 n)
