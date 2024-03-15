@@ -2,7 +2,8 @@
 
 #include "../../../Chip8CoreBase/Core/PpuBase.h"
 
-class XoChipPpu final : public PpuBase {
+class XoChipPpu final : public PpuBase
+{
 public:
     XoChipPpu() = default;
     XoChipPpu(const XoChipPpu&) = delete;
@@ -19,6 +20,12 @@ public:
     auto draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory) -> uint8;
 
     void scrollDown(uint8 n);
+    void scrollUp(uint8 n);
     void scrollRight(uint8 n);
     void scrollLeft(uint8 n);
+
+    void setPlane(uint8 x);
+
+private:
+    uint8 m_plane = 0;
 };

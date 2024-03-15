@@ -10,7 +10,8 @@
 
 class PpuBase;
 class Input;
-class CpuBase {
+class CpuBase
+{
 public:
     static constexpr uint16 START_ADDRESS = 0x200;
     static constexpr size_t MEMORY_SIZE = 0x1000;
@@ -42,6 +43,8 @@ private:
     [[nodiscard]] auto fetchOpcode() -> uint16;
 
 protected:
+    [[nodiscard]] auto fetchWord() -> uint16;
+
     virtual void computeOpcode(const uint16 opcode) = 0;
 
     void CLS();                                                                // 00E0
