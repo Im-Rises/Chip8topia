@@ -31,11 +31,11 @@ private:
     std::array<ImGuiMenuItemWindow<Chip8Emulator>, 4> m_menuItem = {
         ImGuiMenuItemWindow<Chip8Emulator>(ICON_FA_PALETTE " Background color", false, [this](Chip8Emulator* chip8Emulator)
             { drawBackgroundColor(chip8Emulator); }),
-        ImGuiMenuItemWindow<Chip8Emulator>(ICON_FA_PALETTE " Draw main plane color", false, [this](Chip8Emulator* chip8Emulator)
+        ImGuiMenuItemWindow<Chip8Emulator>(ICON_FA_PALETTE " Main plane color", false, [this](Chip8Emulator* chip8Emulator)
             { drawMainPlaneColor(chip8Emulator); }),
-        ImGuiMenuItemWindow<Chip8Emulator>(ICON_FA_PALETTE " Draw secondary plane color", false, [this](Chip8Emulator* chip8Emulator)
+        ImGuiMenuItemWindow<Chip8Emulator>(ICON_FA_PALETTE " Secondary plane color", false, [this](Chip8Emulator* chip8Emulator)
             { drawSecondaryPlaneColor(chip8Emulator); }),
-        ImGuiMenuItemWindow<Chip8Emulator>(ICON_FA_PALETTE " Draw plane pixels common color", false, [this](Chip8Emulator* chip8Emulator)
+        ImGuiMenuItemWindow<Chip8Emulator>(ICON_FA_PALETTE " Common plane pixels color", false, [this](Chip8Emulator* chip8Emulator)
             { drawPixelsCommonColor(chip8Emulator); })
     };
 };
