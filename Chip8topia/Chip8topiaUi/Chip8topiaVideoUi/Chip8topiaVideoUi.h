@@ -6,15 +6,15 @@
 #include "../ImGuiHelper/ImGuiHelper.h"
 
 class Chip8Emulator;
-class Chip8VideoUi
+class Chip8topiaVideoUi
 {
 public:
-    Chip8VideoUi() = default;
-    Chip8VideoUi(const Chip8VideoUi&) = delete;
-    Chip8VideoUi(Chip8VideoUi&&) = delete;
-    auto operator=(const Chip8VideoUi&) -> Chip8VideoUi& = delete;
-    auto operator=(Chip8VideoUi&&) -> Chip8VideoUi& = delete;
-    ~Chip8VideoUi() = default;
+    Chip8topiaVideoUi() = default;
+    Chip8topiaVideoUi(const Chip8topiaVideoUi&) = delete;
+    Chip8topiaVideoUi(Chip8topiaVideoUi&&) = delete;
+    auto operator=(const Chip8topiaVideoUi&) -> Chip8topiaVideoUi& = delete;
+    auto operator=(Chip8topiaVideoUi&&) -> Chip8topiaVideoUi& = delete;
+    ~Chip8topiaVideoUi() = default;
 
 public:
     void drawVideoMenu();

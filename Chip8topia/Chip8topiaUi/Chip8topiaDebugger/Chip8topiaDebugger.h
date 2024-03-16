@@ -7,10 +7,11 @@
 #include "../../Chip8Emulator/Chip8Emulator.h"
 #include "../../Chip8Emulator/ChipCores/Chip8Core/Chip8Core.h"
 #include "../ImGuiHelper/ImGuiHelper.h"
-#include "Chip8Disassembler.h"
+#include "Chip8topiaDisassembler.h"
 
 class Chip8Emulator;
-class Chip8topiaDebugger {
+class Chip8topiaDebugger
+{
 private:
 #if defined(__EMSCRIPTEN__)
     static constexpr auto INITIAL_WINDOW_STATE = false;
@@ -41,15 +42,22 @@ private:
 
 private:
     MemoryEditor m_memoryEditor;
-    Chip8Disassembler m_disassembler;
+    Chip8topiaDisassembler m_disassembler;
 
     std::array<ImGuiMenuItemWindow<Chip8Emulator>, 7> m_menuItems = {
-        ImGuiMenuItemWindow<Chip8Emulator>("Registers", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator) { drawRegisters(emulator->getChip8Core()); }),
-        ImGuiMenuItemWindow<Chip8Emulator>("Stack", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator) { drawStack(emulator->getChip8Core()); }),
-        ImGuiMenuItemWindow<Chip8Emulator>("Memory Editor", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator) { drawMemory(emulator->getChip8Core()); }),
-        ImGuiMenuItemWindow<Chip8Emulator>("Keypad", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator) { drawKeypad(emulator->getChip8Core()); }),
-        ImGuiMenuItemWindow<Chip8Emulator>("Assembly", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator) { drawDisassembly(emulator); }),
-        ImGuiMenuItemWindow<Chip8Emulator>("Assembly Controls", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator) { drawDisassemblyControls(emulator); }),
-        ImGuiMenuItemWindow<Chip8Emulator>("Breakpoints", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator) { m_disassembler.drawBreakpoints(emulator); })
+        ImGuiMenuItemWindow<Chip8Emulator>("Registers", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator)
+            { drawRegisters(emulator->getChip8Core()); }),
+        ImGuiMenuItemWindow<Chip8Emulator>("Stack", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator)
+            { drawStack(emulator->getChip8Core()); }),
+        ImGuiMenuItemWindow<Chip8Emulator>("Memory Editor", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator)
+            { drawMemory(emulator->getChip8Core()); }),
+        ImGuiMenuItemWindow<Chip8Emulator>("Keypad", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator)
+            { drawKeypad(emulator->getChip8Core()); }),
+        ImGuiMenuItemWindow<Chip8Emulator>("Assembly", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator)
+            { drawDisassembly(emulator); }),
+        ImGuiMenuItemWindow<Chip8Emulator>("Assembly Controls", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator)
+            { drawDisassemblyControls(emulator); }),
+        ImGuiMenuItemWindow<Chip8Emulator>("Breakpoints", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator)
+            { m_disassembler.drawBreakpoints(emulator); })
     };
 };
