@@ -109,7 +109,6 @@ void XoChipPpu::scrollDown(uint8 n)
     const int width = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
     const int height = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
     uint8* videoMemory = getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data();
-    n = getMode() == PpuMode::LORES ? n / 2 : n;
 
     for (int row = height - n - 1; row >= 0; row--)
     {
@@ -126,7 +125,6 @@ void XoChipPpu::scrollUp(uint8 n)
     const int width = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
     const int height = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
     uint8* videoMemory = getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data();
-    n = getMode() == PpuMode::LORES ? n / 2 : n;
 
     for (int row = 0; row < height - n; row++)
     {
@@ -143,7 +141,7 @@ void XoChipPpu::scrollRight(uint8 n)
     const int width = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
     const int height = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
     uint8* videoMemory = getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data();
-    n = getMode() == PpuMode::LORES ? 2 : 4;
+    n = 4;
 
     for (int col = width - n - 1; col >= 0; col--)
     {
@@ -160,7 +158,7 @@ void XoChipPpu::scrollLeft(uint8 n)
     const int width = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
     const int height = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
     uint8* videoMemory = getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data();
-    n = getMode() == PpuMode::LORES ? 2 : 4;
+    n = 4;
 
     for (int col = 0; col < width - n; col++)
     {
