@@ -1,6 +1,6 @@
 #include "PpuBase.h"
 
-PpuBase::PpuBase() : m_loresVideoMemory{}, m_hiresVideoMemory{}
+PpuBase::PpuBase() : m_loresVideoMemory{}, m_hiresVideoMemory{}, m_loresVideoMemoryPlane{}, m_hiresVideoMemoryPlane{}, m_plane(1)
 {
 }
 

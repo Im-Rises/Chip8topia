@@ -1,6 +1,7 @@
 #include "SChipCPpu.h"
 
-void SChipCPpu::clearScreen() {
+void SChipCPpu::clearScreen()
+{
     if (getMode() == PpuMode::LORES)
     {
         std::fill(m_loresVideoMemory.begin(), m_loresVideoMemory.end(), 0);
@@ -11,7 +12,59 @@ void SChipCPpu::clearScreen() {
     }
 }
 
-auto SChipCPpu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint16 I_reg) -> uint8 {
+void SChipCPpu::scrollDown(uint8 n)
+{
+    const int width = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
+    const int height = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
+    uint8* videoMemory = getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data();
+    n = getMode() == PpuMode::LORES ? n / 2 : n;
+
+    for (int row = height - n - 1; row >= 0; row--)
+    {
+        for (int col = 0; col < width; col++)
+        {
+            videoMemory[(row + n) * width + col] = videoMemory[row * width + col];
+            videoMemory[row * width + col] = 0;
+        }
+    }
+}
+
+void SChipCPpu::scrollRight(uint8 n)
+{
+    const int width = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
+    const int height = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
+    uint8* videoMemory = getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data();
+    n = getMode() == PpuMode::LORES ? 2 : 4;
+
+    for (int col = width - n - 1; col >= 0; col--)
+    {
+        for (int row = 0; row < height; row++)
+        {
+            videoMemory[row * width + col + n] = videoMemory[row * width + col];
+            videoMemory[row * width + col] = 0;
+        }
+    }
+}
+
+void SChipCPpu::scrollLeft(uint8 n)
+{
+    const int width = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
+    const int height = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
+    uint8* videoMemory = getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data();
+    n = getMode() == PpuMode::LORES ? 2 : 4;
+
+    for (int col = 0; col < width - n; col++)
+    {
+        for (int row = 0; row < height; row++)
+        {
+            videoMemory[row * width + col] = videoMemory[row * width + col + n];
+            videoMemory[row * width + col + n] = 0;
+        }
+    }
+}
+
+auto SChipCPpu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint16 I_reg) -> uint8
+{
     if ((getMode() == PpuMode::LORES) || (getMode() == PpuMode::HIRES && n != 0)) // Draw 8xN sprite
     {
         return draw8xNSprite(Vx, Vy, I_reg, memory, n, getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data());
@@ -22,7 +75,8 @@ auto SChipCPpu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, 
     }
 }
 
-auto SChipCPpu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint8 n, uint8* videoMemory) -> bool {
+auto SChipCPpu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint8 n, uint8* videoMemory) -> bool
+{
     bool collision = false;
 
     const int screenWidth = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
@@ -62,7 +116,8 @@ auto SChipCPpu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array
     return collision;
 }
 
-auto SChipCPpu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory) -> bool {
+auto SChipCPpu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory) -> bool
+{
     bool collision = false;
 
     for (int i = 0; i < 16; i++) // 16 rows
@@ -96,52 +151,4 @@ auto SChipCPpu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::arr
     }
 
     return collision;
-}
-
-void SChipCPpu::scrollDown(uint8 n) {
-    const int width = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
-    const int height = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
-    uint8* videoMemory = getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data();
-    n = getMode() == PpuMode::LORES ? n / 2 : n;
-
-    for (int row = height - n - 1; row >= 0; row--)
-    {
-        for (int col = 0; col < width; col++)
-        {
-            videoMemory[(row + n) * width + col] = videoMemory[row * width + col];
-            videoMemory[row * width + col] = 0;
-        }
-    }
-}
-
-void SChipCPpu::scrollRight(uint8 n) {
-    const int width = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
-    const int height = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
-    uint8* videoMemory = getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data();
-    n = getMode() == PpuMode::LORES ? 2 : 4;
-
-    for (int col = width - n - 1; col >= 0; col--)
-    {
-        for (int row = 0; row < height; row++)
-        {
-            videoMemory[row * width + col + n] = videoMemory[row * width + col];
-            videoMemory[row * width + col] = 0;
-        }
-    }
-}
-
-void SChipCPpu::scrollLeft(uint8 n) {
-    const int width = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
-    const int height = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
-    uint8* videoMemory = getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data();
-    n = getMode() == PpuMode::LORES ? 2 : 4;
-
-    for (int col = 0; col < width - n; col++)
-    {
-        for (int row = 0; row < height; row++)
-        {
-            videoMemory[row * width + col] = videoMemory[row * width + col + n];
-            videoMemory[row * width + col + n] = 0;
-        }
-    }
 }

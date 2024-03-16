@@ -6,7 +6,8 @@
 #include "../ImGuiHelper/ImGuiHelper.h"
 
 class Chip8Emulator;
-class Chip8VideoUi {
+class Chip8VideoUi
+{
 public:
     Chip8VideoUi() = default;
     Chip8VideoUi(const Chip8VideoUi&) = delete;
@@ -22,11 +23,19 @@ public:
 
 private:
     void drawBackgroundColor(Chip8Emulator* emulator);
-    void drawDrawColor(Chip8Emulator* emulator);
+    void drawMainPlaneColor(Chip8Emulator* emulator);
+    void drawSecondaryPlaneColor(Chip8Emulator* emulator);
+    void drawPixelsCommonColor(Chip8Emulator* emulator);
 
 private:
-    std::array<ImGuiMenuItemWindow<Chip8Emulator>, 2> m_menuItem = {
-        ImGuiMenuItemWindow<Chip8Emulator>(ICON_FA_PALETTE " Background color", false, [this](Chip8Emulator* chip8Emulator) { drawBackgroundColor(chip8Emulator); }),
-        ImGuiMenuItemWindow<Chip8Emulator>(ICON_FA_PALETTE " Draw color", false, [this](Chip8Emulator* chip8Emulator) { drawDrawColor(chip8Emulator); })
+    std::array<ImGuiMenuItemWindow<Chip8Emulator>, 4> m_menuItem = {
+        ImGuiMenuItemWindow<Chip8Emulator>(ICON_FA_PALETTE " Background color", false, [this](Chip8Emulator* chip8Emulator)
+            { drawBackgroundColor(chip8Emulator); }),
+        ImGuiMenuItemWindow<Chip8Emulator>(ICON_FA_PALETTE " Draw main plane color", false, [this](Chip8Emulator* chip8Emulator)
+            { drawMainPlaneColor(chip8Emulator); }),
+        ImGuiMenuItemWindow<Chip8Emulator>(ICON_FA_PALETTE " Draw secondary plane color", false, [this](Chip8Emulator* chip8Emulator)
+            { drawSecondaryPlaneColor(chip8Emulator); }),
+        ImGuiMenuItemWindow<Chip8Emulator>(ICON_FA_PALETTE " Draw plane pixels common color", false, [this](Chip8Emulator* chip8Emulator)
+            { drawPixelsCommonColor(chip8Emulator); })
     };
 };

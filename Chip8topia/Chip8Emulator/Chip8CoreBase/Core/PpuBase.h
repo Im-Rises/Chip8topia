@@ -42,11 +42,21 @@ public:
     [[nodiscard]] auto getMode() const -> PpuMode { return m_mode; }
     auto getLoresVideoMemory() -> std::array<uint8, SCREEN_LORES_MODE_WIDTH * SCREEN_LORES_MODE_HEIGHT>& { return m_loresVideoMemory; }
     auto getHiresVideoMemory() -> std::array<uint8, SCREEN_HIRES_MODE_WIDTH * SCREEN_HIRES_MODE_HEIGHT>& { return m_hiresVideoMemory; }
+    auto getLoresVideoMemoryPlane() -> std::array<uint8, SCREEN_LORES_MODE_WIDTH * SCREEN_LORES_MODE_HEIGHT>& { return m_loresVideoMemoryPlane; }
+    auto getHiresVideoMemoryPlane() -> std::array<uint8, SCREEN_HIRES_MODE_WIDTH * SCREEN_HIRES_MODE_HEIGHT>& { return m_hiresVideoMemoryPlane; }
 
-protected:
+    void setPlane(uint8 x) { m_plane = x; }
+    [[nodiscard]] auto getPlane() const -> uint8 { return m_plane; }
+
+protected: // TODO: For improvements, better make an array of plane instead of two separate arrays
     PpuMode m_mode = PpuMode::LORES;
     std::array<uint8, SCREEN_LORES_MODE_WIDTH * SCREEN_LORES_MODE_HEIGHT> m_loresVideoMemory;
     std::array<uint8, SCREEN_HIRES_MODE_WIDTH * SCREEN_HIRES_MODE_HEIGHT> m_hiresVideoMemory;
+
+    std::array<uint8, SCREEN_LORES_MODE_WIDTH * SCREEN_LORES_MODE_HEIGHT> m_loresVideoMemoryPlane;
+    std::array<uint8, SCREEN_HIRES_MODE_WIDTH * SCREEN_HIRES_MODE_HEIGHT> m_hiresVideoMemoryPlane;
+
+    uint8 m_plane;
 
 #if defined(BUILD_PARAM_SAFE)
     std::function<void(const std::string&)> m_errorCallback;

@@ -4,11 +4,101 @@ void XoChipPpu::clearScreen()
 {
     if (getMode() == PpuMode::LORES)
     {
-        std::fill(m_loresVideoMemory.begin(), m_loresVideoMemory.end(), 0);
+        if (m_plane == 1)
+        {
+            std::fill(m_loresVideoMemory.begin(), m_loresVideoMemory.end(), 0);
+        }
+        else if (m_plane == 2)
+        {
+            std::fill(m_loresVideoMemoryPlane.begin(), m_loresVideoMemoryPlane.end(), 0);
+        }
+        else if (m_plane == 3)
+        {
+            std::fill(m_loresVideoMemory.begin(), m_loresVideoMemory.end(), 0);
+            std::fill(m_loresVideoMemoryPlane.begin(), m_loresVideoMemoryPlane.end(), 0);
+        }
     }
     else
     {
-        std::fill(m_hiresVideoMemory.begin(), m_hiresVideoMemory.end(), 0);
+        if (m_plane == 1)
+        {
+            std::fill(m_hiresVideoMemory.begin(), m_hiresVideoMemory.end(), 0);
+        }
+        else if (m_plane == 2)
+        {
+            std::fill(m_hiresVideoMemoryPlane.begin(), m_hiresVideoMemoryPlane.end(), 0);
+        }
+        else if (m_plane == 3)
+        {
+            std::fill(m_hiresVideoMemory.begin(), m_hiresVideoMemory.end(), 0);
+            std::fill(m_hiresVideoMemoryPlane.begin(), m_hiresVideoMemoryPlane.end(), 0);
+        }
+    }
+}
+
+void XoChipPpu::scrollDown(uint8 n)
+{
+    const int width = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
+    const int height = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
+    uint8* videoMemory = getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data();
+
+    for (int row = height - n - 1; row >= 0; row--)
+    {
+        for (int col = 0; col < width; col++)
+        {
+            videoMemory[(row + n) * width + col] = videoMemory[row * width + col];
+            videoMemory[row * width + col] = 0;
+        }
+    }
+}
+
+void XoChipPpu::scrollUp(uint8 n)
+{
+    const int width = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
+    const int height = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
+    uint8* videoMemory = getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data();
+
+    for (int row = 0; row < height - n; row++)
+    {
+        for (int col = 0; col < width; col++)
+        {
+            videoMemory[row * width + col] = videoMemory[(row + n) * width + col];
+            videoMemory[(row + n) * width + col] = 0;
+        }
+    }
+}
+
+void XoChipPpu::scrollRight(uint8 n)
+{
+    const int width = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
+    const int height = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
+    uint8* videoMemory = getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data();
+    n = 4;
+
+    for (int col = width - n - 1; col >= 0; col--)
+    {
+        for (int row = 0; row < height; row++)
+        {
+            videoMemory[row * width + col + n] = videoMemory[row * width + col];
+            videoMemory[row * width + col] = 0;
+        }
+    }
+}
+
+void XoChipPpu::scrollLeft(uint8 n)
+{
+    const int width = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
+    const int height = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
+    uint8* videoMemory = getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data();
+    n = 4;
+
+    for (int col = 0; col < width - n; col++)
+    {
+        for (int row = 0; row < height; row++)
+        {
+            videoMemory[row * width + col] = videoMemory[row * width + col + n];
+            videoMemory[row * width + col + n] = 0;
+        }
     }
 }
 
@@ -102,75 +192,4 @@ auto XoChipPpu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::arr
     }
 
     return static_cast<uint8>(collision);
-}
-
-void XoChipPpu::scrollDown(uint8 n)
-{
-    const int width = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
-    const int height = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
-    uint8* videoMemory = getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data();
-
-    for (int row = height - n - 1; row >= 0; row--)
-    {
-        for (int col = 0; col < width; col++)
-        {
-            videoMemory[(row + n) * width + col] = videoMemory[row * width + col];
-            videoMemory[row * width + col] = 0;
-        }
-    }
-}
-
-void XoChipPpu::scrollUp(uint8 n)
-{
-    const int width = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
-    const int height = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
-    uint8* videoMemory = getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data();
-
-    for (int row = 0; row < height - n; row++)
-    {
-        for (int col = 0; col < width; col++)
-        {
-            videoMemory[row * width + col] = videoMemory[(row + n) * width + col];
-            videoMemory[(row + n) * width + col] = 0;
-        }
-    }
-}
-
-void XoChipPpu::scrollRight(uint8 n)
-{
-    const int width = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
-    const int height = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
-    uint8* videoMemory = getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data();
-    n = 4;
-
-    for (int col = width - n - 1; col >= 0; col--)
-    {
-        for (int row = 0; row < height; row++)
-        {
-            videoMemory[row * width + col + n] = videoMemory[row * width + col];
-            videoMemory[row * width + col] = 0;
-        }
-    }
-}
-
-void XoChipPpu::scrollLeft(uint8 n)
-{
-    const int width = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
-    const int height = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
-    uint8* videoMemory = getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data();
-    n = 4;
-
-    for (int col = 0; col < width - n; col++)
-    {
-        for (int row = 0; row < height; row++)
-        {
-            videoMemory[row * width + col] = videoMemory[row * width + col + n];
-            videoMemory[row * width + col + n] = 0;
-        }
-    }
-}
-
-void XoChipPpu::setPlane(uint8 x)
-{
-    m_plane = x;
 }

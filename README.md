@@ -17,24 +17,20 @@ It can emulate the original Chip8, the SCHIP1.1 and the SCHIPC. I will add the X
 
 ### Main resources
 
-http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#Dxyn
-https://chip8.gulrak.net/#quirk4
+http://devernay.free.fr/hacks/chip8/C8TECH10.HTM
+https://chip8.gulrak.net/
 https://github.com/Timendus/chip8-test-suite
 https://chip-8.github.io/extensions/#chip-48
 https://tobiasvl.github.io/blog/write-a-chip-8-emulator/
+http://johnearnest.github.io/Octo/docs/XO-ChipSpecification.html
 
 ### Other resources
 
-https://en.wikipedia.org/wiki/CHIP-8#Further_reading
-http://devernay.free.fr/hacks/chip8/C8TECH10.HTM
-http://tobiasvl.github.io/blog/write-a-chip-8-emulator/
+https://en.wikipedia.org/wiki/CHIP-8
 https://www.laurencescotford.net/2020/07/19/chip-8-on-the-cosmac-vip-arithmetic-and-logic-instructions/
-https://github.com/Timendus/chip8-test-suite
 https://www.laurencescotford.net/2020/07/19/chip-8-on-the-cosmac-vip-drawing-sprites/
-https://chip8.gulrak.net/
-https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
-https://emscripten.org/docs/porting/files/packaging_files.html
 https://webgl2fundamentals.org/webgl/lessons/webgl-data-textures.html
+https://emscripten.org/docs/porting/files/packaging_files.html
 https://emscripten.org/docs/porting/files/index.html
 https://emscripten.org/docs/porting/files/file_systems_overview.html#file-system-overview
 https://emscripten.org/docs/porting/files/Synchronous-Virtual-XHR-Backed-File-System-Usage.html#synchronous-virtual-xhr-backed-file-system-usage
@@ -100,7 +96,9 @@ emmake make -C build
 Major:
 
 - [-] Add Xo-Chip emulation
+- [-] Add a way to change the colors of the xochip
 - [-] Add safe and unsafe code version (set the callback error in Core and Cpu, and Ppu, the call it on error)
+- [-] Add in the cores a exit this clock when reaching an error or the EXIT opcode
 
 Minor:
 
