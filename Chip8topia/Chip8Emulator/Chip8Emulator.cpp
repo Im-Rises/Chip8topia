@@ -97,6 +97,57 @@ void Chip8Emulator::render(const float screenWidth, const float screenHeight)
     m_videoEmulation.update(m_core, screenWidth, screenHeight, CHIP8_ASPECT_RATIO);
 }
 
+auto Chip8Emulator::getChip8Core() -> Chip8CoreBase*
+{
+    return m_core.get();
+}
+
+auto Chip8Emulator::getChip8VideoEmulation() -> Chip8VideoEmulation&
+{
+    return m_videoEmulation;
+}
+
+
+[[nodiscard]] auto Chip8Emulator::getRomName() const -> std::string
+{
+    return m_romName;
+}
+
+[[nodiscard]] auto Chip8Emulator::getConsoleName() -> std::string
+{
+    return m_core->getConsoleName();
+}
+
+auto Chip8Emulator::getIsBreak() const -> bool
+{
+    return m_isBreak;
+}
+
+[[nodiscard]] auto Chip8Emulator::getIsRomLoaded() const -> bool
+{
+    return m_isRomLoaded;
+}
+
+auto Chip8Emulator::getCanBreak() -> bool*
+{
+    return &m_canBreak;
+}
+
+auto Chip8Emulator::getBreakpoints() -> std::bitset<CpuBase::MEMORY_SIZE>&
+{
+    return m_breakpoints;
+}
+
+auto Chip8Emulator::getCoreType() const -> Chip8CoreType
+{
+    return m_core->getType();
+}
+
+auto Chip8Emulator::getFrequency() const -> Chip8Frequency
+{
+    return m_core->getFrequency();
+}
+
 void Chip8Emulator::stop()
 {
     m_isRomLoaded = false;
@@ -108,24 +159,9 @@ void Chip8Emulator::setIsTurboMode(const bool isTurboMode)
     m_isTurboMode = isTurboMode;
 }
 
-auto Chip8Emulator::getChip8Core() -> Chip8CoreBase*
+void Chip8Emulator::setRomName(const std::string& romName)
 {
-    return m_core.get();
-}
-
-auto Chip8Emulator::getChip8VideoEmulation() -> Chip8VideoEmulation&
-{
-    return m_videoEmulation;
-}
-
-auto Chip8Emulator::getCoreType() const -> Chip8CoreType
-{
-    return m_core->getType();
-}
-
-auto Chip8Emulator::getFrequency() const -> Chip8Frequency
-{
-    return m_core->getFrequency();
+    m_romName = romName;
 }
 
 void Chip8Emulator::switchCoreFrequency(const Chip8CoreType coreType, const Chip8Frequency frequency)
@@ -157,6 +193,29 @@ void Chip8Emulator::switchCoreFrequency(const Chip8CoreType coreType, const Chip
     m_isRomLoaded = false;
 
     ImGui::InsertNotification({ ImGuiToastType::Info, "Core and frequency changed", "The core and frequency have been changed. Please load a ROM to continue." });
+}
+
+void Chip8Emulator::clearBreakpoints()
+{
+    m_breakpoints.reset();
+}
+
+void Chip8Emulator::stepEmulation()
+{
+    m_isBreak = true;
+    m_stepNextFrame = true;
+}
+void Chip8Emulator::runEmulation()
+{
+    m_isBreak = false;
+}
+void Chip8Emulator::breakEmulation()
+{
+    m_isBreak = true;
+}
+void Chip8Emulator::toggleBreakEmulation()
+{
+    m_isBreak = !m_isBreak;
 }
 
 void Chip8Emulator::OnInput(const uint8 key, const bool isPressed)

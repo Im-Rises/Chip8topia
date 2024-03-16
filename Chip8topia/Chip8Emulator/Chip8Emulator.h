@@ -29,73 +29,26 @@ public:
     void update(const float deltaTime);
     void render(const float screenWidth, const float screenHeight);
 
-    void stop();
-
-    void setIsTurboMode(const bool isTurboMode);
     [[nodiscard]] auto getChip8Core() -> Chip8CoreBase*;
     [[nodiscard]] auto getChip8VideoEmulation() -> Chip8VideoEmulation&;
-
-    void setRomName(const std::string& romName)
-    {
-        m_romName = romName;
-    }
-    [[nodiscard]] auto getRomName() const -> std::string
-    {
-        return m_romName;
-    }
-    [[nodiscard]] auto getConsoleName() -> std::string
-    {
-        return m_core->getConsoleName();
-    }
-
+    [[nodiscard]] auto getRomName() const -> std::string;
+    [[nodiscard]] auto getConsoleName() -> std::string;
+    [[nodiscard]] auto getIsBreak() const -> bool;
+    [[nodiscard]] auto getIsRomLoaded() const -> bool;
+    [[nodiscard]] auto getCanBreak() -> bool*;
+    [[nodiscard]] auto getBreakpoints() -> std::bitset<CpuBase::MEMORY_SIZE>&;
     [[nodiscard]] auto getCoreType() const -> Chip8CoreType;
     [[nodiscard]] auto getFrequency() const -> Chip8Frequency;
+
+    void stop();
+    void setIsTurboMode(const bool isTurboMode);
+    void setRomName(const std::string& romName);
     void switchCoreFrequency(const Chip8CoreType coreType, const Chip8Frequency frequency);
-
-    auto getCanBreak() -> bool*
-    {
-        return &m_canBreak;
-    }
-
-    auto getBreakpoints() -> std::bitset<CpuBase::MEMORY_SIZE>&
-    {
-        return m_breakpoints;
-    }
-    void clearBreakpoints()
-    {
-        m_breakpoints.reset();
-    }
-
-    void stepEmulation()
-    {
-        m_isBreak = true;
-        m_stepNextFrame = true;
-    }
-
-    void runEmulation()
-    {
-        m_isBreak = false;
-    }
-
-    void breakEmulation()
-    {
-        m_isBreak = true;
-    }
-
-    void toggleBreakEmulation()
-    {
-        m_isBreak = !m_isBreak;
-    }
-
-    auto getIsBreak() const -> bool
-    {
-        return m_isBreak;
-    }
-
-    [[nodiscard]] auto getIsRomLoaded() const -> bool
-    {
-        return m_isRomLoaded;
-    }
+    void clearBreakpoints();
+    void stepEmulation();
+    void runEmulation();
+    void breakEmulation();
+    void toggleBreakEmulation();
 
 private:
     void OnInput(const uint8 key, const bool isPressed);
@@ -120,5 +73,5 @@ private:
     bool m_stepNextFrame = false;
     bool m_canBreak = true;
 
-    std::bitset<CpuBase::MEMORY_SIZE> m_breakpoints; // Maybe use a map or a set instead of a bitset, this way we can access quickly to the elements and only on the elements we need to access (for the draw function)
+    std::bitset<CpuBase::MEMORY_SIZE> m_breakpoints; // TODO: Maybe use a map or a set instead of a bitset, this way we can access quickly to the elements and only on the elements we need to access (for the draw function)
 };

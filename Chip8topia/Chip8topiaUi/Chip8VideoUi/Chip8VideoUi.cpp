@@ -38,15 +38,15 @@ void Chip8VideoUi::drawBackgroundColor(Chip8Emulator* emulator)
 
 void Chip8VideoUi::drawMainPlaneColor(Chip8Emulator* emulator)
 {
-    ImGui::ColorPicker4("Draw color", reinterpret_cast<float*>(&emulator->getChip8VideoEmulation().getForegroundColor()));
+    ImGui::ColorPicker4("Draw color", reinterpret_cast<float*>(&emulator->getChip8VideoEmulation().getMainPlaneColor()));
 }
 
 void Chip8VideoUi::drawSecondaryPlaneColor(Chip8Emulator* emulator)
 {
-    ImGui::ColorPicker4("Draw color", reinterpret_cast<float*>(&emulator->getChip8VideoEmulation().getForegroundColor()));
+    ImGui::ColorPicker4("Draw color", reinterpret_cast<float*>(&emulator->getChip8VideoEmulation().getSecondaryPlaneColor()));
 }
 
 void Chip8VideoUi::drawPixelsCommonColor(Chip8Emulator* emulator)
 {
-    ImGui::ColorPicker4("Draw color", reinterpret_cast<float*>(&emulator->getChip8VideoEmulation().getForegroundColor()));
+    ImGui::ColorPicker4("Draw color", reinterpret_cast<float*>(&emulator->getChip8VideoEmulation().getPixelsCommonColor()));
 }

@@ -11,7 +11,8 @@
 #include "Chip8VideoEmulation/ShaderBW.h"
 
 class Chip8CoreBase;
-class Chip8VideoEmulation {
+class Chip8VideoEmulation
+{
 public:
     Chip8VideoEmulation();
     Chip8VideoEmulation(const Chip8VideoEmulation&) = delete;
@@ -26,12 +27,16 @@ public:
     void update(const std::unique_ptr<Chip8CoreBase>& core, const float screenWidth, const float screenHeight, const float chip8AspectRatio);
 
     [[nodiscard]] auto getBackgroundColor() -> ImVec4& { return m_backgroundColor; }
-    [[nodiscard]] auto getForegroundColor() -> ImVec4& { return m_foregroundColor; }
+    [[nodiscard]] auto getMainPlaneColor() -> ImVec4& { return m_mainPlaneColor; }
+    [[nodiscard]] auto getSecondaryPlaneColor() -> ImVec4& { return m_secondaryPlaneColor; }
+    [[nodiscard]] auto getPixelsCommonColor() -> ImVec4& { return m_pixelsCommonColor; }
 
 private:
     ShaderBW m_shaderLores;
     ShaderBW m_shaderHires;
 
     ImVec4 m_backgroundColor = { 0.3F, 0.3F, 0.3F, 1.0F };
-    ImVec4 m_foregroundColor = { 0.8F, 0.8F, 0.8F, 1.0F };
+    ImVec4 m_mainPlaneColor = { 0.8F, 0.8F, 0.8F, 1.0F };
+    ImVec4 m_secondaryPlaneColor = { 0.8F, 0.8F, 0.8F, 1.0F };
+    ImVec4 m_pixelsCommonColor = { 0.8F, 0.8F, 0.8F, 1.0F };
 };
