@@ -63,9 +63,9 @@ void Chip8Emulator::update(const float deltaTime)
 
     if (m_isBreak)
     {
-        if (m_stepNextFrame)
+        if (m_step)
         {
-            m_stepNextFrame = false;
+            m_step = false;
             m_core->clock();
         }
     }
@@ -203,7 +203,7 @@ void Chip8Emulator::clearBreakpoints()
 void Chip8Emulator::stepEmulation()
 {
     m_isBreak = true;
-    m_stepNextFrame = true;
+    m_step = true;
 }
 void Chip8Emulator::runEmulation()
 {
@@ -229,9 +229,4 @@ void Chip8Emulator::errorCallback(const std::string& errorMessage)
     m_isRomLoaded = false;
     Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(errorMessage, nullptr);
 }
-
-// void Chip8Emulator::warningCallback(const std::string& errorMessage) {
-//     m_isBreak = true;
-//     Chip8topiaInputHandler::getInstance().m_WarningEvent.trigger(errorMessage, nullptr);
-// }
 #endif

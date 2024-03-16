@@ -54,7 +54,6 @@ private:
     void OnInput(const uint8 key, const bool isPressed);
 #if defined(BUILD_PARAM_SAFE)
     void errorCallback(const std::string& errorMessage);
-//    void warningCallback(const std::string& errorMessage);
 #endif
 
 private:
@@ -70,7 +69,7 @@ private:
     float m_accumulator = 0.0F;
 
     bool m_isBreak = false;
-    bool m_stepNextFrame = false;
+    bool m_step = false;
     bool m_canBreak = true;
 
     std::bitset<CpuBase::MEMORY_SIZE> m_breakpoints; // TODO: Maybe use a map or a set instead of a bitset, this way we can access quickly to the elements and only on the elements we need to access (for the draw function)
