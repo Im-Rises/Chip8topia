@@ -6,15 +6,15 @@
 #include "../ImGuiHelper/ImGuiHelper.h"
 
 class Chip8Emulator;
-class Chip8VideoUi
+class Chip8topiaVideoUi
 {
 public:
-    Chip8VideoUi() = default;
-    Chip8VideoUi(const Chip8VideoUi&) = delete;
-    Chip8VideoUi(Chip8VideoUi&&) = delete;
-    auto operator=(const Chip8VideoUi&) -> Chip8VideoUi& = delete;
-    auto operator=(Chip8VideoUi&&) -> Chip8VideoUi& = delete;
-    ~Chip8VideoUi() = default;
+    Chip8topiaVideoUi() = default;
+    Chip8topiaVideoUi(const Chip8topiaVideoUi&) = delete;
+    Chip8topiaVideoUi(Chip8topiaVideoUi&&) = delete;
+    auto operator=(const Chip8topiaVideoUi&) -> Chip8topiaVideoUi& = delete;
+    auto operator=(Chip8topiaVideoUi&&) -> Chip8topiaVideoUi& = delete;
+    ~Chip8topiaVideoUi() = default;
 
 public:
     void drawVideoMenu();
@@ -31,11 +31,11 @@ private:
     std::array<ImGuiMenuItemWindow<Chip8Emulator>, 4> m_menuItem = {
         ImGuiMenuItemWindow<Chip8Emulator>(ICON_FA_PALETTE " Background color", false, [this](Chip8Emulator* chip8Emulator)
             { drawBackgroundColor(chip8Emulator); }),
-        ImGuiMenuItemWindow<Chip8Emulator>(ICON_FA_PALETTE " Draw main plane color", false, [this](Chip8Emulator* chip8Emulator)
+        ImGuiMenuItemWindow<Chip8Emulator>(ICON_FA_PALETTE " Main plane color", false, [this](Chip8Emulator* chip8Emulator)
             { drawMainPlaneColor(chip8Emulator); }),
-        ImGuiMenuItemWindow<Chip8Emulator>(ICON_FA_PALETTE " Draw secondary plane color", false, [this](Chip8Emulator* chip8Emulator)
+        ImGuiMenuItemWindow<Chip8Emulator>(ICON_FA_PALETTE " Secondary plane color", false, [this](Chip8Emulator* chip8Emulator)
             { drawSecondaryPlaneColor(chip8Emulator); }),
-        ImGuiMenuItemWindow<Chip8Emulator>(ICON_FA_PALETTE " Draw plane pixels common color", false, [this](Chip8Emulator* chip8Emulator)
+        ImGuiMenuItemWindow<Chip8Emulator>(ICON_FA_PALETTE " Common plane pixels color", false, [this](Chip8Emulator* chip8Emulator)
             { drawPixelsCommonColor(chip8Emulator); })
     };
 };

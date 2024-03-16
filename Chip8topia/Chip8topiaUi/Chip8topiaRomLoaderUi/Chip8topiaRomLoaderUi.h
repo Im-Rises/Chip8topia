@@ -3,7 +3,8 @@
 #include <string>
 
 class Chip8topia;
-class Chip8RomLoaderUi {
+class Chip8topiaRomLoaderUi
+{
 private:
     static constexpr auto FILE_DIALOG_NAME = "RomFileWindowDialog";
 #if defined(__EMSCRIPTEN__)
@@ -13,12 +14,12 @@ private:
 #endif
 
 public:
-    Chip8RomLoaderUi();
-    Chip8RomLoaderUi(const Chip8RomLoaderUi&) = delete;
-    Chip8RomLoaderUi(Chip8RomLoaderUi&&) = delete;
-    auto operator=(const Chip8RomLoaderUi&) -> Chip8RomLoaderUi& = delete;
-    auto operator=(Chip8RomLoaderUi&&) -> Chip8RomLoaderUi& = delete;
-    ~Chip8RomLoaderUi();
+    Chip8topiaRomLoaderUi();
+    Chip8topiaRomLoaderUi(const Chip8topiaRomLoaderUi&) = delete;
+    Chip8topiaRomLoaderUi(Chip8topiaRomLoaderUi&&) = delete;
+    auto operator=(const Chip8topiaRomLoaderUi&) -> Chip8topiaRomLoaderUi& = delete;
+    auto operator=(Chip8topiaRomLoaderUi&&) -> Chip8topiaRomLoaderUi& = delete;
+    ~Chip8topiaRomLoaderUi();
 
 public:
     void drawFileMenu(Chip8topia& chip8topia);

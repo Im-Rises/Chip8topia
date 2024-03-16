@@ -1,4 +1,4 @@
-#include "Chip8Disassembler.h"
+#include "Chip8topiaDisassembler.h"
 
 #include <imgui.h>
 #include <fmt/format.h>
@@ -11,7 +11,7 @@
 #include "../Chip8Emulator/Disassembly/XoChipCpuDisassembly.h"
 #include "../../Chip8Emulator/Chip8Emulator.h"
 
-void Chip8Disassembler::drawDisassembly(Chip8Emulator* emulator)
+void Chip8topiaDisassembler::drawDisassembly(Chip8Emulator* emulator)
 {
     std::array<uint8, CpuBase::MEMORY_SIZE>& memory = emulator->getChip8Core()->getCpu()->getMemory();
     std::bitset<CpuBase::MEMORY_SIZE>& m_breakpoints = emulator->getBreakpoints();
@@ -88,7 +88,7 @@ void Chip8Disassembler::drawDisassembly(Chip8Emulator* emulator)
     m_previousPc = pc;
 }
 
-void Chip8Disassembler::drawDisassemblyControls(Chip8Emulator* emulator)
+void Chip8topiaDisassembler::drawDisassemblyControls(Chip8Emulator* emulator)
 {
     Chip8topiaInputHandler& inputHandler = Chip8topiaInputHandler::getInstance();
 
@@ -132,7 +132,7 @@ void Chip8Disassembler::drawDisassemblyControls(Chip8Emulator* emulator)
     }
 }
 
-void Chip8Disassembler::drawBreakpoints(Chip8Emulator* emulator)
+void Chip8topiaDisassembler::drawBreakpoints(Chip8Emulator* emulator)
 {
     std::bitset<CpuBase::MEMORY_SIZE>& breakpoints = emulator->getBreakpoints();
 

@@ -6,14 +6,15 @@
 
 #include "../ImGuiHelper/ImGuiHelper.h"
 
-class Chip8MessageHandler {
+class Chip8topiaMessageHandler
+{
 public:
-    Chip8MessageHandler();
-    Chip8MessageHandler(const Chip8MessageHandler&) = delete;
-    Chip8MessageHandler(Chip8MessageHandler&&) = delete;
-    auto operator=(const Chip8MessageHandler&) -> Chip8MessageHandler& = delete;
-    auto operator=(Chip8MessageHandler&&) -> Chip8MessageHandler& = delete;
-    ~Chip8MessageHandler();
+    Chip8topiaMessageHandler();
+    Chip8topiaMessageHandler(const Chip8topiaMessageHandler&) = delete;
+    Chip8topiaMessageHandler(Chip8topiaMessageHandler&&) = delete;
+    auto operator=(const Chip8topiaMessageHandler&) -> Chip8topiaMessageHandler& = delete;
+    auto operator=(Chip8topiaMessageHandler&&) -> Chip8topiaMessageHandler& = delete;
+    ~Chip8topiaMessageHandler();
 
 public:
     void triggerError(const std::string& message, std::function<void()> callback = nullptr);

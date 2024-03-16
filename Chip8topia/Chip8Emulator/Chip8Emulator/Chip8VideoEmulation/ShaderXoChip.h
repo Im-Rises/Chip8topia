@@ -12,15 +12,15 @@
 #include "../../../Shader/Shader.h"
 
 struct ImVec4;
-class ShaderBW
+class ShaderXoChip
 {
 private:
 #if defined(__EMSCRIPTEN__)
-    static constexpr auto VERTEX_SHADER_PATH = "shaders/Chip8topia_es.vert";
-    static constexpr auto FRAGMENT_SHADER_PATH = "shaders/Chip8topia_es.frag";
+    static constexpr auto VERTEX_SHADER_PATH = "shaders/Chip8topiaXoChip_es.vert";
+    static constexpr auto FRAGMENT_SHADER_PATH = "shaders/Chip8topiaXoChip_es.frag";
 #else
-    static constexpr auto VERTEX_SHADER_PATH = "shaders/Chip8topia.vert";
-    static constexpr auto FRAGMENT_SHADER_PATH = "shaders/Chip8topia.frag";
+    static constexpr auto VERTEX_SHADER_PATH = "shaders/Chip8topiaXoChip.vert";
+    static constexpr auto FRAGMENT_SHADER_PATH = "shaders/Chip8topiaXoChip.frag";
 #endif
 
     static constexpr std::array<GLfloat, 12> VERTICES = {
@@ -35,12 +35,12 @@ private:
     };
 
 public:
-    ShaderBW(int width, int height);
-    ShaderBW(const ShaderBW&) = delete;
-    ShaderBW(ShaderBW&&) = delete;
-    auto operator=(const ShaderBW&) -> ShaderBW& = delete;
-    auto operator=(ShaderBW&&) -> ShaderBW& = delete;
-    ~ShaderBW();
+    ShaderXoChip(int width, int height);
+    ShaderXoChip(const ShaderXoChip&) = delete;
+    ShaderXoChip(ShaderXoChip&&) = delete;
+    auto operator=(const ShaderXoChip&) -> ShaderXoChip& = delete;
+    auto operator=(ShaderXoChip&&) -> ShaderXoChip& = delete;
+    ~ShaderXoChip();
 
 public:
     void updateTexture(const uint8* data);
