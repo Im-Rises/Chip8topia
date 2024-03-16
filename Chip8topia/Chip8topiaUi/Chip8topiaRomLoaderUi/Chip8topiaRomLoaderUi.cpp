@@ -92,7 +92,7 @@ void Chip8topiaRomLoaderUi::drawRomWindow(Chip8topia& chip8topia)
 }
 
 #if defined(__EMSCRIPTEN__)
-void Chip8RomLoaderUi::handle_upload_file(std::string const& filename, std::string const& mime_type, std::string_view buffer, void* chip8emulator)
+void Chip8topiaRomLoaderUi::handle_upload_file(std::string const& filename, std::string const& mime_type, std::string_view buffer, void* chip8emulator)
 {
 #if !defined(BUILD_RELEASE)
     std::cout << "File uploaded: " << filename << " (" << mime_type << ")" << '\n';

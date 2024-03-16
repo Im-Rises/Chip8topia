@@ -53,6 +53,6 @@ private:
     GLuint m_texture;
     Shader m_shader;
 
-    int m_width;
-    int m_height;
+    const int WIDTH;
+    const int HEIGHT;
 };

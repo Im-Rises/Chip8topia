@@ -23,6 +23,7 @@ https://github.com/Timendus/chip8-test-suite
 https://chip-8.github.io/extensions/#chip-48
 https://tobiasvl.github.io/blog/write-a-chip-8-emulator/
 http://johnearnest.github.io/Octo/docs/XO-ChipSpecification.html
+https://github.com/Timendus/silicon8/tree/
 
 ### Other resources
 

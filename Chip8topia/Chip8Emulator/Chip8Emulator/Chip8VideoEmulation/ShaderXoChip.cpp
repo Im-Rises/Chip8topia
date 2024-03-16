@@ -2,7 +2,7 @@
 
 #include <imgui.h>
 
-ShaderXoChip::ShaderXoChip(int width, int height) : m_width(width), m_height(height),
+ShaderXoChip::ShaderXoChip(int width, int height) : WIDTH(width), HEIGHT(height),
                                                     m_VAO(0), m_VBO(0), m_texture(0),
                                                     m_shader(VERTEX_SHADER_PATH, FRAGMENT_SHADER_PATH)
 {
