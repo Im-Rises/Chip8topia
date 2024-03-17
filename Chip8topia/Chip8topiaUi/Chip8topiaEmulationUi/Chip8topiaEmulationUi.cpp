@@ -111,6 +111,6 @@ void Chip8topiaEmulationUi::drawEmulationSettings(Chip8topia* chip8topia)
     if (ImGui::Button("Apply"))
     {
         emulator.switchCoreFrequency(m_selectedCore, m_selectedFrequency);
-        m_menuItems[1].m_isOpen = false;
+        m_menuItems[0].m_isOpen = false;
     }
 }

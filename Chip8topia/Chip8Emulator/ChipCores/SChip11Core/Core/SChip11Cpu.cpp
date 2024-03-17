@@ -147,12 +147,12 @@ void SChip11Cpu::SCD(const uint8 n)
 
 void SChip11Cpu::SCR(const uint8 n)
 {
-    CpuBase::SCR((m_ppu->getMode() == PpuBase::PpuMode::LORES && !m_isModernMode) ? n / 2 : n);
+    CpuBase::SCR((m_ppu->getMode() == PpuBase::PpuMode::LORES && !m_isModernMode) ? 2 : 4);
 }
 
 void SChip11Cpu::SCL(const uint8 n)
 {
-    CpuBase::SCL((m_ppu->getMode() == PpuBase::PpuMode::LORES && !m_isModernMode) ? n / 2 : n);
+    CpuBase::SCL((m_ppu->getMode() == PpuBase::PpuMode::LORES && !m_isModernMode) ? 2 : 4);
 }
 
 void SChip11Cpu::SHR_Vx_Vy(const uint8 x, const uint8 y)

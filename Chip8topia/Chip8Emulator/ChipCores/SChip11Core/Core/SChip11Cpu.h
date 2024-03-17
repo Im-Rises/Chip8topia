@@ -24,9 +24,9 @@ public:
 private:
     void computeOpcode(const uint16 opcode) final;
 
-    virtual void SCD(const uint8 n);                                     // 00CN
-    virtual void SCR(const uint8 n);                                     // 00FB
-    virtual void SCL(const uint8 n);                                     // 00FC
+    void SCD(const uint8 n) final;                                       // 00CN
+    void SCR(const uint8 n) final;                                       // 00FB
+    void SCL(const uint8 n) final;                                       // 00FC
     void SHR_Vx_Vy(const uint8 x, const uint8 y) final;                  // 8xy6
     void SHL_Vx_Vy(const uint8 x, const uint8 y) final;                  // 8xyE
     void DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) final; // Dxyn

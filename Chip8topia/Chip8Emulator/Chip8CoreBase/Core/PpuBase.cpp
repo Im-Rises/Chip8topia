@@ -64,11 +64,6 @@ void PpuBase::setPlane(uint8 x)
     m_plane = x;
 }
 
-auto PpuBase::getPlane() const -> uint8
-{
-    return m_plane;
-}
-
 #if defined(BUILD_PARAM_SAFE)
 void PpuBase::setErrorCallback(const std::function<void(const std::string&)>& errorCallback)
 {

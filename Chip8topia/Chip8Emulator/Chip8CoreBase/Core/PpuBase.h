@@ -53,7 +53,6 @@ public:
     auto getLoresVideoMemoryPlane() -> std::array<uint8, SCREEN_LORES_MODE_SIZE>&;
     auto getHiresVideoMemoryPlane() -> std::array<uint8, SCREEN_HIRES_MODE_SIZE>&;
     void setPlane(uint8 x);
-    [[nodiscard]] auto getPlane() const -> uint8;
 
 protected: // TODO: For improvements, better make an array of plane instead of two separate arrays
     PpuMode m_mode;
