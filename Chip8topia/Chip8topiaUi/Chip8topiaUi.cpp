@@ -68,7 +68,7 @@ void Chip8topiaUi::drawViewMenu(Chip8topia& chip8topia)
     {
         ImGui::MenuItem(ICON_FA_WINDOW_MINIMIZE " Show/Hide MenuBar", "U", &m_isMenuBarOpen);
 
-        if (ImGui::MenuItem(ICON_FA_XMARK " Close all windows", "ESC"))
+        if (ImGui::MenuItem(ICON_FA_XMARK " Close all windows", "I"))
         {
             closeAllWindows();
         }
