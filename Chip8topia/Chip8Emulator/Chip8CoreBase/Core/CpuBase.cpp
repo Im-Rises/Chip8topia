@@ -88,6 +88,19 @@ void CpuBase::RET()
     m_pc = m_stack[--m_sp];
 }
 
+void CpuBase::EXIT()
+{
+    m_pc -= 2;
+    // TODO Call the error callback here and return (exit the program)
+}
+
+void CpuBase::SYS(const uint16 /*address*/)
+{
+    // This opcode is only used on the old computers on which Chip-8 was originally implemented.
+    // It is ignored by modern interpreters.
+    m_pc += 2;
+}
+
 void CpuBase::JP_addr(const uint16 addr)
 {
     m_pc = addr;
@@ -151,6 +164,27 @@ void CpuBase::SUB_Vx_Vy(const uint8 x, const uint8 y)
     m_V[0xF] = flag;
 }
 
+void CpuBase::SHR_Vx_Vy(const uint8 x, const uint8 y)
+{
+    const uint8 flag = m_V[y] & 0x1;
+    m_V[x] = m_V[y] >> 1;
+    m_V[0xF] = flag;
+}
+
+void CpuBase::SUBN_Vx_Vy(const uint8 x, const uint8 y)
+{
+    const auto flag = static_cast<uint8>(m_V[y] >= m_V[x]);
+    m_V[x] = m_V[y] - m_V[x];
+    m_V[0xF] = flag;
+}
+
+void CpuBase::SHL_Vx_Vy(const uint8 x, const uint8 y)
+{
+    const uint8 flag = (m_V[x] & 0x80) >> 7;
+    m_V[x] = m_V[y] << 1;
+    m_V[0xF] = flag;
+}
+
 void CpuBase::SNE_Vx_Vy(const uint8 x, const uint8 y)
 {
     if (m_V[x] != m_V[y])
@@ -162,6 +196,16 @@ void CpuBase::SNE_Vx_Vy(const uint8 x, const uint8 y)
 void CpuBase::LD_I_addr(const uint16 addr)
 {
     m_I = addr;
+}
+
+void CpuBase::JP_nnn_V0(const uint16 address)
+{
+    m_pc = address + m_V[0];
+}
+
+void CpuBase::JP_xnn_Vx(const uint16 address, const uint8 x)
+{
+    m_pc = address + m_V[0];
 }
 
 void CpuBase::RND_Vx_nn(const uint8 x, const uint8 nn)
@@ -222,9 +266,30 @@ void CpuBase::LD_F_Vx(const uint8 x)
     m_I = m_V[x] * 5;
 }
 
+void CpuBase::LD_HF_Vx(const uint8 x)
+{
+    m_I = (m_V[x] * 10) + 0x50;
+}
+
 void CpuBase::LD_B_Vx(const uint8 x)
 {
     m_memory[m_I] = m_V[x] / 100;
     m_memory[m_I + 1] = (m_V[x] / 10) % 10;
     m_memory[m_I + 2] = (m_V[x] % 100) % 10;
+}
+
+void CpuBase::LD_R_Vx(const uint8 x)
+{
+    for (int i = 0; i <= x; i++)
+    {
+        m_savedV[i] = m_V[i];
+    }
+}
+
+void CpuBase::LD_Vx_R(const uint8 x)
+{
+    for (int i = 0; i <= x; i++)
+    {
+        m_V[i] = m_savedV[i];
+    }
 }

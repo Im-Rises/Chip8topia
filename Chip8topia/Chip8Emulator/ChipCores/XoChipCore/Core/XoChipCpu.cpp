@@ -4,7 +4,7 @@
 
 #include "../../../Chip8CoreBase/Core/Input.h"
 
-XoChipCpu::XoChipCpu() : m_savedV{}, m_ppuCasted(nullptr)
+XoChipCpu::XoChipCpu() : m_ppuCasted(nullptr)
 {
     std::copy(XO_CHIP_FONTSET.begin(), XO_CHIP_FONTSET.end(), m_memory.begin());
 }
@@ -94,7 +94,7 @@ void XoChipCpu::computeOpcode(const uint16 opcode)
     }
     case 0x9: SNE_Vx_Vy(nibble3, nibble2); break;            // 9XY0
     case 0xA: LD_I_addr(opcode & 0x0FFF); break;             // ANNN
-    case 0xB: JP_V0_addr(opcode & 0x0FFF); break;            // Bxnn
+    case 0xB: JP_nnn_V0(opcode & 0x0FFF); break;             // BNNN
     case 0xC: RND_Vx_nn(nibble3, opcode & 0x00FF); break;    // CXNN
     case 0xD: DRW_Vx_Vy_n(nibble3, nibble2, nibble1); break; // Dxyn
     case 0xE:
@@ -153,12 +153,6 @@ void XoChipCpu::computeOpcode(const uint16 opcode)
 #if defined(BUILD_PARAM_SAFE)
     m_errorCallback("Invalid opcode: " + std::to_string(opcode));
 #endif
-}
-
-void XoChipCpu::EXIT()
-{
-    m_pc -= 2;
-    // TODO Call the error callback here and return (exit the program)
 }
 
 void XoChipCpu::SCD(const uint8 n)
@@ -248,38 +242,12 @@ void XoChipCpu::XOR_Vx_Vy(const uint8 x, const uint8 y)
     m_V[x] ^= m_V[y];
 }
 
-void XoChipCpu::SHR_Vx_Vy(const uint8 x, const uint8 y)
-{
-    const uint8 flag = m_V[y] & 0x1;
-    m_V[x] = m_V[y] >> 1;
-    m_V[0xF] = flag;
-}
-
-void XoChipCpu::SUBN_Vx_Vy(const uint8 x, const uint8 y)
-{
-    const auto flag = static_cast<uint8>(m_V[y] >= m_V[x]);
-    m_V[x] = m_V[y] - m_V[x];
-    m_V[0xF] = flag;
-}
-
-void XoChipCpu::SHL_Vx_Vy(const uint8 x, const uint8 y)
-{
-    const uint8 flag = (m_V[x] & 0x80) >> 7;
-    m_V[x] = m_V[y] << 1;
-    m_V[0xF] = flag;
-}
-
 void XoChipCpu::SNE_Vx_Vy(const uint8 x, const uint8 y)
 {
     if (m_V[x] != m_V[y])
     {
         readNextWord() == 0xF000 ? m_pc += 4 : m_pc += 2;
     }
-}
-
-void XoChipCpu::JP_V0_addr(const uint16 address)
-{
-    m_pc = m_V[0] + address;
 }
 
 void XoChipCpu::DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n)
@@ -317,11 +285,6 @@ void XoChipCpu::LD_AUDIO_aI()
     // TODO: Implement xo chip sound
 }
 
-void XoChipCpu::LD_HF_Vx(const uint8 x)
-{
-    m_I = (m_V[x] * 10) + 0x50;
-}
-
 void XoChipCpu::SET_PITCH_x(const uint8 x)
 {
     // TODO: Implement xo chip sound
@@ -343,20 +306,4 @@ void XoChipCpu::LD_Vx_aI(const uint8 x)
         m_V[i] = m_memory[m_I + i];
     }
     m_I += x + 1;
-}
-
-void XoChipCpu::LD_R_Vx(const uint8 x)
-{
-    for (int i = 0; i <= x; i++)
-    {
-        m_savedV[i] = m_V[i];
-    }
-}
-
-void XoChipCpu::LD_Vx_R(const uint8 x)
-{
-    for (int i = 0; i <= x; i++)
-    {
-        m_V[i] = m_savedV[i];
-    }
 }
