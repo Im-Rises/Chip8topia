@@ -80,7 +80,7 @@ void Chip8Emulator::update(const float deltaTime)
             while (!screenUpdated && !m_isBreak)
             {
                 screenUpdated = m_core->clock();
-                if (m_breakpoints[m_core->getCpu()->getPc()] && m_canBreak)
+                if (m_breakpoints.find(m_core->getCpu()->getPc()) != m_breakpoints.end() && m_canBreak)
                 {
                     m_isBreak = true;
                 }
@@ -91,8 +91,6 @@ void Chip8Emulator::update(const float deltaTime)
 
 void Chip8Emulator::render(const float screenWidth, const float screenHeight)
 {
-    // Another way to do this would be to use a trap of the opcode (check if the opcode is render and if not then use the switch case to compute the opcode)
-    // But because there is no real vsync, its no use
     m_videoEmulation.updateTexture(m_core);
     m_videoEmulation.update(m_core, screenWidth, screenHeight, CHIP8_ASPECT_RATIO);
 }
@@ -133,7 +131,7 @@ auto Chip8Emulator::getCanBreak() -> bool*
     return &m_canBreak;
 }
 
-auto Chip8Emulator::getBreakpoints() -> std::bitset<CpuBase::MEMORY_SIZE>&
+auto Chip8Emulator::getBreakpoints() -> std::set<uint16>&
 {
     return m_breakpoints;
 }
@@ -197,7 +195,7 @@ void Chip8Emulator::switchCoreFrequency(const Chip8CoreType coreType, const Chip
 
 void Chip8Emulator::clearBreakpoints()
 {
-    m_breakpoints.reset();
+    m_breakpoints.clear();
 }
 
 void Chip8Emulator::stepEmulation()

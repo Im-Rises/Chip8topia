@@ -184,7 +184,6 @@ auto XoChipPpu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, 
         }
         else if (m_plane == 3)
         {
-            // TODO: Check if this is correct (http://johnearnest.github.io/Octo/docs/XO-ChipSpecification.html)
             return draw8xNSprite(Vx, Vy, I_reg, memory, n, getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data()) |
                    draw8xNSprite(Vx, Vy, I_reg + n, memory, n, getMode() == PpuMode::LORES ? m_loresVideoMemoryPlane.data() : m_hiresVideoMemoryPlane.data());
         }
@@ -201,7 +200,6 @@ auto XoChipPpu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, 
         }
         else if (m_plane == 3)
         {
-            // TODO: Check if this is correct (http://johnearnest.github.io/Octo/docs/XO-ChipSpecification.html)
             return draw16x16Sprite(Vx, Vy, I_reg, memory) | draw16x16Sprite(Vx, Vy, I_reg + 32, memory); // 32 bytes per sprite (16x16)
         }
     }

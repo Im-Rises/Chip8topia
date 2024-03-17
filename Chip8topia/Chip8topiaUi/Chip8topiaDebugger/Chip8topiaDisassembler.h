@@ -26,6 +26,4 @@ private:
 
     bool m_requestMoveToPc = false;
     uint16 m_requestedPc = 0;
-
-    float m_scrollY = 0.0F;
 };

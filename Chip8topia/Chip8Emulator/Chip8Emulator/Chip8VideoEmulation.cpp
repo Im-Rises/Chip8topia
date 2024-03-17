@@ -37,11 +37,11 @@ void Chip8VideoEmulation::updateTexture(const std::unique_ptr<Chip8CoreBase>& co
     {
         if (core->getPpu()->getMode() == PpuBase::PpuMode::LORES)
         {
-            //            m_shaderXoChipLores.updateTexture(core->getPpu()->getLoresVideoMemory().data());
+            m_shaderXoChipLores.updateTextures(core->getPpu()->getLoresVideoMemory().data(), core->getPpu()->getLoresVideoMemoryPlane().data());
         }
         else
         {
-            //            m_shaderXoChipHires.updateTexture(core->getPpu()->getHiresVideoMemory().data());
+            m_shaderXoChipHires.updateTextures(core->getPpu()->getHiresVideoMemory().data(), core->getPpu()->getHiresVideoMemoryPlane().data());
         }
         break;
     }
@@ -85,11 +85,11 @@ void Chip8VideoEmulation::update(const std::unique_ptr<Chip8CoreBase>& core, con
     {
         if (core->getPpu()->getMode() == PpuBase::PpuMode::LORES)
         {
-            //            m_shaderXoChipLores.update(m_backgroundColor, m_mainPlaneColor, m_subPlaneColor, m_pixelsCommonColor, scaleX, scaleY);
+            m_shaderXoChipLores.update(m_backgroundColor, m_mainPlaneColor, m_subPlaneColor, m_pixelsCommonColor, scaleX, scaleY);
         }
         else
         {
-            //            m_shaderXoChipHires.update(m_backgroundColor, m_mainPlaneColor, m_subPlaneColor, m_pixelsCommonColor, scaleX, scaleY);
+            m_shaderXoChipHires.update(m_backgroundColor, m_mainPlaneColor, m_subPlaneColor, m_pixelsCommonColor, scaleX, scaleY);
         }
         break;
     }

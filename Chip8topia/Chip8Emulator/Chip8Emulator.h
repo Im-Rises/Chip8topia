@@ -1,6 +1,7 @@
 #pragma once
 
-#include <bitset>
+// #include <bitset>
+#include <set>
 
 #include "ChipCores/Chip8Core/Chip8Core.h"
 #include "Chip8CoreBase/Core/CpuBase.h"
@@ -36,7 +37,7 @@ public:
     [[nodiscard]] auto getIsBreak() const -> bool;
     [[nodiscard]] auto getIsRomLoaded() const -> bool;
     [[nodiscard]] auto getCanBreak() -> bool*;
-    [[nodiscard]] auto getBreakpoints() -> std::bitset<CpuBase::MEMORY_SIZE>&;
+    [[nodiscard]] auto getBreakpoints() -> std::set<uint16>&;
     [[nodiscard]] auto getCoreType() const -> Chip8CoreType;
     [[nodiscard]] auto getFrequency() const -> Chip8Frequency;
 
@@ -72,5 +73,5 @@ private:
     bool m_step = false;
     bool m_canBreak = true;
 
-    std::bitset<CpuBase::MEMORY_SIZE> m_breakpoints; // TODO: Maybe use unorder_set instead of a bitset, this way we can access quickly to the elements and only iterate only on the elements in the set not all the std::array
+    std::set<uint16> m_breakpoints;
 };
