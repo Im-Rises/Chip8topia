@@ -149,7 +149,7 @@ void Chip8topiaDisassembler::drawBreakpoints(Chip8Emulator* emulator)
         int breakpointToRemove = -1;
 
         ImGuiListClipper clipper;
-        clipper.Begin(breakpoints.size());
+        clipper.Begin(static_cast<int>(breakpoints.size()));
         while (clipper.Step())
         {
             for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)

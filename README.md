@@ -14,7 +14,7 @@ The application is compiled with CMake and uses Vcpkg for the dependencies.
 For the WebAssembly version, it uses Emscripten and vcpkg for most dependencies.
 
 It can emulate the original Chip8, the SCHIP1.1, SCHIPC and Xo-Chip.
-Currently, no sound is implemented but it is planned.
+Currently, no sound is implemented, but it is planned.
 
 ## Screenshots
 
@@ -22,8 +22,7 @@ Currently, no sound is implemented but it is planned.
 
 Major:
 
-- [ ] A lot of games since to not work, correct what's wrong
-- [ ] Inputs seems to be very slow, correct using update every frame... instead of event
+- [ ] A lot of games since to not work, correct what's wrong (check Chip8, then SCHIP, then Xo-Chip)
 - [ ] Correct Xo-Chip Emulation and the integrated games not working for all of the chips
 
 Minor:
@@ -35,6 +34,7 @@ Minor:
 - [ ] Add audio
 - [ ] Add save states ? (if yes create a window with an image preview of the save state) add in File main bar section
 - [ ] Do a general optimization and cleanup of the code
+- [ ] Inputs seems to be very slow, correct using update every frame... instead of event
 
 ## Documentation
 

@@ -73,6 +73,11 @@ auto CpuBase::fetchWord() -> uint16
     return word;
 }
 
+auto CpuBase::readNextWord() -> uint16
+{
+    return (m_memory[m_pc] << 8) | (m_memory[m_pc + 1]);
+}
+
 void CpuBase::CLS()
 {
     m_ppu->clearScreen();

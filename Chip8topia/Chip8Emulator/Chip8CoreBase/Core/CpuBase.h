@@ -46,6 +46,7 @@ private:
 
 protected:
     [[nodiscard]] auto fetchWord() -> uint16;
+    [[nodiscard]] auto readNextWord() -> uint16;
 
     virtual void computeOpcode(const uint16 opcode) = 0;
 
@@ -53,9 +54,9 @@ protected:
     void RET();                                                                // 00EE
     void JP_addr(const uint16 addr);                                           // 1nnn
     void CALL_addr(const uint16 addr);                                         // 2nnn
-    void SE_Vx_nn(const uint8 x, const uint8 nn);                              // 3xnn
-    void SNE_Vx_nn(const uint8 x, const uint8 nn);                             // 4xnn
-    void SE_Vx_Vy(const uint8 x, const uint8 y);                               // 5xy0
+    virtual void SE_Vx_nn(const uint8 x, const uint8 nn);                      // 3xnn
+    virtual void SNE_Vx_nn(const uint8 x, const uint8 nn);                     // 4xnn
+    virtual void SE_Vx_Vy(const uint8 x, const uint8 y);                       // 5xy0
     void LD_Vx_nn(const uint8 x, const uint8 nn);                              // 6xnn
     void ADD_Vx_nn(const uint8 x, const uint8 nn);                             // 7xnn
     void LD_Vx_Vy(const uint8 x, const uint8 y);                               // 8xy0
@@ -64,12 +65,12 @@ protected:
     virtual void XOR_Vx_Vy(const uint8 x, const uint8 y) = 0;                  // 8xy3
     void ADD_Vx_Vy(const uint8 x, const uint8 y);                              // 8xy4
     void SUB_Vx_Vy(const uint8 x, const uint8 y);                              // 8xy5
-    void SNE_Vx_Vy(const uint8 x, const uint8 y);                              // 9xy0
+    virtual void SNE_Vx_Vy(const uint8 x, const uint8 y);                      // 9xy0
     void LD_I_addr(const uint16 addr);                                         // Annn
     void RND_Vx_nn(const uint8 x, const uint8 nn);                             // Cxnn
     virtual void DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) = 0; // Dxyn
-    void SKP_Vx(const uint8 x);                                                // Ex9E
-    void SKNP_Vx(const uint8 x);                                               // ExA1
+    virtual void SKP_Vx(const uint8 x);                                        // Ex9E
+    virtual void SKNP_Vx(const uint8 x);                                       // ExA1
     void LD_Vx_DT(const uint8 x);                                              // Fx07
     void LD_Vx_K(const uint8 x);                                               // Fx0A
     void LD_DT_Vx(const uint8 x);                                              // Fx15

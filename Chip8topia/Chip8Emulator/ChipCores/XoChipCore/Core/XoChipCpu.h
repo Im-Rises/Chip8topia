@@ -28,6 +28,9 @@ private:
     void SCL(const uint8 n);                                             // 00FC
     void LORES();                                                        // 00FE
     void HIRES();                                                        // 00FF
+    void SE_Vx_nn(const uint8 x, const uint8 nn) final;                  // 3xnn
+    void SNE_Vx_nn(const uint8 x, const uint8 nn) final;                 // 4xnn
+    void SE_Vx_Vy(const uint8 x, const uint8 y) final;                   // 5xy0
     void SV_RNG_Vx_Vy(const uint8 x, const uint8 y);                     // 5xy2
     void LD_RNG_Vx_Vy(const uint8 x, const uint8 y);                     // 5xy3
     void OR_Vx_Vy(const uint8 x, const uint8 y) final;                   // 8xy1
@@ -36,8 +39,11 @@ private:
     void SHR_Vx_Vy(const uint8 x, const uint8 y);                        // 8xy6
     void SUBN_Vx_Vy(const uint8 x, const uint8 y);                       // 8xy7
     void SHL_Vx_Vy(const uint8 x, const uint8 y);                        // 8xyE
+    void SNE_Vx_Vy(const uint8 x, const uint8 y) final;                  // 9xy0
     void JP_V0_addr(const uint16 address);                               // Bxnn
     void DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) final; // Dxyn
+    void SKP_Vx(const uint8 x) final;                                    // Ex9E
+    void SKNP_Vx(const uint8 x) final;                                   // ExA1
     void LD_I_NNNN();                                                    // F000
     void SET_PLN(const uint8 x);                                         // FX01
     void LD_AUDIO_aI();                                                  // F002

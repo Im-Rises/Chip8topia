@@ -2,7 +2,9 @@
 
 #include "XoChipPpu.h"
 
-XoChipCpu::XoChipCpu() : m_savedV{}
+#include "../../../Chip8CoreBase/Core/Input.h"
+
+XoChipCpu::XoChipCpu() : m_savedV{}, m_ppuCasted(nullptr)
 {
     std::copy(XO_CHIP_FONTSET.begin(), XO_CHIP_FONTSET.end(), m_memory.begin());
 }
@@ -191,6 +193,30 @@ void XoChipCpu::HIRES()
     m_ppu->setMode(PpuBase::PpuMode::HIRES);
 }
 
+void XoChipCpu::SE_Vx_nn(const uint8 x, const uint8 nn)
+{
+    if (m_V[x] == nn)
+    {
+        readNextWord() == 0xF000 ? m_pc += 4 : m_pc += 2;
+    }
+}
+
+void XoChipCpu::SNE_Vx_nn(const uint8 x, const uint8 nn)
+{
+    if (m_V[x] != nn)
+    {
+        readNextWord() == 0xF000 ? m_pc += 4 : m_pc += 2;
+    }
+}
+
+void XoChipCpu::SE_Vx_Vy(const uint8 x, const uint8 y)
+{
+    if (m_V[x] == m_V[y])
+    {
+        readNextWord() == 0xF000 ? m_pc += 4 : m_pc += 2;
+    }
+}
+
 void XoChipCpu::SV_RNG_Vx_Vy(const uint8 x, const uint8 y)
 {
     for (uint8 i = x; i <= y; i++)
@@ -243,6 +269,14 @@ void XoChipCpu::SHL_Vx_Vy(const uint8 x, const uint8 y)
     m_V[0xF] = flag;
 }
 
+void XoChipCpu::SNE_Vx_Vy(const uint8 x, const uint8 y)
+{
+    if (m_V[x] != m_V[y])
+    {
+        readNextWord() == 0xF000 ? m_pc += 4 : m_pc += 2;
+    }
+}
+
 void XoChipCpu::JP_V0_addr(const uint16 address)
 {
     m_pc = m_V[0] + address;
@@ -251,6 +285,21 @@ void XoChipCpu::JP_V0_addr(const uint16 address)
 void XoChipCpu::DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n)
 {
     m_V[0xF] = static_cast<uint8>(m_ppu->drawSprite(m_V[x], m_V[y], n, m_memory, m_I));
+}
+
+void XoChipCpu::SKP_Vx(const uint8 x)
+{
+    if (m_input->isKeyPressed(m_V[x]))
+    {
+        readNextWord() == 0xF000 ? m_pc += 4 : m_pc += 2;
+    }
+}
+void XoChipCpu::SKNP_Vx(const uint8 x)
+{
+    if (!m_input->isKeyPressed(m_V[x]))
+    {
+        readNextWord() == 0xF000 ? m_pc += 4 : m_pc += 2;
+    }
 }
 
 void XoChipCpu::LD_I_NNNN()
