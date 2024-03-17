@@ -30,12 +30,14 @@
 
 #include "Chip8Emulator/Chip8Emulator/Chip8RomLoader.h"
 
-Chip8topia::Chip8topia() : m_window(nullptr) {
+Chip8topia::Chip8topia() : m_window(nullptr)
+{
 }
 
 Chip8topia::~Chip8topia() = default;
 
-auto Chip8topia::run() -> int {
+auto Chip8topia::run() -> int
+{
     auto initErrorCode = init();
     if (initErrorCode != 0)
     {
@@ -96,12 +98,14 @@ auto Chip8topia::run() -> int {
 }
 
 #ifndef __EMSCRIPTEN__
-void Chip8topia::closeRequest() {
+void Chip8topia::closeRequest()
+{
     glfwSetWindowShouldClose(m_window, 1);
 }
 #endif
 
-auto Chip8topia::init() -> int {
+auto Chip8topia::init() -> int
+{
     glfwSetErrorCallback(glfw_error_callback);
     if (glfwInit() == 0)
     {
@@ -156,13 +160,13 @@ auto Chip8topia::init() -> int {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
-    (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;  // Enable Gamepad Controls
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;     // Enable Docking
     io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;   // Enable Multi-Viewport / Platform Windows
-    io.ConfigViewportsNoTaskBarIcon = true;               // Disable TaskBar icon for secondary viewports
+    // io.ConfigViewportsNoTaskBarIcon = true;            // Disable TaskBar icon for secondary viewports
     // io.ConfigViewportsNoAutoMerge = true;              // Enable Multi-Viewport auto-merge
+    // io.ConfigViewportsNoDefaultParent = false;         // Set to true to create a default main viewport, or false to create a custom viewport
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
@@ -235,7 +239,8 @@ auto Chip8topia::init() -> int {
     return SUCCESS_CODE;
 }
 
-void Chip8topia::cleanup() {
+void Chip8topia::cleanup()
+{
 #ifndef __EMSCRIPTEN__
     m_chip8topiaInputHandler.m_ExitChip8topiaEvent.unsubscribe(this, &Chip8topia::closeRequest);
     m_chip8topiaInputHandler.m_ToggleTurboModeEvent.unsubscribe(this, &Chip8topia::toggleTurboMode);
@@ -261,11 +266,13 @@ void Chip8topia::cleanup() {
 #endif
 }
 
-void Chip8topia::handleInputs() {
+void Chip8topia::handleInputs()
+{
     m_chip8topiaInputHandler.update(m_window);
 }
 
-void Chip8topia::handleUi(const float /*deltaTime*/) {
+void Chip8topia::handleUi(const float /*deltaTime*/)
+{
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
@@ -274,11 +281,13 @@ void Chip8topia::handleUi(const float /*deltaTime*/) {
     ImGui::Render();
 }
 
-void Chip8topia::handleGameUpdate(const float deltaTime) {
+void Chip8topia::handleGameUpdate(const float deltaTime)
+{
     m_chip8Emulator->update(deltaTime);
 }
 
-void Chip8topia::handleScreenUpdate() {
+void Chip8topia::handleScreenUpdate()
+{
     const ImGuiIO& io = ImGui::GetIO();
 
     if (!m_isFullScreen)
@@ -313,7 +322,8 @@ void Chip8topia::handleScreenUpdate() {
     glfwSwapBuffers(m_window);
 }
 
-void Chip8topia::centerWindow() {
+void Chip8topia::centerWindow()
+{
     int count;
     GLFWmonitor** monitors = glfwGetMonitors(&count);
     for (int i = 0; i < count; i++)
@@ -330,7 +340,8 @@ void Chip8topia::centerWindow() {
     }
 }
 
-void Chip8topia::toggleFullScreen() {
+void Chip8topia::toggleFullScreen()
+{
     if (!m_isFullScreen)
     {
         int count;
@@ -357,19 +368,21 @@ void Chip8topia::toggleFullScreen() {
     m_isFullScreen = !m_isFullScreen;
 }
 
-void Chip8topia::toggleTurboMode() {
+void Chip8topia::toggleTurboMode()
+{
     glfwSwapInterval(m_isTurboMode ? 1 : 0); // 0 = no vsync, 1 = vsync
     m_isTurboMode = !m_isTurboMode;
     m_chip8Emulator->setIsTurboMode(m_isTurboMode);
 }
 
 #ifndef __EMSCRIPTEN__
-void Chip8topia::setWindowIcon() {
+void Chip8topia::setWindowIcon()
+{
     int width = 0, height = 0, channelsCount = 0;
     unsigned char* imagePixels = stbi_load(CHIP8TOPIA_ICON_PATH, &width, &height, &channelsCount, 0);
     if (imagePixels == nullptr)
     {
-        ImGui::InsertNotification({ ImGuiToastType::Error, 1000, "Failed to load window icon" });
+        ImGui::InsertNotification({ ImGuiToastType::Error, 3000, "Failed to load window icon" });
         return;
     }
 
@@ -380,27 +393,33 @@ void Chip8topia::setWindowIcon() {
     glfwSetWindowIcon(m_window, 1, &images);
 }
 
-void Chip8topia::setWindowTitle(const float fps) {
+void Chip8topia::setWindowTitle(const float fps)
+{
     glfwSetWindowTitle(m_window, fmt::format("{} - {} - {} - {:.2f} fps", PROJECT_NAME, m_chip8Emulator->getConsoleName().c_str(), m_chip8Emulator->getRomName().c_str(), fps).c_str());
 }
 #endif
 
-auto Chip8topia::getChip8Emulator() -> Chip8Emulator& {
+auto Chip8topia::getChip8Emulator() -> Chip8Emulator&
+{
     return *m_chip8Emulator;
 }
 
-auto Chip8topia::getIsTurboMode() const -> bool {
+auto Chip8topia::getIsTurboMode() const -> bool
+{
     return m_isTurboMode;
 }
 
-auto Chip8topia::getWindowDimensions() const -> std::pair<int, int> {
+auto Chip8topia::getWindowDimensions() const -> std::pair<int, int>
+{
     return { m_currentWidth, m_currentHeight };
 }
 
-auto Chip8topia::getWindowWidth() const -> int {
+auto Chip8topia::getWindowWidth() const -> int
+{
     return m_currentWidth;
 }
-auto Chip8topia::getWindowHeight() const -> int {
+auto Chip8topia::getWindowHeight() const -> int
+{
     return m_currentHeight;
 }
 
@@ -408,32 +427,39 @@ auto Chip8topia::getWindowHeight() const -> int {
 //     return glfwGetWindowAttrib(m_window, GLFW_ICONIFIED) != 0;
 // }
 
-auto Chip8topia::getOpenGLVendor() -> std::string_view {
+auto Chip8topia::getOpenGLVendor() -> std::string_view
+{
     return reinterpret_cast<const char*>(glGetString(GL_RENDERER));
 }
 
-auto Chip8topia::getOpenGLVersion() -> std::string_view {
+auto Chip8topia::getOpenGLVersion() -> std::string_view
+{
     return reinterpret_cast<const char*>(glGetString(GL_VERSION));
 }
 
-auto Chip8topia::getGLSLVersion() -> std::string_view {
+auto Chip8topia::getGLSLVersion() -> std::string_view
+{
     return reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION));
 }
 
-auto Chip8topia::getGLFWVersion() -> std::string {
+auto Chip8topia::getGLFWVersion() -> std::string
+{
     return std::to_string(GLFW_VERSION_MAJOR) + "." + std::to_string(GLFW_VERSION_MINOR) + "." +
            std::to_string(GLFW_VERSION_REVISION);
 }
 
-auto Chip8topia::getGladVersion() -> std::string_view {
+auto Chip8topia::getGladVersion() -> std::string_view
+{
     return "0.1.36";
 }
 
-auto Chip8topia::getImGuiVersion() -> std::string {
+auto Chip8topia::getImGuiVersion() -> std::string
+{
     return IMGUI_VERSION;
 }
 
-void Chip8topia::printDependenciesInfos() {
+void Chip8topia::printDependenciesInfos()
+{
     std::cout << "System and dependencies infos:" << '\n'
               << " - OpenGL vendor " << Chip8topia::getOpenGLVendor() << '\n'
               << " - OpenGL version " << Chip8topia::getOpenGLVersion() << '\n'
@@ -444,13 +470,14 @@ void Chip8topia::printDependenciesInfos() {
               << '\n';
 }
 
-void Chip8topia::glfw_error_callback(int error, const char* description) {
-    Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(fmt::format("Glfw Error {}: {}", error, description), []() {
-        exit(1);
-    });
+void Chip8topia::glfw_error_callback(int error, const char* description)
+{
+    Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(fmt::format("Glfw Error {}: {}", error, description), []()
+        { exit(1); });
 }
 
-void Chip8topia::glfw_drop_callback(GLFWwindow* window, int count, const char** paths) {
+void Chip8topia::glfw_drop_callback(GLFWwindow* window, int count, const char** paths)
+{
     (void)count;
     static constexpr int INDEX = 0;
     const char* path = paths[INDEX];
@@ -465,12 +492,13 @@ void Chip8topia::glfw_drop_callback(GLFWwindow* window, int count, const char** 
     }
     catch (const std::exception& e)
     {
-        ImGui::InsertNotification({ ImGuiToastType::Error, 1000, e.what() });
+        ImGui::InsertNotification({ ImGuiToastType::Error, 3000, e.what() });
     }
 }
 
 #if !defined(BUILD_RELEASE)
-void Chip8topia::loadDebugRom() {
+void Chip8topia::loadDebugRom()
+{
     try
     {
         std::vector<uint8> rom = Chip8RomLoader::loadRomFromPath(DEBUG_ROM_PATH);
@@ -480,7 +508,7 @@ void Chip8topia::loadDebugRom() {
     }
     catch (const std::exception& e)
     {
-        ImGui::InsertNotification({ ImGuiToastType::Error, 1000, e.what() });
+        ImGui::InsertNotification({ ImGuiToastType::Error, 3000, e.what() });
     }
 }
 #endif

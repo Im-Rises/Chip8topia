@@ -4,15 +4,18 @@
 #include <binaryLib/binaryLib.h>
 #include <array>
 #include <RandomGenerator/RandomGenerator.h>
+#include <functional>
 
 #include "../chip8Fonts.h"
 
 class PpuBase;
 class Input;
-class CpuBase {
+class CpuBase
+{
 public:
     static constexpr uint16 START_ADDRESS = 0x200;
-    static constexpr size_t MEMORY_SIZE = 0x1000;
+    //    static constexpr size_t MEMORY_SIZE = 0x1000;// Chip8, SCHip11, SCHipC
+    static constexpr size_t MEMORY_SIZE = 0x10000; // XoChip
     static constexpr size_t ROM_SIZE = MEMORY_SIZE - START_ADDRESS;
     static constexpr size_t REGISTER_V_SIZE = 16;
     static constexpr size_t STACK_SIZE = 16;
@@ -24,6 +27,10 @@ public:
     auto operator=(const CpuBase&) -> CpuBase& = delete;
     auto operator=(CpuBase&&) -> CpuBase& = delete;
     virtual ~CpuBase() = default;
+
+#if defined(BUILD_PARAM_SAFE)
+    void setErrorCallback(const std::function<void(const std::string&)>& errorCallback);
+#endif
 
     virtual void setPpu(std::shared_ptr<PpuBase> ppu) { m_ppu = std::move(ppu); }
     void setInput(std::shared_ptr<Input> input) { m_input = std::move(input); }
@@ -38,6 +45,8 @@ private:
     [[nodiscard]] auto fetchOpcode() -> uint16;
 
 protected:
+    [[nodiscard]] auto fetchWord() -> uint16;
+
     virtual void computeOpcode(const uint16 opcode) = 0;
 
     void CLS();                                                                // 00E0
@@ -102,4 +111,8 @@ protected:
     std::shared_ptr<Input> m_input;
 
     RandomGenerator m_u8NumberRandomGenerator;
+
+#if defined(BUILD_PARAM_SAFE)
+    std::function<void(const std::string&)> m_errorCallback;
+#endif
 };

@@ -1,4 +1,4 @@
-#include "Chip8RomLoaderUi.h"
+#include "Chip8topiaRomLoaderUi.h"
 
 #include <IconsFontAwesome6.h>
 #include <ImGuiNotify.hpp>
@@ -12,15 +12,18 @@
 #include "../Chip8Emulator/Chip8Emulator/Chip8RomLoader.h"
 #include "../../Chip8topia.h"
 
-Chip8RomLoaderUi::Chip8RomLoaderUi() {
-    Chip8topiaInputHandler::getInstance().m_OpenRomExplorerEvent.subscribe(this, &Chip8RomLoaderUi::openRomWindow);
+Chip8topiaRomLoaderUi::Chip8topiaRomLoaderUi()
+{
+    Chip8topiaInputHandler::getInstance().m_OpenRomExplorerEvent.subscribe(this, &Chip8topiaRomLoaderUi::openRomWindow);
 }
 
-Chip8RomLoaderUi::~Chip8RomLoaderUi() {
-    Chip8topiaInputHandler::getInstance().m_OpenRomExplorerEvent.unsubscribe(this, &Chip8RomLoaderUi::openRomWindow);
+Chip8topiaRomLoaderUi::~Chip8topiaRomLoaderUi()
+{
+    Chip8topiaInputHandler::getInstance().m_OpenRomExplorerEvent.unsubscribe(this, &Chip8topiaRomLoaderUi::openRomWindow);
 }
 
-void Chip8RomLoaderUi::drawFileMenu(Chip8topia& chip8topia) {
+void Chip8topiaRomLoaderUi::drawFileMenu(Chip8topia& chip8topia)
+{
     if (ImGui::BeginMenu(ICON_FA_FILE " File"))
     {
 #if defined(__EMSCRIPTEN__)
@@ -55,7 +58,8 @@ void Chip8RomLoaderUi::drawFileMenu(Chip8topia& chip8topia) {
     }
 }
 
-void Chip8RomLoaderUi::drawRomWindow(Chip8topia& chip8topia) {
+void Chip8topiaRomLoaderUi::drawRomWindow(Chip8topia& chip8topia)
+{
     std::pair windowSize = chip8topia.getWindowDimensions();
 
 #ifdef __EMSCRIPTEN__
@@ -79,7 +83,7 @@ void Chip8RomLoaderUi::drawRomWindow(Chip8topia& chip8topia) {
             }
             catch (const std::exception& e)
             {
-                ImGui::InsertNotification({ ImGuiToastType::Error, 1000, e.what() });
+                ImGui::InsertNotification({ ImGuiToastType::Error, 3000, e.what() });
             }
         }
 
@@ -88,7 +92,8 @@ void Chip8RomLoaderUi::drawRomWindow(Chip8topia& chip8topia) {
 }
 
 #if defined(__EMSCRIPTEN__)
-void Chip8RomLoaderUi::handle_upload_file(std::string const& filename, std::string const& mime_type, std::string_view buffer, void* chip8emulator) {
+void Chip8topiaRomLoaderUi::handle_upload_file(std::string const& filename, std::string const& mime_type, std::string_view buffer, void* chip8emulator)
+{
 #if !defined(BUILD_RELEASE)
     std::cout << "File uploaded: " << filename << " (" << mime_type << ")" << '\n';
 #endif
@@ -103,16 +108,18 @@ void Chip8RomLoaderUi::handle_upload_file(std::string const& filename, std::stri
     }
     catch (const std::exception& e)
     {
-        ImGui::InsertNotification({ ImGuiToastType::Error, 1000, e.what() });
+        ImGui::InsertNotification({ ImGuiToastType::Error, 3000, e.what() });
     }
 }
 #endif
 
-void Chip8RomLoaderUi::closeAllWindows() {
+void Chip8topiaRomLoaderUi::closeAllWindows()
+{
     ImGuiFileDialog::Instance()->Close();
 }
 
-void Chip8RomLoaderUi::openRomWindow() {
+void Chip8topiaRomLoaderUi::openRomWindow()
+{
     IGFD::FileDialogConfig config;
     config.path = DEFAULT_FOLDER_PATH;
     ImGuiFileDialog::Instance()->OpenDialog(FILE_DIALOG_NAME, "Select a game rom", Chip8RomLoader::CHIP8_ROM_FILE_EXTENSION, config);

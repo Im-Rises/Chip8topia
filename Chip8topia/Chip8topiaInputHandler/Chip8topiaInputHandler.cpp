@@ -4,14 +4,28 @@
 
 void Chip8topiaInputHandler::update(GLFWwindow* window) const {
     glfwPollEvents();
-
-    //    auto& inputHandler = Chip8topiaInputHandler::getInstance();
-    //
-    //    inputHandler.m_GameInput.trigger(0x1, glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS);
 }
 
 void Chip8topiaInputHandler::key_callback(GLFWwindow* /*window*/, int key, int /*scancode*/, int action, int mods) {
     auto& inputHandler = Chip8topiaInputHandler::getInstance();
+
+#if !defined(BUILD_RELEASE)
+    if (action == GLFW_PRESS)
+    {
+        switch (key)
+        {
+        case GLFW_KEY_B: inputHandler.m_SuccessEvent.trigger("Test error message", nullptr); break;
+        case GLFW_KEY_N: inputHandler.m_ErrorEvent.trigger("Test error message", nullptr); break;
+        case GLFW_KEY_M: inputHandler.m_WarningEvent.trigger("Test warning message", nullptr); break;
+        case GLFW_KEY_COMMA: inputHandler.m_InfoEvent.trigger("Test info message", nullptr); break;
+        }
+    }
+#endif
+
+    if (!inputHandler.getInputEnabled())
+    {
+        return;
+    }
 
     if (action == GLFW_PRESS)
     {
@@ -31,7 +45,6 @@ void Chip8topiaInputHandler::key_callback(GLFWwindow* /*window*/, int key, int /
 #if !defined(BUILD_RELEASE)
         case GLFW_KEY_F12: inputHandler.m_DebugRomFastLoadEvent.trigger(); break;
 #endif
-
         case GLFW_KEY_1: inputHandler.m_GameInput.trigger(0x1, true); break;
         case GLFW_KEY_2: inputHandler.m_GameInput.trigger(0x2, true); break;
         case GLFW_KEY_3: inputHandler.m_GameInput.trigger(0x3, true); break;

@@ -5,14 +5,15 @@
 #include "../../Chip8Emulator/ChipCores/Chip8Core/Core/Chip8Cpu.h"
 
 class Chip8Emulator;
-class Chip8Disassembler {
+class Chip8topiaDisassembler
+{
 public:
-    Chip8Disassembler() = default;
-    Chip8Disassembler(const Chip8Disassembler&) = delete;
-    Chip8Disassembler(Chip8Disassembler&&) = delete;
-    auto operator=(const Chip8Disassembler&) -> Chip8Disassembler& = delete;
-    auto operator=(Chip8Disassembler&&) -> Chip8Disassembler& = delete;
-    ~Chip8Disassembler() = default;
+    Chip8topiaDisassembler() = default;
+    Chip8topiaDisassembler(const Chip8topiaDisassembler&) = delete;
+    Chip8topiaDisassembler(Chip8topiaDisassembler&&) = delete;
+    auto operator=(const Chip8topiaDisassembler&) -> Chip8topiaDisassembler& = delete;
+    auto operator=(Chip8topiaDisassembler&&) -> Chip8topiaDisassembler& = delete;
+    ~Chip8topiaDisassembler() = default;
 
 public:
     void drawDisassembly(Chip8Emulator* emulator);

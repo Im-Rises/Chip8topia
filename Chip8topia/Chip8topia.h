@@ -7,7 +7,8 @@
 #include "Chip8topiaInputHandler/Chip8topiaInputHandler.h"
 
 struct GLFWwindow;
-class Chip8topia {
+class Chip8topia
+{
 public:
     static constexpr auto PROJECT_NAME = "Chip8topia";
     static constexpr auto PROJECT_VERSION = CHIP8TOPIA_VERSION;
@@ -32,7 +33,7 @@ private:
     static constexpr auto GLAD_INIT_ERROR_CODE = 3;
     static constexpr auto FONT_AWESOME_INIT_ERROR_CODE = 4;
 #if !defined(BUILD_RELEASE)
-    static constexpr auto DEBUG_ROM_PATH = "trash/8-scrolling.ch8";
+    static constexpr auto DEBUG_ROM_PATH = "trash/chip8-test-suite-main/bin/5-quirks.ch8";
 #endif
 
 public:

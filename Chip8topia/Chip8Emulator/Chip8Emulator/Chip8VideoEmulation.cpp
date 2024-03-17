@@ -4,24 +4,52 @@
 #include "../Chip8CoreBase/Chip8CoreBase.h"
 
 Chip8VideoEmulation::Chip8VideoEmulation() : m_shaderLores(PpuBase::SCREEN_LORES_MODE_WIDTH, PpuBase::SCREEN_LORES_MODE_HEIGHT),
-                                             m_shaderHires(PpuBase::SCREEN_HIRES_MODE_WIDTH, PpuBase::SCREEN_HIRES_MODE_HEIGHT) {
+                                             m_shaderHires(PpuBase::SCREEN_HIRES_MODE_WIDTH, PpuBase::SCREEN_HIRES_MODE_HEIGHT),
+                                             m_shaderXoChipLores(PpuBase::SCREEN_LORES_MODE_WIDTH, PpuBase::SCREEN_LORES_MODE_HEIGHT),
+                                             m_shaderXoChipHires(PpuBase::SCREEN_HIRES_MODE_WIDTH, PpuBase::SCREEN_HIRES_MODE_HEIGHT)
+{
 }
 
-void Chip8VideoEmulation::reset() {
+void Chip8VideoEmulation::reset()
+{
 }
 
-void Chip8VideoEmulation::updateTexture(const std::unique_ptr<Chip8CoreBase>& core) {
-    if (core->getPpu()->getMode() == PpuBase::PpuMode::LORES)
+void Chip8VideoEmulation::updateTexture(const std::unique_ptr<Chip8CoreBase>& core)
+{
+    switch (core->getType())
     {
-        m_shaderLores.updateTexture(core->getPpu()->getLoresVideoMemory().data());
-    }
-    else
+    case Chip8CoreType::Chip8:
+    case Chip8CoreType::SChip11Legacy:
+    case Chip8CoreType::SChip11Modern:
+    case Chip8CoreType::SChipC:
     {
-        m_shaderHires.updateTexture(core->getPpu()->getHiresVideoMemory().data());
+        if (core->getPpu()->getMode() == PpuBase::PpuMode::LORES)
+        {
+            m_shaderLores.updateTexture(core->getPpu()->getLoresVideoMemory().data());
+        }
+        else
+        {
+            m_shaderHires.updateTexture(core->getPpu()->getHiresVideoMemory().data());
+        }
+        break;
+    }
+    case Chip8CoreType::XoChip:
+    {
+        if (core->getPpu()->getMode() == PpuBase::PpuMode::LORES)
+        {
+            m_shaderXoChipLores.updateTextures(core->getPpu()->getLoresVideoMemory().data(), core->getPpu()->getLoresVideoMemoryPlane().data());
+        }
+        else
+        {
+            m_shaderXoChipHires.updateTextures(core->getPpu()->getHiresVideoMemory().data(), core->getPpu()->getHiresVideoMemoryPlane().data());
+        }
+        break;
+    }
     }
 }
 
-void Chip8VideoEmulation::update(const std::unique_ptr<Chip8CoreBase>& core, const float screenWidth, const float screenHeight, const float chip8AspectRatio) {
+void Chip8VideoEmulation::update(const std::unique_ptr<Chip8CoreBase>& core, const float screenWidth, const float screenHeight, const float chip8AspectRatio)
+{
     float screenAspectRatio = screenWidth / screenHeight;
 
     float scaleX = 1.0F;
@@ -36,12 +64,34 @@ void Chip8VideoEmulation::update(const std::unique_ptr<Chip8CoreBase>& core, con
         scaleX = chip8AspectRatio / screenAspectRatio;
     }
 
-    if (core->getPpu()->getMode() == PpuBase::PpuMode::LORES)
+    switch (core->getType())
     {
-        m_shaderLores.update(m_backgroundColor, m_foregroundColor, scaleX, scaleY);
+    case Chip8CoreType::Chip8:
+    case Chip8CoreType::SChip11Legacy:
+    case Chip8CoreType::SChip11Modern:
+    case Chip8CoreType::SChipC:
+    {
+        if (core->getPpu()->getMode() == PpuBase::PpuMode::LORES)
+        {
+            m_shaderLores.update(m_backgroundColor, m_mainPlaneColor, scaleX, scaleY);
+        }
+        else
+        {
+            m_shaderHires.update(m_backgroundColor, m_mainPlaneColor, scaleX, scaleY);
+        }
+        break;
     }
-    else
+    case Chip8CoreType::XoChip:
     {
-        m_shaderHires.update(m_backgroundColor, m_foregroundColor, scaleX, scaleY);
+        if (core->getPpu()->getMode() == PpuBase::PpuMode::LORES)
+        {
+            m_shaderXoChipLores.update(m_backgroundColor, m_mainPlaneColor, m_subPlaneColor, m_pixelsCommonColor, scaleX, scaleY);
+        }
+        else
+        {
+            m_shaderXoChipHires.update(m_backgroundColor, m_mainPlaneColor, m_subPlaneColor, m_pixelsCommonColor, scaleX, scaleY);
+        }
+        break;
+    }
     }
 }

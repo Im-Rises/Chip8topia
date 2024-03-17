@@ -4,7 +4,8 @@
 #include <vector>
 #include <string>
 
-class Chip8RomLoader {
+class Chip8RomLoader
+{
 public:
     static constexpr auto CHIP8_ROM_FILE_EXTENSION = ".ch8";
 
