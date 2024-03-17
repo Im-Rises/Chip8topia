@@ -3,6 +3,7 @@
 #include "SChipCPpu.h"
 
 SChipCCpu::SChipCCpu()
+{
     std::copy(SCHIP_FONTSET.begin(), SCHIP_FONTSET.end(), m_memory.begin());
 }
 
@@ -10,12 +11,6 @@ void SChipCCpu::setPpu(std::shared_ptr<PpuBase> ppu)
 {
     CpuBase::setPpu(ppu);
     m_ppuCasted = dynamic_cast<SChipCPpu*>(ppu.get());
-}
-
-void SChipCCpu::reset()
-{
-    CpuBase::reset();
-    m_savedV.fill(0);
 }
 
 void SChipCCpu::computeOpcode(const uint16 opcode)
@@ -170,19 +165,19 @@ void SChipCCpu::HIRES()
 
 void SChipCCpu::OR_Vx_Vy(const uint8 x, const uint8 y)
 {
-    m_V[x] |= m_V[y];
+    CpuBase::OR_Vx_Vy(x, y);
     m_V[0xF] = 0;
 }
 
 void SChipCCpu::AND_Vx_Vy(const uint8 x, const uint8 y)
 {
-    m_V[x] &= m_V[y];
+    CpuBase::AND_Vx_Vy(x, y);
     m_V[0xF] = 0;
 }
 
 void SChipCCpu::XOR_Vx_Vy(const uint8 x, const uint8 y)
 {
-    m_V[x] ^= m_V[y];
+    CpuBase::XOR_Vx_Vy(x, y);
     m_V[0xF] = 0;
 }
 

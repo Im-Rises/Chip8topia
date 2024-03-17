@@ -32,9 +32,6 @@ private:
     void SE_Vx_Vy(const uint8 x, const uint8 y) final;                   // 5xy0
     void SV_RNG_Vx_Vy(const uint8 x, const uint8 y);                     // 5xy2
     void LD_RNG_Vx_Vy(const uint8 x, const uint8 y);                     // 5xy3
-    void OR_Vx_Vy(const uint8 x, const uint8 y) final;                   // 8xy1
-    void AND_Vx_Vy(const uint8 x, const uint8 y) final;                  // 8xy2
-    void XOR_Vx_Vy(const uint8 x, const uint8 y) final;                  // 8xy3
     void SNE_Vx_Vy(const uint8 x, const uint8 y) final;                  // 9xy0
     void DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) final; // Dxyn
     void SKP_Vx(const uint8 x) final;                                    // Ex9E

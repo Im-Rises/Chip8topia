@@ -110,19 +110,19 @@ void Chip8Cpu::computeOpcode(const uint16 opcode)
 
 void Chip8Cpu::OR_Vx_Vy(const uint8 x, const uint8 y)
 {
-    m_V[x] |= m_V[y];
+    CpuBase::OR_Vx_Vy(x, y);
     m_V[0xF] = 0;
 }
 
 void Chip8Cpu::AND_Vx_Vy(const uint8 x, const uint8 y)
 {
-    m_V[x] &= m_V[y];
+    CpuBase::AND_Vx_Vy(x, y);
     m_V[0xF] = 0;
 }
 
 void Chip8Cpu::XOR_Vx_Vy(const uint8 x, const uint8 y)
 {
-    m_V[x] ^= m_V[y];
+    CpuBase::XOR_Vx_Vy(x, y);
     m_V[0xF] = 0;
 }
 

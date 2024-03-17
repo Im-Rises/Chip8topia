@@ -16,7 +16,6 @@ void SChip11Cpu::setPpu(std::shared_ptr<PpuBase> ppu)
 void SChip11Cpu::reset()
 {
     CpuBase::reset();
-    m_savedV.fill(0);
     m_isHalted = false;
     m_requestDisableHalt = false;
 }
@@ -167,21 +166,6 @@ void SChip11Cpu::HIRES()
 {
     m_ppu->clearScreen();
     m_ppu->setMode(PpuBase::PpuMode::HIRES);
-}
-
-void SChip11Cpu::OR_Vx_Vy(const uint8 x, const uint8 y)
-{
-    m_V[x] |= m_V[y];
-}
-
-void SChip11Cpu::AND_Vx_Vy(const uint8 x, const uint8 y)
-{
-    m_V[x] &= m_V[y];
-}
-
-void SChip11Cpu::XOR_Vx_Vy(const uint8 x, const uint8 y)
-{
-    m_V[x] ^= m_V[y];
 }
 
 void SChip11Cpu::LD_aI_Vx(const uint8 x)

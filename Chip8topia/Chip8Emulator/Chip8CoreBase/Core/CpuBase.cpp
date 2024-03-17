@@ -10,6 +10,7 @@ CpuBase::CpuBase() : m_pc(START_ADDRESS),
                      m_ST(0),
                      m_memory{},
                      m_V{},
+                     m_savedV{},
                      m_stack{},
                      m_u8NumberRandomGenerator(0, 0xFF)
 {
@@ -149,6 +150,21 @@ void CpuBase::ADD_Vx_nn(const uint8 x, const uint8 nn)
 void CpuBase::LD_Vx_Vy(const uint8 x, const uint8 y)
 {
     m_V[x] = m_V[y];
+}
+
+void CpuBase::OR_Vx_Vy(const uint8 x, const uint8 y)
+{
+    m_V[x] |= m_V[y];
+}
+
+void CpuBase::AND_Vx_Vy(const uint8 x, const uint8 y)
+{
+    m_V[x] &= m_V[y];
+}
+
+void CpuBase::XOR_Vx_Vy(const uint8 x, const uint8 y)
+{
+    m_V[x] ^= m_V[y];
 }
 
 void CpuBase::ADD_Vx_Vy(const uint8 x, const uint8 y)

@@ -18,7 +18,6 @@ void XoChipCpu::setPpu(std::shared_ptr<PpuBase> ppu)
 void XoChipCpu::reset()
 {
     CpuBase::reset();
-    m_savedV.fill(0);
 }
 
 void XoChipCpu::computeOpcode(const uint16 opcode)
@@ -225,21 +224,6 @@ void XoChipCpu::LD_RNG_Vx_Vy(const uint8 x, const uint8 y)
     {
         m_V[i] = m_memory[m_I + i];
     }
-}
-
-void XoChipCpu::OR_Vx_Vy(const uint8 x, const uint8 y)
-{
-    m_V[x] |= m_V[y];
-}
-
-void XoChipCpu::AND_Vx_Vy(const uint8 x, const uint8 y)
-{
-    m_V[x] &= m_V[y];
-}
-
-void XoChipCpu::XOR_Vx_Vy(const uint8 x, const uint8 y)
-{
-    m_V[x] ^= m_V[y];
 }
 
 void XoChipCpu::SNE_Vx_Vy(const uint8 x, const uint8 y)

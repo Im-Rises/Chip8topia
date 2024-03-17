@@ -62,9 +62,9 @@ protected:
     void LD_Vx_nn(const uint8 x, const uint8 nn);                              // 6xnn
     void ADD_Vx_nn(const uint8 x, const uint8 nn);                             // 7xnn
     void LD_Vx_Vy(const uint8 x, const uint8 y);                               // 8xy0
-    virtual void OR_Vx_Vy(const uint8 x, const uint8 y) = 0;                   // 8xy1
-    virtual void AND_Vx_Vy(const uint8 x, const uint8 y) = 0;                  // 8xy2
-    virtual void XOR_Vx_Vy(const uint8 x, const uint8 y) = 0;                  // 8xy3
+    virtual void OR_Vx_Vy(const uint8 x, const uint8 y);                       // 8xy1
+    virtual void AND_Vx_Vy(const uint8 x, const uint8 y);                      // 8xy2
+    virtual void XOR_Vx_Vy(const uint8 x, const uint8 y);                      // 8xy3
     void ADD_Vx_Vy(const uint8 x, const uint8 y);                              // 8xy4
     void SUB_Vx_Vy(const uint8 x, const uint8 y);                              // 8xy5
     virtual void SHR_Vx_Vy(const uint8 x, const uint8 y);                      // 8xy6

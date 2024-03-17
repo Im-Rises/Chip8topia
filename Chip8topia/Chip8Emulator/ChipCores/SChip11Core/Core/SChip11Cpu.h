@@ -29,9 +29,6 @@ private:
     void SCL(const uint8 n);                                             // 00FC
     void LORES();                                                        // 00FE
     void HIRES();                                                        // 00FF
-    void OR_Vx_Vy(const uint8 x, const uint8 y) final;                   // 8xy1
-    void AND_Vx_Vy(const uint8 x, const uint8 y) final;                  // 8xy2
-    void XOR_Vx_Vy(const uint8 x, const uint8 y) final;                  // 8xy3
     void LD_aI_Vx(const uint8 x) final;                                  // Fx55
     void LD_Vx_aI(const uint8 x) final;                                  // Fx65
     void SHR_Vx_Vy(const uint8 x, const uint8 y) final;                  // 8xy6
