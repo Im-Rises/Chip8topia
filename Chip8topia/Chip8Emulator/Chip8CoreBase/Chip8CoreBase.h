@@ -22,7 +22,9 @@ enum class Chip8Frequency : unsigned int
     Freq1800Hz = 1800
 };
 
-class CpuBase;
+#include "Core/CpuBase.h"
+
+// class CpuBase;
 class PpuBase;
 class Input;
 class Chip8CoreBase
