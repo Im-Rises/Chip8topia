@@ -22,6 +22,8 @@ Currently, no sound is implemented but it is planned.
 
 Major:
 
+- [ ] A lot of games since to not work, correct what's wrong
+- [ ] Inputs seems to be very slow, correct using update every frame... instead of event
 - [ ] Correct Xo-Chip Emulation and the integrated games not working for all of the chips
 
 Minor:

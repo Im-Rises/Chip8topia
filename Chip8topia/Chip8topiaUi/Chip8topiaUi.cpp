@@ -36,6 +36,12 @@ void Chip8topiaUi::drawMainMenuBar(Chip8topia& chip8topia)
         m_chip8topiaVideoUi.drawVideoMenu();
         m_chip8topiatopiaDebugger.drawDebuggerMenu();
         m_chip8topiaAbout.drawAboutMenu();
+#if !defined(BUILD_RELEASE)
+        if (ImGui::MenuItem(ICON_FA_INDUSTRY " Demo"))
+        {
+            m_showDemo = !m_showDemo;
+        }
+#endif
 
         ImGui::EndMainMenuBar();
     }
@@ -48,8 +54,11 @@ void Chip8topiaUi::drawMainMenuBar(Chip8topia& chip8topia)
     m_chip8topiaAbout.drawAboutWindows();
     m_chip8topiaError.showMessages();
 
-#if !defined(BUILD_RELEASE)
-    ImGui::ShowDemoWindow();
+#if defined(BUILD_DEBUG)
+    if (m_showDemo)
+    {
+        ImGui::ShowDemoWindow(&m_showDemo);
+    }
 #endif
 }
 
@@ -92,4 +101,8 @@ void Chip8topiaUi::closeAllWindows()
     m_chip8topiaRomLoaderUi.closeAllWindows();
     m_chip8topiaEmulationUi.closeAllWindows();
     //    m_chip8topiaAbout.closeAboutWindows();
+
+#if defined(BUILD_DEBUG)
+    m_showDemo = false;
+#endif
 }

@@ -41,4 +41,8 @@ private:
     Chip8topiaMessageHandler m_chip8topiaError;
 
     bool m_isMenuBarOpen = true;
+
+#if defined(BUILD_DEBUG)
+    bool m_showDemo = true;
+#endif
 };
