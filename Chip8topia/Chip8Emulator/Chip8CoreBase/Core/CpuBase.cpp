@@ -284,7 +284,7 @@ void CpuBase::LD_Vx_K(const uint8 x)
 {
     if (m_input->isAnyKeyPressed())
     {
-        m_V[x] = x;
+        m_V[x] = m_input->getPressedKey();
     }
     else
     {
@@ -304,7 +304,6 @@ void CpuBase::LD_ST_Vx(const uint8 x)
 void CpuBase::ADD_I_Vx(const uint8 x)
 {
     m_I += m_V[x];
-    m_V[0xF] = static_cast<uint8>(m_I < m_V[x]);
 }
 
 void CpuBase::LD_F_Vx(const uint8 x)

@@ -30,6 +30,19 @@ auto Input::isKeyPressed(const uint8 Vx) const -> bool
     return m_pressedKeys[Vx];
 }
 
+auto Input::getPressedKey() const -> uint8
+{
+    for (uint8 i = 0; i < KEY_COUNT; i++)
+    {
+        if (m_pressedKeys[i])
+        {
+            return i;
+        }
+    }
+
+    return 0x00;
+}
+
 void Input::updateKey(const uint8 key, const bool pressed)
 {
     m_pressedKeys[key] = pressed;

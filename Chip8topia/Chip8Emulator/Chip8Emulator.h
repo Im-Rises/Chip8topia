@@ -1,6 +1,5 @@
 #pragma once
 
-// #include <bitset>
 #include <set>
 
 #include "ChipCores/Chip8Core/Chip8Core.h"

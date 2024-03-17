@@ -39,6 +39,7 @@ public:
     void reset();
     [[nodiscard]] auto isAnyKeyPressed() const -> bool;
     [[nodiscard]] auto isKeyPressed(const uint8 Vx) const -> bool;
+    [[nodiscard]] auto getPressedKey() const -> uint8;
     void updateKey(const uint8 key, const bool pressed);
 
 private:
