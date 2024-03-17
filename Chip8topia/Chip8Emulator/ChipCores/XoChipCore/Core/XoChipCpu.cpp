@@ -4,7 +4,7 @@
 
 #include "../../../Chip8CoreBase/Core/Input.h"
 
-XoChipCpu::XoChipCpu() : m_ppuCasted(nullptr)
+XoChipCpu::XoChipCpu()
 {
     std::copy(XO_CHIP_FONTSET.begin(), XO_CHIP_FONTSET.end(), m_memory.begin());
 }
@@ -12,7 +12,6 @@ XoChipCpu::XoChipCpu() : m_ppuCasted(nullptr)
 void XoChipCpu::setPpu(std::shared_ptr<PpuBase> ppu)
 {
     CpuBase::setPpu(ppu);
-    m_ppuCasted = dynamic_cast<XoChipPpu*>(ppu.get());
 }
 
 void XoChipCpu::reset()
@@ -154,36 +153,16 @@ void XoChipCpu::computeOpcode(const uint16 opcode)
 #endif
 }
 
-void XoChipCpu::SCD(const uint8 n)
-{
-    m_ppuCasted->scrollDown(n);
-}
-
-void XoChipCpu::SCU(const uint8 n)
-{
-    m_ppuCasted->scrollUp(n);
-}
-
-void XoChipCpu::SCR(const uint8 n)
-{
-    m_ppuCasted->scrollRight(n);
-}
-
-void XoChipCpu::SCL(const uint8 n)
-{
-    m_ppuCasted->scrollLeft(n);
-}
-
 void XoChipCpu::LORES()
 {
     m_ppu->clearScreen();
-    m_ppu->setMode(PpuBase::PpuMode::LORES);
+    CpuBase::LORES();
 }
 
 void XoChipCpu::HIRES()
 {
     m_ppu->clearScreen();
-    m_ppu->setMode(PpuBase::PpuMode::HIRES);
+    CpuBase::HIRES();
 }
 
 void XoChipCpu::SE_Vx_nn(const uint8 x, const uint8 nn)
@@ -276,18 +255,12 @@ void XoChipCpu::SET_PITCH_x(const uint8 x)
 
 void XoChipCpu::LD_aI_Vx(const uint8 x)
 {
-    for (int i = 0; i <= x; i++)
-    {
-        m_memory[m_I + i] = m_V[i];
-    }
+    CpuBase::LD_aI_Vx(x);
     m_I += x + 1;
 }
 
 void XoChipCpu::LD_Vx_aI(const uint8 x)
 {
-    for (int i = 0; i <= x; i++)
-    {
-        m_V[i] = m_memory[m_I + i];
-    }
+    CpuBase::LD_Vx_aI(x);
     m_I += x + 1;
 }

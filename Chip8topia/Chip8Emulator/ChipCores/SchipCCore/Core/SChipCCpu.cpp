@@ -10,7 +10,6 @@ SChipCCpu::SChipCCpu()
 void SChipCCpu::setPpu(std::shared_ptr<PpuBase> ppu)
 {
     CpuBase::setPpu(ppu);
-    m_ppuCasted = dynamic_cast<SChipCPpu*>(ppu.get());
 }
 
 void SChipCCpu::computeOpcode(const uint16 opcode)
@@ -136,31 +135,15 @@ void SChipCCpu::computeOpcode(const uint16 opcode)
 #endif
 }
 
-void SChipCCpu::SCD(const uint8 n)
-{
-    m_ppuCasted->scrollDown(n);
-}
-
-void SChipCCpu::SCR(const uint8 n)
-{
-    m_ppuCasted->scrollRight(n);
-}
-
-void SChipCCpu::SCL(const uint8 n)
-{
-    m_ppuCasted->scrollLeft(n);
-}
-
 void SChipCCpu::LORES()
 {
     m_ppu->clearScreen();
-    m_ppu->setMode(PpuBase::PpuMode::LORES);
+    CpuBase::LORES();
 }
-
 void SChipCCpu::HIRES()
 {
     m_ppu->clearScreen();
-    m_ppu->setMode(PpuBase::PpuMode::HIRES);
+    CpuBase::HIRES();
 }
 
 void SChipCCpu::OR_Vx_Vy(const uint8 x, const uint8 y)
@@ -188,19 +171,13 @@ void SChipCCpu::DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n)
 
 void SChipCCpu::LD_aI_Vx(const uint8 x)
 {
-    for (int i = 0; i <= x; i++)
-    {
-        m_memory[m_I + i] = m_V[i];
-    }
+    CpuBase::LD_aI_Vx(x);
     m_I += x + 1;
 }
 
 void SChipCCpu::LD_Vx_aI(const uint8 x)
 {
-    for (int i = 0; i <= x; i++)
-    {
-        m_V[i] = m_memory[m_I + i];
-    }
+    CpuBase::LD_Vx_aI(x);
     m_I += x + 1;
 }
 

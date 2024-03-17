@@ -147,18 +147,12 @@ void Chip8Cpu::DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n)
 
 void Chip8Cpu::LD_aI_Vx(const uint8 x)
 {
-    for (int i = 0; i <= x; i++)
-    {
-        m_memory[m_I + i] = m_V[i];
-    }
+    CpuBase::LD_aI_Vx(x);
     m_I += x + 1;
 }
 
 void Chip8Cpu::LD_Vx_aI(const uint8 x)
 {
-    for (int i = 0; i <= x; i++)
-    {
-        m_V[i] = m_memory[m_I + i];
-    }
+    CpuBase::LD_Vx_aI(x);
     m_I += x + 1;
 }

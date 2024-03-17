@@ -12,12 +12,11 @@ void SChip11Ppu::clearScreen()
     }
 }
 
-void SChip11Ppu::scrollDown(uint8 n, bool isModernMode)
+void SChip11Ppu::scrollDown(uint8 n)
 {
     const int width = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
     const int height = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
     uint8* videoMemory = getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data();
-    n = getMode() == PpuMode::LORES && !isModernMode ? n / 2 : n;
 
     for (int row = height - n - 1; row >= 0; row--)
     {
@@ -29,12 +28,11 @@ void SChip11Ppu::scrollDown(uint8 n, bool isModernMode)
     }
 }
 
-void SChip11Ppu::scrollRight(uint8 n, bool isModernMode)
+void SChip11Ppu::scrollRight(uint8 n)
 {
     const int width = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
     const int height = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
     uint8* videoMemory = getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data();
-    n = getMode() == PpuMode::LORES && !isModernMode ? 2 : 4;
 
     for (int col = width - n - 1; col >= 0; col--)
     {
@@ -46,12 +44,11 @@ void SChip11Ppu::scrollRight(uint8 n, bool isModernMode)
     }
 }
 
-void SChip11Ppu::scrollLeft(uint8 n, bool isModernMode)
+void SChip11Ppu::scrollLeft(uint8 n)
 {
     const int width = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
     const int height = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
     uint8* videoMemory = getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data();
-    n = getMode() == PpuMode::LORES && !isModernMode ? 2 : 4;
 
     for (int col = 0; col < width - n; col++)
     {

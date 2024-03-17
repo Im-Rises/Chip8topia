@@ -79,6 +79,16 @@ auto CpuBase::readNextWord() -> uint16
     return (m_memory[m_pc] << 8) | (m_memory[m_pc + 1]);
 }
 
+void CpuBase::SCD(const uint8 n)
+{
+    m_ppu->scrollDown(n);
+}
+
+void CpuBase::SCU(const uint8 n)
+{
+    m_ppu->scrollUp(n);
+}
+
 void CpuBase::CLS()
 {
     m_ppu->clearScreen();
@@ -89,10 +99,30 @@ void CpuBase::RET()
     m_pc = m_stack[--m_sp];
 }
 
+void CpuBase::SCR(const uint8 n)
+{
+    m_ppu->scrollRight(n);
+}
+
+void CpuBase::SCL(const uint8 n)
+{
+    m_ppu->scrollLeft(n);
+}
+
 void CpuBase::EXIT()
 {
     m_pc -= 2;
     // TODO Call the error callback here and return (exit the program)
+}
+
+void CpuBase::LORES()
+{
+    m_ppu->setMode(PpuBase::PpuMode::LORES);
+}
+
+void CpuBase::HIRES()
+{
+    m_ppu->setMode(PpuBase::PpuMode::HIRES);
 }
 
 void CpuBase::SYS(const uint16 /*address*/)
@@ -221,7 +251,7 @@ void CpuBase::JP_nnn_V0(const uint16 address)
 
 void CpuBase::JP_xnn_Vx(const uint16 address, const uint8 x)
 {
-    m_pc = address + m_V[0];
+    m_pc = address + m_V[x];
 }
 
 void CpuBase::RND_Vx_nn(const uint8 x, const uint8 nn)
@@ -292,6 +322,22 @@ void CpuBase::LD_B_Vx(const uint8 x)
     m_memory[m_I] = m_V[x] / 100;
     m_memory[m_I + 1] = (m_V[x] / 10) % 10;
     m_memory[m_I + 2] = (m_V[x] % 100) % 10;
+}
+
+void CpuBase::LD_aI_Vx(const uint8 x)
+{
+    for (int i = 0; i <= x; i++)
+    {
+        m_memory[m_I + i] = m_V[i];
+    }
+}
+
+void CpuBase::LD_Vx_aI(const uint8 x)
+{
+    for (int i = 0; i <= x; i++)
+    {
+        m_V[i] = m_memory[m_I + i];
+    }
 }
 
 void CpuBase::LD_R_Vx(const uint8 x)

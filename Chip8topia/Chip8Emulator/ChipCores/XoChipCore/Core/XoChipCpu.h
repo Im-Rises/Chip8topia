@@ -21,12 +21,8 @@ public:
 private:
     void computeOpcode(const uint16 opcode) final;
 
-    void SCD(const uint8 n);                                             // 00CN
-    void SCU(const uint8 n);                                             // 00DN
-    void SCR(const uint8 n);                                             // 00FB
-    void SCL(const uint8 n);                                             // 00FC
-    void LORES();                                                        // 00FE
-    void HIRES();                                                        // 00FF
+    void LORES() final;                                                  // 00FE
+    void HIRES() final;                                                  // 00FF
     void SE_Vx_nn(const uint8 x, const uint8 nn) final;                  // 3xnn
     void SNE_Vx_nn(const uint8 x, const uint8 nn) final;                 // 4xnn
     void SE_Vx_Vy(const uint8 x, const uint8 y) final;                   // 5xy0
@@ -42,7 +38,4 @@ private:
     void SET_PITCH_x(const uint8 x);                                     // FX3A
     void LD_aI_Vx(const uint8 x) final;                                  // Fx55
     void LD_Vx_aI(const uint8 x) final;                                  // Fx65
-
-private:
-    XoChipPpu* m_ppuCasted;
 };

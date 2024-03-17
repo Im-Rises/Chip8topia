@@ -50,9 +50,19 @@ protected:
 
     virtual void computeOpcode(const uint16 opcode) = 0;
 
+    /*
+     * Virtual methods overriden in child classes are quirks
+     */
+
+    virtual void SCD(const uint8 n);                                           // 00CN
+    void SCU(const uint8 n);                                                   // 00DN
     void CLS();                                                                // 00E0
     void RET();                                                                // 00EE
     void EXIT();                                                               // 00FD
+    virtual void SCR(const uint8 n);                                           // 00FB
+    virtual void SCL(const uint8 n);                                           // 00FC
+    virtual void LORES();                                                      // 00FE
+    virtual void HIRES();                                                      // 00FF
     void SYS(const uint16 address);                                            // 0nnn
     void JP_addr(const uint16 addr);                                           // 1nnn
     void CALL_addr(const uint16 addr);                                         // 2nnn
@@ -86,8 +96,8 @@ protected:
     void LD_F_Vx(const uint8 x);                                               // Fx29
     void LD_HF_Vx(const uint8 x);                                              // Fx30
     void LD_B_Vx(const uint8 x);                                               // Fx33
-    virtual void LD_aI_Vx(const uint8 x) = 0;                                  // Fx55
-    virtual void LD_Vx_aI(const uint8 x) = 0;                                  // Fx65
+    virtual void LD_aI_Vx(const uint8 x);                                      // Fx55
+    virtual void LD_Vx_aI(const uint8 x);                                      // Fx65
     virtual void LD_R_Vx(const uint8 x);                                       // Fx75
     virtual void LD_Vx_R(const uint8 x);                                       // Fx85
 
