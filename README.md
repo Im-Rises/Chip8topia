@@ -22,16 +22,14 @@ Currently, no sound is implemented but it is planned.
 
 Major:
 
-- [-] Add video emulation for xo-chip
-- [-] Add in the cores a exit this clock when reaching an error or the EXIT opcode
-- [-] Add safe and unsafe code version (set the callback error in Core and Cpu, and Ppu, the call it on error)
+- [ ] Correct Xo-Chip Emulation and the integrated games not working for all of the chips
 
 Minor:
 
-- [ ] Add a way to put front the windows on the main window click
-- [ ] Handle the issues with AZERTY keyboard and QWERTY keyboard (Desktop and Web)
+- [-] Add in the cores an exit this clock when reaching an error or the EXIT opcode
+- [-] Add safe and unsafe code version (set the callback error in Core and Cpu, and Ppu, the call it on error)
 - [ ] Add a way to change the input keys
-- [ ] if none of the roms are loaded, we should display a background with written Chip8
+- [ ] Add a background when no rom is loaded
 - [ ] Add audio
 - [ ] Add save states ? (if yes create a window with an image preview of the save state) add in File main bar section
 - [ ] Do a general optimization and cleanup of the code

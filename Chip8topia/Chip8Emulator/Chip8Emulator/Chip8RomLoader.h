@@ -7,7 +7,7 @@
 class Chip8RomLoader
 {
 public:
-    static constexpr auto CHIP8_ROM_FILE_EXTENSION = ".xo8";
+    static constexpr auto CHIP8_ROM_FILE_EXTENSION = ".ch8";
 
 public:
     Chip8RomLoader() = default;

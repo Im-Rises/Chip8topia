@@ -8,8 +8,11 @@
 #include "ChipCores/SchipCCore/SChipCCore.h"
 #include "ChipCores/XoChipCore/XoChipCore.h"
 
-// Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<Chip8Core>(DEFAULT_FREQUENCY))
+#if defined(BUILD_DEBUG)
 Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<XoChipCore>(DEFAULT_FREQUENCY))
+#else
+Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<Chip8Core>(DEFAULT_FREQUENCY))
+#endif
 {
 #if defined(BUILD_PARAM_SAFE)
     m_core->setErrorCallback([&](const std::string& errorMessage)
