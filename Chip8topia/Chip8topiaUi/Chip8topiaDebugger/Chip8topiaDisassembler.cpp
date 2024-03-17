@@ -95,10 +95,10 @@ void Chip8topiaDisassembler::drawDisassemblyControls(Chip8Emulator* emulator)
 {
     Chip8topiaInputHandler& inputHandler = Chip8topiaInputHandler::getInstance();
 
+    ImGui::Text("State: %s", emulator->getIsBreak() ? "Break" : "Running");
+
     ImGui::Checkbox("Follow PC", &m_followPc);
-
     ImGui::SameLine();
-
     ImGui::Checkbox("Can break", emulator->getCanBreak());
 
     if (ImGui::Button("Break"))

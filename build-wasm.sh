@@ -7,7 +7,7 @@ fi
 
 # Set buildDir if not argument is provided
 if [ -z "$1" ]; then
-    buildDir="build"
+    buildDir="buildWasm"
 else
     buildDir=$1
 fi

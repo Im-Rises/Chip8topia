@@ -184,7 +184,7 @@ auto XoChipPpu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, 
         }
         else if (m_plane == 3)
         {
-            return draw8xNSprite(Vx, Vy, I_reg, memory, n, getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data()) |
+            return draw8xNSprite(Vx, Vy, I_reg, memory, n, getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data()) ||
                    draw8xNSprite(Vx, Vy, I_reg + n, memory, n, getMode() == PpuMode::LORES ? m_loresVideoMemoryPlane.data() : m_hiresVideoMemoryPlane.data());
         }
     }
@@ -200,7 +200,7 @@ auto XoChipPpu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, 
         }
         else if (m_plane == 3)
         {
-            return draw16x16Sprite(Vx, Vy, I_reg, memory) | draw16x16Sprite(Vx, Vy, I_reg + 32, memory); // 32 bytes per sprite (16x16)
+            return draw16x16Sprite(Vx, Vy, I_reg, memory) || draw16x16Sprite(Vx, Vy, I_reg + 32, memory); // 32 bytes per sprite (16x16)
         }
     }
 
@@ -224,13 +224,6 @@ auto XoChipPpu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array
         {
             if (((spriteByte) & (0x1 << (7 - j))) != 0)
             {
-                // Clip the sprite if it goes out of bounds
-                if (((Vx + j) >= screenWidth && j > 0) || ((Vy + i) >= screenHeight && i > 0))
-                {
-                    continue;
-                }
-
-                // Draw the pixel
                 const auto index = (Vx + j) % screenWidth + ((Vy + i) % screenHeight) * screenWidth;
                 if (videoMemory[index] == PIXEL_ON)
                 {
@@ -263,11 +256,6 @@ auto XoChipPpu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::arr
                     int x = (Vx + j + byteIndex * 8) % PpuBase::SCREEN_HIRES_MODE_WIDTH;
                     int y = (Vy + i) % PpuBase::SCREEN_HIRES_MODE_HEIGHT;
 
-                    if (x >= PpuBase::SCREEN_HIRES_MODE_WIDTH || y >= PpuBase::SCREEN_HIRES_MODE_HEIGHT)
-                    {
-                        continue;
-                    }
-
                     if (m_hiresVideoMemory[y * PpuBase::SCREEN_HIRES_MODE_WIDTH + x] == PIXEL_ON)
                     {
                         m_hiresVideoMemory[y * PpuBase::SCREEN_HIRES_MODE_WIDTH + x] = PIXEL_OFF;
@@ -282,5 +270,5 @@ auto XoChipPpu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::arr
         }
     }
 
-    return static_cast<uint8>(collision);
+    return collision;
 }

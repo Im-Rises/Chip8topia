@@ -15,6 +15,7 @@ build/
 vcpkg_installed/
 web/*.js
 web/*.wasm
+buildWasm/
 
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudio,intellij+all,cmake
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudio,intellij+all,cmake
