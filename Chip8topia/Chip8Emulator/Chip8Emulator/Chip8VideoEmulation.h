@@ -30,10 +30,11 @@ public:
 
     [[nodiscard]] auto getBackgroundColor() -> ImVec4& { return m_backgroundColor; }
     [[nodiscard]] auto getMainPlaneColor() -> ImVec4& { return m_mainPlaneColor; }
-    [[nodiscard]] auto getSecondaryPlaneColor() -> ImVec4& { return m_secondaryPlaneColor; }
+    [[nodiscard]] auto getSubPlaneColor() -> ImVec4& { return m_subPlaneColor; }
     [[nodiscard]] auto getPixelsCommonColor() -> ImVec4& { return m_pixelsCommonColor; }
 
 private:
+    // TODO: No needs to use ShaderBW, we can use the XoChip shader for all cores and only update the first plane for Chip8, SCHip11 and SCHipC
     ShaderBW m_shaderLores;
     ShaderBW m_shaderHires;
 
@@ -42,6 +43,6 @@ private:
 
     ImVec4 m_backgroundColor = { 0.3F, 0.3F, 0.3F, 1.0F };
     ImVec4 m_mainPlaneColor = { 0.8F, 0.8F, 0.8F, 1.0F };
-    ImVec4 m_secondaryPlaneColor = { 0.8F, 0.8F, 0.8F, 1.0F };
-    ImVec4 m_pixelsCommonColor = { 0.8F, 0.8F, 0.8F, 1.0F };
+    ImVec4 m_subPlaneColor = { 0.6F, 0.6F, 0.6F, 1.0F };
+    ImVec4 m_pixelsCommonColor = { 0.0F, 0.0F, 0.0F, 1.0F };
 };

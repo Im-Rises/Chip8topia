@@ -43,14 +43,14 @@ public:
     ~ShaderXoChip();
 
 public:
-    void updateTexture(const uint8* data);
-    void update(const ImVec4& backgroundColor, const ImVec4& foregroundColor, const float xScale, const float yScale);
+    void updateTextures(const uint8* mainPlaneData, const uint8* subPlaneData);
+    void update(const ImVec4& backgroundColor, const ImVec4& mainPlaneColor, const ImVec4& subPlaneColor, const ImVec4& commonPixelsColor, const float xScale, const float yScale);
     void reset();
 
 private:
     GLuint m_VAO;
     GLuint m_VBO;
-    GLuint m_texture;
+    GLuint m_textures[2];
     Shader m_shader;
 
     const int WIDTH;

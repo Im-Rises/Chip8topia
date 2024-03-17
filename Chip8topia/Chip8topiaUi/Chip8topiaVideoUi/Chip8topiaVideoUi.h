@@ -24,7 +24,7 @@ public:
 private:
     void drawBackgroundColor(Chip8Emulator* emulator);
     void drawMainPlaneColor(Chip8Emulator* emulator);
-    void drawSecondaryPlaneColor(Chip8Emulator* emulator);
+    void drawSubPlaneColor(Chip8Emulator* emulator);
     void drawPixelsCommonColor(Chip8Emulator* emulator);
 
 private:
@@ -34,7 +34,7 @@ private:
         ImGuiMenuItemWindow<Chip8Emulator>(ICON_FA_PALETTE " Main plane color", false, [this](Chip8Emulator* chip8Emulator)
             { drawMainPlaneColor(chip8Emulator); }),
         ImGuiMenuItemWindow<Chip8Emulator>(ICON_FA_PALETTE " Secondary plane color", false, [this](Chip8Emulator* chip8Emulator)
-            { drawSecondaryPlaneColor(chip8Emulator); }),
+            { drawSubPlaneColor(chip8Emulator); }),
         ImGuiMenuItemWindow<Chip8Emulator>(ICON_FA_PALETTE " Common plane pixels color", false, [this](Chip8Emulator* chip8Emulator)
             { drawPixelsCommonColor(chip8Emulator); })
     };

@@ -41,9 +41,9 @@ void Chip8topiaVideoUi::drawMainPlaneColor(Chip8Emulator* emulator)
     ImGui::ColorPicker4("Draw color", reinterpret_cast<float*>(&emulator->getChip8VideoEmulation().getMainPlaneColor()));
 }
 
-void Chip8topiaVideoUi::drawSecondaryPlaneColor(Chip8Emulator* emulator)
+void Chip8topiaVideoUi::drawSubPlaneColor(Chip8Emulator* emulator)
 {
-    ImGui::ColorPicker4("Draw color", reinterpret_cast<float*>(&emulator->getChip8VideoEmulation().getSecondaryPlaneColor()));
+    ImGui::ColorPicker4("Draw color", reinterpret_cast<float*>(&emulator->getChip8VideoEmulation().getSubPlaneColor()));
 }
 
 void Chip8topiaVideoUi::drawPixelsCommonColor(Chip8Emulator* emulator)

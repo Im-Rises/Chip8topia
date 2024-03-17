@@ -72,5 +72,5 @@ private:
     bool m_step = false;
     bool m_canBreak = true;
 
-    std::bitset<CpuBase::MEMORY_SIZE> m_breakpoints; // TODO: Maybe use a map or a set instead of a bitset, this way we can access quickly to the elements and only on the elements we need to access (for the draw function)
+    std::bitset<CpuBase::MEMORY_SIZE> m_breakpoints; // TODO: Maybe use unorder_set instead of a bitset, this way we can access quickly to the elements and only iterate only on the elements in the set not all the std::array
 };
