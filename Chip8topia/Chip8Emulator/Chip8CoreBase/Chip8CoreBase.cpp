@@ -27,6 +27,13 @@ void Chip8CoreBase::setErrorCallback(const std::function<void(const std::string&
 }
 #endif
 
+void Chip8CoreBase::reset()
+{
+    m_cpu->reset();
+    m_ppu->reset();
+    m_input->reset();
+}
+
 void Chip8CoreBase::readRom(const std::vector<uint8>& rom)
 {
     m_cpu->readRom(rom);
@@ -53,9 +60,22 @@ void Chip8CoreBase::updateKey(const uint8 key, const bool pressed)
     m_input->updateKey(key, pressed);
 }
 
-void Chip8CoreBase::reset()
+auto Chip8CoreBase::getFrequency() const -> Chip8Frequency
 {
-    m_cpu->reset();
-    m_ppu->reset();
-    m_input->reset();
+    return static_cast<Chip8Frequency>(CPU_CLOCK_FREQUENCY);
+}
+
+auto Chip8CoreBase::getCpu() -> std::unique_ptr<CpuBase>&
+{
+    return m_cpu;
+}
+
+auto Chip8CoreBase::getPpu() -> std::shared_ptr<PpuBase>&
+{
+    return m_ppu;
+}
+
+auto Chip8CoreBase::getInput() -> std::shared_ptr<Input>&
+{
+    return m_input;
 }

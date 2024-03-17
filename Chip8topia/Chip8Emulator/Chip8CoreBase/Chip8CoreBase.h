@@ -43,18 +43,18 @@ public:
 #endif
 
 public:
-    [[nodiscard]] virtual auto getType() const -> Chip8CoreType = 0;
-    [[nodiscard]] virtual auto getConsoleName() const -> const char* = 0;
+    void reset();
     void readRom(const std::vector<uint8>& rom);
     virtual auto clock() -> bool;
     void updateKey(const uint8 key, const bool pressed);
-    void reset();
-    [[nodiscard]] auto getFrequency() const -> Chip8Frequency { return static_cast<Chip8Frequency>(CPU_CLOCK_FREQUENCY); }
 
-public:
-    [[nodiscard]] auto getCpu() -> std::unique_ptr<CpuBase>& { return m_cpu; }
-    [[nodiscard]] auto getPpu() -> std::shared_ptr<PpuBase> { return m_ppu; }
-    [[nodiscard]] auto getInput() -> std::shared_ptr<Input> { return m_input; }
+    [[nodiscard]] virtual auto getType() const -> Chip8CoreType = 0;
+    [[nodiscard]] virtual auto getConsoleName() const -> const char* = 0;
+
+    [[nodiscard]] auto getFrequency() const -> Chip8Frequency;
+    [[nodiscard]] auto getCpu() -> std::unique_ptr<CpuBase>&;
+    [[nodiscard]] auto getPpu() -> std::shared_ptr<PpuBase>&;
+    [[nodiscard]] auto getInput() -> std::shared_ptr<Input>&;
 
 protected:
     std::unique_ptr<CpuBase> m_cpu;
