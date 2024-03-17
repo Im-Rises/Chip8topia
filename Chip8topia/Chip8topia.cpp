@@ -143,7 +143,7 @@ auto Chip8topia::init() -> int
     glfwSetWindowUserPointer(m_window, this);
     glfwSetDropCallback(m_window, glfw_drop_callback);
     glfwSetKeyCallback(m_window, Chip8topiaInputHandler::key_callback);
-    
+
     // Center window
     centerWindow();
 
@@ -160,14 +160,13 @@ auto Chip8topia::init() -> int
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
-    (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;  // Enable Gamepad Controls
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;     // Enable Docking
     io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;   // Enable Multi-Viewport / Platform Windows
-    io.ConfigViewportsNoTaskBarIcon = true;               // Disable TaskBar icon for secondary viewports
+    // io.ConfigViewportsNoTaskBarIcon = true;            // Disable TaskBar icon for secondary viewports
     // io.ConfigViewportsNoAutoMerge = true;              // Enable Multi-Viewport auto-merge
-    io.ConfigViewportsNoDefaultParent = false; // Set to true to create a default main viewport, or false to create a custom viewport
+    // io.ConfigViewportsNoDefaultParent = false;         // Set to true to create a default main viewport, or false to create a custom viewport
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();

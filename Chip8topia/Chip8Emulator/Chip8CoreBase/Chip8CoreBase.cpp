@@ -56,6 +56,6 @@ void Chip8CoreBase::updateKey(const uint8 key, const bool pressed)
 void Chip8CoreBase::reset()
 {
     m_cpu->reset();
-    m_ppu->clearScreen();
+    m_ppu->reset();
     m_input->reset();
 }
