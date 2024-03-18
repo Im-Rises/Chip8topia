@@ -11,7 +11,7 @@ void Input::reset()
 {
     m_pressedKeys.reset();
     m_waitKeyStep = 0;
-    m_keysWaitState.reset();
+    m_keysWaitPreviousState.reset();
 }
 
 void Input::updateKey(const uint8 key, const bool pressed)
