@@ -15,16 +15,16 @@ enum class Chip8CoreType : uint8
     XoChip         // XO-Chip
 };
 
-enum class Chip8Frequency : unsigned int
+enum class Chip8Frequency : uint16
 {
     Freq600Hz = 600,
     Freq1200Hz = 1200,
     Freq1800Hz = 1800
 };
 
-// #include "Core/CpuBase.h"
+#include "Core/CpuBase.h"
 
-class CpuBase;
+// class CpuBase;
 class PpuBase;
 class Input;
 class Chip8CoreBase
@@ -64,6 +64,7 @@ protected:
     std::shared_ptr<Input> m_input;
 
     unsigned int m_clockCounter;
+    const Chip8Frequency CPU_CLOCK_FREQUENCY_ENUM;
     const unsigned int CPU_CLOCK_FREQUENCY;
 
 #if defined(BUILD_PARAM_SAFE)

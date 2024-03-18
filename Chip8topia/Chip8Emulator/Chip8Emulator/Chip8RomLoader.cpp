@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <filesystem>
+#include <algorithm>
 
 #include "../ChipCores/Chip8Core/Core/Chip8Cpu.h"
 
@@ -50,7 +51,7 @@ auto Chip8RomLoader::loadRomFromData(const std::string_view& romBuffer) -> std::
 
 auto Chip8RomLoader::checkFileExtension(const std::string& romPath) -> bool
 {
-    return std::ranges::any_of(romPath, [](const char c)
+    return std::any_of(romPath, [](const char c)
         { return std::isupper(c); });
 }
 
