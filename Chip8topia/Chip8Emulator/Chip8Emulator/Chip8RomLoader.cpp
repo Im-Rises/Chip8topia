@@ -51,8 +51,8 @@ auto Chip8RomLoader::loadRomFromData(const std::string_view& romBuffer) -> std::
 
 auto Chip8RomLoader::checkFileExtension(const std::string& romPath) -> bool
 {
-    return std::any_of(romPath, [](const char c)
-        { return std::isupper(c); });
+    return std::any_of(CHIP8_ROM_FILE_EXTENSIONS.cbegin(), CHIP8_ROM_FILE_EXTENSIONS.cend(), [&](const std::string_view& extension)
+        { return romPath.ends_with(extension); });
 }
 
 auto Chip8RomLoader::checkFileExists(const std::string& romPath) -> bool
