@@ -38,7 +38,7 @@ void Chip8topiaRomLoaderUi::drawFileMenu(Chip8topia& chip8topia)
 #if defined(__EMSCRIPTEN__)
         if (ImGui::MenuItem(ICON_FA_UPLOAD " Upload rom...", "U"))
         {
-            emscripten_browser_file::upload(Chip8RomLoader::CHIP8_ROM_FILE_EXTENSION, handle_upload_file, &chip8topia.getChip8Emulator());
+            emscripten_browser_file::upload(Chip8RomLoader::CHIP8_ROM_FILE_EXTENSIONS_STRING, handle_upload_file, &chip8topia.getChip8Emulator());
         }
 #endif
 
@@ -122,5 +122,5 @@ void Chip8topiaRomLoaderUi::openRomWindow()
 {
     IGFD::FileDialogConfig config;
     config.path = DEFAULT_FOLDER_PATH;
-    ImGuiFileDialog::Instance()->OpenDialog(FILE_DIALOG_NAME, "Select a game rom", Chip8RomLoader::CHIP8_ROM_FILE_EXTENSION, config);
+    ImGuiFileDialog::Instance()->OpenDialog(FILE_DIALOG_NAME, "Select a game rom", Chip8RomLoader::CHIP8_ROM_FILE_EXTENSIONS_STRING, config);
 }

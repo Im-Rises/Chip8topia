@@ -14,7 +14,14 @@ The application is compiled with CMake and uses Vcpkg for the dependencies.
 For the WebAssembly version, it uses Emscripten and vcpkg for most dependencies.
 
 It can emulate the original Chip8, the SCHIP1.1, SCHIPC and Xo-Chip.
-Currently, no sound is implemented but it is planned.
+Currently, no sound is implemented, but it is planned.
+
+Emulatated consoles:
+
+- [x] Chip8
+- [x] SCHIP1.1
+- [x] SCHIPC
+- [ ] Xo-Chip (not working at the moment)
 
 ## Screenshots
 
@@ -22,19 +29,16 @@ Currently, no sound is implemented but it is planned.
 
 Major:
 
-- [ ] A lot of games since to not work, correct what's wrong
-- [ ] Inputs seems to be very slow, correct using update every frame... instead of event
-- [ ] Correct Xo-Chip Emulation and the integrated games not working for all of the chips
+- [ ] Correct Xo-Chip Emulation (ram size etc...)
+- [ ] Add audio
+- [-] Add in the cores an exit this clock when reaching an error or the EXIT opcode
+- [-] Add safe and unsafe code version (set the callback error in Core and Cpu, and Ppu, the call it on error)
 
 Minor:
 
-- [-] Add in the cores an exit this clock when reaching an error or the EXIT opcode
-- [-] Add safe and unsafe code version (set the callback error in Core and Cpu, and Ppu, the call it on error)
 - [ ] Add a way to change the input keys
 - [ ] Add a background when no rom is loaded
-- [ ] Add audio
-- [ ] Add save states ? (if yes create a window with an image preview of the save state) add in File main bar section
-- [ ] Do a general optimization and cleanup of the code
+- [ ] Do a general optimization of the code
 
 ## Documentation
 

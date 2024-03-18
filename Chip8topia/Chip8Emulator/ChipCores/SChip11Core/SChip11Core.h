@@ -4,9 +4,10 @@
 #include "Core/SChip11Cpu.h"
 
 // class SChip11Cpu;
-class SChip11Core final : public Chip8CoreBase {
+class SChip11Core final : public Chip8CoreBase
+{
 public:
-    explicit SChip11Core(Chip8Frequency cpuClockFrequency, bool isModernMode);
+    explicit SChip11Core(Chip8Frequency cpuClockFrequency, bool isModernMode = true);
     SChip11Core(const SChip11Core&) = delete;
     SChip11Core(SChip11Core&&) = delete;
     auto operator=(const SChip11Core&) -> SChip11Core& = delete;

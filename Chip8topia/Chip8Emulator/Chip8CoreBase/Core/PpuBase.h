@@ -40,20 +40,22 @@ public:
 public:
     virtual void reset();
     virtual void clearScreen() = 0;
+    virtual void scrollDown(uint8 n);
+    virtual void scrollUp(uint8 n);
+    virtual void scrollRight(uint8 n);
+    virtual void scrollLeft(uint8 n);
     virtual auto drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint16 I_reg) -> uint8 = 0;
 
-    virtual void setMode(PpuMode mode) { m_mode = mode; }
-    [[nodiscard]] auto getMode() const -> PpuMode { return m_mode; }
-    auto getLoresVideoMemory() -> std::array<uint8, SCREEN_LORES_MODE_SIZE>& { return m_loresVideoMemory; }
-    auto getHiresVideoMemory() -> std::array<uint8, SCREEN_HIRES_MODE_SIZE>& { return m_hiresVideoMemory; }
-    auto getLoresVideoMemoryPlane() -> std::array<uint8, SCREEN_LORES_MODE_SIZE>& { return m_loresVideoMemoryPlane; }
-    auto getHiresVideoMemoryPlane() -> std::array<uint8, SCREEN_HIRES_MODE_SIZE>& { return m_hiresVideoMemoryPlane; }
-
+    virtual void setMode(PpuMode mode);
+    [[nodiscard]] auto getMode() const -> PpuMode;
+    auto getLoresVideoMemory() -> std::array<uint8, SCREEN_LORES_MODE_SIZE>&;
+    auto getHiresVideoMemory() -> std::array<uint8, SCREEN_HIRES_MODE_SIZE>&;
+    auto getLoresVideoMemoryPlane() -> std::array<uint8, SCREEN_LORES_MODE_SIZE>&;
+    auto getHiresVideoMemoryPlane() -> std::array<uint8, SCREEN_HIRES_MODE_SIZE>&;
     void setPlane(uint8 x);
-    [[nodiscard]] auto getPlane() const -> uint8;
 
 protected: // TODO: For improvements, better make an array of plane instead of two separate arrays
-    PpuMode m_mode = PpuMode::LORES;
+    PpuMode m_mode;
     std::array<uint8, SCREEN_LORES_MODE_SIZE> m_loresVideoMemory;
     std::array<uint8, SCREEN_HIRES_MODE_SIZE> m_hiresVideoMemory;
 

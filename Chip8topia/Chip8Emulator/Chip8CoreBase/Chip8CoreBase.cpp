@@ -7,6 +7,7 @@
 #include "Core/PpuBase.h"
 
 Chip8CoreBase::Chip8CoreBase(Chip8Frequency cpuClockFrequency, std::unique_ptr<CpuBase> cpu, std::shared_ptr<PpuBase> ppu) : CPU_CLOCK_FREQUENCY(static_cast<unsigned int>(cpuClockFrequency)),
+                                                                                                                             CPU_CLOCK_FREQUENCY_ENUM(cpuClockFrequency),
                                                                                                                              m_cpu(std::move(cpu)),
                                                                                                                              m_ppu(std::move(ppu)),
                                                                                                                              m_input(std::make_shared<Input>()),
@@ -62,7 +63,7 @@ void Chip8CoreBase::updateKey(const uint8 key, const bool pressed)
 
 auto Chip8CoreBase::getFrequency() const -> Chip8Frequency
 {
-    return static_cast<Chip8Frequency>(CPU_CLOCK_FREQUENCY);
+    return CPU_CLOCK_FREQUENCY_ENUM;
 }
 
 auto Chip8CoreBase::getCpu() -> std::unique_ptr<CpuBase>&

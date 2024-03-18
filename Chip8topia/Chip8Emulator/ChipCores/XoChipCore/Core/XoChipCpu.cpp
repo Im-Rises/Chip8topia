@@ -2,7 +2,9 @@
 
 #include "XoChipPpu.h"
 
-XoChipCpu::XoChipCpu() : m_savedV{}
+#include "../../../Chip8CoreBase/Core/Input.h"
+
+XoChipCpu::XoChipCpu()
 {
     std::copy(XO_CHIP_FONTSET.begin(), XO_CHIP_FONTSET.end(), m_memory.begin());
 }
@@ -10,13 +12,11 @@ XoChipCpu::XoChipCpu() : m_savedV{}
 void XoChipCpu::setPpu(std::shared_ptr<PpuBase> ppu)
 {
     CpuBase::setPpu(ppu);
-    m_ppuCasted = dynamic_cast<XoChipPpu*>(ppu.get());
 }
 
 void XoChipCpu::reset()
 {
     CpuBase::reset();
-    m_savedV.fill(0);
 }
 
 void XoChipCpu::computeOpcode(const uint16 opcode)
@@ -92,7 +92,7 @@ void XoChipCpu::computeOpcode(const uint16 opcode)
     }
     case 0x9: SNE_Vx_Vy(nibble3, nibble2); break;            // 9XY0
     case 0xA: LD_I_addr(opcode & 0x0FFF); break;             // ANNN
-    case 0xB: JP_V0_addr(opcode & 0x0FFF); break;            // Bxnn
+    case 0xB: JP_nnn_V0(opcode & 0x0FFF); break;             // BNNN
     case 0xC: RND_Vx_nn(nibble3, opcode & 0x00FF); break;    // CXNN
     case 0xD: DRW_Vx_Vy_n(nibble3, nibble2, nibble1); break; // Dxyn
     case 0xE:
@@ -153,42 +153,40 @@ void XoChipCpu::computeOpcode(const uint16 opcode)
 #endif
 }
 
-void XoChipCpu::EXIT()
-{
-    m_pc -= 2;
-    // TODO Call the error callback here and return (exit the program)
-}
-
-void XoChipCpu::SCD(const uint8 n)
-{
-    m_ppuCasted->scrollDown(n);
-}
-
-void XoChipCpu::SCU(const uint8 n)
-{
-    m_ppuCasted->scrollUp(n);
-}
-
-void XoChipCpu::SCR(const uint8 n)
-{
-    m_ppuCasted->scrollRight(n);
-}
-
-void XoChipCpu::SCL(const uint8 n)
-{
-    m_ppuCasted->scrollLeft(n);
-}
-
 void XoChipCpu::LORES()
 {
     m_ppu->clearScreen();
-    m_ppu->setMode(PpuBase::PpuMode::LORES);
+    CpuBase::LORES();
 }
 
 void XoChipCpu::HIRES()
 {
     m_ppu->clearScreen();
-    m_ppu->setMode(PpuBase::PpuMode::HIRES);
+    CpuBase::HIRES();
+}
+
+void XoChipCpu::SE_Vx_nn(const uint8 x, const uint8 nn)
+{
+    if (m_V[x] == nn)
+    {
+        readNextWord() == 0xF000 ? m_pc += 4 : m_pc += 2;
+    }
+}
+
+void XoChipCpu::SNE_Vx_nn(const uint8 x, const uint8 nn)
+{
+    if (m_V[x] != nn)
+    {
+        readNextWord() == 0xF000 ? m_pc += 4 : m_pc += 2;
+    }
+}
+
+void XoChipCpu::SE_Vx_Vy(const uint8 x, const uint8 y)
+{
+    if (m_V[x] == m_V[y])
+    {
+        readNextWord() == 0xF000 ? m_pc += 4 : m_pc += 2;
+    }
 }
 
 void XoChipCpu::SV_RNG_Vx_Vy(const uint8 x, const uint8 y)
@@ -207,50 +205,32 @@ void XoChipCpu::LD_RNG_Vx_Vy(const uint8 x, const uint8 y)
     }
 }
 
-void XoChipCpu::OR_Vx_Vy(const uint8 x, const uint8 y)
+void XoChipCpu::SNE_Vx_Vy(const uint8 x, const uint8 y)
 {
-    m_V[x] |= m_V[y];
-}
-
-void XoChipCpu::AND_Vx_Vy(const uint8 x, const uint8 y)
-{
-    m_V[x] &= m_V[y];
-}
-
-void XoChipCpu::XOR_Vx_Vy(const uint8 x, const uint8 y)
-{
-    m_V[x] ^= m_V[y];
-}
-
-void XoChipCpu::SHR_Vx_Vy(const uint8 x, const uint8 y)
-{
-    const uint8 flag = m_V[y] & 0x1;
-    m_V[x] = m_V[y] >> 1;
-    m_V[0xF] = flag;
-}
-
-void XoChipCpu::SUBN_Vx_Vy(const uint8 x, const uint8 y)
-{
-    const auto flag = static_cast<uint8>(m_V[y] >= m_V[x]);
-    m_V[x] = m_V[y] - m_V[x];
-    m_V[0xF] = flag;
-}
-
-void XoChipCpu::SHL_Vx_Vy(const uint8 x, const uint8 y)
-{
-    const uint8 flag = (m_V[x] & 0x80) >> 7;
-    m_V[x] = m_V[y] << 1;
-    m_V[0xF] = flag;
-}
-
-void XoChipCpu::JP_V0_addr(const uint16 address)
-{
-    m_pc = m_V[0] + address;
+    if (m_V[x] != m_V[y])
+    {
+        readNextWord() == 0xF000 ? m_pc += 4 : m_pc += 2;
+    }
 }
 
 void XoChipCpu::DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n)
 {
     m_V[0xF] = static_cast<uint8>(m_ppu->drawSprite(m_V[x], m_V[y], n, m_memory, m_I));
+}
+
+void XoChipCpu::SKP_Vx(const uint8 x)
+{
+    if (m_input->isKeyPressed(m_V[x]))
+    {
+        readNextWord() == 0xF000 ? m_pc += 4 : m_pc += 2;
+    }
+}
+void XoChipCpu::SKNP_Vx(const uint8 x)
+{
+    if (!m_input->isKeyPressed(m_V[x]))
+    {
+        readNextWord() == 0xF000 ? m_pc += 4 : m_pc += 2;
+    }
 }
 
 void XoChipCpu::LD_I_NNNN()
@@ -268,11 +248,6 @@ void XoChipCpu::LD_AUDIO_aI()
     // TODO: Implement xo chip sound
 }
 
-void XoChipCpu::LD_HF_Vx(const uint8 x)
-{
-    m_I = (m_V[x] * 10) + 0x50;
-}
-
 void XoChipCpu::SET_PITCH_x(const uint8 x)
 {
     // TODO: Implement xo chip sound
@@ -280,34 +255,12 @@ void XoChipCpu::SET_PITCH_x(const uint8 x)
 
 void XoChipCpu::LD_aI_Vx(const uint8 x)
 {
-    for (int i = 0; i <= x; i++)
-    {
-        m_memory[m_I + i] = m_V[i];
-    }
+    CpuBase::LD_aI_Vx(x);
     m_I += x + 1;
 }
 
 void XoChipCpu::LD_Vx_aI(const uint8 x)
 {
-    for (int i = 0; i <= x; i++)
-    {
-        m_V[i] = m_memory[m_I + i];
-    }
+    CpuBase::LD_Vx_aI(x);
     m_I += x + 1;
-}
-
-void XoChipCpu::LD_R_Vx(const uint8 x)
-{
-    for (int i = 0; i <= x; i++)
-    {
-        m_savedV[i] = m_V[i];
-    }
-}
-
-void XoChipCpu::LD_Vx_R(const uint8 x)
-{
-    for (int i = 0; i <= x; i++)
-    {
-        m_V[i] = m_savedV[i];
-    }
 }

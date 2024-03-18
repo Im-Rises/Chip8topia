@@ -37,12 +37,17 @@ public:
 
 public:
     void reset();
-    [[nodiscard]] auto isAnyKeyPressed() const -> bool;
-    [[nodiscard]] auto isKeyPressed(const uint8 Vx) const -> bool;
     void updateKey(const uint8 key, const bool pressed);
+
+    [[nodiscard]] auto isKeyPressed(const uint8 Vx) const -> bool;
+    [[nodiscard]] auto getKeyWaitReleased() -> int;
 
 private:
     std::bitset<KEY_COUNT> m_pressedKeys{};
+
+    std::bitset<KEY_COUNT> m_keysWaitPreviousState{};
+    uint8 m_waitKeyStep = 0;
+
 #if defined(BUILD_PARAM_SAFE)
     std::function<void(const std::string&)> m_errorCallback;
 #endif

@@ -46,40 +46,60 @@ private:
 
 protected:
     [[nodiscard]] auto fetchWord() -> uint16;
+    [[nodiscard]] auto readNextWord() -> uint16;
 
     virtual void computeOpcode(const uint16 opcode) = 0;
 
+    /*
+     * Virtual methods overriden in child classes are quirks
+     */
+
+    virtual void SCD(const uint8 n);                                           // 00CN
+    void SCU(const uint8 n);                                                   // 00DN
     void CLS();                                                                // 00E0
     void RET();                                                                // 00EE
+    void EXIT();                                                               // 00FD
+    virtual void SCR(const uint8 n);                                           // 00FB
+    virtual void SCL(const uint8 n);                                           // 00FC
+    virtual void LORES();                                                      // 00FE
+    virtual void HIRES();                                                      // 00FF
+    void SYS(const uint16 address);                                            // 0nnn
     void JP_addr(const uint16 addr);                                           // 1nnn
     void CALL_addr(const uint16 addr);                                         // 2nnn
-    void SE_Vx_nn(const uint8 x, const uint8 nn);                              // 3xnn
-    void SNE_Vx_nn(const uint8 x, const uint8 nn);                             // 4xnn
-    void SE_Vx_Vy(const uint8 x, const uint8 y);                               // 5xy0
+    virtual void SE_Vx_nn(const uint8 x, const uint8 nn);                      // 3xnn
+    virtual void SNE_Vx_nn(const uint8 x, const uint8 nn);                     // 4xnn
+    virtual void SE_Vx_Vy(const uint8 x, const uint8 y);                       // 5xy0
     void LD_Vx_nn(const uint8 x, const uint8 nn);                              // 6xnn
     void ADD_Vx_nn(const uint8 x, const uint8 nn);                             // 7xnn
     void LD_Vx_Vy(const uint8 x, const uint8 y);                               // 8xy0
-    virtual void OR_Vx_Vy(const uint8 x, const uint8 y) = 0;                   // 8xy1
-    virtual void AND_Vx_Vy(const uint8 x, const uint8 y) = 0;                  // 8xy2
-    virtual void XOR_Vx_Vy(const uint8 x, const uint8 y) = 0;                  // 8xy3
+    virtual void OR_Vx_Vy(const uint8 x, const uint8 y);                       // 8xy1
+    virtual void AND_Vx_Vy(const uint8 x, const uint8 y);                      // 8xy2
+    virtual void XOR_Vx_Vy(const uint8 x, const uint8 y);                      // 8xy3
     void ADD_Vx_Vy(const uint8 x, const uint8 y);                              // 8xy4
     void SUB_Vx_Vy(const uint8 x, const uint8 y);                              // 8xy5
-    void SNE_Vx_Vy(const uint8 x, const uint8 y);                              // 9xy0
+    virtual void SHR_Vx_Vy(const uint8 x, const uint8 y);                      // 8xy6
+    void SUBN_Vx_Vy(const uint8 x, const uint8 y);                             // 8xy7
+    virtual void SHL_Vx_Vy(const uint8 x, const uint8 y);                      // 8xyE
+    virtual void SNE_Vx_Vy(const uint8 x, const uint8 y);                      // 9xy0
     void LD_I_addr(const uint16 addr);                                         // Annn
+    void JP_nnn_V0(const uint16 address);                                      // Bnnn
+    void JP_xnn_Vx(const uint16 address, const uint8 x);                       // Bxnn
     void RND_Vx_nn(const uint8 x, const uint8 nn);                             // Cxnn
     virtual void DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) = 0; // Dxyn
-    void SKP_Vx(const uint8 x);                                                // Ex9E
-    void SKNP_Vx(const uint8 x);                                               // ExA1
+    virtual void SKP_Vx(const uint8 x);                                        // Ex9E
+    virtual void SKNP_Vx(const uint8 x);                                       // ExA1
     void LD_Vx_DT(const uint8 x);                                              // Fx07
     void LD_Vx_K(const uint8 x);                                               // Fx0A
     void LD_DT_Vx(const uint8 x);                                              // Fx15
     void LD_ST_Vx(const uint8 x);                                              // Fx18
     void ADD_I_Vx(const uint8 x);                                              // Fx1E
     void LD_F_Vx(const uint8 x);                                               // Fx29
+    void LD_HF_Vx(const uint8 x);                                              // Fx30
     void LD_B_Vx(const uint8 x);                                               // Fx33
-    virtual void LD_aI_Vx(const uint8 x) = 0;                                  // Fx55
-    virtual void LD_Vx_aI(const uint8 x) = 0;                                  // Fx65
-
+    virtual void LD_aI_Vx(const uint8 x);                                      // Fx55
+    virtual void LD_Vx_aI(const uint8 x);                                      // Fx65
+    virtual void LD_R_Vx(const uint8 x);                                       // Fx75
+    virtual void LD_Vx_R(const uint8 x);                                       // Fx85
 
 public:
     auto getMemory() -> std::array<uint8, MEMORY_SIZE>& { return m_memory; }
@@ -102,6 +122,7 @@ protected:
     uint8 m_sp;
 
     std::array<uint8, REGISTER_V_SIZE> m_V;
+    std::array<uint8, REGISTER_V_SIZE> m_savedV;
     uint16 m_I;
 
     uint8 m_DT;
