@@ -122,5 +122,5 @@ void Chip8topiaRomLoaderUi::openRomWindow()
 {
     IGFD::FileDialogConfig config;
     config.path = DEFAULT_FOLDER_PATH;
-    ImGuiFileDialog::Instance()->OpenDialog(FILE_DIALOG_NAME, "Select a game rom", Chip8RomLoader::CHIP8_ROM_FILE_EXTENSION, config);
+    ImGuiFileDialog::Instance()->OpenDialog(FILE_DIALOG_NAME, "Select a game rom", Chip8RomLoader::CHIP8_ROM_FILE_EXTENSIONS_STRING, config);
 }

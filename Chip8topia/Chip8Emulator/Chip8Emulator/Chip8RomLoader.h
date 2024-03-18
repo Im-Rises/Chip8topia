@@ -3,11 +3,14 @@
 #include <binaryLib/binaryLib.h>
 #include <vector>
 #include <string>
+#include <string_view>
+#include <array>
 
 class Chip8RomLoader
 {
 public:
-    static constexpr auto CHIP8_ROM_FILE_EXTENSION = ".ch8";
+    static constexpr std::array<std::string_view, 3> CHIP8_ROM_FILE_EXTENSIONS = { ".ch8", ".sc8", ".xo8" };
+    static constexpr auto const CHIP8_ROM_FILE_EXTENSIONS_STRING = ".ch8, .sc8, .xo8";
 
 public:
     Chip8RomLoader() = default;
