@@ -11,6 +11,7 @@ void PpuBase::reset()
     m_loresVideoMemoryPlane.fill(0);
     m_hiresVideoMemoryPlane.fill(0);
     m_plane = 1;
+    m_mode = PpuMode::LORES;
 }
 
 void PpuBase::scrollDown(uint8 n)
