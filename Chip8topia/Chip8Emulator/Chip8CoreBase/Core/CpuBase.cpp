@@ -282,9 +282,10 @@ void CpuBase::LD_Vx_DT(const uint8 x)
 
 void CpuBase::LD_Vx_K(const uint8 x)
 {
-    if (m_input->isAnyKeyPressed())
+    int key = m_input->getKeyWaitReleased();
+    if (key != -1)
     {
-        m_V[x] = m_input->getPressedKey();
+        m_V[x] = static_cast<uint8>(key);
     }
     else
     {
