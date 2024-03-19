@@ -134,10 +134,6 @@ void SChip11Cpu::computeOpcode(const uint16 opcode)
         break;
     }
     }
-
-#if defined(BUILD_PARAM_SAFE)
-    m_errorCallback("Invalid opcode: " + std::to_string(opcode));
-#endif
 }
 
 void SChip11Cpu::SCD(const uint8 n)

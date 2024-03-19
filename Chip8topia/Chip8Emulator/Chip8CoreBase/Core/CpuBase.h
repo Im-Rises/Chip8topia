@@ -6,6 +6,11 @@
 #include <RandomGenerator/RandomGenerator.h>
 #include <functional>
 
+#if defined(BUILD_PARAM_SAFE)
+#include <string>
+#include <fmt/format.h>
+#endif
+
 #include "../chip8Fonts.h"
 
 class PpuBase;

@@ -30,7 +30,11 @@ Emulatated consoles:
 Major:
 
 - [ ] Correct Xo-Chip Emulation (ram size etc...)
+- [ ] Create an error code when calling Core.clock(); if it returns 1 it means it needs a screen refresh if 2 its an
+  error and -1 means emulation issue, so the program should stop
 - [ ] Add audio
+- [ ] Performance regression between Merge pull request #18 from Im-Rises/develop and Merge pull request #17 from
+  Im-Rises/develop on main. When I moved all the opcode to the parent core class CpuBase.
 - [-] Add in the cores an exit this clock when reaching an error or the EXIT opcode
 - [-] Add safe and unsafe code version (set the callback error in Core and Cpu, and Ppu, the call it on error)
 
