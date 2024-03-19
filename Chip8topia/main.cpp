@@ -36,7 +36,7 @@ auto main(int argc, char* argv[]) -> int
     std::cout << "Build infos:" << '\n'
               << " - Platform: " << PLATFORM_NAME << '\n'
               << " - C++ version: " << PROJECT_CPP_VERSION << '\n'
-              << " - Build type: " << BUILD_CONFIG_STRING << '\n'
+              //              << " - Build type: " << BUILD_CONFIG_STRING << '\n'
               << " - Build date: " << __DATE__ << " " << __TIME__ << '\n'
               << '\n';
 #endif

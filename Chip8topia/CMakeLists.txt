@@ -58,10 +58,10 @@ endif ()
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_compile_definitions(${PROJECT_NAME} PRIVATE BUILD_DEBUG)
-    target_compile_definitions(${PROJECT_NAME} PRIVATE BUILD_CONFIG_STRING "$<$<CONFIG:Debug>:Debug>")
+    #    target_compile_definitions(${PROJECT_NAME} PRIVATE BUILD_CONFIG_STRING "$<$<CONFIG:Debug>:Debug>")
 else ()
     target_compile_definitions(${PROJECT_NAME} PRIVATE BUILD_RELEASE)
-    target_compile_definitions(${PROJECT_NAME} PRIVATE BUILD_CONFIG_STRING "$<$<CONFIG:Release>:Release>")
+    #    target_compile_definitions(${PROJECT_NAME} PRIVATE BUILD_CONFIG_STRING "$<$<CONFIG:Release>:Release>")
 endif ()
 
 if (TRUE)
