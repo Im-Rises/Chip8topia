@@ -192,15 +192,16 @@ auto XoChipPpu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, 
     {
         if (m_plane == 1)
         {
-            return draw16x16Sprite(Vx, Vy, I_reg, memory);
+            return draw16x16Sprite(Vx, Vy, I_reg, memory, getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data());
         }
         else if (m_plane == 2)
         {
-            return draw16x16Sprite(Vx, Vy, I_reg, memory);
+            return draw16x16Sprite(Vx, Vy, I_reg, memory, getMode() == PpuMode::LORES ? m_loresVideoMemoryPlane.data() : m_hiresVideoMemoryPlane.data());
         }
         else if (m_plane == 3)
         {
-            return draw16x16Sprite(Vx, Vy, I_reg, memory) || draw16x16Sprite(Vx, Vy, I_reg + 32, memory); // 32 bytes per sprite (16x16)
+            return draw16x16Sprite(Vx, Vy, I_reg, memory, getMode() == PpuMode::LORES ? m_loresVideoMemory.data() : m_hiresVideoMemory.data()) ||
+                   draw16x16Sprite(Vx, Vy, I_reg + 32, memory, getMode() == PpuMode::LORES ? m_loresVideoMemoryPlane.data() : m_hiresVideoMemoryPlane.data()); // 32 bytes per sprite (16x16)
         }
     }
 
@@ -241,7 +242,7 @@ auto XoChipPpu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array
     return collision;
 }
 
-auto XoChipPpu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory) -> bool
+auto XoChipPpu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint8* videoMemory) -> bool
 {
     bool collision = false;
 
@@ -256,14 +257,14 @@ auto XoChipPpu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::arr
                     int x = (Vx + j + byteIndex * 8) % PpuBase::SCREEN_HIRES_MODE_WIDTH;
                     int y = (Vy + i) % PpuBase::SCREEN_HIRES_MODE_HEIGHT;
 
-                    if (m_hiresVideoMemory[y * PpuBase::SCREEN_HIRES_MODE_WIDTH + x] == PIXEL_ON)
+                    if (videoMemory[y * PpuBase::SCREEN_HIRES_MODE_WIDTH + x] == PIXEL_ON)
                     {
-                        m_hiresVideoMemory[y * PpuBase::SCREEN_HIRES_MODE_WIDTH + x] = PIXEL_OFF;
+                        videoMemory[y * PpuBase::SCREEN_HIRES_MODE_WIDTH + x] = PIXEL_OFF;
                         collision = true;
                     }
                     else
                     {
-                        m_hiresVideoMemory[y * PpuBase::SCREEN_HIRES_MODE_WIDTH + x] = PIXEL_ON;
+                        videoMemory[y * PpuBase::SCREEN_HIRES_MODE_WIDTH + x] = PIXEL_ON;
                     }
                 }
             }

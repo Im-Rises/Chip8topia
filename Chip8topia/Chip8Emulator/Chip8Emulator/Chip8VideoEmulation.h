@@ -41,8 +41,8 @@ private:
     ShaderXoChip m_shaderXoChipLores;
     ShaderXoChip m_shaderXoChipHires;
 
-    ImVec4 m_backgroundColor = { 0.0F, 0.0F, 0.0F, 1.0F };
-    ImVec4 m_mainPlaneColor = { 1.0F, 0.0F, 0.0F, 1.0F };
-    ImVec4 m_subPlaneColor = { 0.0F, 1.0F, 0.0F, 1.0F };
-    ImVec4 m_pixelsCommonColor = { 0.0F, 0.0F, 1.0F, 1.0F };
+    ImVec4 m_backgroundColor = { 0.3F, 0.3F, 0.3F, 1.0F };
+    ImVec4 m_mainPlaneColor = { 0.8F, 0.8F, 0.8F, 1.0F };
+    ImVec4 m_subPlaneColor = { 0.6F, 0.6F, 0.6F, 1.0F };
+    ImVec4 m_pixelsCommonColor = { 0.0F, 0.0F, 0.0F, 1.0F };
 };
