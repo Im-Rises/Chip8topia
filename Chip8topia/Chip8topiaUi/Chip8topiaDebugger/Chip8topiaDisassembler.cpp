@@ -51,14 +51,14 @@ void Chip8topiaDisassembler::drawDisassembly(Chip8Emulator* emulator)
 
             const bool breakpointThisPc = m_breakpoints.find(memoryIndex) != m_breakpoints.end();
 
-            if (breakpointThisPc)
-            {
-                buffer[0] = '*';
-            }
-            else if (pc == memoryIndex)
+            if (pc == memoryIndex)
             {
                 buffer[0] = '>';
                 currentPcInViewport = true;
+            }
+            else if (breakpointThisPc)
+            {
+                buffer[0] = '*';
             }
 
             ImGui::Selectable(buffer.c_str(), breakpointThisPc, ImGuiSelectableFlags_AllowDoubleClick);
@@ -85,6 +85,7 @@ void Chip8topiaDisassembler::drawDisassembly(Chip8Emulator* emulator)
     if (m_requestMoveToPc)
     {
         m_requestMoveToPc = false;
+        m_followPc = false;
         ImGui::SetScrollY((static_cast<float>(m_requestedPc)) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
     }
 
@@ -160,12 +161,14 @@ void Chip8topiaDisassembler::drawBreakpoints(Chip8Emulator* emulator)
                 ImGui::Text("%s", fmt::format("0x{:04X}", breakpoint).c_str());
                 ImGui::TableSetColumnIndex(1);
 
+                ImGui::PushID(breakpoint);
                 if (ImGui::Button(ICON_FA_ARROW_RIGHT))
                 {
                     m_requestMoveToPc = true;
                     m_requestedPc = breakpoint;
                     m_followPc = false;
                 }
+                ImGui::PopID();
                 ImGui::TableSetColumnIndex(2);
                 if (ImGui::Button(fmt::format(ICON_FA_XMARK "##{}", breakpoint).c_str()))
                 {
