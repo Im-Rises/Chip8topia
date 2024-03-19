@@ -25,6 +25,10 @@ Emulatated consoles:
 
 ## Screenshots
 
+| T8NKS                                                                                                                 |  |
+|-----------------------------------------------------------------------------------------------------------------------|--|
+| ![t8nks-game-screenshot](https://github.com/Im-Rises/Chip8topia/assets/59691442/e4ab6b1f-e5a4-485f-a26b-dab63e20aff1) |  |
+
 ## TODO
 
 Major:
