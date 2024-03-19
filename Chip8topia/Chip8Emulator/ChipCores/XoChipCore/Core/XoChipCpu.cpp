@@ -147,10 +147,6 @@ void XoChipCpu::computeOpcode(const uint16 opcode)
         break;
     }
     }
-
-#if defined(BUILD_PARAM_SAFE)
-    m_errorCallback("Invalid opcode: " + std::to_string(opcode));
-#endif
 }
 
 void XoChipCpu::LORES()

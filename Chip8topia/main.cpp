@@ -11,13 +11,15 @@
 #include "Chip8topia.h"
 
 #if defined(WINRELEASE)
-auto WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) -> int {
+auto WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) -> int
+{
     (void)hInstance;
     (void)hPrevInstance;
     (void)lpCmdLine;
     (void)nCmdShow;
 #else // Windows Debug, Linux, Apple
-auto main(int argc, char* argv[]) -> int {
+auto main(int argc, char* argv[]) -> int
+{
     (void)argc;
     (void)argv;
 #endif
@@ -34,7 +36,7 @@ auto main(int argc, char* argv[]) -> int {
     std::cout << "Build infos:" << '\n'
               << " - Platform: " << PLATFORM_NAME << '\n'
               << " - C++ version: " << PROJECT_CPP_VERSION << '\n'
-              //              << " - Build type: " << BUILD_CONFIG << '\n'
+              << " - Build type: " << BUILD_CONFIG_STRING << '\n'
               << " - Build date: " << __DATE__ << " " << __TIME__ << '\n'
               << '\n';
 #endif

@@ -6,7 +6,8 @@
 #include <imgui.h>
 
 template <typename... Args>
-class ImGuiMenuItemBase {
+class ImGuiMenuItemBase
+{
 public:
     ImGuiMenuItemBase(const char* name, const bool isOpen, std::function<void(Args*...)> drawFunction)
         : m_name(name), m_isOpen(isOpen), m_drawFunction(drawFunction) {}
@@ -28,17 +29,20 @@ public:
 };
 
 template <typename... Args>
-class ImGuiMenuItemWindow : public ImGuiMenuItemBase<Args...> {
+class ImGuiMenuItemWindow : public ImGuiMenuItemBase<Args...>
+{
 public:
     ImGuiMenuItemWindow(const char* name, const bool isOpen, std::function<void(Args*...)> drawFunction)
         : ImGuiMenuItemBase<Args...>(name, isOpen, drawFunction) {}
 
 public:
-    void drawMenuItem() override {
+    void drawMenuItem() override
+    {
         ImGui::MenuItem(this->m_name, nullptr, &this->m_isOpen);
     }
 
-    void drawWindow(Args*... args) override {
+    void drawWindow(Args*... args) override
+    {
         if (this->m_isOpen)
         {
             ImGui::Begin(this->m_name, &this->m_isOpen);
@@ -49,13 +53,15 @@ public:
 };
 
 template <typename... Args>
-class ImGuiMenuItemPopup : public ImGuiMenuItemBase<Args...> {
+class ImGuiMenuItemPopup : public ImGuiMenuItemBase<Args...>
+{
 public:
     ImGuiMenuItemPopup(const char* name, const bool isOpen, std::function<void(Args*...)> drawFunction)
         : ImGuiMenuItemBase<Args...>(name, isOpen, drawFunction) {}
 
 public:
-    void drawMenuItem() override {
+    void drawMenuItem() override
+    {
         ImGui::MenuItem(this->m_name);
 
         if (ImGui::IsItemClicked())
@@ -64,7 +70,8 @@ public:
         }
     }
 
-    void drawWindow(Args*... args) override {
+    void drawWindow(Args*... args) override
+    {
         if (this->m_isOpen)
         {
             ImGui::OpenPopup(this->m_name);
@@ -79,12 +86,14 @@ public:
     }
 };
 
-class ImGuiMessageQueue {
+class ImGuiMessageQueue
+{
 private:
     static constexpr auto TOO_MANY_MESSAGES_TITLE = "Too many messages";
     static constexpr auto TOO_MANY_MESSAGES_MESSAGE = "Skipping next messages.";
 
-    struct MessageData {
+    struct MessageData
+    {
         const std::string m_title;
         const std::string m_message;
         const std::function<void()> m_callback;
@@ -100,12 +109,13 @@ public:
     ~ImGuiMessageQueue() = default;
 
 public:
-    void pushMessage(const std::string& title, const std::string& message, std::function<void()> callback = nullptr) {
-        if (m_messageQueue.size() >= MAX_MESSAGES)
+    void pushMessage(const std::string& title, const std::string& message, std::function<void()> callback = nullptr)
+    {
+        if (m_messageQueue.size() >= MAX_MESSAGES && m_canPushMessage)
         {
-            clearMessageQueue();
             m_canPushMessage = false;
-            m_messageQueue.emplace(TOO_MANY_MESSAGES_TITLE, TOO_MANY_MESSAGES_MESSAGE, [&]() { m_canPushMessage = true; });
+            m_messageQueue.emplace(TOO_MANY_MESSAGES_TITLE, TOO_MANY_MESSAGES_MESSAGE, [&]()
+                { m_canPushMessage = true; });
         }
 
         if (m_canPushMessage)
@@ -114,7 +124,8 @@ public:
         }
     }
 
-    void showMessage() {
+    void showMessage()
+    {
         if (m_messageQueue.empty())
         {
             return;
@@ -141,14 +152,16 @@ public:
         }
     }
 
-    void clearMessageQueue() {
+    void clearMessageQueue()
+    {
         while (!m_messageQueue.empty())
         {
             m_messageQueue.pop();
         }
     }
 
-    [[nodiscard]] auto empty() const -> bool {
+    [[nodiscard]] auto empty() const -> bool
+    {
         return m_messageQueue.empty();
     }
 

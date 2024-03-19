@@ -25,20 +25,31 @@ Emulatated consoles:
 
 ## Screenshots
 
+| Invaders (Chip8)                                                                                                         | Car (SCHIP)                                                                                                         | T8NKS (Xo-Chip                                                                                                        |                                                                                                                   
+|--------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| ![invaders-game-screenshot](https://github.com/Im-Rises/Chip8topia/assets/59691442/3e5a2078-2cf7-4929-94c2-ea42cea24efd) | ![car-game-screenshot](https://github.com/Im-Rises/Chip8topia/assets/59691442/13774fed-1ce4-4ab6-b73d-40aa374661a0) | ![t8nks-game-screenshot](https://github.com/Im-Rises/Chip8topia/assets/59691442/e4ab6b1f-e5a4-485f-a26b-dab63e20aff1) |
+
 ## TODO
 
 Major:
 
-- [ ] Correct Xo-Chip Emulation (ram size etc...)
-- [ ] Add audio
-- [-] Add in the cores an exit this clock when reaching an error or the EXIT opcode
 - [-] Add safe and unsafe code version (set the callback error in Core and Cpu, and Ppu, the call it on error)
+- [ ] Create an error code when calling Core.clock(); if it returns 1 it means it needs a screen refresh if 2 its an
+  error and -1 means emulation issue, so the program should stop (also add a normal exit on EXIT opcode)
+- [ ] Correct Xo-Chip Emulation (ram size etc...) (add a different error code depending if it is the Cpu, Ppu, etc...)
+- [ ] Add audio
 
 Minor:
 
 - [ ] Add a way to change the input keys
 - [ ] Add a background when no rom is loaded
 - [ ] Do a general optimization of the code
+
+## Bugs
+
+- [ ] Sometime changing games won't display anything (need to restart the program)
+- [ ] Performance regression between Merge pull request #18 from Im-Rises/develop and Merge pull request #17 from
+  Im-Rises/develop on main. When I moved all the opcode to the parent core class CpuBase.
 
 ## Documentation
 

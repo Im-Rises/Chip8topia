@@ -102,10 +102,6 @@ void Chip8Cpu::computeOpcode(const uint16 opcode)
         break;
     }
     }
-
-#if defined(BUILD_PARAM_SAFE)
-    m_errorCallback("Invalid opcode: " + std::to_string(opcode));
-#endif
 }
 
 void Chip8Cpu::OR_Vx_Vy(const uint8 x, const uint8 y)

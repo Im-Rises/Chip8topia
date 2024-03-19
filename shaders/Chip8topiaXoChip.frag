@@ -12,7 +12,7 @@ uniform sampler2D u_subPlaneTexture;
 uniform vec4 u_backgroundColor;
 uniform vec4 u_mainPlaneColor;
 uniform vec4 u_subPlaneColor;
-uniform vec4 u_commonColor;
+uniform vec4 u_commonPixelsColor;
 
 void main()
 {
@@ -21,7 +21,7 @@ void main()
 
     if (colorMainPlane.r > 0.0 && colorSubPlane.r > 0.0)
     {
-        o_fragColor = u_commonColor;
+        o_fragColor = u_commonPixelsColor;
     }
     else if (colorMainPlane.r > 0.0)
     {
