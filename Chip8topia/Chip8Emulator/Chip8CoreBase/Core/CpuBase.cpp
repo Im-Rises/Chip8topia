@@ -309,12 +309,12 @@ void CpuBase::ADD_I_Vx(const uint8 x)
 
 void CpuBase::LD_F_Vx(const uint8 x)
 {
-    m_I = m_V[x] * 5;
+    m_I = m_V[x] * 5; // TODO: check this we're moving from u8 to u16
 }
 
 void CpuBase::LD_HF_Vx(const uint8 x)
 {
-    m_I = (m_V[x] * 10) + 0x50;
+    m_I = (m_V[x] * 10) + 0x50; // TODO: check this we're moving from u8 to u16
 }
 
 void CpuBase::LD_B_Vx(const uint8 x)
