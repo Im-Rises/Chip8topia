@@ -244,6 +244,24 @@ auto XoChipPpu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array
 
 auto XoChipPpu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint8* videoMemory) -> bool
 {
+    //    // Clear the 16x16 sprite from the screen
+    //    for (int i = 0; i < 16; i++) // 16 rows
+    //    {
+    //        for (int byteIndex = 0; byteIndex < 2; byteIndex++) // Two bytes per row (16 pixels) each pixel is 1 bit
+    //        {
+    //            for (int j = 0; j < 8; j++) // 8 pixels per byte
+    //            {
+    //                if (((memory[I_reg + i * 2 + byteIndex] >> (7 - j)) & 0x1) == 1)
+    //                {
+    //                    int x = (Vx + j + byteIndex * 8) % PpuBase::SCREEN_HIRES_MODE_WIDTH;
+    //                    int y = (Vy + i) % PpuBase::SCREEN_HIRES_MODE_HEIGHT;
+    //
+    //                    videoMemory[y * PpuBase::SCREEN_HIRES_MODE_WIDTH + x] = PIXEL_OFF;
+    //                }
+    //            }
+    //        }
+    //    }
+
     bool collision = false;
 
     for (int i = 0; i < 16; i++) // 16 rows
