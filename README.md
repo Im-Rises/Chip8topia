@@ -43,6 +43,7 @@ Major:
   error and -1 means emulation issue, so the program should stop (also add a normal exit on EXIT opcode)
 - [ ] Add audio
 - [ ] Rename CommonPixelColor to OverlapPixelColor
+- [ ] Add ImGui window to show each plane of the Xo-Chip separately
 
 Minor:
 
