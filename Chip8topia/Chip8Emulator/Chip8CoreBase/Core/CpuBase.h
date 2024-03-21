@@ -127,7 +127,7 @@ protected:
     uint8 m_sp;
 
     std::array<uint8, REGISTER_V_SIZE> m_V;
-    std::array<uint8, REGISTER_V_SIZE> m_savedV;
+    std::array<uint8, REGISTER_V_SIZE> m_RPL;
     uint16 m_I;
 
     uint8 m_DT;
