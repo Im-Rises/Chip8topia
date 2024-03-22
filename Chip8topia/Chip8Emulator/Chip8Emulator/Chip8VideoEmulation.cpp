@@ -1,6 +1,7 @@
 #include "Chip8VideoEmulation.h"
 
-#include "../Chip8CoreBase/Core/PpuBase.h"
+#include <binaryLib/binaryLib.h>
+
 #include "../Chip8CoreBase/Chip8CoreBase.h"
 
 Chip8VideoEmulation::Chip8VideoEmulation() : m_shaderLores(PpuBase::SCREEN_LORES_MODE_WIDTH, PpuBase::SCREEN_LORES_MODE_HEIGHT),
@@ -46,13 +47,26 @@ void Chip8VideoEmulation::updateTexture(const std::unique_ptr<Chip8CoreBase>& co
     }
     case Chip8CoreType::XoChip:
     {
+        const int planeMask = core->getPpu()->getPlane();
         if (core->getPpu()->getMode() == PpuBase::PpuMode::LORES)
         {
-            //            m_shaderXoChipLores.updateTextures(core->getPpu()->getLoresVideoMemory().data(), core->getPpu()->getLoresVideoMemoryPlane().data());
+            for (int i = 0; i < PpuBase::PLANE_COUNT; i++)
+            {
+                if (getBit(planeMask, i))
+                {
+                    //                    m_shaderXoChipLores.updateTextures(core->getPpu()->getLoresVideoMemory(i).data(), core->getPpu()->getLoresVideoMemoryPlane().data());
+                }
+            }
         }
         else
         {
-            //            m_shaderXoChipHires.updateTextures(core->getPpu()->getHiresVideoMemory().data(), core->getPpu()->getHiresVideoMemoryPlane().data());
+            for (int i = 0; i < PpuBase::PLANE_COUNT; i++)
+            {
+                if (getBit(planeMask, i))
+                {
+                    //            m_shaderXoChipHires.updateTextures(core->getPpu()->getHiresVideoMemory().data(), core->getPpu()->getHiresVideoMemoryPlane().data());
+                }
+            }
         }
         break;
     }
@@ -96,11 +110,11 @@ void Chip8VideoEmulation::update(const std::unique_ptr<Chip8CoreBase>& core, con
     {
         if (core->getPpu()->getMode() == PpuBase::PpuMode::LORES)
         {
-            //            m_shaderXoChipLores.update(m_backgroundColor, m_mainPlaneColor, m_subPlaneColor, m_pixelsCommonColor, scaleX, scaleY);
+            m_shaderXoChipLores.update(m_colors, scaleX, scaleY);
         }
         else
         {
-            //            m_shaderXoChipHires.update(m_backgroundColor, m_mainPlaneColor, m_subPlaneColor, m_pixelsCommonColor, scaleX, scaleY);
+            m_shaderXoChipHires.update(m_colors, scaleX, scaleY);
         }
         break;
     }

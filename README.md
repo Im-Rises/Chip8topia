@@ -44,6 +44,7 @@ Major:
 - [ ] Add audio
 - [ ] Rename CommonPixelColor to OverlapPixelColor
 - [ ] Add ImGui window to show each plane of the Xo-Chip separately (use ImGui::Image and send the GLuint texture to it)
+- [ ] Add a selector to use grayscale color in Xo-Chip or colors
 
 Minor:
 

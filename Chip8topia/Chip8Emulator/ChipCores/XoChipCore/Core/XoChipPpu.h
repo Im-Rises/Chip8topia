@@ -4,8 +4,8 @@
 
 class XoChipPpu final : public PpuBase
 {
-private:
-    static constexpr int PLANE_MASK_COUNT = 4;
+public:
+    static constexpr int COLOR_COUNT = 16;
 
 public:
     XoChipPpu() = default;

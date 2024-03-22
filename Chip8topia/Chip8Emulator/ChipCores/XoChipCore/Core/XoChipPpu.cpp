@@ -6,7 +6,7 @@ void XoChipPpu::clearScreen()
 {
     if (getMode() == PpuMode::LORES)
     {
-        for (int i = 0; i < PLANE_MASK_COUNT; i++)
+        for (int i = 0; i < PLANE_COUNT; i++)
         {
             if (getBit(m_plane, i))
             {
@@ -16,7 +16,7 @@ void XoChipPpu::clearScreen()
     }
     else
     {
-        for (int i = 0; i < PLANE_MASK_COUNT; i++)
+        for (int i = 0; i < PLANE_COUNT; i++)
         {
             if (getBit(m_plane, i))
             {
@@ -44,7 +44,7 @@ void XoChipPpu::scrollDown(uint8 n)
     const int width = loresMode ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
     const int height = loresMode ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
 
-    for (int i = 0; i < PLANE_MASK_COUNT; i++)
+    for (int i = 0; i < PLANE_COUNT; i++)
     {
         if (getBit(m_plane, i))
         {
@@ -71,7 +71,7 @@ void XoChipPpu::scrollUp(uint8 n)
     const int width = loresMode ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
     const int height = loresMode ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
 
-    for (int i = 0; i < PLANE_MASK_COUNT; i++)
+    for (int i = 0; i < PLANE_COUNT; i++)
     {
         if (getBit(m_plane, i))
         {
@@ -99,7 +99,7 @@ void XoChipPpu::scrollRight(uint8 n)
     const int height = loresMode ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
     n = 4;
 
-    for (int i = 0; i < PLANE_MASK_COUNT; i++)
+    for (int i = 0; i < PLANE_COUNT; i++)
     {
         if (getBit(m_plane, i))
         {
@@ -127,7 +127,7 @@ void XoChipPpu::scrollLeft(uint8 n)
     const int height = loresMode ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
     n = 4;
 
-    for (int i = 0; i < PLANE_MASK_COUNT; i++)
+    for (int i = 0; i < PLANE_COUNT; i++)
     {
         if (getBit(m_plane, i))
         {
@@ -143,7 +143,7 @@ auto XoChipPpu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, 
         bool collision = false;
         int drawCount = 0;
 
-        for (int i = 0; i < PLANE_MASK_COUNT; i++)
+        for (int i = 0; i < PLANE_COUNT; i++)
         {
             if (getBit(m_plane, i))
             {
@@ -157,7 +157,7 @@ auto XoChipPpu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, 
         bool collision = false;
         int drawCount = 0;
 
-        for (int i = 0; i < PLANE_MASK_COUNT; i++)
+        for (int i = 0; i < PLANE_COUNT; i++)
         {
             if (getBit(m_plane, i))
             {
