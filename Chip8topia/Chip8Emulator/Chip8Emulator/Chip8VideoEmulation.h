@@ -28,12 +28,15 @@ public:
     void updateTexture(const std::unique_ptr<Chip8CoreBase>& core);
     void update(const std::unique_ptr<Chip8CoreBase>& core, const float screenWidth, const float screenHeight, const float chip8AspectRatio);
 
+    auto getColor(const int index) -> ImVec4& { return m_colors[index]; }
     //    auto getColors() -> std::array<ImVec4, 16>& { return m_colors; }
 
     //    [[nodiscard]] auto getBackgroundColor() -> ImVec4& { return m_backgroundColor; }
     //    [[nodiscard]] auto getMainPlaneColor() -> ImVec4& { return m_mainPlaneColor; }
     //    [[nodiscard]] auto getSubPlaneColor() -> ImVec4& { return m_subPlaneColor; }
     //    [[nodiscard]] auto getPixelsCommonColor() -> ImVec4& { return m_pixelsCommonColor; }
+
+    void resetColors();
 
 private:
     // TODO: No needs to use ShaderBW, we can use the XoChip shader for all cores and only update the first plane for Chip8, SCHip11 and SCHipC
