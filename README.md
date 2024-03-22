@@ -33,6 +33,7 @@ Emulatated consoles:
 
 Major:
 
+- [-] Implement all four planes for Xo-Chip !!!
 - [ ] Understnad why it doesn't draw correclty on t8nk game when drawing the main screen above the background drawing
   menu
 - [ ] Correct Xo-Chip Emulation (ram size etc...) (add a different error code depending if it is the Cpu, Ppu, etc...)
@@ -45,6 +46,7 @@ Major:
 - [ ] Rename CommonPixelColor to OverlapPixelColor
 - [ ] Add ImGui window to show each plane of the Xo-Chip separately (use ImGui::Image and send the GLuint texture to it)
 - [ ] Add a selector to use grayscale color in Xo-Chip or colors
+- [ ] Check which imgui window is very slow (probably the memory editor)
 
 Minor:
 
