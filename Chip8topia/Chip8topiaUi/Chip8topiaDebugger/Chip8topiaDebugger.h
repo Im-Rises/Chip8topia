@@ -13,7 +13,7 @@ class Chip8Emulator;
 class Chip8topiaDebugger
 {
 private:
-#if defined(__EMSCRIPTEN__)
+#if defined(BUILD_RELEASE)
     static constexpr auto INITIAL_WINDOW_STATE = false;
 #else
     static constexpr auto INITIAL_WINDOW_STATE = true;

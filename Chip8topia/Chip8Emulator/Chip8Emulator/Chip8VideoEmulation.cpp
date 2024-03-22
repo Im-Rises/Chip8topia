@@ -54,7 +54,7 @@ void Chip8VideoEmulation::updateTexture(const std::unique_ptr<Chip8CoreBase>& co
             {
                 if (getBit(planeMask, i))
                 {
-                    m_shaderXoChipLores.updateTexture(core->getPpu()->getLoresVideoMemory(i).data());
+                    m_shaderXoChipLores.updateTexture(core->getPpu()->getLoresVideoMemory(i).data(), i);
                 }
             }
         }
@@ -64,7 +64,7 @@ void Chip8VideoEmulation::updateTexture(const std::unique_ptr<Chip8CoreBase>& co
             {
                 if (getBit(planeMask, i))
                 {
-                    m_shaderXoChipHires.updateTexture(core->getPpu()->getHiresVideoMemory(i).data());
+                    m_shaderXoChipHires.updateTexture(core->getPpu()->getHiresVideoMemory(i).data(), i);
                 }
             }
         }
