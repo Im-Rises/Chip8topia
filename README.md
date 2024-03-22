@@ -33,11 +33,17 @@ Emulatated consoles:
 
 Major:
 
-- [-] Add safe and unsafe code version (set the callback error in Core and Cpu, and Ppu, the call it on error)
+- [ ] Understnad why it doesn't draw correclty on t8nk game when drawing the main screen above the background drawing
+  menu
+- [ ] Correct Xo-Chip Emulation (ram size etc...) (add a different error code depending if it is the Cpu, Ppu, etc...)
+- [ ] Correct restart which is behaving weirdly with Red October ?
+
+- [ ] Add safe and unsafe code version (set the callback error in Core and Cpu, and Ppu, the call it on error)
 - [ ] Create an error code when calling Core.clock(); if it returns 1 it means it needs a screen refresh if 2 its an
   error and -1 means emulation issue, so the program should stop (also add a normal exit on EXIT opcode)
-- [ ] Correct Xo-Chip Emulation (ram size etc...) (add a different error code depending if it is the Cpu, Ppu, etc...)
 - [ ] Add audio
+- [ ] Rename CommonPixelColor to OverlapPixelColor
+- [ ] Add ImGui window to show each plane of the Xo-Chip separately (use ImGui::Image and send the GLuint texture to it)
 
 Minor:
 

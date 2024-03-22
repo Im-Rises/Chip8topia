@@ -10,7 +10,7 @@ CpuBase::CpuBase() : m_pc(START_ADDRESS),
                      m_ST(0),
                      m_memory{},
                      m_V{},
-                     m_savedV{},
+                     m_RPL{},
                      m_stack{},
                      m_u8NumberRandomGenerator(0, 0xFF)
 {
@@ -309,12 +309,12 @@ void CpuBase::ADD_I_Vx(const uint8 x)
 
 void CpuBase::LD_F_Vx(const uint8 x)
 {
-    m_I = m_V[x] * 5;
+    m_I = m_V[x] * 5; // TODO: check this we're moving from u8 to u16
 }
 
 void CpuBase::LD_HF_Vx(const uint8 x)
 {
-    m_I = (m_V[x] * 10) + 0x50;
+    m_I = (m_V[x] * 10) + 0x50; // TODO: check this we're moving from u8 to u16
 }
 
 void CpuBase::LD_B_Vx(const uint8 x)
@@ -344,7 +344,7 @@ void CpuBase::LD_R_Vx(const uint8 x)
 {
     for (int i = 0; i <= x; i++)
     {
-        m_savedV[i] = m_V[i];
+        m_RPL[i] = m_V[i];
     }
 }
 
@@ -352,6 +352,6 @@ void CpuBase::LD_Vx_R(const uint8 x)
 {
     for (int i = 0; i <= x; i++)
     {
-        m_V[i] = m_savedV[i];
+        m_V[i] = m_RPL[i];
     }
 }

@@ -187,17 +187,21 @@ void XoChipCpu::SE_Vx_Vy(const uint8 x, const uint8 y)
 
 void XoChipCpu::SV_RNG_Vx_Vy(const uint8 x, const uint8 y)
 {
-    for (uint8 i = x; i <= y; i++)
+    // TODO:Add a check if y is greater than x
+    int range = y - x;
+    for (int i = 0; i <= range; i++)
     {
-        m_memory[m_I + i] = m_V[i];
+        m_memory[m_I + i] = m_V[x + i];
     }
 }
 
 void XoChipCpu::LD_RNG_Vx_Vy(const uint8 x, const uint8 y)
 {
-    for (uint8 i = x; i <= y; i++)
+    // TODO:Add a check if y is greater than x
+    int range = y - x;
+    for (int i = 0; i <= range; i++)
     {
-        m_V[i] = m_memory[m_I + i];
+        m_V[x + i] = m_memory[m_I + i];
     }
 }
 
