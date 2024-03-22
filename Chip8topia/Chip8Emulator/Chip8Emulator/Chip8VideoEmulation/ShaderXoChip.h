@@ -45,7 +45,7 @@ public:
     ~ShaderXoChip();
 
 public:
-    void updateTextures(const uint8* mainPlaneData, const uint8* subPlaneData);
+    void updateTexture(const uint8* videoMemory);
     void update(const std::array<ImVec4, XoChipPpu::COLOR_COUNT>& colors, const float xScale, const float yScale);
     void reset();
 

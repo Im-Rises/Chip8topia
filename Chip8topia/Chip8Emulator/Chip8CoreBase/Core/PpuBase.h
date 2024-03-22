@@ -53,6 +53,8 @@ public:
     auto getHiresVideoMemory(uint8 plane) -> std::array<uint8, SCREEN_HIRES_MODE_SIZE>&;
     void setPlane(uint8 x);
     [[nodiscard]] auto getPlane() const -> uint8;
+    //    [[nodiscard]] auto getLoresVideoMemoryPlanes() const -> const std::array<std::array<uint8, SCREEN_LORES_MODE_SIZE>, PLANE_COUNT>&;
+    //    [[nodiscard]] auto getHiresVideoMemoryPlanes() const -> const std::array<std::array<uint8, SCREEN_HIRES_MODE_SIZE>, PLANE_COUNT>&;
 
 protected: // TODO: For improvements, better make an array of plane instead of two separate arrays
     uint8 m_plane;

@@ -185,7 +185,7 @@ auto XoChipPpu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array
         const auto spriteByte = memory[I_reg + i];
         for (auto j = 0; j < 8; j++)
         {
-            if (((spriteByte) & (0x1 << (7 - j))) == PIXEL_ON)
+            if (((spriteByte) & (0x1 << (7 - j))) != PIXEL_OFF)
             {
                 const auto index = (Vx + j) % screenWidth + ((Vy + i) % screenHeight) * screenWidth;
                 if (videoMemory[index] == PIXEL_ON)
@@ -214,7 +214,7 @@ auto XoChipPpu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::arr
         {
             for (int j = 0; j < 8; j++) // 8 pixels per byte
             {
-                if (((memory[I_reg + i * 2 + byteIndex] >> (7 - j)) & 0x1) == PIXEL_ON)
+                if (((memory[I_reg + i * 2 + byteIndex] >> (7 - j)) & 0x1) != PIXEL_OFF)
                 {
                     int x = (Vx + j + byteIndex * 8) % PpuBase::SCREEN_HIRES_MODE_WIDTH;
                     int y = (Vy + i) % PpuBase::SCREEN_HIRES_MODE_HEIGHT;

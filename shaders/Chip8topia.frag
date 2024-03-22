@@ -1,7 +1,5 @@
 #version 330 core
 
-precision mediump float;
-
 in vec2 v_texCoord;
 
 out vec4 o_fragColor;

@@ -88,7 +88,7 @@ auto SChip11Ppu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::arra
         const auto spriteByte = memory[I_reg + i];
         for (auto j = 0; j < 8; j++)
         {
-            if (((spriteByte) & (0x1 << (7 - j))) == PIXEL_ON)
+            if (((spriteByte) & (0x1 << (7 - j))) != PIXEL_OFF)
             {
                 // Clip the sprite if it goes out of bounds
                 if (((Vx + j) >= screenWidth && j > 0) || ((Vy + i) >= screenHeight && i > 0))
@@ -134,7 +134,7 @@ auto SChip11Ppu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::ar
         {
             for (unsigned int j = 0; j < 8; j++) // 8 pixels per byte
             {
-                if (((memory[I_reg + i * 2 + byteIndex] >> (7 - j)) & 0x1) == PIXEL_ON)
+                if (((memory[I_reg + i * 2 + byteIndex] >> (7 - j)) & 0x1) != PIXEL_OFF)
                 {
                     const unsigned int x = (Vx + j + byteIndex * 8) % PpuBase::SCREEN_HIRES_MODE_WIDTH;
                     const unsigned int y = (Vy + i) % PpuBase::SCREEN_HIRES_MODE_HEIGHT;
