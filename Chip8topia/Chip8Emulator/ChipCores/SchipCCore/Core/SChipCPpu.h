@@ -4,6 +4,9 @@
 
 class SChipCPpu final : public PpuBase
 {
+private:
+    static constexpr uint8 PLANE_INDEX = 0;
+
 public:
     SChipCPpu() = default;
     SChipCPpu(const SChipCPpu&) = delete;
@@ -14,7 +17,7 @@ public:
 
 public:
     void clearScreen() final;
-    
+
     void scrollDown(uint8 n) final;
     void scrollRight(uint8 n) final;
     void scrollLeft(uint8 n) final;

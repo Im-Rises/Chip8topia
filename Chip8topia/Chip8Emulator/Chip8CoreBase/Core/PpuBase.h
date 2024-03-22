@@ -14,6 +14,7 @@ public:
         HIRES
     };
 
+    static constexpr uint8 PLANE_COUNT = 4;
     static constexpr uint8 PIXEL_ON = 1;
     static constexpr uint8 PIXEL_OFF = 0;
 
@@ -48,21 +49,16 @@ public:
 
     virtual void setMode(PpuMode mode);
     [[nodiscard]] auto getMode() const -> PpuMode;
-    auto getLoresVideoMemory() -> std::array<uint8, SCREEN_LORES_MODE_SIZE>&;
-    auto getHiresVideoMemory() -> std::array<uint8, SCREEN_HIRES_MODE_SIZE>&;
-    auto getLoresVideoMemoryPlane() -> std::array<uint8, SCREEN_LORES_MODE_SIZE>&;
-    auto getHiresVideoMemoryPlane() -> std::array<uint8, SCREEN_HIRES_MODE_SIZE>&;
+    auto getLoresVideoMemory(uint8 plane) -> std::array<uint8, SCREEN_LORES_MODE_SIZE>&;
+    auto getHiresVideoMemory(uint8 plane) -> std::array<uint8, SCREEN_HIRES_MODE_SIZE>&;
     void setPlane(uint8 x);
 
 protected: // TODO: For improvements, better make an array of plane instead of two separate arrays
-    PpuMode m_mode;
-    std::array<uint8, SCREEN_LORES_MODE_SIZE> m_loresVideoMemory;
-    std::array<uint8, SCREEN_HIRES_MODE_SIZE> m_hiresVideoMemory;
-
-    std::array<uint8, SCREEN_LORES_MODE_SIZE> m_loresVideoMemoryPlane;
-    std::array<uint8, SCREEN_HIRES_MODE_SIZE> m_hiresVideoMemoryPlane;
-
     uint8 m_plane;
+    PpuMode m_mode;
+
+    std::array<std::array<uint8, SCREEN_LORES_MODE_SIZE>, PLANE_COUNT> m_loresVideoMemoryPlanes;
+    std::array<std::array<uint8, SCREEN_HIRES_MODE_SIZE>, PLANE_COUNT> m_hiresVideoMemoryPlanes;
 
 #if defined(BUILD_PARAM_SAFE)
     std::function<void(const std::string&)> m_errorCallback;

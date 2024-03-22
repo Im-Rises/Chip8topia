@@ -28,10 +28,12 @@ public:
     void updateTexture(const std::unique_ptr<Chip8CoreBase>& core);
     void update(const std::unique_ptr<Chip8CoreBase>& core, const float screenWidth, const float screenHeight, const float chip8AspectRatio);
 
-    [[nodiscard]] auto getBackgroundColor() -> ImVec4& { return m_backgroundColor; }
-    [[nodiscard]] auto getMainPlaneColor() -> ImVec4& { return m_mainPlaneColor; }
-    [[nodiscard]] auto getSubPlaneColor() -> ImVec4& { return m_subPlaneColor; }
-    [[nodiscard]] auto getPixelsCommonColor() -> ImVec4& { return m_pixelsCommonColor; }
+    //    auto getColors() -> std::array<ImVec4, 16>& { return m_colors; }
+
+    //    [[nodiscard]] auto getBackgroundColor() -> ImVec4& { return m_backgroundColor; }
+    //    [[nodiscard]] auto getMainPlaneColor() -> ImVec4& { return m_mainPlaneColor; }
+    //    [[nodiscard]] auto getSubPlaneColor() -> ImVec4& { return m_subPlaneColor; }
+    //    [[nodiscard]] auto getPixelsCommonColor() -> ImVec4& { return m_pixelsCommonColor; }
 
 private:
     // TODO: No needs to use ShaderBW, we can use the XoChip shader for all cores and only update the first plane for Chip8, SCHip11 and SCHipC
@@ -41,10 +43,13 @@ private:
     ShaderXoChip m_shaderXoChipLores;
     ShaderXoChip m_shaderXoChipHires;
 
-    ImVec4 m_backgroundColor = { 0.3F, 0.3F, 0.3F, 1.0F };
-    ImVec4 m_mainPlaneColor = { 0.8F, 0.8F, 0.8F, 1.0F };
-    ImVec4 m_subPlaneColor = { 0.6F, 0.6F, 0.6F, 1.0F };
-    ImVec4 m_pixelsCommonColor = { 0.0F, 0.0F, 0.0F, 1.0F };
+    std::array<ImVec4, 16> m_colors;
+
+
+    //    ImVec4 m_backgroundColor = { 0.3F, 0.3F, 0.3F, 1.0F };
+    //    ImVec4 m_mainPlaneColor = { 0.8F, 0.8F, 0.8F, 1.0F };
+    //    ImVec4 m_subPlaneColor = { 0.6F, 0.6F, 0.6F, 1.0F };
+    //    ImVec4 m_pixelsCommonColor = { 0.0F, 0.0F, 0.0F, 1.0F };
 
     //    ImVec4 m_backgroundColor = { 0.0F, 0.0F, 0.0F, 1.0F };
     //    ImVec4 m_mainPlaneColor = { 1.0F, 1.0F, 1.0F, 1.0F };

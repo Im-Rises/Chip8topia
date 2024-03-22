@@ -4,6 +4,9 @@
 
 class XoChipPpu final : public PpuBase
 {
+private:
+    static constexpr int PLANE_MASK_COUNT = 4;
+
 public:
     XoChipPpu() = default;
     XoChipPpu(const XoChipPpu&) = delete;
