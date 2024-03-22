@@ -16,6 +16,15 @@ void Chip8VideoEmulation::reset()
     resetColors();
 }
 
+void Chip8VideoEmulation::resetColors()
+{
+    for (int i = 0; i < m_colors.size(); i++)
+    {
+        const float color = static_cast<float>(i) / static_cast<float>(m_colors.size());
+        m_colors[i] = ImVec4(color, color, color, 1.0F);
+    }
+}
+
 void Chip8VideoEmulation::updateTexture(const std::unique_ptr<Chip8CoreBase>& core)
 {
     switch (core->getType())
@@ -27,11 +36,11 @@ void Chip8VideoEmulation::updateTexture(const std::unique_ptr<Chip8CoreBase>& co
     {
         if (core->getPpu()->getMode() == PpuBase::PpuMode::LORES)
         {
-            //            m_shaderLores.updateTexture(core->getPpu()->getLoresVideoMemory().data());
+            m_shaderLores.updateTexture(core->getPpu()->getLoresVideoMemory(0).data());
         }
         else
         {
-            //            m_shaderHires.updateTexture(core->getPpu()->getHiresVideoMemory().data());
+            m_shaderHires.updateTexture(core->getPpu()->getHiresVideoMemory(0).data());
         }
         break;
     }
@@ -75,11 +84,11 @@ void Chip8VideoEmulation::update(const std::unique_ptr<Chip8CoreBase>& core, con
     {
         if (core->getPpu()->getMode() == PpuBase::PpuMode::LORES)
         {
-            //            m_shaderLores.update(m_backgroundColor, m_mainPlaneColor, scaleX, scaleY);
+            m_shaderLores.update(m_colors[SCREEN_BACKGROUND_COLOR_INDEX], m_colors[SCREEN_MAIN_PLANE_COLOR_INDEX], scaleX, scaleY);
         }
         else
         {
-            //            m_shaderHires.update(m_backgroundColor, m_mainPlaneColor, scaleX, scaleY);
+            m_shaderHires.update(m_colors[SCREEN_BACKGROUND_COLOR_INDEX], m_colors[SCREEN_MAIN_PLANE_COLOR_INDEX], scaleX, scaleY);
         }
         break;
     }
@@ -95,14 +104,5 @@ void Chip8VideoEmulation::update(const std::unique_ptr<Chip8CoreBase>& core, con
         }
         break;
     }
-    }
-}
-
-void Chip8VideoEmulation::resetColors()
-{
-    for (int i = 0; i < m_colors.size(); i++)
-    {
-        const float color = static_cast<float>(i) / static_cast<float>(m_colors.size());
-        m_colors[i] = ImVec4(color, color, color, 1.0F);
     }
 }

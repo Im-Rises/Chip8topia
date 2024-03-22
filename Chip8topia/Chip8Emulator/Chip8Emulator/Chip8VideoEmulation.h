@@ -15,6 +15,10 @@
 class Chip8CoreBase;
 class Chip8VideoEmulation
 {
+private:
+    static constexpr int SCREEN_BACKGROUND_COLOR_INDEX = 0;
+    static constexpr int SCREEN_MAIN_PLANE_COLOR_INDEX = 15;
+
 public:
     Chip8VideoEmulation();
     Chip8VideoEmulation(const Chip8VideoEmulation&) = delete;
@@ -25,6 +29,7 @@ public:
 
 public:
     void reset();
+    void resetColors();
     void updateTexture(const std::unique_ptr<Chip8CoreBase>& core);
     void update(const std::unique_ptr<Chip8CoreBase>& core, const float screenWidth, const float screenHeight, const float chip8AspectRatio);
 
@@ -36,7 +41,7 @@ public:
     //    [[nodiscard]] auto getSubPlaneColor() -> ImVec4& { return m_subPlaneColor; }
     //    [[nodiscard]] auto getPixelsCommonColor() -> ImVec4& { return m_pixelsCommonColor; }
 
-    void resetColors();
+
 
 private:
     // TODO: No needs to use ShaderBW, we can use the XoChip shader for all cores and only update the first plane for Chip8, SCHip11 and SCHipC
