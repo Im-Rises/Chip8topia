@@ -135,9 +135,10 @@ auto SChip11Ppu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::ar
     {
         for (unsigned int byteIndex = 0; byteIndex < 2; byteIndex++) // Two bytes per row (16 pixels) each pixel is 1 bit
         {
+            const unsigned int spriteByte = memory[I_reg + i * 2 + byteIndex];
             for (unsigned int j = 0; j < 8; j++) // 8 pixels per byte
             {
-                if (((memory[I_reg + i * 2 + byteIndex] >> (7 - j)) & 0x1) != 0)
+                if ((spriteByte & (0x1 << (7 - j))) != 0)
                 {
                     const unsigned int x = (Vx + j + byteIndex * 8) % PpuBase::SCREEN_HIRES_MODE_WIDTH;
                     const unsigned int y = (Vy + i) % PpuBase::SCREEN_HIRES_MODE_HEIGHT;
