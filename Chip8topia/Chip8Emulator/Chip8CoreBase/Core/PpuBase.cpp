@@ -66,16 +66,6 @@ auto PpuBase::getPlane() const -> uint8
     return m_plane;
 }
 
-// auto PpuBase::getLoresVideoMemoryPlanes() const -> const std::array<std::array<uint8, SCREEN_LORES_MODE_SIZE>, PLANE_COUNT>&
-//{
-//     return m_loresVideoMemoryPlanes;
-// }
-//
-// auto PpuBase::getHiresVideoMemoryPlanes() const -> const std::array<std::array<uint8, SCREEN_HIRES_MODE_SIZE>, PLANE_COUNT>&
-//{
-//     return m_hiresVideoMemoryPlanes;
-// }
-
 #if defined(BUILD_PARAM_SAFE)
 void PpuBase::setErrorCallback(const std::function<void(const std::string&)>& errorCallback)
 {

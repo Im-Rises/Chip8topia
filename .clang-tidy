@@ -17,7 +17,8 @@ Checks: >
   -*magic-numbers,
   -*redundant-access-specifiers,
   -*pro-bounds-constant-array-index,
-  -*easily-swappable-parameters
+  -*easily-swappable-parameters,
+  -*pro-bounds-pointer-arithmetic
 #  -google-readability-namespace-comments,
 #  -google-runtime-int,
 #  -google-runtime-references,

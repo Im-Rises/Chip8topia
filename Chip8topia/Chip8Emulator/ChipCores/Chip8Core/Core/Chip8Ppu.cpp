@@ -15,10 +15,10 @@ auto Chip8Ppu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, C
     Vx %= PpuBase::SCREEN_LORES_MODE_WIDTH;
     Vy %= PpuBase::SCREEN_LORES_MODE_HEIGHT;
 
-    for (auto i = 0; i < n; ++i)
+    for (unsigned int i = 0; i < n; ++i)
     {
-        const auto spriteByte = memory[I_reg + i];
-        for (auto j = 0; j < 8; j++)
+        const unsigned int spriteByte = memory[I_reg + i];
+        for (unsigned int j = 0; j < 8; j++)
         {
             if (((spriteByte) & (0x1 << (7 - j))) != PIXEL_OFF)
             {
@@ -29,7 +29,7 @@ auto Chip8Ppu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, C
                 }
 
                 // Draw the pixel
-                const auto index = (Vx + j) % PpuBase::SCREEN_LORES_MODE_WIDTH + ((Vy + i) % PpuBase::SCREEN_LORES_MODE_HEIGHT) * PpuBase::SCREEN_LORES_MODE_WIDTH;
+                const unsigned int index = (Vx + j) % PpuBase::SCREEN_LORES_MODE_WIDTH + ((Vy + i) % PpuBase::SCREEN_LORES_MODE_HEIGHT) * PpuBase::SCREEN_LORES_MODE_WIDTH;
                 if (videoMemory[index] == PIXEL_ON)
                 {
                     videoMemory[index] = PIXEL_OFF;

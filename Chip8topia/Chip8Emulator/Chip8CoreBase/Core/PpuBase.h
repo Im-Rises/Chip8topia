@@ -14,10 +14,10 @@ public:
         HIRES
     };
 
-    static constexpr uint8 PLANE_COUNT = 4;
-    static constexpr int COLOR_COUNT = 16;
-    static constexpr uint8 PIXEL_ON = 255;
-    static constexpr uint8 PIXEL_OFF = 0;
+    static constexpr unsigned int PLANE_COUNT = 4;
+    static constexpr unsigned int COLOR_COUNT = 16;
+    static constexpr unsigned int PIXEL_ON = 255;
+    static constexpr unsigned int PIXEL_OFF = 0;
 
     static constexpr unsigned int SCREEN_LORES_MODE_WIDTH = 64;
     static constexpr unsigned int SCREEN_LORES_MODE_HEIGHT = 32;
@@ -54,10 +54,8 @@ public:
     auto getHiresVideoMemory(uint8 plane) -> std::array<uint8, SCREEN_HIRES_MODE_SIZE>&;
     void setPlane(uint8 x);
     [[nodiscard]] auto getPlane() const -> uint8;
-    //    [[nodiscard]] auto getLoresVideoMemoryPlanes() const -> const std::array<std::array<uint8, SCREEN_LORES_MODE_SIZE>, PLANE_COUNT>&;
-    //    [[nodiscard]] auto getHiresVideoMemoryPlanes() const -> const std::array<std::array<uint8, SCREEN_HIRES_MODE_SIZE>, PLANE_COUNT>&;
 
-protected: // TODO: For improvements, better make an array of plane instead of two separate arrays
+protected:
     uint8 m_plane;
     PpuMode m_mode;
 

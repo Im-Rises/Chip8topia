@@ -8,7 +8,7 @@
 class Chip8Ppu final : public PpuBase
 {
 private:
-    static constexpr uint8 PLANE_INDEX = 0;
+    static constexpr unsigned int PLANE_INDEX = 0;
 
 public:
     Chip8Ppu() = default;

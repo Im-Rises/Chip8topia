@@ -49,16 +49,6 @@ Emulatated consoles:
 
 Major:
 
-- [x] Implement all four planes for Xo-Chip !!!
-- [x] Correct textures not loading in shader...
-- [x] Understnad why it doesn't draw correclty on t8nk game when drawing the main screen above the background drawing
-  menu
-- [x] Replace pixels to be value of 0xFF/255 instead of 1 for pixel ON
-- [x] Correct Xo-Chip Emulation (ram size etc...) (add a different error code depending if it is the Cpu, Ppu, etc...)
-- [x] Correct restart which is behaving weirdly with Red October ?
-- [x] Add ImGui window to show each plane of the Xo-Chip separately (use ImGui::Image and send the GLuint texture to it)
-- [x] Add a selector to use grayscale color in Xo-Chip or colors
-
 - [ ] Correct the SCHIP et Xo-Chip modification I made on the PPU (use the same code as the Cosmac Chip8 that I
   corrected)
 - [ ] Check which imgui window is very slow (probably the memory editor)
@@ -76,6 +66,7 @@ Minor:
 
 ## Bugs
 
+- [ ] Restarting a game when playing big xo-chip games will not reload the game from the start
 - [ ] Sometime changing games won't display anything (need to restart the program)
 - [ ] Performance regression between Merge pull request #18 from Im-Rises/develop and Merge pull request #17 from
   Im-Rises/develop on main. When I moved all the opcode to the parent core class CpuBase.
