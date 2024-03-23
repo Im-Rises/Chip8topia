@@ -72,7 +72,7 @@ void SChipCPpu::scrollLeft(uint8 n)
 auto SChipCPpu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint16 I_reg) -> uint8
 {
     const bool isLoresMode = getMode() == PpuMode::LORES;
-    if (isLoresMode || n != 0) // Draw 8xN sprite
+    if (isLoresMode || (getMode() == PpuMode::HIRES && n != 0)) // Draw 8xN sprite
     {
         return static_cast<uint8>(draw8xNSprite(Vx, Vy, I_reg, memory, n, isLoresMode ? m_loresVideoMemoryPlanes[PLANE_INDEX].data() : m_hiresVideoMemoryPlanes[PLANE_INDEX].data()));
     }

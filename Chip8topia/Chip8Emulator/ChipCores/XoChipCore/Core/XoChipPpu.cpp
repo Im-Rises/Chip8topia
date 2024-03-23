@@ -140,7 +140,8 @@ auto XoChipPpu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, 
 {
     bool collision = false;
 
-    if ((getMode() == PpuMode::LORES) || (getMode() == PpuMode::HIRES && n != 0)) // Draw 8xN sprite
+    const bool isLoresMode = getMode() == PpuMode::LORES;
+    if (isLoresMode || (getMode() == PpuMode::HIRES && n != 0)) // Draw 8xN sprite
     {
         uint8 drawCount = 0;
 

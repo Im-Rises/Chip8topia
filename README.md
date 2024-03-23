@@ -49,8 +49,9 @@ Emulatated consoles:
 
 Major:
 
-- [ ] Correct the SCHIP et Xo-Chip modification I made on the PPU (use the same code as the Cosmac Chip8 that I
-  corrected)
+- [ ] Correct the Xo-Chip HIRES mode not working
+- [ ] Correct the Xo-Chip text in October red being missplaced
+
 - [ ] Check which imgui window is very slow (probably the memory editor)
 - [ ] Add safe and unsafe code version (set the callback error in Core and Cpu, and Ppu, the call it on error)
 - [ ] Create an error code when calling Core.clock(); if it returns 1 it means it needs a screen refresh if 2 its an
