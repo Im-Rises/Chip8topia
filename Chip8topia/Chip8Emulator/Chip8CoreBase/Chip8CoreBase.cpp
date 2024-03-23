@@ -17,17 +17,6 @@ Chip8CoreBase::Chip8CoreBase(Chip8Frequency cpuClockFrequency, std::unique_ptr<C
     m_cpu->setInput(m_input);
 }
 
-
-#if defined(BUILD_PARAM_SAFE)
-void Chip8CoreBase::setErrorCallback(const std::function<void(const std::string&)>& errorCallback)
-{
-    m_errorCallback = errorCallback;
-    m_cpu->setErrorCallback(errorCallback);
-    m_ppu->setErrorCallback(errorCallback);
-    m_input->setErrorCallback(errorCallback);
-}
-#endif
-
 void Chip8CoreBase::reset()
 {
     m_cpu->reset();

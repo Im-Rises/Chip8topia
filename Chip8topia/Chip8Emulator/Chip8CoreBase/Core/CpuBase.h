@@ -6,11 +6,6 @@
 #include <RandomGenerator/RandomGenerator.h>
 #include <functional>
 
-#if defined(BUILD_PARAM_SAFE)
-#include <string>
-#include <fmt/format.h>
-#endif
-
 #include "../chip8Fonts.h"
 
 class PpuBase;
@@ -32,10 +27,6 @@ public:
     auto operator=(const CpuBase&) -> CpuBase& = delete;
     auto operator=(CpuBase&&) -> CpuBase& = delete;
     virtual ~CpuBase() = default;
-
-#if defined(BUILD_PARAM_SAFE)
-    void setErrorCallback(const std::function<void(const std::string&)>& errorCallback);
-#endif
 
     void setPpu(std::shared_ptr<PpuBase> ppu);
     void setInput(std::shared_ptr<Input> input);
@@ -137,8 +128,4 @@ protected:
     std::shared_ptr<Input> m_input;
 
     RandomGenerator m_u8NumberRandomGenerator;
-
-#if defined(BUILD_PARAM_SAFE)
-    std::function<void(const std::string&)> m_errorCallback;
-#endif
 };

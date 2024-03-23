@@ -35,10 +35,6 @@ public:
     auto operator=(PpuBase&&) -> PpuBase& = delete;
     virtual ~PpuBase() = default;
 
-#if defined(BUILD_PARAM_SAFE)
-    void setErrorCallback(const std::function<void(const std::string&)>& errorCallback);
-#endif
-
 public:
     virtual void reset();
     virtual void clearScreen() = 0;
@@ -61,8 +57,4 @@ protected:
 
     std::array<std::array<uint8, SCREEN_LORES_MODE_SIZE>, PLANE_COUNT> m_loresVideoMemoryPlanes;
     std::array<std::array<uint8, SCREEN_HIRES_MODE_SIZE>, PLANE_COUNT> m_hiresVideoMemoryPlanes;
-
-#if defined(BUILD_PARAM_SAFE)
-    std::function<void(const std::string&)> m_errorCallback;
-#endif
 };

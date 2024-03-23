@@ -65,10 +65,3 @@ auto PpuBase::getPlane() const -> uint8
 {
     return m_planeMask;
 }
-
-#if defined(BUILD_PARAM_SAFE)
-void PpuBase::setErrorCallback(const std::function<void(const std::string&)>& errorCallback)
-{
-    m_errorCallback = errorCallback;
-}
-#endif

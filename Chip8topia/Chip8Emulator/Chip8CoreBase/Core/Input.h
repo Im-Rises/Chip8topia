@@ -31,10 +31,6 @@ public:
     auto operator=(Input&&) -> Input& = delete;
     ~Input() = default;
 
-#if defined(BUILD_PARAM_SAFE)
-    void setErrorCallback(const std::function<void(const std::string&)>& errorCallback);
-#endif
-
 public:
     void reset();
     void updateKey(const uint8 key, const bool pressed);
@@ -47,8 +43,4 @@ private:
 
     std::bitset<KEY_COUNT> m_keysWaitPreviousState{};
     uint8 m_waitKeyStep = 0;
-
-#if defined(BUILD_PARAM_SAFE)
-    std::function<void(const std::string&)> m_errorCallback;
-#endif
 };

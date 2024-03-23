@@ -28,7 +28,6 @@ void Chip8VideoEmulation::resetToGrayscaleColors()
 
 void Chip8VideoEmulation::resetToColorColors()
 {
-    // Set each index to a color
     m_colors[0] = ImVec4(0.0F, 0.0F, 0.0F, 1.0F);
     m_colors[1] = ImVec4(0.0F, 0.0F, 0.5F, 1.0F);
     m_colors[2] = ImVec4(0.0F, 0.5F, 0.0F, 1.0F);
@@ -45,6 +44,12 @@ void Chip8VideoEmulation::resetToColorColors()
     m_colors[13] = ImVec4(1.0F, 1.0F, 0.0F, 1.0F);
     m_colors[14] = ImVec4(1.0F, 1.0F, 1.0F, 1.0F);
     m_colors[15] = ImVec4(0.0F, 0.0F, 0.0F, 1.0F);
+}
+
+void Chip8VideoEmulation::resetToBWColors()
+{
+    m_colors[0] = { 0.3F, 0.3F, 0.3F, 1.0F };
+    m_colors[1] = { 0.8F, 0.8F, 0.8F, 1.0F };
 }
 
 void Chip8VideoEmulation::updateTexture(const std::unique_ptr<Chip8CoreBase>& core)
@@ -117,15 +122,3 @@ auto Chip8VideoEmulation::getHiresPlaneTexture(const int planeIndex) -> GLuint
 {
     return m_shaderXoChipHires.getTexture(planeIndex);
 }
-
-// auto Chip8VideoEmulation::getPlaneTexture(const PpuBase::PpuMode ppuMode, const int planeIndex) -> GLuint
-//{
-//     if (ppuMode == PpuBase::PpuMode::LORES)
-//     {
-//         return m_shaderLores.getTexture(planeIndex);
-//     }
-//     else
-//     {
-//         return m_shaderHires.getTexture(planeIndex);
-//     }
-//}

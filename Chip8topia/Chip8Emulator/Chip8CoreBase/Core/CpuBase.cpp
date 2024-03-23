@@ -16,13 +16,6 @@ CpuBase::CpuBase() : m_pc(START_ADDRESS),
 {
 }
 
-#if defined(BUILD_PARAM_SAFE)
-void CpuBase::setErrorCallback(const std::function<void(const std::string&)>& errorCallback)
-{
-    m_errorCallback = errorCallback;
-}
-#endif
-
 void CpuBase::setPpu(std::shared_ptr<PpuBase> ppu)
 {
     m_ppu = std::move(ppu);
