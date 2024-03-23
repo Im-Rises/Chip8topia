@@ -23,6 +23,7 @@ public:
     ~Chip8Emulator();
 
 public:
+    void resetColorPalette();
     void restart();
     void loadRom(const std::vector<uint8_t>& romData);
 

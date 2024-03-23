@@ -30,6 +30,8 @@ Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<Chip8Core>(DEFAULT_FREQ
 
 Chip8Emulator::~Chip8Emulator()
 {
+    resetColorPalette();
+
     Chip8topiaInputHandler& inputHandler = Chip8topiaInputHandler::getInstance();
     inputHandler.m_GameInput.unsubscribe(this, &Chip8Emulator::OnInput);
     inputHandler.m_TogglePauseEmulationEvent.unsubscribe(this, &Chip8Emulator::toggleBreakEmulation);
@@ -39,6 +41,22 @@ Chip8Emulator::~Chip8Emulator()
     inputHandler.m_StepEmulationEvent.unsubscribe(this, &Chip8Emulator::stepEmulation);
     inputHandler.m_RunEmulationEvent.unsubscribe(this, &Chip8Emulator::runEmulation);
     inputHandler.m_ClearBreakpointsEvent.unsubscribe(this, &Chip8Emulator::clearBreakpoints);
+}
+
+void Chip8Emulator::resetColorPalette()
+{
+    switch (m_core->getType())
+    {
+    case Chip8CoreType::Chip8:
+    case Chip8CoreType::SChip11Legacy:
+    case Chip8CoreType::SChip11Modern:
+    case Chip8CoreType::SChipC:
+        m_videoEmulation.resetToBWColors();
+        break;
+    case Chip8CoreType::XoChip:
+        m_videoEmulation.resetToBWColors();
+        break;
+    }
 }
 
 void Chip8Emulator::restart()
@@ -171,26 +189,23 @@ void Chip8Emulator::switchCoreFrequency(const Chip8CoreType coreType, const Chip
     {
     case Chip8CoreType::Chip8:
         m_core = std::make_unique<Chip8Core>(frequency);
-        m_videoEmulation.resetToBWColors();
         break;
     case Chip8CoreType::SChip11Legacy:
         m_core = std::make_unique<SChip11Core>(frequency, false);
-        m_videoEmulation.resetToBWColors();
         break;
     case Chip8CoreType::SChip11Modern:
         m_core = std::make_unique<SChip11Core>(frequency, true);
-        m_videoEmulation.resetToBWColors();
         break;
     case Chip8CoreType::SChipC:
         m_core = std::make_unique<SChipCCore>(frequency);
-        m_videoEmulation.resetToBWColors();
         break;
     case Chip8CoreType::XoChip:
         m_core = std::make_unique<XoChipCore>(frequency);
-        m_videoEmulation.resetToColorColors();
         break;
     }
 
+    resetColorPalette();
+    
     m_isRomLoaded = false;
 
     ImGui::InsertNotification({ ImGuiToastType::Info, "Core and frequency changed", "The core and frequency have been changed. Please load a ROM to continue." });
