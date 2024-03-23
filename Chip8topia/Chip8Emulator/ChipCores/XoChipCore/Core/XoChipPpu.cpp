@@ -149,7 +149,7 @@ auto XoChipPpu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, 
         {
             if (getBit(m_planeMask, i))
             {
-                collision |= draw8xNSprite(Vx, Vy, I_reg + drawCount * n, memory, n, m_loresVideoMemoryPlanes[i].data());
+                collision |= draw8xNSprite(Vx, Vy, I_reg + drawCount * n, memory, n, isLoresMode ? m_loresVideoMemoryPlanes[i].data() : m_hiresVideoMemoryPlanes[i].data());
                 drawCount++;
             }
         }

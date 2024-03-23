@@ -78,7 +78,7 @@ auto SChipCPpu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, 
     }
 
     // Draw 16x16 sprite
-    return static_cast<uint8>(draw16x16Sprite(Vx, Vy, I_reg, memory));
+    return static_cast<uint8>(draw16x16Sprite(Vx, Vy, I_reg, memory, m_hiresVideoMemoryPlanes[PLANE_INDEX].data()));
 }
 
 auto SChipCPpu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint8 n, uint8* videoMemory) -> bool
@@ -123,10 +123,8 @@ auto SChipCPpu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array
     return collision;
 }
 
-auto SChipCPpu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory) -> bool
+auto SChipCPpu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint8* videoMemory) -> bool
 {
-    auto& videoMemory = m_hiresVideoMemoryPlanes.at(PLANE_INDEX);
-
     bool collision = false;
 
     for (unsigned int i = 0; i < 16; i++) // 16 rows

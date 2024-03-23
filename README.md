@@ -49,7 +49,6 @@ Emulatated consoles:
 
 Major:
 
-- [ ] Correct the Xo-Chip HIRES mode not working
 - [ ] Correct the Xo-Chip text in October red being missplaced
 
 - [ ] Check which imgui window is very slow (probably the memory editor)

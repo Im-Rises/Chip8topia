@@ -71,7 +71,7 @@ auto SChip11Ppu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8,
         return draw8xNSprite(Vx, Vy, I_reg, memory, n, isLoresMode ? m_loresVideoMemoryPlanes[PLANE_INDEX].data() : m_hiresVideoMemoryPlanes[PLANE_INDEX].data());
     }
 
-    return draw16x16Sprite(Vx, Vy, I_reg, memory);
+    return draw16x16Sprite(Vx, Vy, I_reg, memory, m_hiresVideoMemoryPlanes[PLANE_INDEX].data());
 }
 
 auto SChip11Ppu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint8 n, uint8* videoMemory) -> uint8
@@ -124,10 +124,8 @@ auto SChip11Ppu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::arra
     return (rowClippedCount + rowCollisionCount) > 0 ? 1 : 0;
 }
 
-auto SChip11Ppu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory) -> uint8
+auto SChip11Ppu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint8* videoMemory) -> uint8
 {
-    auto& videoMemory = m_hiresVideoMemoryPlanes.at(PLANE_INDEX);
-
     uint8 rowCollisionCount = 0;
     uint8 rowClippedCount = 0;
 
