@@ -10,8 +10,8 @@
 
 Chip8topia is a Chip8 emulator written in C++ for Windows, Linux and WebAssembly. It uses OpenGL/WebGL for the rendering
 and ImGui for the UI.
-The application is compiled with CMake and uses Vcpkg for the dependencies.
-For the WebAssembly version, it uses Emscripten and vcpkg for most dependencies.
+The application is compiled with CMake and uses Vcpkg for most dependencies.
+For the WebAssembly version, it uses Emscripten to compile with vcpkg for most dependencies as well.
 
 It can emulate the original Chip8, the SCHIP1.1, SCHIPC and Xo-Chip.
 Currently, no sound is implemented, but it is planned.
@@ -21,7 +21,7 @@ Emulatated consoles:
 - [x] Chip8
 - [x] SCHIP1.1
 - [x] SCHIPC
-- [ ] Xo-Chip (not working at the moment)
+- [x] Xo-Chip
 
 ## Screenshots
 
@@ -37,23 +37,23 @@ Major:
 - [x] Correct textures not loading in shader...
 - [x] Understnad why it doesn't draw correclty on t8nk game when drawing the main screen above the background drawing
   menu
-- [ ] Replace pixels to be value of 0xFF/255 instead of 1 for pixel ON
-- [ ] Correct the SCHIP et Xo-Chip mdoficiation I made on the PPU (use the same code as the Cosmac Chip8 that I
+- [x] Replace pixels to be value of 0xFF/255 instead of 1 for pixel ON
+- [x] Correct Xo-Chip Emulation (ram size etc...) (add a different error code depending if it is the Cpu, Ppu, etc...)
+- [x] Correct restart which is behaving weirdly with Red October ?
+- [x] Add ImGui window to show each plane of the Xo-Chip separately (use ImGui::Image and send the GLuint texture to it)
+- [x] Add a selector to use grayscale color in Xo-Chip or colors
+
+- [ ] Correct the SCHIP et Xo-Chip modification I made on the PPU (use the same code as the Cosmac Chip8 that I
   corrected)
-
-- [ ] Correct Xo-Chip Emulation (ram size etc...) (add a different error code depending if it is the Cpu, Ppu, etc...)
-- [ ] Correct restart which is behaving weirdly with Red October ?
-
+- [ ] Check which imgui window is very slow (probably the memory editor)
 - [ ] Add safe and unsafe code version (set the callback error in Core and Cpu, and Ppu, the call it on error)
 - [ ] Create an error code when calling Core.clock(); if it returns 1 it means it needs a screen refresh if 2 its an
   error and -1 means emulation issue, so the program should stop (also add a normal exit on EXIT opcode)
 - [ ] Add audio
-- [ ] Add ImGui window to show each plane of the Xo-Chip separately (use ImGui::Image and send the GLuint texture to it)
-- [ ] Add a selector to use grayscale color in Xo-Chip or colors
-- [ ] Check which imgui window is very slow (probably the memory editor)
 
 Minor:
 
+- [ ] Correct the clean of the debug image plane (they are not cleard when changing game)
 - [ ] Add a way to change the input keys
 - [ ] Add a background when no rom is loaded
 - [ ] Do a general optimization of the code

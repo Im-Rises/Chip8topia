@@ -50,6 +50,8 @@ void ShaderXoChip::reset()
     }
 
     glBindTexture(GL_TEXTURE_2D, 0);
+
+    m_shader.use();
 }
 
 void ShaderXoChip::updateTexture(const uint8* videoMemory, const uint8 planeIndex)
