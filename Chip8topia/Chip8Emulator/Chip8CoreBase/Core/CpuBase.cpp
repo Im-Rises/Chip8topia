@@ -23,6 +23,16 @@ void CpuBase::setErrorCallback(const std::function<void(const std::string&)>& er
 }
 #endif
 
+void CpuBase::setPpu(std::shared_ptr<PpuBase> ppu)
+{
+    m_ppu = std::move(ppu);
+}
+
+void CpuBase::setInput(std::shared_ptr<Input> input)
+{
+    m_input = std::move(input);
+}
+
 void CpuBase::reset()
 {
     m_pc = START_ADDRESS;
@@ -30,8 +40,7 @@ void CpuBase::reset()
     m_I = 0;
     m_DT = 0;
     m_ST = 0;
-    //    m_memory = {};
-    //    std::copy(FONTSET.begin(), FONTSET.end(), m_memory.begin());
+    m_memory = {};
     m_V = {};
     m_stack = {};
 }

@@ -49,6 +49,8 @@ public:
     void update(const std::array<ImVec4, XoChipPpu::COLOR_COUNT>& colors, const float xScale, const float yScale);
     void reset();
 
+    auto getTexture(const int index) -> GLuint;
+
 private:
     GLuint m_VAO;
     GLuint m_VBO;

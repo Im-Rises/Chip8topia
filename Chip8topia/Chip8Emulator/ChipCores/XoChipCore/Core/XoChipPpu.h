@@ -5,9 +5,6 @@
 class XoChipPpu final : public PpuBase
 {
 public:
-    static constexpr int COLOR_COUNT = 16;
-
-public:
     XoChipPpu() = default;
     XoChipPpu(const XoChipPpu&) = delete;
     XoChipPpu(XoChipPpu&&) = delete;

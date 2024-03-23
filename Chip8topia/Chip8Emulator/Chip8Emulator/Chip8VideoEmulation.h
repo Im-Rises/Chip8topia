@@ -11,7 +11,6 @@
 
 #include "Chip8VideoEmulation/ShaderBW.h"
 #include "Chip8VideoEmulation/ShaderXoChip.h"
-#include "../ChipCores/XoChipCore/Core/XoChipPpu.h"
 
 class Chip8CoreBase;
 class Chip8VideoEmulation
@@ -34,7 +33,10 @@ public:
     void updateTexture(const std::unique_ptr<Chip8CoreBase>& core);
     void update(const std::unique_ptr<Chip8CoreBase>& core, const float screenWidth, const float screenHeight, const float chip8AspectRatio);
 
-    auto getColor(const int index) -> ImVec4& { return m_colors[index]; }
+    auto getColor(const int index) -> ImVec4&;
+    auto getHiresPlaneTexture(const int planeIndex) -> GLuint;
+    auto getLoresPlaneTexture(const int planeIndex) -> GLuint;
+    //    auto getPlaneTexture(const PpuBase::PpuMode ppuMode, const int planeIndex) -> GLuint;
 
 private:
     // TODO: No needs to use ShaderBW, we can use the XoChip shader for all cores and only update the first plane for Chip8, SCHip11 and SCHipC
@@ -44,7 +46,7 @@ private:
     ShaderXoChip m_shaderXoChipLores;
     ShaderXoChip m_shaderXoChipHires;
 
-    std::array<ImVec4, XoChipPpu::COLOR_COUNT> m_colors;
+    std::array<ImVec4, PpuBase::COLOR_COUNT> m_colors;
 
 
     //    ImVec4 m_backgroundColor = { 0.3F, 0.3F, 0.3F, 1.0F };

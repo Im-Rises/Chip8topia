@@ -108,7 +108,6 @@ auto Chip8Emulator::getChip8VideoEmulation() -> Chip8VideoEmulation&
     return m_videoEmulation;
 }
 
-
 [[nodiscard]] auto Chip8Emulator::getRomName() const -> std::string
 {
     return m_romName;

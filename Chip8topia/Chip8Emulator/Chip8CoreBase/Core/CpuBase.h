@@ -37,8 +37,8 @@ public:
     void setErrorCallback(const std::function<void(const std::string&)>& errorCallback);
 #endif
 
-    virtual void setPpu(std::shared_ptr<PpuBase> ppu) { m_ppu = std::move(ppu); }
-    void setInput(std::shared_ptr<Input> input) { m_input = std::move(input); }
+    void setPpu(std::shared_ptr<PpuBase> ppu);
+    void setInput(std::shared_ptr<Input> input);
 
 public:
     virtual void reset();

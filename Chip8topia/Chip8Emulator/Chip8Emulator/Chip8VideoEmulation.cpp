@@ -120,3 +120,30 @@ void Chip8VideoEmulation::update(const std::unique_ptr<Chip8CoreBase>& core, con
     }
     }
 }
+
+auto Chip8VideoEmulation::getColor(const int index) -> ImVec4&
+{
+    return m_colors[index];
+}
+
+auto Chip8VideoEmulation::getLoresPlaneTexture(const int planeIndex) -> GLuint
+{
+    return m_shaderXoChipLores.getTexture(planeIndex);
+}
+
+auto Chip8VideoEmulation::getHiresPlaneTexture(const int planeIndex) -> GLuint
+{
+    return m_shaderXoChipHires.getTexture(planeIndex);
+}
+
+// auto Chip8VideoEmulation::getPlaneTexture(const PpuBase::PpuMode ppuMode, const int planeIndex) -> GLuint
+//{
+//     if (ppuMode == PpuBase::PpuMode::LORES)
+//     {
+//         return m_shaderLores.getTexture(planeIndex);
+//     }
+//     else
+//     {
+//         return m_shaderHires.getTexture(planeIndex);
+//     }
+//}

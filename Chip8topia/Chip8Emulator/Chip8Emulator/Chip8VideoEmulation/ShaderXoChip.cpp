@@ -21,20 +21,6 @@ ShaderXoChip::ShaderXoChip(int width, int height) : WIDTH(width), HEIGHT(height)
 
     glGenTextures(XoChipPpu::PLANE_COUNT, m_textures);
 
-    //    glBindTexture(GL_TEXTURE_2D, m_textures[0]);
-    //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    //    glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, WIDTH, HEIGHT, 0, GL_RED, GL_UNSIGNED_BYTE, nullptr);
-    //
-    //    glBindTexture(GL_TEXTURE_2D, m_textures[1]);
-    //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    //    glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, WIDTH, HEIGHT, 0, GL_RED, GL_UNSIGNED_BYTE, nullptr);
-
     for (int i = 0; i < XoChipPpu::PLANE_COUNT; ++i)
     {
         glBindTexture(GL_TEXTURE_2D, m_textures[i]);
@@ -57,17 +43,8 @@ ShaderXoChip::~ShaderXoChip()
 
 void ShaderXoChip::updateTexture(const uint8* videoMemory, const uint8 planeIndex)
 {
-    //    glBindTexture(GL_TEXTURE_2D, m_textures[0]);
-    //    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, WIDTH, HEIGHT, GL_RED, GL_UNSIGNED_BYTE, mainPlaneData);
-    //
-    //    glBindTexture(GL_TEXTURE_2D, m_textures[1]);
-    //    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, WIDTH, HEIGHT, GL_RED, GL_UNSIGNED_BYTE, subPlaneData);
-
-    //    for (int i = 0; i < XoChipPpu::PLANE_COUNT; ++i)
-    //    {
     glBindTexture(GL_TEXTURE_2D, m_textures[planeIndex]);
     glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, WIDTH, HEIGHT, GL_RED, GL_UNSIGNED_BYTE, videoMemory);
-    //    }
 
     glBindTexture(GL_TEXTURE_2D, 0);
 }
@@ -76,13 +53,6 @@ void ShaderXoChip::update(const std::array<ImVec4, XoChipPpu::COLOR_COUNT>& colo
 {
     m_shader.use();
     glBindVertexArray(m_VAO);
-    //    glActiveTexture(GL_TEXTURE0);
-    //    glBindTexture(GL_TEXTURE_2D, m_textures[0]);
-    //    glActiveTexture(GL_TEXTURE1);
-    //    glBindTexture(GL_TEXTURE_2D, m_textures[1]);
-    //    m_shader.setInt("u_mainPlaneTexture", 0);
-    //    m_shader.setInt("u_subPlaneTexture", 1);
-    //    m_shader.setVec4Array("u_colors", static_cast<Vec4>(*colors.data()));
     for (int i = 0; i < XoChipPpu::PLANE_COUNT; ++i)
     {
         glActiveTexture(GL_TEXTURE0 + i);
@@ -103,12 +73,6 @@ void ShaderXoChip::update(const std::array<ImVec4, XoChipPpu::COLOR_COUNT>& colo
 
 void ShaderXoChip::reset()
 {
-    //    glBindTexture(GL_TEXTURE_2D, m_textures[0]);
-    //    glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, WIDTH, HEIGHT, 0, GL_RED, GL_UNSIGNED_BYTE, nullptr);
-    //
-    //    glBindTexture(GL_TEXTURE_2D, m_textures[1]);
-    //    glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, WIDTH, HEIGHT, 0, GL_RED, GL_UNSIGNED_BYTE, nullptr);
-
     for (int i = 0; i < XoChipPpu::PLANE_COUNT; ++i)
     {
         glBindTexture(GL_TEXTURE_2D, m_textures[i]);
@@ -116,4 +80,9 @@ void ShaderXoChip::reset()
     }
 
     glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+auto ShaderXoChip::getTexture(const int index) -> GLuint
+{
+    return m_textures[index];
 }
