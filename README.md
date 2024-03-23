@@ -18,9 +18,9 @@ Currently, no sound is implemented, but it is planned.
 
 Emulatated consoles:
 
-- [x] Chip8
-- [x] SCHIP1.1
-- [x] SCHIPC
+- [ ] Chip8
+- [ ] SCHIP1.1
+- [ ] SCHIPC
 - [x] Xo-Chip
 
 ## Features
@@ -56,6 +56,7 @@ Major:
 - [ ] Create an error code when calling Core.clock(); if it returns 1 it means it needs a screen refresh if 2 its an
   error and -1 means emulation issue, so the program should stop (also add a normal exit on EXIT opcode)
 - [ ] Add audio
+- [ ] Replace getMode() == PpuMode::LORES by a boolean and use it
 
 Minor:
 

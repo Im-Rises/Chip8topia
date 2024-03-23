@@ -4,6 +4,9 @@
 
 class SChipCPpu final : public PpuBase
 {
+private:
+    static constexpr unsigned int PLANE_INDEX = 0;
+
 public:
     SChipCPpu() = default;
     SChipCPpu(const SChipCPpu&) = delete;

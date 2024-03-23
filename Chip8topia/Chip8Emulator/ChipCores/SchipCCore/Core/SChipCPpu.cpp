@@ -4,21 +4,22 @@ void SChipCPpu::clearScreen()
 {
     if (getMode() == PpuMode::LORES)
     {
-        m_loresVideoMemoryPlanes[m_plane].fill(PIXEL_OFF);
+        m_loresVideoMemoryPlanes[PLANE_INDEX].fill(PIXEL_OFF);
     }
     else
     {
-        m_hiresVideoMemoryPlanes[m_plane].fill(PIXEL_OFF);
+        m_hiresVideoMemoryPlanes[PLANE_INDEX].fill(PIXEL_OFF);
     }
 }
 
 void SChipCPpu::scrollDown(uint8 n)
 {
-    const int width = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
-    const int height = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
-    uint8* videoMemory = getMode() == PpuMode::LORES ? m_loresVideoMemoryPlanes[m_plane].data() : m_hiresVideoMemoryPlanes[0].data();
+    const bool isLoresMode = getMode() == PpuMode::LORES;
+    const int width = isLoresMode ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
+    const int height = isLoresMode ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
+    uint8* videoMemory = isLoresMode ? m_loresVideoMemoryPlanes[PLANE_INDEX].data() : m_hiresVideoMemoryPlanes[PLANE_INDEX].data();
 
-    n = getMode() == PpuMode::LORES ? n / 2 : n;
+    n = isLoresMode ? n / 2 : n;
 
     for (int row = height - n - 1; row >= 0; row--)
     {
@@ -32,11 +33,12 @@ void SChipCPpu::scrollDown(uint8 n)
 
 void SChipCPpu::scrollRight(uint8 n)
 {
-    const int width = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
-    const int height = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
-    uint8* videoMemory = getMode() == PpuMode::LORES ? m_loresVideoMemoryPlanes[m_plane].data() : m_hiresVideoMemoryPlanes[0].data();
+    const bool isLoresMode = getMode() == PpuMode::LORES;
+    const int width = isLoresMode ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
+    const int height = isLoresMode ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
+    uint8* videoMemory = isLoresMode ? m_loresVideoMemoryPlanes[PLANE_INDEX].data() : m_hiresVideoMemoryPlanes[PLANE_INDEX].data();
 
-    n = getMode() == PpuMode::LORES ? 2 : 4;
+    n = isLoresMode ? 2 : 4;
 
     for (int col = width - n - 1; col >= 0; col--)
     {
@@ -50,11 +52,12 @@ void SChipCPpu::scrollRight(uint8 n)
 
 void SChipCPpu::scrollLeft(uint8 n)
 {
-    const int width = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
-    const int height = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
-    uint8* videoMemory = getMode() == PpuMode::LORES ? m_loresVideoMemoryPlanes[m_plane].data() : m_hiresVideoMemoryPlanes[0].data();
+    const bool isLoresMode = getMode() == PpuMode::LORES;
+    const int width = isLoresMode ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
+    const int height = isLoresMode ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
+    uint8* videoMemory = isLoresMode ? m_loresVideoMemoryPlanes[PLANE_INDEX].data() : m_hiresVideoMemoryPlanes[PLANE_INDEX].data();
 
-    n = getMode() == PpuMode::LORES ? 2 : 4;
+    n = isLoresMode ? 2 : 4;
 
     for (int col = 0; col < width - n; col++)
     {
@@ -68,9 +71,10 @@ void SChipCPpu::scrollLeft(uint8 n)
 
 auto SChipCPpu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint16 I_reg) -> uint8
 {
-    if ((getMode() == PpuMode::LORES) || (getMode() == PpuMode::HIRES && n != 0)) // Draw 8xN sprite
+    const bool isLoresMode = getMode() == PpuMode::LORES;
+    if (isLoresMode || n != 0) // Draw 8xN sprite
     {
-        return static_cast<uint8>(draw8xNSprite(Vx, Vy, I_reg, memory, n, getMode() == PpuMode::LORES ? m_loresVideoMemoryPlanes[m_plane].data() : m_hiresVideoMemoryPlanes[m_plane].data()));
+        return static_cast<uint8>(draw8xNSprite(Vx, Vy, I_reg, memory, n, isLoresMode ? m_loresVideoMemoryPlanes[PLANE_INDEX].data() : m_hiresVideoMemoryPlanes[PLANE_INDEX].data()));
     }
 
     // Draw 16x16 sprite
@@ -81,8 +85,9 @@ auto SChipCPpu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array
 {
     bool collision = false;
 
-    const unsigned int screenWidth = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
-    const unsigned int screenHeight = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
+    const bool isLoresMode = getMode() == PpuMode::LORES;
+    const unsigned int screenWidth = isLoresMode ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
+    const unsigned int screenHeight = isLoresMode ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
 
     Vx %= screenWidth;
     Vy %= screenHeight;
@@ -120,7 +125,7 @@ auto SChipCPpu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array
 
 auto SChipCPpu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory) -> bool
 {
-    auto& videoMemory = m_hiresVideoMemoryPlanes.at(m_plane);
+    auto& videoMemory = m_hiresVideoMemoryPlanes.at(PLANE_INDEX);
 
     bool collision = false;
 

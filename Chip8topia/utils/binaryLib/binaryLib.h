@@ -10,21 +10,25 @@ using uint32 = unsigned int;
 using uint64 = unsigned long long;
 
 template <typename T>
-auto getBit(const T& value, const int& bitNumber) -> bool {
-    return (((value >> bitNumber) & 0x1) == 1);
+auto getBit(const T& value, const unsigned int& bitIndex) -> bool
+{
+    return (((value >> bitIndex) & 0x1) == 1);
 }
 
 template <typename T>
-void setBit(T& value, const int& bitNumber) {
-    value |= (1 << bitNumber);
+void setBit(T& value, const unsigned int& bitIndex)
+{
+    value |= (1 << bitIndex);
 }
 
 template <typename T>
-void resetBit(T& value, const int& bitNumber) {
-    value &= ~(1 << bitNumber);
+void resetBit(T& value, const unsigned int& bitIndex)
+{
+    value &= ~(1 << bitIndex);
 }
 
 template <typename T>
-void toggleBit(T& value, const int& bitNumber) {
-    value ^= (1 << bitNumber);
+void toggleBit(T& value, const unsigned int& bitIndex)
+{
+    value ^= (1 << bitIndex);
 }

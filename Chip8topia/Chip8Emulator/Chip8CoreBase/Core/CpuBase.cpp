@@ -40,17 +40,14 @@ void CpuBase::reset()
     m_I = 0;
     m_DT = 0;
     m_ST = 0;
-    //    m_memory = {};
+    //    m_memory = {};//TODO: Reset memory and reload the rom
     m_V = {};
     m_stack = {};
 }
 
 void CpuBase::readRom(const std::vector<uint8>& rom)
 {
-    for (int i = 0; i < rom.size(); i++)
-    {
-        m_memory[START_ADDRESS + i] = rom[i];
-    }
+    std::copy(rom.begin(), rom.end(), m_memory.begin() + START_ADDRESS);
 }
 
 void CpuBase::clock()
@@ -121,7 +118,6 @@ void CpuBase::SCL(const uint8 n)
 void CpuBase::EXIT()
 {
     m_pc -= 2;
-    // TODO Call the error callback here and return (exit the program)
 }
 
 void CpuBase::LORES()
@@ -318,12 +314,12 @@ void CpuBase::ADD_I_Vx(const uint8 x)
 
 void CpuBase::LD_F_Vx(const uint8 x)
 {
-    m_I = m_V[x] * 5; // TODO: check this we're moving from u8 to u16
+    m_I = m_V[x] * 5;
 }
 
 void CpuBase::LD_HF_Vx(const uint8 x)
 {
-    m_I = (m_V[x] * 10) + 0x50; // TODO: check this we're moving from u8 to u16
+    m_I = (m_V[x] * 10) + 0x50;
 }
 
 void CpuBase::LD_B_Vx(const uint8 x)

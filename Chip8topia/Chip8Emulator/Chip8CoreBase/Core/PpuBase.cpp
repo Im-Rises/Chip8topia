@@ -1,12 +1,12 @@
 #include "PpuBase.h"
 
-PpuBase::PpuBase() : m_plane(1), m_mode(PpuMode::LORES), m_loresVideoMemoryPlanes{}, m_hiresVideoMemoryPlanes{}
+PpuBase::PpuBase() : m_planeMask(1), m_mode(PpuMode::LORES), m_loresVideoMemoryPlanes{}, m_hiresVideoMemoryPlanes{}
 {
 }
 
 void PpuBase::reset()
 {
-    m_plane = 1;
+    m_planeMask = 1;
     m_mode = PpuMode::LORES;
 
     for (auto& plane : m_loresVideoMemoryPlanes)
@@ -58,12 +58,12 @@ auto PpuBase::getHiresVideoMemory(uint8 plane) -> std::array<uint8, SCREEN_HIRES
 
 void PpuBase::setPlane(uint8 x)
 {
-    m_plane = x;
+    m_planeMask = x;
 }
 
 auto PpuBase::getPlane() const -> uint8
 {
-    return m_plane;
+    return m_planeMask;
 }
 
 #if defined(BUILD_PARAM_SAFE)

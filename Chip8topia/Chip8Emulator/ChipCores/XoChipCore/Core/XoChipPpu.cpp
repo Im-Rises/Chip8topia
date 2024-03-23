@@ -8,7 +8,7 @@ void XoChipPpu::clearScreen()
     {
         for (unsigned int i = 0; i < PLANE_COUNT; i++)
         {
-            if (getBit(m_plane, i))
+            if (getBit(m_planeMask, i))
             {
                 m_loresVideoMemoryPlanes[i].fill(PIXEL_OFF);
             }
@@ -18,7 +18,7 @@ void XoChipPpu::clearScreen()
     {
         for (unsigned int i = 0; i < PLANE_COUNT; i++)
         {
-            if (getBit(m_plane, i))
+            if (getBit(m_planeMask, i))
             {
                 m_hiresVideoMemoryPlanes[i].fill(PIXEL_OFF);
             }
@@ -40,15 +40,15 @@ void scrollDownInternal(uint8 n, uint8* videoMemory, int width, int height)
 
 void XoChipPpu::scrollDown(uint8 n)
 {
-    bool loresMode = getMode() == PpuMode::LORES;
-    const int width = loresMode ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
-    const int height = loresMode ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
+    bool isLoresMode = getMode() == PpuMode::LORES;
+    const int width = isLoresMode ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
+    const int height = isLoresMode ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
 
     for (int i = 0; i < PLANE_COUNT; i++)
     {
-        if (getBit(m_plane, i))
+        if (getBit(m_planeMask, i))
         {
-            scrollDownInternal(n, loresMode ? m_loresVideoMemoryPlanes[i].data() : m_hiresVideoMemoryPlanes[i].data(), width, height);
+            scrollDownInternal(n, isLoresMode ? m_loresVideoMemoryPlanes[i].data() : m_hiresVideoMemoryPlanes[i].data(), width, height);
         }
     }
 }
@@ -67,15 +67,15 @@ void scrollUpInternal(uint8 n, uint8* videoMemory, int width, int height)
 
 void XoChipPpu::scrollUp(uint8 n)
 {
-    bool loresMode = getMode() == PpuMode::LORES;
-    const int width = loresMode ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
-    const int height = loresMode ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
+    bool isLoresMode = getMode() == PpuMode::LORES;
+    const int width = isLoresMode ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
+    const int height = isLoresMode ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
 
     for (int i = 0; i < PLANE_COUNT; i++)
     {
-        if (getBit(m_plane, i))
+        if (getBit(m_planeMask, i))
         {
-            scrollUpInternal(n, loresMode ? m_loresVideoMemoryPlanes[i].data() : m_hiresVideoMemoryPlanes[i].data(), width, height);
+            scrollUpInternal(n, isLoresMode ? m_loresVideoMemoryPlanes[i].data() : m_hiresVideoMemoryPlanes[i].data(), width, height);
         }
     }
 }
@@ -94,16 +94,16 @@ void scrollRightInternal(uint8 n, uint8* videoMemory, int width, int height)
 
 void XoChipPpu::scrollRight(uint8 n)
 {
-    bool loresMode = getMode() == PpuMode::LORES;
-    const int width = loresMode ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
-    const int height = loresMode ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
+    bool isLoresMode = getMode() == PpuMode::LORES;
+    const int width = isLoresMode ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
+    const int height = isLoresMode ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
     n = 4;
 
     for (auto i = 0; i < PLANE_COUNT; i++)
     {
-        if (getBit(m_plane, i))
+        if (getBit(m_planeMask, i))
         {
-            scrollRightInternal(n, loresMode ? m_loresVideoMemoryPlanes[i].data() : m_hiresVideoMemoryPlanes[i].data(), width, height);
+            scrollRightInternal(n, isLoresMode ? m_loresVideoMemoryPlanes[i].data() : m_hiresVideoMemoryPlanes[i].data(), width, height);
         }
     }
 }
@@ -129,7 +129,7 @@ void XoChipPpu::scrollLeft(uint8 n)
 
     for (int i = 0; i < PLANE_COUNT; i++)
     {
-        if (getBit(m_plane, i))
+        if (getBit(m_planeMask, i))
         {
             scrollLeftInternal(n, loresMode ? m_loresVideoMemoryPlanes[i].data() : m_hiresVideoMemoryPlanes[i].data(), width, height);
         }
@@ -146,7 +146,7 @@ auto XoChipPpu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, 
 
         for (int i = 0; i < PLANE_COUNT; i++)
         {
-            if (getBit(m_plane, i))
+            if (getBit(m_planeMask, i))
             {
                 collision |= draw8xNSprite(Vx, Vy, I_reg + drawCount * n, memory, n, m_loresVideoMemoryPlanes[i].data());
                 drawCount++;
@@ -159,7 +159,7 @@ auto XoChipPpu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, 
 
         for (int i = 0; i < PLANE_COUNT; i++)
         {
-            if (getBit(m_plane, i))
+            if (getBit(m_planeMask, i))
             {
                 collision |= draw16x16Sprite(Vx, Vy, I_reg + drawCount * 32, memory, m_hiresVideoMemoryPlanes[i].data());
                 drawCount++;
@@ -174,8 +174,9 @@ auto XoChipPpu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array
 {
     bool collision = false;
 
-    const unsigned int screenWidth = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
-    const unsigned int screenHeight = getMode() == PpuMode::LORES ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
+    const bool isLoresMode = getMode() == PpuMode::LORES;
+    const unsigned int screenWidth = isLoresMode ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
+    const unsigned int screenHeight = isLoresMode ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
 
     Vx %= screenWidth;
     Vy %= screenHeight;

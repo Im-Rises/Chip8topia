@@ -56,7 +56,7 @@ public:
     [[nodiscard]] auto getPlane() const -> uint8;
 
 protected:
-    uint8 m_plane;
+    uint8 m_planeMask;
     PpuMode m_mode;
 
     std::array<std::array<uint8, SCREEN_LORES_MODE_SIZE>, PLANE_COUNT> m_loresVideoMemoryPlanes;
