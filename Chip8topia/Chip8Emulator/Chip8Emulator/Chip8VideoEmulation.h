@@ -9,7 +9,6 @@
 #include <memory>
 #include <imgui.h>
 
-#include "Chip8VideoEmulation/ShaderBW.h"
 #include "Chip8VideoEmulation/ShaderXoChip.h"
 
 class Chip8CoreBase;
@@ -39,10 +38,6 @@ public:
     //    auto getPlaneTexture(const PpuBase::PpuMode ppuMode, const int planeIndex) -> GLuint;
 
 private:
-    // TODO: No needs to use ShaderBW, we can use the XoChip shader for all cores and only update the first plane for Chip8, SCHip11 and SCHipC
-    ShaderBW m_shaderLores;
-    ShaderBW m_shaderHires;
-
     ShaderXoChip m_shaderXoChipLores;
     ShaderXoChip m_shaderXoChipHires;
 

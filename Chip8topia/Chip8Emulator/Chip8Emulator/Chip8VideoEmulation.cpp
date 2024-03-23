@@ -4,9 +4,7 @@
 
 #include "../Chip8CoreBase/Chip8CoreBase.h"
 
-Chip8VideoEmulation::Chip8VideoEmulation() : m_shaderLores(PpuBase::SCREEN_LORES_MODE_WIDTH, PpuBase::SCREEN_LORES_MODE_HEIGHT),
-                                             m_shaderHires(PpuBase::SCREEN_HIRES_MODE_WIDTH, PpuBase::SCREEN_HIRES_MODE_HEIGHT),
-                                             m_shaderXoChipLores(PpuBase::SCREEN_LORES_MODE_WIDTH, PpuBase::SCREEN_LORES_MODE_HEIGHT),
+Chip8VideoEmulation::Chip8VideoEmulation() : m_shaderXoChipLores(PpuBase::SCREEN_LORES_MODE_WIDTH, PpuBase::SCREEN_LORES_MODE_HEIGHT),
                                              m_shaderXoChipHires(PpuBase::SCREEN_HIRES_MODE_WIDTH, PpuBase::SCREEN_HIRES_MODE_HEIGHT)
 {
     resetColors();
@@ -28,48 +26,26 @@ void Chip8VideoEmulation::resetColors()
 
 void Chip8VideoEmulation::updateTexture(const std::unique_ptr<Chip8CoreBase>& core)
 {
-    switch (core->getType())
+    const int planeMask = core->getPpu()->getPlane();
+    if (core->getPpu()->getMode() == PpuBase::PpuMode::LORES)
     {
-    case Chip8CoreType::Chip8:
-    case Chip8CoreType::SChip11Legacy:
-    case Chip8CoreType::SChip11Modern:
-    case Chip8CoreType::SChipC:
-    {
-        if (core->getPpu()->getMode() == PpuBase::PpuMode::LORES)
+        for (int i = 0; i < PpuBase::PLANE_COUNT; i++)
         {
-            m_shaderLores.updateTexture(core->getPpu()->getLoresVideoMemory(0).data());
-        }
-        else
-        {
-            m_shaderHires.updateTexture(core->getPpu()->getHiresVideoMemory(0).data());
-        }
-        break;
-    }
-    case Chip8CoreType::XoChip:
-    {
-        const int planeMask = core->getPpu()->getPlane();
-        if (core->getPpu()->getMode() == PpuBase::PpuMode::LORES)
-        {
-            for (int i = 0; i < PpuBase::PLANE_COUNT; i++)
+            if (getBit(planeMask, i))
             {
-                if (getBit(planeMask, i))
-                {
-                    m_shaderXoChipLores.updateTexture(core->getPpu()->getLoresVideoMemory(i).data(), i);
-                }
+                m_shaderXoChipLores.updateTexture(core->getPpu()->getLoresVideoMemory(i).data(), i);
             }
         }
-        else
+    }
+    else
+    {
+        for (int i = 0; i < PpuBase::PLANE_COUNT; i++)
         {
-            for (int i = 0; i < PpuBase::PLANE_COUNT; i++)
+            if (getBit(planeMask, i))
             {
-                if (getBit(planeMask, i))
-                {
-                    m_shaderXoChipHires.updateTexture(core->getPpu()->getHiresVideoMemory(i).data(), i);
-                }
+                m_shaderXoChipHires.updateTexture(core->getPpu()->getHiresVideoMemory(i).data(), i);
             }
         }
-        break;
-    }
     }
 }
 
@@ -89,35 +65,13 @@ void Chip8VideoEmulation::update(const std::unique_ptr<Chip8CoreBase>& core, con
         scaleX = chip8AspectRatio / screenAspectRatio;
     }
 
-    switch (core->getType())
+    if (core->getPpu()->getMode() == PpuBase::PpuMode::LORES)
     {
-    case Chip8CoreType::Chip8:
-    case Chip8CoreType::SChip11Legacy:
-    case Chip8CoreType::SChip11Modern:
-    case Chip8CoreType::SChipC:
-    {
-        if (core->getPpu()->getMode() == PpuBase::PpuMode::LORES)
-        {
-            m_shaderLores.update(m_colors[SCREEN_BACKGROUND_COLOR_INDEX], m_colors[SCREEN_MAIN_PLANE_COLOR_INDEX], scaleX, scaleY);
-        }
-        else
-        {
-            m_shaderHires.update(m_colors[SCREEN_BACKGROUND_COLOR_INDEX], m_colors[SCREEN_MAIN_PLANE_COLOR_INDEX], scaleX, scaleY);
-        }
-        break;
+        m_shaderXoChipLores.update(m_colors, scaleX, scaleY);
     }
-    case Chip8CoreType::XoChip:
+    else
     {
-        if (core->getPpu()->getMode() == PpuBase::PpuMode::LORES)
-        {
-            m_shaderXoChipLores.update(m_colors, scaleX, scaleY);
-        }
-        else
-        {
-            m_shaderXoChipHires.update(m_colors, scaleX, scaleY);
-        }
-        break;
-    }
+        m_shaderXoChipHires.update(m_colors, scaleX, scaleY);
     }
 }
 
