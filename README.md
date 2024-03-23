@@ -23,6 +23,22 @@ Emulatated consoles:
 - [x] SCHIPC
 - [x] Xo-Chip
 
+## Features
+
+- [x] Load Chip8, SCHIP1.1, SCHIPC and Xo-Chip games
+- [x] Pause/Resume the emulation
+- [x] Restart the emulation
+- [x] Change the emulation speed
+- [x] Change the color of the screen
+- [x] Disassemble
+- [x] Breakpoint
+- [x] Memory Editor
+- [x] Register Editor
+- [x] Plane viewer (SCHIP1.1, SCHIPC and Xo-Chip)
+- [x] Desktop and WebAssembly version
+- [x] Load ROMs from the browser (WebAssembly)
+- [x] Load integrated ROMs (WebAssembly)
+
 ## Screenshots
 
 | Invaders (Chip8)                                                                                                         | Car (SCHIP)                                                                                                         | T8NKS (Xo-Chip)                                                                                                       |                                                                                                                   

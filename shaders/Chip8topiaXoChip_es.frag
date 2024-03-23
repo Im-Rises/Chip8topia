@@ -2,37 +2,23 @@
 
 precision mediump float;
 
+#define TEXTURES_COUNT 4
+#define COLORS_COUNT 16
+
 in vec2 v_texCoord;
 
 out vec4 o_fragColor;
 
-uniform sampler2D u_mainPlaneTexture;
-uniform sampler2D u_subPlaneTexture;
+uniform sampler2D u_textures[TEXTURES_COUNT];
+uniform vec4 u_colors[COLORS_COUNT];
 
-uniform vec4 u_backgroundColor;
-uniform vec4 u_mainPlaneColor;
-uniform vec4 u_subPlaneColor;
-uniform vec4 u_commonPixelsColor;
+void main() {
+    int colorIndex = 0;
 
-void main()
-{
-    vec4 colorMainPlane = texture(u_mainPlaneTexture, v_texCoord);
-    vec4 colorSubPlane = texture(u_subPlaneTexture, v_texCoord);
+    colorIndex = texture(u_textures[0], v_texCoord).r > 0.0 ? 1 : 0;
+    colorIndex |= texture(u_textures[1], v_texCoord).r > 0.0 ? 2 : 0;
+    colorIndex |= texture(u_textures[2], v_texCoord).r > 0.0 ? 4 : 0;
+    colorIndex |= texture(u_textures[3], v_texCoord).r > 0.0 ? 8 : 0;
 
-    if (colorMainPlane.r > 0.0 && colorSubPlane.r > 0.0)
-    {
-        o_fragColor = u_commonPixelsColor;
-    }
-    else if (colorMainPlane.r > 0.0)
-    {
-        o_fragColor = u_mainPlaneColor;
-    }
-    else if (colorSubPlane.r > 0.0)
-    {
-        o_fragColor = u_subPlaneColor;
-    }
-    else
-    {
-        o_fragColor = u_backgroundColor;
-    }
+    o_fragColor = u_colors[colorIndex];
 }

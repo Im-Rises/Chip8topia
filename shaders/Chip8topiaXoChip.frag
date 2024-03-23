@@ -24,15 +24,5 @@ void main()
         }
     }
 
-    //    vec4 color = texture(u_textures[3], v_texCoord);
-    //    if (color.r > 0.0)
-    //    {
-    //        colorIndex = 15;
-    //    }
-    //    else
-    //    {
-    //        colorIndex = 0;
-    //    }
-
     o_fragColor = u_colors[colorIndex];
 }
