@@ -26,7 +26,7 @@ void SChipCPpu::scrollDown(uint8 n)
         for (int col = 0; col < width; col++)
         {
             videoMemory[(row + n) * width + col] = videoMemory[row * width + col];
-            videoMemory[row * width + col] = 0;
+            videoMemory[row * width + col] = PIXEL_OFF;
         }
     }
 }
@@ -45,7 +45,7 @@ void SChipCPpu::scrollRight(uint8 n)
         for (int row = 0; row < height; row++)
         {
             videoMemory[row * width + col + n] = videoMemory[row * width + col];
-            videoMemory[row * width + col] = 0;
+            videoMemory[row * width + col] = PIXEL_OFF;
         }
     }
 }
@@ -64,7 +64,7 @@ void SChipCPpu::scrollLeft(uint8 n)
         for (int row = 0; row < height; row++)
         {
             videoMemory[row * width + col] = videoMemory[row * width + col + n];
-            videoMemory[row * width + col + n] = 0;
+            videoMemory[row * width + col + n] = PIXEL_OFF;
         }
     }
 }
@@ -97,7 +97,7 @@ auto SChipCPpu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array
         const unsigned int spriteByte = memory[I_reg + i];
         for (unsigned int j = 0; j < 8; j++)
         {
-            if (((spriteByte) & (0x1 << (7 - j))) != PIXEL_OFF)
+            if (((spriteByte) & (0x1 << (7 - j))) != 0)
             {
                 // Clip the sprite if it goes out of bounds
                 if (((Vx + j) >= screenWidth && j > 0) || ((Vy + i) >= screenHeight && i > 0))
@@ -135,7 +135,7 @@ auto SChipCPpu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::arr
         {
             for (unsigned int j = 0; j < 8; j++) // 8 pixels per byte
             {
-                if (((memory[I_reg + i * 2 + byteIndex] >> (7 - j)) & 0x1) != PIXEL_OFF)
+                if (((memory[I_reg + i * 2 + byteIndex] >> (7 - j)) & 0x1) != 0)
                 {
                     unsigned int x = (Vx + j + byteIndex * 8) % PpuBase::SCREEN_HIRES_MODE_WIDTH;
                     unsigned int y = (Vy + i) % PpuBase::SCREEN_HIRES_MODE_HEIGHT;

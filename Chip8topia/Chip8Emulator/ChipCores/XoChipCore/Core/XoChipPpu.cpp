@@ -33,7 +33,7 @@ void scrollDownInternal(uint8 n, uint8* videoMemory, int width, int height)
         for (int col = 0; col < width; col++)
         {
             videoMemory[(row + n) * width + col] = videoMemory[row * width + col];
-            videoMemory[row * width + col] = 0;
+            videoMemory[row * width + col] = XoChipPpu::PIXEL_OFF;
         }
     }
 }
@@ -60,7 +60,7 @@ void scrollUpInternal(uint8 n, uint8* videoMemory, int width, int height)
         for (int col = 0; col < width; col++)
         {
             videoMemory[row * width + col] = videoMemory[(row + n) * width + col];
-            videoMemory[(row + n) * width + col] = 0;
+            videoMemory[(row + n) * width + col] = XoChipPpu::PIXEL_OFF;
         }
     }
 }
@@ -87,7 +87,7 @@ void scrollRightInternal(uint8 n, uint8* videoMemory, int width, int height)
         for (int row = 0; row < height; row++)
         {
             videoMemory[row * width + col + n] = videoMemory[row * width + col];
-            videoMemory[row * width + col] = 0;
+            videoMemory[row * width + col] = XoChipPpu::PIXEL_OFF;
         }
     }
 }
@@ -115,7 +115,7 @@ void scrollLeftInternal(uint8 n, uint8* videoMemory, int width, int height)
         for (int row = 0; row < height; row++)
         {
             videoMemory[row * width + col] = videoMemory[row * width + col + n];
-            videoMemory[row * width + col + n] = 0;
+            videoMemory[row * width + col + n] = XoChipPpu::PIXEL_OFF;
         }
     }
 }
@@ -186,7 +186,7 @@ auto XoChipPpu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array
         const unsigned int spriteByte = memory[I_reg + i];
         for (unsigned int j = 0; j < 8; j++)
         {
-            if (((spriteByte) & (0x1 << (7 - j))) != PIXEL_OFF)
+            if (((spriteByte) & (0x1 << (7 - j))) != 0)
             {
                 const unsigned int index = (Vx + j) % screenWidth + ((Vy + i) % screenHeight) * screenWidth;
                 if (videoMemory[index] == PIXEL_ON)
@@ -215,7 +215,7 @@ auto XoChipPpu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::arr
         {
             for (unsigned int j = 0; j < 8; j++) // 8 pixels per byte
             {
-                if (((memory[I_reg + i * 2 + byteIndex] >> (7 - j)) & 0x1) != PIXEL_OFF)
+                if (((memory[I_reg + i * 2 + byteIndex] >> (7 - j)) & 0x1) != 0)
                 {
                     unsigned int x = (Vx + j + byteIndex * 8) % PpuBase::SCREEN_HIRES_MODE_WIDTH;
                     unsigned int y = (Vy + i) % PpuBase::SCREEN_HIRES_MODE_HEIGHT;

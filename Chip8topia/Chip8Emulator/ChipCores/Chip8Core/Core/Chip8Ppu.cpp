@@ -20,7 +20,7 @@ auto Chip8Ppu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, C
         const unsigned int spriteByte = memory[I_reg + i];
         for (unsigned int j = 0; j < 8; j++)
         {
-            if (((spriteByte) & (0x1 << (7 - j))) != PIXEL_OFF)
+            if (((spriteByte) & (0x1 << (7 - j))) != 0)
             {
                 // Clip the sprite if it goes out of bounds
                 if (((Vx + j) >= PpuBase::SCREEN_LORES_MODE_WIDTH && j > 0) || ((Vy + i) >= PpuBase::SCREEN_LORES_MODE_HEIGHT && i > 0))
