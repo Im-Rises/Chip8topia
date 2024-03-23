@@ -36,10 +36,7 @@ void Chip8topiaVideoUi::drawPlanesColorEditor(Chip8Emulator& emulator)
 {
     Chip8VideoEmulation& videoEmulation = emulator.getChip8VideoEmulation();
 
-    ImGui::Text("Color Editor");
-    ImGui::NewLine();
-
-    ImGui::Text("Color Mode");
+    ImGui::TextColored(ImColor(1.0F, 1.0F, 0.0F, 1.0F), "Color Mode");
     ImGui::Selectable("Grayscale", videoEmulation.getColorMode() == EmulationColorMode::Grayscale);
     if (ImGui::IsItemClicked())
     {
@@ -59,7 +56,7 @@ void Chip8topiaVideoUi::drawPlanesColorEditor(Chip8Emulator& emulator)
     }
 
     ImGui::NewLine();
-    ImGui::Text("Colors");
+    ImGui::TextColored(ImColor(1.0F, 1.0F, 0.0F, 1.0F), "Colors");
     for (auto i = 0; i < PpuBase::COLOR_COUNT; i++)
     {
         ImGui::PushID(i);

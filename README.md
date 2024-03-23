@@ -18,9 +18,9 @@ Currently, no sound is implemented, but it is planned.
 
 Emulatated consoles:
 
-- [ ] Chip8
-- [ ] SCHIP1.1
-- [ ] SCHIPC
+- [x] Chip8
+- [x] SCHIP1.1
+- [x] SCHIPC
 - [x] Xo-Chip
 
 ## Features
@@ -49,10 +49,12 @@ Emulatated consoles:
 
 Major:
 
+- [ ] Correct the Xo-Chip games not working properly
 - [ ] Restarting a game when playing big xo-chip games will not reload the game from the start (we should reset memory
   and reload the game rom)
-- [ ] Correct the Xo-Chip games not working properly
-- [ ] Check which imgui window is very slow (probably the memory editor)
+
+Future:
+
 - [ ] Add audio
 - [ ] Add safe and unsafe code version (set the callback error in Core and Cpu, and Ppu, the call it on error) Create an
   error code when calling Core.clock(); if it returns 1 it means it needs a screen refresh if 2 its an
@@ -62,9 +64,7 @@ Minor:
 
 - [ ] Add a way to change the input keys
 - [ ] Add a background when no rom is loaded
-
-## Bugs
-
+- [ ] Check which imgui window is very slow (probably the memory editor)
 - [ ] Correct the clean of the debug image plane (they are not cleard when changing game)
 
 ## Documentation
