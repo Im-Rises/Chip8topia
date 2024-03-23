@@ -26,12 +26,12 @@ Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<Chip8Core>(DEFAULT_FREQ
     inputHandler.m_StepEmulationEvent.subscribe(this, &Chip8Emulator::stepEmulation);
     inputHandler.m_RunEmulationEvent.subscribe(this, &Chip8Emulator::runEmulation);
     inputHandler.m_ClearBreakpointsEvent.subscribe(this, &Chip8Emulator::clearBreakpoints);
+
+    resetColorPalette();
 }
 
 Chip8Emulator::~Chip8Emulator()
 {
-    resetColorPalette();
-
     Chip8topiaInputHandler& inputHandler = Chip8topiaInputHandler::getInstance();
     inputHandler.m_GameInput.unsubscribe(this, &Chip8Emulator::OnInput);
     inputHandler.m_TogglePauseEmulationEvent.unsubscribe(this, &Chip8Emulator::toggleBreakEmulation);
@@ -54,7 +54,7 @@ void Chip8Emulator::resetColorPalette()
         m_videoEmulation.resetToBWColors();
         break;
     case Chip8CoreType::XoChip:
-        m_videoEmulation.resetToBWColors();
+        m_videoEmulation.resetToGrayscaleColors();
         break;
     }
 }
@@ -205,7 +205,7 @@ void Chip8Emulator::switchCoreFrequency(const Chip8CoreType coreType, const Chip
     }
 
     resetColorPalette();
-    
+
     m_isRomLoaded = false;
 
     ImGui::InsertNotification({ ImGuiToastType::Info, "Core and frequency changed", "The core and frequency have been changed. Please load a ROM to continue." });
