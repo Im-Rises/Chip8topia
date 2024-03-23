@@ -4,7 +4,8 @@
 
 #include "../../Chip8Emulator/Chip8CoreBase/Core/Input.h"
 
-void Chip8topiaDebugger::drawDebuggerMenu() {
+void Chip8topiaDebugger::drawDebuggerMenu()
+{
     if (ImGui::BeginMenu(ICON_FA_BUG " Debugger"))
     {
         for (auto& menuItem : m_menuItems)
@@ -16,22 +17,29 @@ void Chip8topiaDebugger::drawDebuggerMenu() {
     }
 }
 
-void Chip8topiaDebugger::drawDebuggerWindows(Chip8Emulator& emulator) {
+void Chip8topiaDebugger::drawDebuggerWindows(Chip8Emulator& emulator)
+{
     for (auto& menuItem : m_menuItems)
     {
         menuItem.drawWindow(&emulator);
     }
 }
 
-void Chip8topiaDebugger::closeAllWindows() {
+void Chip8topiaDebugger::closeAllWindows()
+{
     for (auto& menuItem : m_menuItems)
     {
         menuItem.m_isOpen = false;
     }
 }
 
-void Chip8topiaDebugger::drawRegisters(Chip8CoreBase* chip8) {
+void Chip8topiaDebugger::drawRegisters(Chip8CoreBase* chip8)
+{
     std::unique_ptr<CpuBase>& cpu = chip8->getCpu();
+
+    ImGui::Text("Plane mask:");
+    ImGui::SameLine(); // TODO: Add plane mask to UI
+    //    ImGui::InputScalar("##PlaneMask", ImGuiDataType_U8, &chip8->getPpu()->getPlaneMask(), nullptr, nullptr, "%02X", ImGuiInputTextFlags_CharsHexadecimal);
 
     ImGui::PushItemWidth(-FLT_MIN);
     ImGui::Text("PC:");
@@ -71,7 +79,8 @@ void Chip8topiaDebugger::drawRegisters(Chip8CoreBase* chip8) {
     ImGui::PopItemWidth();
 }
 
-void Chip8topiaDebugger::drawStack(Chip8CoreBase* chip8) {
+void Chip8topiaDebugger::drawStack(Chip8CoreBase* chip8)
+{
     std::unique_ptr<CpuBase>& cpu = chip8->getCpu();
 
     ImGui::Text("SP:");
@@ -108,11 +117,13 @@ void Chip8topiaDebugger::drawStack(Chip8CoreBase* chip8) {
     }
 }
 
-void Chip8topiaDebugger::drawMemory(Chip8CoreBase* chip8) {
+void Chip8topiaDebugger::drawMemory(Chip8CoreBase* chip8)
+{
     m_memoryEditor.DrawWindow("Memory Editor", &chip8->getCpu()->getMemory(), Chip8Cpu::MEMORY_SIZE);
 }
 
-void Chip8topiaDebugger::drawKeypad(Chip8CoreBase* chip8) {
+void Chip8topiaDebugger::drawKeypad(Chip8CoreBase* chip8)
+{
     static constexpr int WINDOW_SIZE = 50;
     static constexpr int WINDOW_COUNT_PER_LINE = 4;
 
@@ -145,10 +156,12 @@ void Chip8topiaDebugger::drawKeypad(Chip8CoreBase* chip8) {
     ImGui::SetWindowFontScale(1.0F);
 }
 
-void Chip8topiaDebugger::drawDisassembly(Chip8Emulator* emulator) {
+void Chip8topiaDebugger::drawDisassembly(Chip8Emulator* emulator)
+{
     m_disassembler.drawDisassembly(emulator);
 }
 
-void Chip8topiaDebugger::drawDisassemblyControls(Chip8Emulator* emulator) {
+void Chip8topiaDebugger::drawDisassemblyControls(Chip8Emulator* emulator)
+{
     m_disassembler.drawDisassemblyControls(emulator);
 }

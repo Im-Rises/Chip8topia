@@ -13,8 +13,6 @@ public:
     auto operator=(SChip11Cpu&&) -> SChip11Cpu& = delete;
     ~SChip11Cpu() final = default;
 
-    void setPpu(std::shared_ptr<PpuBase> ppu) final;
-
 public:
     void reset() final;
     void requestDisableHalt() { m_requestDisableHalt = true; }

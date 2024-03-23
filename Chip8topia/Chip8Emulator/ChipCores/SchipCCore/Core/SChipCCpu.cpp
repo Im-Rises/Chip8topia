@@ -7,9 +7,10 @@ SChipCCpu::SChipCCpu()
     std::copy(SCHIP_FONTSET.begin(), SCHIP_FONTSET.end(), m_memory.begin());
 }
 
-void SChipCCpu::setPpu(std::shared_ptr<PpuBase> ppu)
+void SChipCCpu::reset()
 {
-    CpuBase::setPpu(ppu);
+    CpuBase::reset();
+    std::copy(SCHIP_FONTSET.begin(), SCHIP_FONTSET.end(), m_memory.begin());
 }
 
 void SChipCCpu::computeOpcode(const uint16 opcode)

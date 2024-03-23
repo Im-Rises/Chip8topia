@@ -303,7 +303,7 @@ void Chip8topia::handleScreenUpdate()
 #endif
     glViewport(0, 0, m_currentWidth, m_currentHeight);
     //    glClearColor(CLEAR_COLOR.x * CLEAR_COLOR.w, CLEAR_COLOR.y * CLEAR_COLOR.w, CLEAR_COLOR.z * CLEAR_COLOR.w, CLEAR_COLOR.w);
-    ImVec4& clearColor = m_chip8Emulator->getChip8VideoEmulation().getBackgroundColor();
+    ImVec4& clearColor = m_chip8Emulator->getChip8VideoEmulation().getColor(0);
     glClearColor(clearColor.x * clearColor.w, clearColor.y * clearColor.w, clearColor.z * clearColor.w, clearColor.w);
     glClear(GL_COLOR_BUFFER_BIT);
 

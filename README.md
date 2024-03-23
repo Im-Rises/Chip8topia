@@ -10,18 +10,34 @@
 
 Chip8topia is a Chip8 emulator written in C++ for Windows, Linux and WebAssembly. It uses OpenGL/WebGL for the rendering
 and ImGui for the UI.
-The application is compiled with CMake and uses Vcpkg for the dependencies.
-For the WebAssembly version, it uses Emscripten and vcpkg for most dependencies.
+The application is compiled with CMake and uses Vcpkg for most dependencies.
+For the WebAssembly version, it uses Emscripten to compile with vcpkg for most dependencies as well.
 
 It can emulate the original Chip8, the SCHIP1.1, SCHIPC and Xo-Chip.
 Currently, no sound is implemented, but it is planned.
 
 Emulatated consoles:
 
-- [x] Chip8
-- [x] SCHIP1.1
-- [x] SCHIPC
-- [ ] Xo-Chip (not working at the moment)
+- [ ] Chip8
+- [ ] SCHIP1.1
+- [ ] SCHIPC
+- [x] Xo-Chip
+
+## Features
+
+- [x] Load Chip8, SCHIP1.1, SCHIPC and Xo-Chip games
+- [x] Pause/Resume the emulation
+- [x] Restart the emulation
+- [x] Change the emulation speed
+- [x] Change the color of the screen
+- [x] Disassemble
+- [x] Breakpoint
+- [x] Memory Editor
+- [x] Register Editor
+- [x] Plane viewer (SCHIP1.1, SCHIPC and Xo-Chip)
+- [x] Desktop and WebAssembly version
+- [x] Load ROMs from the browser (WebAssembly)
+- [x] Load integrated ROMs (WebAssembly)
 
 ## Screenshots
 
@@ -33,26 +49,24 @@ Emulatated consoles:
 
 Major:
 
-- [ ] Understnad why it doesn't draw correclty on t8nk game when drawing the main screen above the background drawing
-  menu
-- [ ] Correct Xo-Chip Emulation (ram size etc...) (add a different error code depending if it is the Cpu, Ppu, etc...)
-- [ ] Correct restart which is behaving weirdly with Red October ?
+- [ ] Correct the Xo-Chip text in October red being missplaced
 
+- [ ] Check which imgui window is very slow (probably the memory editor)
 - [ ] Add safe and unsafe code version (set the callback error in Core and Cpu, and Ppu, the call it on error)
 - [ ] Create an error code when calling Core.clock(); if it returns 1 it means it needs a screen refresh if 2 its an
   error and -1 means emulation issue, so the program should stop (also add a normal exit on EXIT opcode)
 - [ ] Add audio
-- [ ] Rename CommonPixelColor to OverlapPixelColor
-- [ ] Add ImGui window to show each plane of the Xo-Chip separately (use ImGui::Image and send the GLuint texture to it)
 
 Minor:
 
+- [ ] Correct the clean of the debug image plane (they are not cleard when changing game)
 - [ ] Add a way to change the input keys
 - [ ] Add a background when no rom is loaded
 - [ ] Do a general optimization of the code
 
 ## Bugs
 
+- [ ] Restarting a game when playing big xo-chip games will not reload the game from the start
 - [ ] Sometime changing games won't display anything (need to restart the program)
 - [ ] Performance regression between Merge pull request #18 from Im-Rises/develop and Merge pull request #17 from
   Im-Rises/develop on main. When I moved all the opcode to the parent core class CpuBase.

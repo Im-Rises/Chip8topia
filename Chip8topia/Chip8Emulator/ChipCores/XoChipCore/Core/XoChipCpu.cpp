@@ -9,14 +9,10 @@ XoChipCpu::XoChipCpu()
     std::copy(XO_CHIP_FONTSET.begin(), XO_CHIP_FONTSET.end(), m_memory.begin());
 }
 
-void XoChipCpu::setPpu(std::shared_ptr<PpuBase> ppu)
-{
-    CpuBase::setPpu(ppu);
-}
-
 void XoChipCpu::reset()
 {
     CpuBase::reset();
+    std::copy(XO_CHIP_FONTSET.begin(), XO_CHIP_FONTSET.end(), m_memory.begin());
 }
 
 void XoChipCpu::computeOpcode(const uint16 opcode)

@@ -9,6 +9,9 @@
 #include "ChipCores/XoChipCore/XoChipCore.h"
 
 #if defined(BUILD_DEBUG)
+// Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<SChipCCore>(DEFAULT_FREQUENCY))
+// Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<SChip11Core>(DEFAULT_FREQUENCY))
+// Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<Chip8Core>(DEFAULT_FREQUENCY))
 Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<XoChipCore>(DEFAULT_FREQUENCY))
 #else
 Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<Chip8Core>(DEFAULT_FREQUENCY))
@@ -107,7 +110,6 @@ auto Chip8Emulator::getChip8VideoEmulation() -> Chip8VideoEmulation&
 {
     return m_videoEmulation;
 }
-
 
 [[nodiscard]] auto Chip8Emulator::getRomName() const -> std::string
 {

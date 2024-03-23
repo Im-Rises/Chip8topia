@@ -1,6 +1,7 @@
 #include "Chip8topiaVideoUi.h"
 
-#include "../Chip8Emulator/Chip8Emulator.h"
+#include "../../Chip8Emulator/Chip8Emulator/Chip8VideoEmulation.h"
+#include "../../Chip8Emulator/Chip8Emulator.h"
 
 void Chip8topiaVideoUi::drawVideoMenu()
 {
@@ -31,22 +32,60 @@ void Chip8topiaVideoUi::closeAllWindows()
     }
 }
 
-void Chip8topiaVideoUi::drawBackgroundColor(Chip8Emulator* emulator)
+void Chip8topiaVideoUi::drawPlanesColorEditor(Chip8Emulator& emulator)
 {
-    ImGui::ColorPicker4("Background color", reinterpret_cast<float*>(&emulator->getChip8VideoEmulation().getBackgroundColor()));
+    Chip8VideoEmulation& videoEmulation = emulator.getChip8VideoEmulation();
+
+    ImGui::Text("Color Editor");
+    ImGui::NewLine();
+
+    ImGui::Text("Color Mode");
+    ImGui::Selectable("Grayscale", videoEmulation.getColorMode() == EmulationColorMode::Grayscale);
+    if (ImGui::IsItemClicked())
+    {
+        videoEmulation.resetToGrayscaleColors();
+    }
+
+    ImGui::Selectable("Color", videoEmulation.getColorMode() == EmulationColorMode::Color);
+    if (ImGui::IsItemClicked())
+    {
+        videoEmulation.resetToColorColors();
+    }
+
+    ImGui::NewLine();
+    ImGui::Text("Colors");
+    for (auto i = 0; i < PpuBase::COLOR_COUNT; i++)
+    {
+        ImGui::PushID(i);
+        ImGui::ColorEdit4("##Color", reinterpret_cast<float*>(&videoEmulation.getColor(i)));
+        // ImGui::ColorPicker4("##Color", reinterpret_cast<float*>(&videoEmulation.getColor(i)));
+        ImGui::PopID();
+    }
 }
 
-void Chip8topiaVideoUi::drawMainPlaneColor(Chip8Emulator* emulator)
+void Chip8topiaVideoUi::drawPlanes(Chip8Emulator& emulator)
 {
-    ImGui::ColorPicker4("Draw color", reinterpret_cast<float*>(&emulator->getChip8VideoEmulation().getMainPlaneColor()));
-}
+    static constexpr const ImVec2 LORES_TEXTURE_SIZE = ImVec2(PpuBase::SCREEN_LORES_MODE_WIDTH, PpuBase::SCREEN_LORES_MODE_HEIGHT);
+    static constexpr const ImVec2 HIRES_TEXTURE_SIZE = ImVec2(PpuBase::SCREEN_HIRES_MODE_WIDTH, PpuBase::SCREEN_HIRES_MODE_HEIGHT);
 
-void Chip8topiaVideoUi::drawSubPlaneColor(Chip8Emulator* emulator)
-{
-    ImGui::ColorPicker4("Draw color", reinterpret_cast<float*>(&emulator->getChip8VideoEmulation().getSubPlaneColor()));
-}
+    ImGui::Text("Lores Planes");
+    for (auto i = 0; i < PpuBase::PLANE_COUNT; i++)
+    {
+        ImGui::PushID(i);
+        ImGui::Image(reinterpret_cast<ImTextureID>(emulator.getChip8VideoEmulation().getLoresPlaneTexture(i)), LORES_TEXTURE_SIZE);
+        ImGui::PopID();
+        ImGui::SameLine();
+    }
 
-void Chip8topiaVideoUi::drawPixelsCommonColor(Chip8Emulator* emulator)
-{
-    ImGui::ColorPicker4("Draw color", reinterpret_cast<float*>(&emulator->getChip8VideoEmulation().getPixelsCommonColor()));
+    ImGui::NewLine();
+    ImGui::NewLine();
+
+    ImGui::Text("Hires Planes");
+    for (auto i = 0; i < PpuBase::PLANE_COUNT; i++)
+    {
+        ImGui::PushID(i);
+        ImGui::Image(reinterpret_cast<ImTextureID>(emulator.getChip8VideoEmulation().getHiresPlaneTexture(i)), HIRES_TEXTURE_SIZE);
+        ImGui::PopID();
+        ImGui::SameLine();
+    }
 }
