@@ -7,21 +7,44 @@
 Chip8VideoEmulation::Chip8VideoEmulation() : m_shaderXoChipLores(PpuBase::SCREEN_LORES_MODE_WIDTH, PpuBase::SCREEN_LORES_MODE_HEIGHT),
                                              m_shaderXoChipHires(PpuBase::SCREEN_HIRES_MODE_WIDTH, PpuBase::SCREEN_HIRES_MODE_HEIGHT)
 {
-    resetColors();
+    resetToGrayscaleColors();
 }
 
 void Chip8VideoEmulation::reset()
 {
-    resetColors();
+    resetToGrayscaleColors();
+    m_shaderXoChipLores.reset();
+    m_shaderXoChipHires.reset();
 }
 
-void Chip8VideoEmulation::resetColors()
+void Chip8VideoEmulation::resetToGrayscaleColors()
 {
     for (int i = 0; i < m_colors.size(); i++)
     {
         const float color = static_cast<float>(i) / static_cast<float>(m_colors.size());
         m_colors[i] = ImVec4(color, color, color, 1.0F);
     }
+}
+
+void Chip8VideoEmulation::resetToColorColors()
+{
+    // Set each index to a color
+    m_colors[0] = ImVec4(0.0F, 0.0F, 0.0F, 1.0F);
+    m_colors[1] = ImVec4(0.0F, 0.0F, 0.5F, 1.0F);
+    m_colors[2] = ImVec4(0.0F, 0.5F, 0.0F, 1.0F);
+    m_colors[3] = ImVec4(0.0F, 0.5F, 0.5F, 1.0F);
+    m_colors[4] = ImVec4(0.5F, 0.0F, 0.0F, 1.0F);
+    m_colors[5] = ImVec4(0.5F, 0.0F, 0.5F, 1.0F);
+    m_colors[6] = ImVec4(0.5F, 0.5F, 0.0F, 1.0F);
+    m_colors[7] = ImVec4(0.5F, 0.5F, 0.5F, 1.0F);
+    m_colors[8] = ImVec4(0.0F, 0.0F, 1.0F, 1.0F);
+    m_colors[9] = ImVec4(0.0F, 1.0F, 0.0F, 1.0F);
+    m_colors[10] = ImVec4(0.0F, 1.0F, 1.0F, 1.0F);
+    m_colors[11] = ImVec4(1.0F, 0.0F, 0.0F, 1.0F);
+    m_colors[12] = ImVec4(1.0F, 0.0F, 1.0F, 1.0F);
+    m_colors[13] = ImVec4(1.0F, 1.0F, 0.0F, 1.0F);
+    m_colors[14] = ImVec4(1.0F, 1.0F, 1.0F, 1.0F);
+    m_colors[15] = ImVec4(0.0F, 0.0F, 0.0F, 1.0F);
 }
 
 void Chip8VideoEmulation::updateTexture(const std::unique_ptr<Chip8CoreBase>& core)
@@ -73,6 +96,11 @@ void Chip8VideoEmulation::update(const std::unique_ptr<Chip8CoreBase>& core, con
     {
         m_shaderXoChipHires.update(m_colors, scaleX, scaleY);
     }
+}
+
+auto Chip8VideoEmulation::getColorMode() const -> EmulationColorMode
+{
+    return m_colorMode;
 }
 
 auto Chip8VideoEmulation::getColor(const int index) -> ImVec4&

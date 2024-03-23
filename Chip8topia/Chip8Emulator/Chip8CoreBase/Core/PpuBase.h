@@ -16,7 +16,7 @@ public:
 
     static constexpr uint8 PLANE_COUNT = 4;
     static constexpr int COLOR_COUNT = 16;
-    static constexpr uint8 PIXEL_ON = 1;
+    static constexpr uint8 PIXEL_ON = 255;
     static constexpr uint8 PIXEL_OFF = 0;
 
     static constexpr unsigned int SCREEN_LORES_MODE_WIDTH = 64;

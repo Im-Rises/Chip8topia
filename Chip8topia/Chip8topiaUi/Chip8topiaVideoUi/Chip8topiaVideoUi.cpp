@@ -1,6 +1,7 @@
 #include "Chip8topiaVideoUi.h"
 
-#include "../Chip8Emulator/Chip8Emulator.h"
+#include "../../Chip8Emulator/Chip8Emulator/Chip8VideoEmulation.h"
+#include "../../Chip8Emulator/Chip8Emulator.h"
 
 void Chip8topiaVideoUi::drawVideoMenu()
 {
@@ -35,6 +36,24 @@ void Chip8topiaVideoUi::drawPlanesColorEditor(Chip8Emulator& emulator)
 {
     Chip8VideoEmulation& videoEmulation = emulator.getChip8VideoEmulation();
 
+    ImGui::Text("Color Editor");
+    ImGui::NewLine();
+
+    ImGui::Text("Color Mode");
+    ImGui::Selectable("Grayscale", videoEmulation.getColorMode() == EmulationColorMode::Grayscale);
+    if (ImGui::IsItemClicked())
+    {
+        videoEmulation.resetToGrayscaleColors();
+    }
+
+    ImGui::Selectable("Color", videoEmulation.getColorMode() == EmulationColorMode::Color);
+    if (ImGui::IsItemClicked())
+    {
+        videoEmulation.resetToColorColors();
+    }
+
+    ImGui::NewLine();
+    ImGui::Text("Colors");
     for (auto i = 0; i < PpuBase::COLOR_COUNT; i++)
     {
         ImGui::PushID(i);

@@ -11,6 +11,12 @@
 
 #include "Chip8VideoEmulation/ShaderXoChip.h"
 
+enum class EmulationColorMode
+{
+    Grayscale,
+    Color
+};
+
 class Chip8CoreBase;
 class Chip8VideoEmulation
 {
@@ -28,10 +34,12 @@ public:
 
 public:
     void reset();
-    void resetColors();
+    void resetToGrayscaleColors();
+    void resetToColorColors();
     void updateTexture(const std::unique_ptr<Chip8CoreBase>& core);
     void update(const std::unique_ptr<Chip8CoreBase>& core, const float screenWidth, const float screenHeight, const float chip8AspectRatio);
 
+    auto getColorMode() const -> EmulationColorMode;
     auto getColor(const int index) -> ImVec4&;
     auto getHiresPlaneTexture(const int planeIndex) -> GLuint;
     auto getLoresPlaneTexture(const int planeIndex) -> GLuint;
@@ -40,9 +48,8 @@ public:
 private:
     ShaderXoChip m_shaderXoChipLores;
     ShaderXoChip m_shaderXoChipHires;
-
     std::array<ImVec4, PpuBase::COLOR_COUNT> m_colors;
-
+    EmulationColorMode m_colorMode = EmulationColorMode::Grayscale;
 
     //    ImVec4 m_backgroundColor = { 0.3F, 0.3F, 0.3F, 1.0F };
     //    ImVec4 m_mainPlaneColor = { 0.8F, 0.8F, 0.8F, 1.0F };

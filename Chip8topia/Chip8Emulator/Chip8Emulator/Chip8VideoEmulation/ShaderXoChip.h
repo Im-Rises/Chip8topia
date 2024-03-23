@@ -6,11 +6,10 @@
 #include <glad/glad.h>
 #endif
 
-#include "../../ChipCores/XoChipCore/Core/XoChipPpu.h"
-
 #include <array>
 #include <binaryLib/binaryLib.h>
 
+#include "../../ChipCores/XoChipCore/Core/XoChipPpu.h"
 #include "../../../Shader/Shader.h"
 
 struct ImVec4;
@@ -45,9 +44,10 @@ public:
     ~ShaderXoChip();
 
 public:
+    void reset();
+
     void updateTexture(const uint8* videoMemory, const uint8 planeIndex);
     void update(const std::array<ImVec4, XoChipPpu::COLOR_COUNT>& colors, const float xScale, const float yScale);
-    void reset();
 
     auto getTexture(const int index) -> GLuint;
 
