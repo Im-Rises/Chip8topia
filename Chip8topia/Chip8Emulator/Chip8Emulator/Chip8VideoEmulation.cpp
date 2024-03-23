@@ -7,12 +7,10 @@
 Chip8VideoEmulation::Chip8VideoEmulation() : m_shaderXoChipLores(PpuBase::SCREEN_LORES_MODE_WIDTH, PpuBase::SCREEN_LORES_MODE_HEIGHT),
                                              m_shaderXoChipHires(PpuBase::SCREEN_HIRES_MODE_WIDTH, PpuBase::SCREEN_HIRES_MODE_HEIGHT)
 {
-    resetToGrayscaleColors();
 }
 
 void Chip8VideoEmulation::reset()
 {
-    resetToGrayscaleColors();
     m_shaderXoChipLores.reset();
     m_shaderXoChipHires.reset();
 }
@@ -54,7 +52,7 @@ void Chip8VideoEmulation::resetToBWColors()
 
 void Chip8VideoEmulation::updateTexture(const std::unique_ptr<Chip8CoreBase>& core)
 {
-    const int planeMask = core->getPpu()->getPlane();
+    const int planeMask = core->getPpu()->getPlaneMask();
     if (core->getPpu()->getMode() == PpuBase::PpuMode::LORES)
     {
         for (int i = 0; i < PpuBase::PLANE_COUNT; i++)

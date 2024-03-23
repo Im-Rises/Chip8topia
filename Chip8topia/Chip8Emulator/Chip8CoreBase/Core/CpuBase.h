@@ -46,10 +46,6 @@ protected:
 
     virtual void computeOpcode(const uint16 opcode) = 0;
 
-    /*
-     * Virtual methods overriden in child classes are quirks
-     */
-
     virtual void SCD(const uint8 n);                                           // 00CN
     void SCU(const uint8 n);                                                   // 00DN
     void CLS();                                                                // 00E0

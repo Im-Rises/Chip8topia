@@ -46,6 +46,8 @@ void Chip8Emulator::restart()
     m_core->reset();
     m_videoEmulation.reset();
     m_accumulator = 0.0F;
+    // TODO: Restart is disabled for now, it causes issue on XoChip games
+    //  Reload rom here !
 }
 
 void Chip8Emulator::loadRom(const std::vector<uint8_t>& romData)

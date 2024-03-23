@@ -61,7 +61,7 @@ void PpuBase::setPlane(uint8 x)
     m_planeMask = x;
 }
 
-auto PpuBase::getPlane() const -> uint8
+auto PpuBase::getPlaneMask() -> uint8&
 {
     return m_planeMask;
 }

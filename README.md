@@ -49,25 +49,23 @@ Emulatated consoles:
 
 Major:
 
+- [ ] Restarting a game when playing big xo-chip games will not reload the game from the start (we should reset memory
+  and reload the game rom)
+- [ ] Correct the Xo-Chip games not working properly
 - [ ] Check which imgui window is very slow (probably the memory editor)
-- [ ] Add safe and unsafe code version (set the callback error in Core and Cpu, and Ppu, the call it on error)
-- [ ] Create an error code when calling Core.clock(); if it returns 1 it means it needs a screen refresh if 2 its an
-  error and -1 means emulation issue, so the program should stop (also add a normal exit on EXIT opcode)
 - [ ] Add audio
+- [ ] Add safe and unsafe code version (set the callback error in Core and Cpu, and Ppu, the call it on error) Create an
+  error code when calling Core.clock(); if it returns 1 it means it needs a screen refresh if 2 its an
+  error and -1 means emulation issue, so the program should stop (also add a normal exit on EXIT opcode)
 
 Minor:
 
 - [ ] Add a way to change the input keys
 - [ ] Add a background when no rom is loaded
-- [ ] Do a general optimization of the code
 
 ## Bugs
 
 - [ ] Correct the clean of the debug image plane (they are not cleard when changing game)
-- [ ] Restarting a game when playing big xo-chip games will not reload the game from the start
-- [ ] Sometime changing games won't display anything (need to restart the program)
-- [ ] Performance regression between Merge pull request #18 from Im-Rises/develop and Merge pull request #17 from
-  Im-Rises/develop on main. When I moved all the opcode to the parent core class CpuBase.
 
 ## Documentation
 

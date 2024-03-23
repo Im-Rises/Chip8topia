@@ -33,7 +33,7 @@ void CpuBase::reset()
     m_I = 0;
     m_DT = 0;
     m_ST = 0;
-    //    m_memory = {};//TODO: Reset memory and reload the rom
+    m_memory = {};
     m_V = {};
     m_stack = {};
 }
