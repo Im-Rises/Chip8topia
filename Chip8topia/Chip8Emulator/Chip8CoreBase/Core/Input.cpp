@@ -1,12 +1,5 @@
 #include "Input.h"
 
-#if defined(BUILD_PARAM_SAFE)
-void Input::setErrorCallback(const std::function<void(const std::string&)>& errorCallback)
-{
-    m_errorCallback = errorCallback;
-}
-#endif
-
 void Input::reset()
 {
     m_pressedKeys.reset();

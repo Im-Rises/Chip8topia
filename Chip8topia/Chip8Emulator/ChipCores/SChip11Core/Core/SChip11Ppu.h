@@ -4,6 +4,9 @@
 
 class SChip11Ppu final : public PpuBase
 {
+private:
+    static constexpr unsigned int PLANE_INDEX = 0;
+
 public:
     SChip11Ppu() = default;
     SChip11Ppu(const SChip11Ppu&) = delete;
@@ -23,5 +26,5 @@ public:
 
 private:
     auto draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint8 n, uint8* videoMemory) -> uint8;
-    auto draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory) -> uint8;
+    auto draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint8* videoMemory) -> uint8;
 };

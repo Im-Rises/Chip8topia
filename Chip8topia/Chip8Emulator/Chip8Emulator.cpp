@@ -9,16 +9,14 @@
 #include "ChipCores/XoChipCore/XoChipCore.h"
 
 #if defined(BUILD_DEBUG)
+// Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<SChipCCore>(DEFAULT_FREQUENCY))
+// Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<SChip11Core>(DEFAULT_FREQUENCY))
+// Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<Chip8Core>(DEFAULT_FREQUENCY))
 Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<XoChipCore>(DEFAULT_FREQUENCY))
 #else
 Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<Chip8Core>(DEFAULT_FREQUENCY))
 #endif
 {
-#if defined(BUILD_PARAM_SAFE)
-    m_core->setErrorCallback([&](const std::string& errorMessage)
-        { errorCallback(errorMessage); });
-#endif
-
     Chip8topiaInputHandler& inputHandler = Chip8topiaInputHandler::getInstance();
     inputHandler.m_GameInput.subscribe(this, &Chip8Emulator::OnInput);
     inputHandler.m_TogglePauseEmulationEvent.subscribe(this, &Chip8Emulator::toggleBreakEmulation);
@@ -108,7 +106,6 @@ auto Chip8Emulator::getChip8VideoEmulation() -> Chip8VideoEmulation&
     return m_videoEmulation;
 }
 
-
 [[nodiscard]] auto Chip8Emulator::getRomName() const -> std::string
 {
     return m_romName;
@@ -171,25 +168,25 @@ void Chip8Emulator::switchCoreFrequency(const Chip8CoreType coreType, const Chip
     {
     case Chip8CoreType::Chip8:
         m_core = std::make_unique<Chip8Core>(frequency);
+        m_videoEmulation.resetToBWColors();
         break;
     case Chip8CoreType::SChip11Legacy:
         m_core = std::make_unique<SChip11Core>(frequency, false);
+        m_videoEmulation.resetToBWColors();
         break;
     case Chip8CoreType::SChip11Modern:
         m_core = std::make_unique<SChip11Core>(frequency, true);
+        m_videoEmulation.resetToBWColors();
         break;
     case Chip8CoreType::SChipC:
         m_core = std::make_unique<SChipCCore>(frequency);
+        m_videoEmulation.resetToBWColors();
         break;
     case Chip8CoreType::XoChip:
         m_core = std::make_unique<XoChipCore>(frequency);
+        m_videoEmulation.resetToColorColors();
         break;
     }
-
-#if defined(BUILD_PARAM_SAFE)
-    m_core->setErrorCallback([&](const std::string& errorMessage)
-        { errorCallback(errorMessage); });
-#endif
 
     m_isRomLoaded = false;
 
@@ -223,11 +220,3 @@ void Chip8Emulator::OnInput(const uint8 key, const bool isPressed)
 {
     m_core->updateKey(key, isPressed);
 }
-
-#if defined(BUILD_PARAM_SAFE)
-void Chip8Emulator::errorCallback(const std::string& errorMessage)
-{
-    m_isRomLoaded = false;
-    Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(errorMessage, nullptr);
-}
-#endif

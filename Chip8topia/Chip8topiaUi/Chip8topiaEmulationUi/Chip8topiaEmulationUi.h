@@ -9,6 +9,13 @@
 class Chip8topia;
 class Chip8topiaEmulationUi
 {
+private:
+#if defined(BUILD_RELEASE)
+    static constexpr auto INITIAL_WINDOW_STATE = false;
+#else
+    static constexpr auto INITIAL_WINDOW_STATE = true;
+#endif
+    
 public:
     Chip8topiaEmulationUi() = default;
     Chip8topiaEmulationUi(const Chip8topiaEmulationUi&) = delete;
@@ -27,11 +34,6 @@ private:
     void drawEmulationSettings(Chip8topia* chip8topia);
 
 private:
-#if defined(BUILD_RELEASE)
-    static constexpr auto INITIAL_WINDOW_STATE = false;
-#else
-    static constexpr auto INITIAL_WINDOW_STATE = true;
-#endif
     std::array<ImGuiMenuItemWindow<Chip8topia>, 2> m_menuItems = {
         ImGuiMenuItemWindow<Chip8topia>(ICON_FA_GEAR " Chip8 Settings", true, [this](Chip8topia* chip8topia)
             { drawEmulationSettings(chip8topia); }),

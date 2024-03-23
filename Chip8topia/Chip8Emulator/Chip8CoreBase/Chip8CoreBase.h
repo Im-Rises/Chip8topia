@@ -40,10 +40,6 @@ public:
     auto operator=(Chip8CoreBase&&) -> Chip8CoreBase& = delete;
     virtual ~Chip8CoreBase() = default;
 
-#if defined(BUILD_PARAM_SAFE)
-    void setErrorCallback(const std::function<void(const std::string&)>& errorCallback);
-#endif
-
 public:
     void reset();
     void readRom(const std::vector<uint8>& rom);
@@ -66,8 +62,4 @@ protected:
     unsigned int m_clockCounter;
     const Chip8Frequency CPU_CLOCK_FREQUENCY_ENUM;
     const unsigned int CPU_CLOCK_FREQUENCY;
-
-#if defined(BUILD_PARAM_SAFE)
-    std::function<void(const std::string&)> m_errorCallback;
-#endif
 };

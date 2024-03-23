@@ -7,15 +7,18 @@
 
 #include "../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
 
-Shader::Shader(const char* vertexPath, const char* fragmentPath) : m_ID(0) {
+Shader::Shader(const char* vertexPath, const char* fragmentPath) : m_ID(0)
+{
     compileFromFiles(vertexPath, fragmentPath);
 }
 
-Shader::~Shader() {
+Shader::~Shader()
+{
     glDeleteProgram(m_ID);
 }
 
-void Shader::compileFromFiles(const char* vertexPath, const char* fragmentPath) {
+void Shader::compileFromFiles(const char* vertexPath, const char* fragmentPath)
+{
     // Retrieve the vertex/fragment source code from filePath
     std::ifstream vShaderFile;
     std::ifstream fShaderFile;
@@ -54,7 +57,8 @@ void Shader::compileFromFiles(const char* vertexPath, const char* fragmentPath) 
     }
 }
 
-void Shader::compile(const char* vertexSource, const char* fragmentSource) {
+void Shader::compile(const char* vertexSource, const char* fragmentSource)
+{
     const GLuint vertex = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertex, 1, &vertexSource, nullptr);
     glCompileShader(vertex);
@@ -75,7 +79,8 @@ void Shader::compile(const char* vertexSource, const char* fragmentSource) {
     glDeleteShader(fragment);
 }
 
-void Shader::checkCompileErrors(unsigned int shader, const std::string& type) {
+void Shader::checkCompileErrors(unsigned int shader, const std::string& type)
+{
     int success = 0;
     std::array<char, 1024> infoLog{};
     if (type != "PROGRAM")
@@ -98,34 +103,47 @@ void Shader::checkCompileErrors(unsigned int shader, const std::string& type) {
     }
 }
 
-void Shader::use() const {
+void Shader::use() const
+{
     glUseProgram(m_ID);
 }
 
-[[maybe_unused]] auto Shader::getID() const -> unsigned int {
+[[maybe_unused]] auto Shader::getID() const -> unsigned int
+{
     return m_ID;
 }
 
-[[maybe_unused]] void Shader::setBool(const std::string& name, bool value) const {
+[[maybe_unused]] void Shader::setBool(const std::string& name, bool value) const
+{
     glUniform1i(glGetUniformLocation(m_ID, name.c_str()), static_cast<int>(value));
 }
 
-[[maybe_unused]] void Shader::setInt(const std::string& name, int value) const {
+[[maybe_unused]] void Shader::setInt(const std::string& name, int value) const
+{
     glUniform1i(glGetUniformLocation(m_ID, name.c_str()), value);
 }
 
-[[maybe_unused]] void Shader::setFloat(const std::string& name, float value) const {
+[[maybe_unused]] void Shader::setFloat(const std::string& name, float value) const
+{
     glUniform1f(glGetUniformLocation(m_ID, name.c_str()), value);
 }
 
-[[maybe_unused]] void Shader::setVec2(const std::string& name, float x, float y) const {
+[[maybe_unused]] void Shader::setVec2(const std::string& name, float x, float y) const
+{
     glUniform2f(glGetUniformLocation(m_ID, name.c_str()), x, y);
 }
 
-[[maybe_unused]] void Shader::setVec3(const std::string& name, float x, float y, float z) const {
+[[maybe_unused]] void Shader::setVec3(const std::string& name, float x, float y, float z) const
+{
     glUniform3f(glGetUniformLocation(m_ID, name.c_str()), x, y, z);
 }
 
-[[maybe_unused]] void Shader::setVec4(const std::string& name, float x, float y, float z, float w) const {
+[[maybe_unused]] void Shader::setVec4(const std::string& name, float x, float y, float z, float w) const
+{
     glUniform4f(glGetUniformLocation(m_ID, name.c_str()), x, y, z, w);
+}
+
+void Shader::setVec4Array(const std::string& name, const std::vector<Vec4>& vec4Array) const
+{
+    glUniform4fv(glGetUniformLocation(m_ID, name.c_str()), static_cast<GLsizei>(vec4Array.size()), reinterpret_cast<const float*>(vec4Array.data()));
 }

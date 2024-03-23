@@ -1,23 +1,24 @@
 #include "Chip8Ppu.h"
 
-Chip8Ppu::Chip8Ppu() {
+void Chip8Ppu::clearScreen()
+{
+    m_loresVideoMemoryPlanes.at(PLANE_INDEX).fill(PIXEL_OFF);
 }
 
-void Chip8Ppu::clearScreen() {
-    std::fill(m_loresVideoMemory.begin(), m_loresVideoMemory.end(), 0);
-}
+auto Chip8Ppu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint16 I_reg) -> uint8
+{
+    auto& videoMemory = m_loresVideoMemoryPlanes.at(PLANE_INDEX);
 
-auto Chip8Ppu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint16 I_reg) -> uint8 {
     bool collision = false;
 
     // Wrap around the screen if out of bounds
     Vx %= PpuBase::SCREEN_LORES_MODE_WIDTH;
     Vy %= PpuBase::SCREEN_LORES_MODE_HEIGHT;
 
-    for (auto i = 0; i < n; ++i)
+    for (unsigned int i = 0; i < n; ++i)
     {
-        const auto spriteByte = memory[I_reg + i];
-        for (auto j = 0; j < 8; j++)
+        const unsigned int spriteByte = memory[I_reg + i];
+        for (unsigned int j = 0; j < 8; j++)
         {
             if (((spriteByte) & (0x1 << (7 - j))) != 0)
             {
@@ -28,15 +29,15 @@ auto Chip8Ppu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, C
                 }
 
                 // Draw the pixel
-                const auto index = (Vx + j) % PpuBase::SCREEN_LORES_MODE_WIDTH + ((Vy + i) % PpuBase::SCREEN_LORES_MODE_HEIGHT) * PpuBase::SCREEN_LORES_MODE_WIDTH;
-                if (m_loresVideoMemory[index] == PIXEL_ON)
+                const unsigned int index = (Vx + j) % PpuBase::SCREEN_LORES_MODE_WIDTH + ((Vy + i) % PpuBase::SCREEN_LORES_MODE_HEIGHT) * PpuBase::SCREEN_LORES_MODE_WIDTH;
+                if (videoMemory[index] == PIXEL_ON)
                 {
-                    m_loresVideoMemory[index] = PIXEL_OFF;
+                    videoMemory[index] = PIXEL_OFF;
                     collision = true;
                 }
                 else
                 {
-                    m_loresVideoMemory[index] = PIXEL_ON;
+                    videoMemory[index] = PIXEL_ON;
                 }
             }
         }

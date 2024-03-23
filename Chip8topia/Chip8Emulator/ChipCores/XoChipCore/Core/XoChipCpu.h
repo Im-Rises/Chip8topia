@@ -13,8 +13,6 @@ public:
     auto operator=(XoChipCpu&&) -> XoChipCpu& = delete;
     ~XoChipCpu() final = default;
 
-    void setPpu(std::shared_ptr<PpuBase> ppu) final;
-
 public:
     void reset() final;
 

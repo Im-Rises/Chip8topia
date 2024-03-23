@@ -25,7 +25,6 @@ It was made to allow video games to be more easily programmed for said computers
     static constexpr auto WEB_CANVAS_ID = "#canvas";
     static constexpr auto CHIP8TOPIA_ICON_PATH = "res/icon.png";
 
-    //    static constexpr ImVec4 CLEAR_COLOR = ImVec4(0.45F, 0.55F, 0.60F, 1.00F);
 private:
     static constexpr auto SUCCESS_CODE = 0;
     static constexpr auto GLFW_INIT_ERROR_CODE = 1;
@@ -34,6 +33,7 @@ private:
     static constexpr auto FONT_AWESOME_INIT_ERROR_CODE = 4;
 #if !defined(BUILD_RELEASE)
     static constexpr auto DEBUG_ROM_PATH = "trash/chip8-test-suite-main/bin/8-scrolling.ch8";
+//    static constexpr auto DEBUG_ROM_PATH = "trash/games/t8nks.ch8";
 #endif
 
 public:

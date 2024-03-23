@@ -11,6 +11,7 @@ Chip8Cpu::Chip8Cpu() : m_isHalted(false),
 void Chip8Cpu::reset()
 {
     CpuBase::reset();
+    std::copy(CHIP8_FONTSET.begin(), CHIP8_FONTSET.end(), m_memory.begin());
     m_isHalted = false;
     m_requestDisableHalt = false;
 }

@@ -5,9 +5,13 @@
 #include "../../../Chip8CoreBase/Core/PpuBase.h"
 #include <binaryLib/binaryLib.h>
 
-class Chip8Ppu final : public PpuBase {
+class Chip8Ppu final : public PpuBase
+{
+private:
+    static constexpr unsigned int PLANE_INDEX = 0;
+
 public:
-    Chip8Ppu();
+    Chip8Ppu() = default;
     Chip8Ppu(const Chip8Ppu&) = delete;
     Chip8Ppu(Chip8Ppu&&) = delete;
     auto operator=(const Chip8Ppu&) -> Chip8Ppu& = delete;

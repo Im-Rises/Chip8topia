@@ -13,7 +13,8 @@ public:
     auto operator=(SChipCCpu&&) -> SChipCCpu& = delete;
     ~SChipCCpu() final = default;
 
-    void setPpu(std::shared_ptr<PpuBase> ppu) final;
+public:
+    void reset() final;
 
 private:
     void computeOpcode(const uint16 opcode) final;

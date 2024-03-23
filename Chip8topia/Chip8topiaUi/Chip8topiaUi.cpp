@@ -42,6 +42,8 @@ void Chip8topiaUi::drawMainMenuBar(Chip8topia& chip8topia)
             m_showDemo = !m_showDemo;
         }
 #endif
+        ImGui::Indent(ImGui::GetWindowWidth() - ImGui::GetFontSize() * 7);
+        ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
 
         ImGui::EndMainMenuBar();
     }
