@@ -133,7 +133,7 @@ auto PerformanceMonitor::getCpuUsage() -> float
 
 auto PerformanceMonitor::getCpuUsageByMe() -> float
 {
-    return 0;
+    return calculateCpuUsageCurrentProcess();
 }
 
 void PerformanceMonitor::initCpuUsage()
