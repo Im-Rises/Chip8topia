@@ -40,6 +40,8 @@ if (NOT EMSCRIPTEN)
 
     if (WIN32)
         target_link_libraries(${PROJECT_NAME} PUBLIC winmm.lib)
+        target_link_libraries(${PROJECT_NAME} PUBLIC Pdh.lib)
+        #        target_link_libraries(${PROJECT_NAME} PUBLIC psapi.lib)
     endif ()
 else ()
     target_link_libraries(${PROJECT_NAME} PRIVATE glfw)

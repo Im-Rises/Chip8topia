@@ -50,11 +50,11 @@ void Chip8topiaUi::drawMainMenuBar(Chip8topia& chip8topia)
 
     m_chip8topiaVideoUi.drawVideoWindows(chip8topia.getChip8Emulator());
     m_chip8topiatopiaDebugger.drawDebuggerWindows(chip8topia.getChip8Emulator());
-
     m_chip8topiaRomLoaderUi.drawRomWindow(chip8topia);
     m_chip8topiaEmulationUi.drawEmulationWindows(chip8topia);
     m_chip8topiaAbout.drawAboutWindows();
     m_chip8topiaError.showMessages();
+    m_chip8topiaPerformanceMonitor.drawWindow();
 
 #if defined(BUILD_DEBUG)
     if (m_showDemo)
