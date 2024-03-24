@@ -45,30 +45,11 @@ public:
     [[nodiscard]] auto getPhysicalMemoryUsedByMe() const -> SIZE_T;
 
     void fetchCpuUsage();
+
     [[nodiscard]] auto getCpuUsage() -> float;
     [[nodiscard]] auto getCpuUsageByMe() -> float;
 
-    /*
-        os_cpu_usage_info_t* os_cpu_usage_info_start(void);
-        void os_cpu_usage_info_destroy(os_cpu_usage_info_t* info);
-    */
 private:
     MEMORYSTATUSEX m_memInfo;
     PROCESS_MEMORY_COUNTERS_EX m_pmc;
-
-    /*
-        os_cpu_usage_info* m_cpuInfo;
-        double m_prevCpuUsage = 0.0;
-    */
-
-    PDH_HQUERY m_cpuQuery;
-    PDH_HCOUNTER m_cpuTotal;
-    void initCpuUsage();
-    double calculateCpuUsage();
-
-    ULARGE_INTEGER m_lastCPU, m_lastSysCPU, m_lastUserCPU;
-    int m_numProcessors;
-    HANDLE m_self;
-    void initCpuUsageCurrentProcess();
-    double calculateCpuUsageCurrentProcess();
 };
