@@ -132,6 +132,21 @@ void SChipCCpu::computeOpcode(const uint16 opcode)
     }
 }
 
+void SChipCCpu::SCD(const uint8 n)
+{
+    CpuBase::SCD(m_ppu->getMode() == PpuBase::PpuMode::LORES ? n / 2 : n);
+}
+
+void SChipCCpu::SCR(const uint8 n)
+{
+    CpuBase::SCR(m_ppu->getMode() == PpuBase::PpuMode::LORES ? 2 : 4);
+}
+
+void SChipCCpu::SCL(const uint8 n)
+{
+    CpuBase::SCL(m_ppu->getMode() == PpuBase::PpuMode::LORES ? 2 : 4);
+}
+
 void SChipCCpu::LORES()
 {
     m_ppu->clearScreen();

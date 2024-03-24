@@ -40,7 +40,7 @@ void scrollDownInternal(uint8 n, uint8* videoMemory, int width, int height)
 
 void XoChipPpu::scrollDown(uint8 n)
 {
-    bool isLoresMode = getMode() == PpuMode::LORES;
+    const bool isLoresMode = getMode() == PpuMode::LORES;
     const int width = isLoresMode ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
     const int height = isLoresMode ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
 
@@ -67,7 +67,7 @@ void scrollUpInternal(uint8 n, uint8* videoMemory, int width, int height)
 
 void XoChipPpu::scrollUp(uint8 n)
 {
-    bool isLoresMode = getMode() == PpuMode::LORES;
+    const bool isLoresMode = getMode() == PpuMode::LORES;
     const int width = isLoresMode ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
     const int height = isLoresMode ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
 
@@ -94,10 +94,9 @@ void scrollRightInternal(uint8 n, uint8* videoMemory, int width, int height)
 
 void XoChipPpu::scrollRight(uint8 n)
 {
-    bool isLoresMode = getMode() == PpuMode::LORES;
+    const bool isLoresMode = getMode() == PpuMode::LORES;
     const int width = isLoresMode ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
     const int height = isLoresMode ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
-    n = 4;
 
     for (auto i = 0; i < PLANE_COUNT; i++)
     {
@@ -125,7 +124,6 @@ void XoChipPpu::scrollLeft(uint8 n)
     bool loresMode = getMode() == PpuMode::LORES;
     const int width = loresMode ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
     const int height = loresMode ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
-    n = 4;
 
     for (int i = 0; i < PLANE_COUNT; i++)
     {

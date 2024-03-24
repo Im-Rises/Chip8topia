@@ -19,8 +19,6 @@ void SChipCPpu::scrollDown(uint8 n)
     const int height = isLoresMode ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
     uint8* videoMemory = isLoresMode ? m_loresVideoMemoryPlanes[PLANE_INDEX].data() : m_hiresVideoMemoryPlanes[PLANE_INDEX].data();
 
-    n = isLoresMode ? n / 2 : n;
-
     for (int row = height - n - 1; row >= 0; row--)
     {
         for (int col = 0; col < width; col++)
@@ -38,8 +36,6 @@ void SChipCPpu::scrollRight(uint8 n)
     const int height = isLoresMode ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
     uint8* videoMemory = isLoresMode ? m_loresVideoMemoryPlanes[PLANE_INDEX].data() : m_hiresVideoMemoryPlanes[PLANE_INDEX].data();
 
-    n = isLoresMode ? 2 : 4;
-
     for (int col = width - n - 1; col >= 0; col--)
     {
         for (int row = 0; row < height; row++)
@@ -56,8 +52,6 @@ void SChipCPpu::scrollLeft(uint8 n)
     const int width = isLoresMode ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
     const int height = isLoresMode ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
     uint8* videoMemory = isLoresMode ? m_loresVideoMemoryPlanes[PLANE_INDEX].data() : m_hiresVideoMemoryPlanes[PLANE_INDEX].data();
-
-    n = isLoresMode ? 2 : 4;
 
     for (int col = 0; col < width - n; col++)
     {

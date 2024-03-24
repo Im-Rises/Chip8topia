@@ -145,6 +145,16 @@ void XoChipCpu::computeOpcode(const uint16 opcode)
     }
 }
 
+void XoChipCpu::SCR(const uint8 n)
+{
+    CpuBase::SCR(4);
+}
+
+void XoChipCpu::SCL(const uint8 n)
+{
+    CpuBase::SCL(4);
+}
+
 void XoChipCpu::LORES()
 {
     m_ppu->clearScreen();

@@ -59,8 +59,9 @@ Major:
   fine)
 - [ ] Restarting a game when playing big xo-chip games will not reload the game from the start (we should reset memory
   and reload the game rom)
+- [ ] Correct disassembly Scroll opcode pixel move value not displayed for all consoles except Xo-Chip and Chip8
 
-Future:
+  Future:
 
 - [ ] Add audio
 - [ ] Add safe and unsafe code version (set the callback error in Core and Cpu, and Ppu, the call it on error) Create an

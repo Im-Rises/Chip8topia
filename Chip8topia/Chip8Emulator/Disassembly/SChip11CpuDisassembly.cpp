@@ -17,7 +17,7 @@ auto SChip11CpuDisassembly::disassembleOpcode(const uint16 opcode) -> std::strin
     {
         switch (nibble2)
         {
-        case 0xC: return fmt::format("SCD {:X}", nibble1); // 00CN
+        case 0xC: return fmt::format("SCD"); // 00CN
         case 0xE:
         {
             switch (nibble1)
@@ -31,11 +31,11 @@ auto SChip11CpuDisassembly::disassembleOpcode(const uint16 opcode) -> std::strin
         {
             switch (nibble1)
             {
-            case 0xB: return fmt::format("SCR {:X}", nibble1); // 00FB
-            case 0xC: return fmt::format("SCL {:X}", nibble1); // 00FC
-            case 0xD: return "EXIT";                           // 00FD
-            case 0xE: return "LORES";                          // 00FE
-            case 0xF: return "HIRES";                          // 00FF
+            case 0xB: return fmt::format("SCR"); // 00FB
+            case 0xC: return fmt::format("SCL"); // 00FC
+            case 0xD: return "EXIT";             // 00FD
+            case 0xE: return "LORES";            // 00FE
+            case 0xF: return "HIRES";            // 00FF
             }
             break;
         }

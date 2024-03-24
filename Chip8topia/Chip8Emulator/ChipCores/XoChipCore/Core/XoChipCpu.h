@@ -19,6 +19,8 @@ public:
 private:
     void computeOpcode(const uint16 opcode) final;
 
+    void SCR(const uint8 n) final;                                       // 00FB
+    void SCL(const uint8 n) final;                                       // 00FC
     void LORES() final;                                                  // 00FE
     void HIRES() final;                                                  // 00FF
     void SE_Vx_nn(const uint8 x, const uint8 nn) final;                  // 3xnn

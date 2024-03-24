@@ -32,11 +32,11 @@ auto XoChipCpuDisassembly::disassembleOpcode(const uint16 opcode) -> std::string
         {
             switch (nibble1)
             {
-            case 0xB: return fmt::format("SCR {:X}", nibble1); // 00FB
-            case 0xC: return fmt::format("SCL {:X}", nibble1); // 00FC
-            case 0xD: return "EXIT";                           // 00FD
-            case 0xE: return "LORES";                          // 00FE
-            case 0xF: return "HIRES";                          // 00FF
+            case 0xB: return fmt::format("SCR {:X}", 4); // 00FB
+            case 0xC: return fmt::format("SCL {:X}", 4); // 00FC
+            case 0xD: return "EXIT";                     // 00FD
+            case 0xE: return "LORES";                    // 00FE
+            case 0xF: return "HIRES";                    // 00FF
             }
             break;
         }
