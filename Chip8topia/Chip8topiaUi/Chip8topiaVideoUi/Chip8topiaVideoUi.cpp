@@ -44,11 +44,11 @@ void Chip8topiaVideoUi::drawPlanesColorEditor(Chip8Emulator& emulator)
         videoEmulation.resetToGrayscaleColors();
     }
 
-    ImGui::Selectable("BW", videoEmulation.getColorMode() == EmulationColorMode::BW);
-    if (ImGui::IsItemClicked())
-    {
-        videoEmulation.resetToBWColors();
-    }
+    //    ImGui::Selectable("BW", videoEmulation.getColorMode() == EmulationColorMode::BW);
+    //    if (ImGui::IsItemClicked())
+    //    {
+    //        videoEmulation.resetToBWColors();
+    //    }
 
     ImGui::Selectable("Color", videoEmulation.getColorMode() == EmulationColorMode::Color);
     if (ImGui::IsItemClicked())

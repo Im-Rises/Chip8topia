@@ -45,18 +45,20 @@ Chip8Emulator::~Chip8Emulator()
 
 void Chip8Emulator::resetColorPalette()
 {
-    switch (m_core->getType())
-    {
-    case Chip8CoreType::Chip8:
-    case Chip8CoreType::SChip11Legacy:
-    case Chip8CoreType::SChip11Modern:
-    case Chip8CoreType::SChipC:
-        m_videoEmulation.resetToBWColors();
-        break;
-    case Chip8CoreType::XoChip:
-        m_videoEmulation.resetToColorColors();
-        break;
-    }
+    //    switch (m_core->getType())
+    //    {
+    //    case Chip8CoreType::Chip8:
+    //    case Chip8CoreType::SChip11Legacy:
+    //    case Chip8CoreType::SChip11Modern:
+    //    case Chip8CoreType::SChipC:
+    //        m_videoEmulation.resetToBWColors();
+    //        break;
+    //    case Chip8CoreType::XoChip:
+    //        m_videoEmulation.resetToColorColors();
+    //        break;
+    //    }
+
+    m_videoEmulation.resetToColorColors();
 }
 
 void Chip8Emulator::restart()
@@ -66,6 +68,7 @@ void Chip8Emulator::restart()
     m_accumulator = 0.0F;
     // TODO: Restart is disabled for now, it causes issue on XoChip games
     //  Reload rom here !
+    Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger("Restart is disabled for now, it causes issue on XoChip games", nullptr);
     m_isRomLoaded = false;
 }
 

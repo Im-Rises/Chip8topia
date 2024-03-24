@@ -28,34 +28,33 @@ void Chip8VideoEmulation::resetToGrayscaleColors()
 
 void Chip8VideoEmulation::resetToColorColors()
 {
-    // TODO: Set colors for the Alien8 palette
-    m_colors[0] = ImVec4(0.0F, 0.0F, 0.0F, 1.0F);
-    m_colors[1] = ImVec4(0.0F, 0.0F, 0.5F, 1.0F);
-    m_colors[2] = ImVec4(0.0F, 0.5F, 0.0F, 1.0F);
-    m_colors[3] = ImVec4(0.0F, 0.5F, 0.5F, 1.0F);
-    m_colors[4] = ImVec4(0.5F, 0.0F, 0.0F, 1.0F);
-    m_colors[5] = ImVec4(0.5F, 0.0F, 0.5F, 1.0F);
-    m_colors[6] = ImVec4(0.5F, 0.5F, 0.0F, 1.0F);
-    m_colors[7] = ImVec4(0.5F, 0.5F, 0.5F, 1.0F);
-    m_colors[8] = ImVec4(0.0F, 0.0F, 1.0F, 1.0F);
-    m_colors[9] = ImVec4(0.0F, 1.0F, 0.0F, 1.0F);
-    m_colors[10] = ImVec4(0.0F, 1.0F, 1.0F, 1.0F);
-    m_colors[11] = ImVec4(1.0F, 0.0F, 0.0F, 1.0F);
-    m_colors[12] = ImVec4(1.0F, 0.0F, 1.0F, 1.0F);
-    m_colors[13] = ImVec4(1.0F, 1.0F, 0.0F, 1.0F);
-    m_colors[14] = ImVec4(1.0F, 1.0F, 1.0F, 1.0F);
-    m_colors[15] = ImVec4(0.0F, 0.0F, 0.0F, 1.0F);
+    m_colors[0] = ImVec4(0.000F, 0.000F, 0.000F, 1.0F);
+    m_colors[1] = ImVec4(1.000F, 1.000F, 1.000F, 1.0F);
+    m_colors[2] = ImVec4(0.667F, 0.667F, 0.667F, 1.0F);
+    m_colors[3] = ImVec4(0.333F, 0.333F, 0.333F, 1.0F);
+    m_colors[4] = ImVec4(1.000F, 0.000F, 0.000F, 1.0F);
+    m_colors[5] = ImVec4(0.000F, 1.000F, 0.000F, 1.0F);
+    m_colors[6] = ImVec4(0.000F, 0.000F, 1.000F, 1.0F);
+    m_colors[7] = ImVec4(1.000F, 1.000F, 0.000F, 1.0F);
+    m_colors[8] = ImVec4(0.533F, 0.000F, 0.000F, 1.0F);
+    m_colors[9] = ImVec4(0.000F, 0.533F, 0.000F, 1.0F);
+    m_colors[10] = ImVec4(0.000F, 0.000F, 0.533F, 1.0F);
+    m_colors[11] = ImVec4(0.533F, 0.533F, 0.000F, 1.0F);
+    m_colors[12] = ImVec4(1.000F, 0.000F, 1.000F, 1.0F);
+    m_colors[13] = ImVec4(0.000F, 1.000F, 1.000F, 1.0F);
+    m_colors[14] = ImVec4(0.533F, 0.000F, 0.533F, 1.0F);
+    m_colors[15] = ImVec4(0.000F, 0.533F, 0.533F, 1.0F);
 
     m_colorMode = EmulationColorMode::Color;
 }
 
-void Chip8VideoEmulation::resetToBWColors()
-{
-    m_colors[0] = { 0.3F, 0.3F, 0.3F, 1.0F };
-    m_colors[1] = { 0.8F, 0.8F, 0.8F, 1.0F };
-
-    m_colorMode = EmulationColorMode::BW;
-}
+// void Chip8VideoEmulation::resetToBWColors()
+//{
+//     m_colors[0] = { 0.3F, 0.3F, 0.3F, 1.0F };
+//     m_colors[1] = { 0.8F, 0.8F, 0.8F, 1.0F };
+//
+//     m_colorMode = EmulationColorMode::BW;
+// }
 
 void Chip8VideoEmulation::updateTexture(const std::unique_ptr<Chip8CoreBase>& core)
 {
