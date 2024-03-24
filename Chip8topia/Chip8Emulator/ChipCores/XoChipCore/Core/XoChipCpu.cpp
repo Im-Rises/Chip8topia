@@ -181,32 +181,30 @@ void XoChipCpu::SE_Vx_Vy(const uint8 x, const uint8 y)
     }
 }
 
-void XoChipCpu::SV_RNG_Vx_Vy(const uint8 x, const uint8 y)
+void XoChipCpu::SV_RNG_Vx_Vy(uint8 x, uint8 y)
 {
-    // TODO:Add a check if y is greater than x
-#ifdef BUILD_PARAM_SAFE
-    if (y < x)
+    if (x > y)
     {
-        throw std::runtime_error("y must be greater than x");
+        std::swap(x, y);
     }
-#endif
-    int range = y - x;
+
+    const int range = y - x;
+
     for (int i = 0; i <= range; i++)
     {
         m_memory[m_I + i] = m_V[x + i];
     }
 }
 
-void XoChipCpu::LD_RNG_Vx_Vy(const uint8 x, const uint8 y)
+void XoChipCpu::LD_RNG_Vx_Vy(uint8 x, uint8 y)
 {
-// TODO:Add a check if y is greater than x
-#ifdef BUILD_PARAM_SAFE
-    if (y < x)
+    if (x > y)
     {
-        throw std::runtime_error("y must be greater than x");
+        std::swap(x, y);
     }
-#endif
-    int range = y - x;
+
+    const int range = y - x;
+
     for (int i = 0; i <= range; i++)
     {
         m_V[x + i] = m_memory[m_I + i];

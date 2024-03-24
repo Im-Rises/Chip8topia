@@ -55,7 +55,8 @@ Screenshot of the differents debug tools here ?
 
 Major:
 
-- [ ] Correct the Xo-Chip games not working properly
+- [ ] Correct the Xo-Chip games not working properly 5think its the CPU that is not working properlym the Ppu should be
+  fine)
 - [ ] Restarting a game when playing big xo-chip games will not reload the game from the start (we should reset memory
   and reload the game rom)
 
@@ -72,6 +73,24 @@ Minor:
 - [ ] Add a background when no rom is loaded
 - [ ] Check which imgui window is very slow (probably the memory editor)
 - [ ] Correct the clean of the debug image plane (they are not cleared when changing game)
+
+## Controls
+
+### Original game controls
+
+| 1 | 2 | 3 | C |
+|---|---|---|---|
+| 4 | 5 | 6 | D |
+| 7 | 8 | 9 | E |
+| A | 0 | B | F |
+
+### Emulator game controls (QWERTY)
+
+| 1 | 2 | 3 | 4 |
+|---|---|---|---|
+| Q | W | E | R |
+| A | S | D | F |
+| Z | X | C | V |
 
 ## Documentation
 

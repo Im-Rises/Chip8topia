@@ -110,6 +110,7 @@ void CpuBase::SCL(const uint8 n)
 
 void CpuBase::EXIT()
 {
+    // TODO: Implement exit by restarting game ?
     m_pc -= 2;
 }
 

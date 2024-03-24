@@ -24,8 +24,8 @@ private:
     void SE_Vx_nn(const uint8 x, const uint8 nn) final;                  // 3xnn
     void SNE_Vx_nn(const uint8 x, const uint8 nn) final;                 // 4xnn
     void SE_Vx_Vy(const uint8 x, const uint8 y) final;                   // 5xy0
-    void SV_RNG_Vx_Vy(const uint8 x, const uint8 y);                     // 5xy2
-    void LD_RNG_Vx_Vy(const uint8 x, const uint8 y);                     // 5xy3
+    void SV_RNG_Vx_Vy(uint8 x, uint8 y);                                 // 5xy2
+    void LD_RNG_Vx_Vy(uint8 x, uint8 y);                                 // 5xy3
     void SNE_Vx_Vy(const uint8 x, const uint8 y) final;                  // 9xy0
     void DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) final; // Dxyn
     void SKP_Vx(const uint8 x) final;                                    // Ex9E
