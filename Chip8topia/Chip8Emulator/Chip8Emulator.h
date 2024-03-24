@@ -11,7 +11,7 @@ class Chip8Emulator
 {
 public:
     static constexpr auto CHIP8_ASPECT_RATIO = 2.0F;
-    static constexpr auto DEFAULT_CORE_TYPE = Chip8CoreType::Chip8;
+    static constexpr auto DEFAULT_CORE_TYPE = Chip8CoreType::XoChip;
     static constexpr auto DEFAULT_FREQUENCY = Chip8Frequency::Freq1200Hz;
 
 public:
