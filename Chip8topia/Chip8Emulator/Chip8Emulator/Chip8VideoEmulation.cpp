@@ -28,22 +28,22 @@ void Chip8VideoEmulation::resetToGrayscaleColors()
 
 void Chip8VideoEmulation::resetToColorColors()
 {
-    m_colors[0] = ImVec4(0.000F, 0.000F, 0.000F, 1.0F);
-    m_colors[1] = ImVec4(1.000F, 1.000F, 1.000F, 1.0F);
-    m_colors[2] = ImVec4(0.667F, 0.667F, 0.667F, 1.0F);
-    m_colors[3] = ImVec4(0.333F, 0.333F, 0.333F, 1.0F);
-    m_colors[4] = ImVec4(1.000F, 0.000F, 0.000F, 1.0F);
-    m_colors[5] = ImVec4(0.000F, 1.000F, 0.000F, 1.0F);
-    m_colors[6] = ImVec4(0.000F, 0.000F, 1.000F, 1.0F);
-    m_colors[7] = ImVec4(1.000F, 1.000F, 0.000F, 1.0F);
-    m_colors[8] = ImVec4(0.533F, 0.000F, 0.000F, 1.0F);
-    m_colors[9] = ImVec4(0.000F, 0.533F, 0.000F, 1.0F);
-    m_colors[10] = ImVec4(0.000F, 0.000F, 0.533F, 1.0F);
-    m_colors[11] = ImVec4(0.533F, 0.533F, 0.000F, 1.0F);
-    m_colors[12] = ImVec4(1.000F, 0.000F, 1.000F, 1.0F);
-    m_colors[13] = ImVec4(0.000F, 1.000F, 1.000F, 1.0F);
-    m_colors[14] = ImVec4(0.533F, 0.000F, 0.533F, 1.0F);
-    m_colors[15] = ImVec4(0.000F, 0.533F, 0.533F, 1.0F);
+    m_colors[0] = ImVec4(0.000F, 0.000F, 0.000F, 1.0F);  // 0x00, 0x00, 0x00
+    m_colors[1] = ImVec4(1.000F, 1.000F, 1.000F, 1.0F);  // 0xFF, 0xFF, 0xFF
+    m_colors[2] = ImVec4(0.667F, 0.667F, 0.667F, 1.0F);  // 0xAA, 0xAA, 0xAA
+    m_colors[3] = ImVec4(0.333F, 0.333F, 0.333F, 1.0F);  // 0x55, 0x55, 0x55
+    m_colors[4] = ImVec4(1.000F, 0.000F, 0.000F, 1.0F);  // 0xFF, 0x00, 0x00
+    m_colors[5] = ImVec4(0.000F, 1.000F, 0.000F, 1.0F);  // 0x00, 0xFF, 0x00
+    m_colors[6] = ImVec4(0.000F, 0.000F, 1.000F, 1.0F);  // 0x00, 0x00, 0xFF
+    m_colors[7] = ImVec4(1.000F, 1.000F, 0.000F, 1.0F);  // 0xFF, 0xFF, 0x00
+    m_colors[8] = ImVec4(0.533F, 0.000F, 0.000F, 1.0F);  // 0x88, 0x00, 0x00
+    m_colors[9] = ImVec4(0.000F, 0.533F, 0.000F, 1.0F);  // 0x00, 0x88, 0x00
+    m_colors[10] = ImVec4(0.000F, 0.000F, 0.533F, 1.0F); // 0x00, 0x00, 0x88
+    m_colors[11] = ImVec4(0.533F, 0.533F, 0.000F, 1.0F); // 0x88, 0x88, 0x00
+    m_colors[12] = ImVec4(1.000F, 0.000F, 1.000F, 1.0F); // 0xFF, 0x00, 0xFF
+    m_colors[13] = ImVec4(0.000F, 1.000F, 1.000F, 1.0F); // 0x00, 0xFF, 0xFF
+    m_colors[14] = ImVec4(0.533F, 0.000F, 0.533F, 1.0F); // 0x88, 0x00, 0x88
+    m_colors[15] = ImVec4(0.000F, 0.533F, 0.533F, 1.0F); // 0x00, 0x88, 0x88
 
     m_colorMode = EmulationColorMode::Color;
 }
