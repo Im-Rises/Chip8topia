@@ -248,7 +248,7 @@ void XoChipCpu::LD_I_NNNN()
 
 void XoChipCpu::SET_PLN(const uint8 x)
 {
-    m_ppu->setPlane(x & 0b11);
+    m_ppu->setPlane(x & 0b1111);
 }
 
 void XoChipCpu::LD_AUDIO_aI()

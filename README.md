@@ -50,7 +50,9 @@ Emulatated consoles:
 Major:
 
 - [ ] Correct the Xo-Chip games not working properly
-- [ ] Shader is working, but the game is never drawing in the four planes, why ???
+- [ ] Shader is working, but the game is never drawing in the four planes, why ??? It seems m_planeMask is only set to 3
+  (0b11) and never to 15 (0b1111) so the game is never drawn in the four planes so not using the colors for the rom
+  scrolling test and Alien-Inv8sion
 
 - [ ] Restarting a game when playing big xo-chip games will not reload the game from the start (we should reset memory
   and reload the game rom)
