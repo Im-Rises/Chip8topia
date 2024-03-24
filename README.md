@@ -55,13 +55,13 @@ Screenshot of the differents debug tools here ?
 
 Major:
 
-- [ ] Correct the Xo-Chip games not working properly 5think its the CPU that is not working properlym the Ppu should be
+- [-] Add performance monitoring with ImGui
+- [-] Correct the Xo-Chip games not working properly 5think its the CPU that is not working properlym the Ppu should be
   fine)
 - [ ] Restarting a game when playing big xo-chip games will not reload the game from the start (we should reset memory
   and reload the game rom)
-- [ ] Correct disassembly Scroll opcode pixel move value not displayed for all consoles except Xo-Chip and Chip8
 
-  Future:
+Future:
 
 - [ ] Add audio
 - [ ] Add safe and unsafe code version (set the callback error in Core and Cpu, and Ppu, the call it on error) Create an
@@ -70,6 +70,7 @@ Major:
 
 Minor:
 
+- [ ] Correct disassembly Scroll opcode pixel move value not displayed for all consoles except Xo-Chip and Chip8
 - [ ] Add a way to change the input keys
 - [ ] Add a background when no rom is loaded
 - [ ] Check which imgui window is very slow (probably the memory editor)
