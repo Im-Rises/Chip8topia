@@ -43,6 +43,7 @@ ShaderXoChip::~ShaderXoChip()
 
 void ShaderXoChip::reset()
 {
+    // TODO: Function not working...
     for (GLuint m_texture : m_textures)
     {
         glBindTexture(GL_TEXTURE_2D, m_texture);

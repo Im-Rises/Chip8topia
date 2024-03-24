@@ -41,19 +41,21 @@ Emulatated consoles:
 
 ## Screenshots
 
+Screenshot of the differents debug tools here ?
+
 | Invaders (Chip8)                                                                                                         | Car (SCHIP)                                                                                                         | T8NKS (Xo-Chip)                                                                                                       |                                                                                                                   
 |--------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
 | ![invaders-game-screenshot](https://github.com/Im-Rises/Chip8topia/assets/59691442/3e5a2078-2cf7-4929-94c2-ea42cea24efd) | ![car-game-screenshot](https://github.com/Im-Rises/Chip8topia/assets/59691442/13774fed-1ce4-4ab6-b73d-40aa374661a0) | ![t8nks-game-screenshot](https://github.com/Im-Rises/Chip8topia/assets/59691442/e4ab6b1f-e5a4-485f-a26b-dab63e20aff1) |
+
+| Alien Inv8sion | 
+|----------------|
+|                |
 
 ## TODO
 
 Major:
 
 - [ ] Correct the Xo-Chip games not working properly
-- [ ] Shader is working, but the game is never drawing in the four planes, why ??? It seems m_planeMask is only set to 3
-  (0b11) and never to 15 (0b1111) so the game is never drawn in the four planes so not using the colors for the rom
-  scrolling test and Alien-Inv8sion
-
 - [ ] Restarting a game when playing big xo-chip games will not reload the game from the start (we should reset memory
   and reload the game rom)
 
@@ -69,7 +71,7 @@ Minor:
 - [ ] Add a way to change the input keys
 - [ ] Add a background when no rom is loaded
 - [ ] Check which imgui window is very slow (probably the memory editor)
-- [ ] Correct the clean of the debug image plane (they are not cleard when changing game)
+- [ ] Correct the clean of the debug image plane (they are not cleared when changing game)
 
 ## Documentation
 
@@ -80,6 +82,7 @@ Minor:
 - [tobiasvl.github.io](https://tobiasvl.github.io/blog/write-a-chip-8-emulator/)
 - [johnearnest.github.io](http://johnearnest.github.io/Octo/docs/XO-ChipSpecification.html)
 - [Timendus/silicon8](https://github.com/Timendus/silicon8/tree/)
+- [johnearnest.github.io/chip8Archive](https://johnearnest.github.io/chip8Archive/?sort=platform)
 
 <!--
 ### Other resources
