@@ -22,10 +22,13 @@ void Chip8VideoEmulation::resetToGrayscaleColors()
         const float color = static_cast<float>(i) / static_cast<float>(m_colors.size());
         m_colors[i] = ImVec4(color, color, color, 1.0F);
     }
+
+    m_colorMode = EmulationColorMode::Grayscale;
 }
 
 void Chip8VideoEmulation::resetToColorColors()
 {
+    // TODO: Set colors for the Alien8 palette
     m_colors[0] = ImVec4(0.0F, 0.0F, 0.0F, 1.0F);
     m_colors[1] = ImVec4(0.0F, 0.0F, 0.5F, 1.0F);
     m_colors[2] = ImVec4(0.0F, 0.5F, 0.0F, 1.0F);
@@ -42,12 +45,16 @@ void Chip8VideoEmulation::resetToColorColors()
     m_colors[13] = ImVec4(1.0F, 1.0F, 0.0F, 1.0F);
     m_colors[14] = ImVec4(1.0F, 1.0F, 1.0F, 1.0F);
     m_colors[15] = ImVec4(0.0F, 0.0F, 0.0F, 1.0F);
+
+    m_colorMode = EmulationColorMode::Color;
 }
 
 void Chip8VideoEmulation::resetToBWColors()
 {
     m_colors[0] = { 0.3F, 0.3F, 0.3F, 1.0F };
     m_colors[1] = { 0.8F, 0.8F, 0.8F, 1.0F };
+
+    m_colorMode = EmulationColorMode::BW;
 }
 
 void Chip8VideoEmulation::updateTexture(const std::unique_ptr<Chip8CoreBase>& core)

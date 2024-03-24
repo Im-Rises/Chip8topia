@@ -54,7 +54,7 @@ void Chip8Emulator::resetColorPalette()
         m_videoEmulation.resetToBWColors();
         break;
     case Chip8CoreType::XoChip:
-        m_videoEmulation.resetToGrayscaleColors();
+        m_videoEmulation.resetToColorColors();
         break;
     }
 }

@@ -42,6 +42,8 @@ void Chip8topiaDebugger::drawRegisters(Chip8CoreBase* chip8)
     ImGui::SameLine();
     ImGui::Text("%s", chip8->getPpu()->getMode() == PpuBase::PpuMode::LORES ? "Low resolution" : "High resolution");
 
+    ImGui::NewLine();
+    
     ImGui::Text("Plane mask:");
     ImGui::SameLine();
     ImGui::InputScalar("##PlaneMask", ImGuiDataType_U8, &chip8->getPpu()->getPlaneMask(), nullptr, nullptr, "%02X", ImGuiInputTextFlags_CharsHexadecimal);

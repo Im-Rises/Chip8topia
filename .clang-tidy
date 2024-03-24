@@ -18,7 +18,10 @@ Checks: >
   -*redundant-access-specifiers,
   -*pro-bounds-constant-array-index,
   -*easily-swappable-parameters,
-  -*pro-bounds-pointer-arithmetic
+  -*pro-bounds-pointer-arithmetic,
+  -*pro-type-reinterpret-cast,
+  -*no-int-to-ptr,
+  -*pro-type-vararg
 #  -google-readability-namespace-comments,
 #  -google-runtime-int,
 #  -google-runtime-references,

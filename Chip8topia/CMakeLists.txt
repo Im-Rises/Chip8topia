@@ -62,7 +62,7 @@ else ()
     target_compile_definitions(${PROJECT_NAME} PRIVATE BUILD_RELEASE)
 endif ()
 
-if (FALSE)
+if (TRUE)
     target_compile_definitions(${PROJECT_NAME} PRIVATE BUILD_PARAM_SAFE)
     message("Building with safe parameter")
 else ()

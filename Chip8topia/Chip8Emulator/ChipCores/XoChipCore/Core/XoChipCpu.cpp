@@ -184,6 +184,12 @@ void XoChipCpu::SE_Vx_Vy(const uint8 x, const uint8 y)
 void XoChipCpu::SV_RNG_Vx_Vy(const uint8 x, const uint8 y)
 {
     // TODO:Add a check if y is greater than x
+#ifdef BUILD_PARAM_SAFE
+    if (y < x)
+    {
+        throw std::runtime_error("y must be greater than x");
+    }
+#endif
     int range = y - x;
     for (int i = 0; i <= range; i++)
     {
@@ -193,7 +199,13 @@ void XoChipCpu::SV_RNG_Vx_Vy(const uint8 x, const uint8 y)
 
 void XoChipCpu::LD_RNG_Vx_Vy(const uint8 x, const uint8 y)
 {
-    // TODO:Add a check if y is greater than x
+// TODO:Add a check if y is greater than x
+#ifdef BUILD_PARAM_SAFE
+    if (y < x)
+    {
+        throw std::runtime_error("y must be greater than x");
+    }
+#endif
     int range = y - x;
     for (int i = 0; i <= range; i++)
     {

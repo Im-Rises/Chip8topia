@@ -66,6 +66,9 @@ void Chip8topiaEmulationUi::drawEmulationSettings(Chip8topia* chip8topia)
     ImGui::Text("Current core: %s", emulator.getConsoleName().c_str());
     ImGui::Text("Current frequency: %uHZ", static_cast<unsigned int>(emulator.getFrequency()));
 
+    ImGui::NewLine();
+    ImGui::Separator();
+
     ImGui::TextColored(ImVec4(1.0F, 1.0F, 0.0F, 1.0F), "Console version");
 
     if (ImGui::Selectable("Chip8", m_selectedCore == Chip8CoreType::Chip8))
@@ -89,6 +92,7 @@ void Chip8topiaEmulationUi::drawEmulationSettings(Chip8topia* chip8topia)
         m_selectedCore = Chip8CoreType::XoChip;
     }
 
+    ImGui::NewLine();
     ImGui::Separator();
 
     ImGui::TextColored(ImVec4(1.0F, 1.0F, 0.0F, 1.0F), "Emulation Speed");
@@ -107,6 +111,7 @@ void Chip8topiaEmulationUi::drawEmulationSettings(Chip8topia* chip8topia)
         m_selectedFrequency = Chip8Frequency::Freq1800Hz;
     }
 
+    ImGui::NewLine();
     ImGui::Separator();
     if (ImGui::Button("Apply"))
     {
