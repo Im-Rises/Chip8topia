@@ -50,6 +50,8 @@ Emulatated consoles:
 Major:
 
 - [ ] Correct the Xo-Chip games not working properly
+- [ ] Shader is working, but the game is never drawing in the four planes, why ???
+
 - [ ] Restarting a game when playing big xo-chip games will not reload the game from the start (we should reset memory
   and reload the game rom)
 
