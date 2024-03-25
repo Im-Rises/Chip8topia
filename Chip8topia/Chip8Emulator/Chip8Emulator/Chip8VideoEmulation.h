@@ -14,7 +14,6 @@
 enum class EmulationColorMode : uint8
 {
     Grayscale,
-    //    BW,
     Color
 };
 
@@ -33,7 +32,6 @@ public:
     void reset();
     void resetToGrayscaleColors();
     void resetToColorColors();
-    //    void resetToBWColors();
     void updateTexture(const std::unique_ptr<Chip8CoreBase>& core);
     void update(const std::unique_ptr<Chip8CoreBase>& core, const float screenWidth, const float screenHeight, const float chip8AspectRatio);
 

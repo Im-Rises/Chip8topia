@@ -48,35 +48,21 @@ void Chip8VideoEmulation::resetToColorColors()
     m_colorMode = EmulationColorMode::Color;
 }
 
-// void Chip8VideoEmulation::resetToBWColors()
-//{
-//     m_colors[0] = { 0.3F, 0.3F, 0.3F, 1.0F };
-//     m_colors[1] = { 0.8F, 0.8F, 0.8F, 1.0F };
-//
-//     m_colorMode = EmulationColorMode::BW;
-// }
-
 void Chip8VideoEmulation::updateTexture(const std::unique_ptr<Chip8CoreBase>& core)
 {
-    const int planeMask = core->getPpu()->getPlaneMask();
+    // TODO: Could be optimized by only updating the plane that changed, but this might cause issue if we change two time the plane mask in the same frame
     if (core->getPpu()->getMode() == PpuBase::PpuMode::LORES)
     {
         for (int i = 0; i < PpuBase::PLANE_COUNT; i++)
         {
-            //            if (getBit(planeMask, i))
-            //            {
             m_shaderXoChipLores.updateTexture(core->getPpu()->getLoresVideoMemory(i).data(), i);
-            //            }
         }
     }
     else
     {
         for (int i = 0; i < PpuBase::PLANE_COUNT; i++)
         {
-            //            if (getBit(planeMask, i))
-            //            {
             m_shaderXoChipHires.updateTexture(core->getPpu()->getHiresVideoMemory(i).data(), i);
-            //            }
         }
     }
 }
