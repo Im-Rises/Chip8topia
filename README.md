@@ -55,9 +55,11 @@ Screenshot of the differents debug tools here ?
 
 Major:
 
-- [-] Add performance monitoring with ImGui
+- [ ] Correct the draw issue when in break step by step mode drawing is working better than in normal run mode wtf???
 - [-] Correct the Xo-Chip games not working properly 5think its the CPU that is not working properlym the Ppu should be
   fine)
+- [-] Add performance monitoring with ImGui (with floating window transparent in and no button at the top left corner.
+  Make it not visible when in Release mdoe and togglable in debug mode)
 - [ ] Restarting a game when playing big xo-chip games will not reload the game from the start (we should reset memory
   and reload the game rom)
 
@@ -74,7 +76,6 @@ Minor:
 - [ ] Add a way to change the input keys
 - [ ] Add a background when no rom is loaded
 - [ ] Check which imgui window is very slow (probably the memory editor)
-- [ ] Correct the clean of the debug image plane (they are not cleared when changing game)
 
 ## Controls
 

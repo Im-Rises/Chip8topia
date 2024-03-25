@@ -8,6 +8,13 @@
 class Chip8Emulator;
 class Chip8topiaVideoUi
 {
+private:
+#if defined(BUILD_RELEASE)
+    static constexpr auto INITIAL_WINDOW_STATE = false;
+#else
+    static constexpr auto INITIAL_WINDOW_STATE = true;
+#endif
+
 public:
     Chip8topiaVideoUi() = default;
     Chip8topiaVideoUi(const Chip8topiaVideoUi&) = delete;
@@ -27,9 +34,9 @@ private:
 
 private:
     std::array<ImGuiMenuItemWindow<Chip8Emulator>, 2> m_menuItem = {
-        ImGuiMenuItemWindow<Chip8Emulator>(ICON_FA_PALETTE " Planes color", false, [this](Chip8Emulator* chip8Emulator)
+        ImGuiMenuItemWindow<Chip8Emulator>(ICON_FA_PALETTE " Planes color", INITIAL_WINDOW_STATE, [this](Chip8Emulator* chip8Emulator)
             { drawPlanesColorEditor(*chip8Emulator); }),
-        ImGuiMenuItemWindow<Chip8Emulator>(ICON_FA_WINDOW_RESTORE " Planes", false, [this](Chip8Emulator* chip8Emulator)
+        ImGuiMenuItemWindow<Chip8Emulator>(ICON_FA_WINDOW_RESTORE " Planes", INITIAL_WINDOW_STATE, [this](Chip8Emulator* chip8Emulator)
             { drawPlanes(*chip8Emulator); }),
     };
 };

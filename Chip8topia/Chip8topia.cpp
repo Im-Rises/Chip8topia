@@ -48,7 +48,6 @@ auto Chip8topia::run() -> int
     auto currentTime = lastTime;
     float deltaTime = 0.0F;
 
-    //    float frameCounter = 0.0F;
     float elapsedTimeAccumulator = 0.0F;
 
     m_chip8Emulator = std::make_unique<Chip8Emulator>();
@@ -73,15 +72,9 @@ auto Chip8topia::run() -> int
         handleGameUpdate(deltaTime);
         handleScreenUpdate();
 
-        //        frameCounter++;
         elapsedTimeAccumulator += deltaTime;
         if (elapsedTimeAccumulator >= 1.0F)
         {
-#ifndef __EMSCRIPTEN__
-            // TODO: Display FPS in the title ? Is it the correct way to do it ? Should I use ImGui to draw and the real calcualted for logic.
-            //             setWindowTitle(frameCounter / elapsedTimeAccumulator);
-#endif
-            //            frameCounter = 0;
             elapsedTimeAccumulator = 0.0F;
         }
     }
@@ -276,7 +269,7 @@ void Chip8topia::handleUi(const float /*deltaTime*/)
 {
     ImGuiIO& io = ImGui::GetIO();
     setWindowTitle(io.Framerate);
-    
+
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();

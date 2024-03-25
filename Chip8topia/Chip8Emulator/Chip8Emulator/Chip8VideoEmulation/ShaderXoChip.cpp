@@ -43,16 +43,15 @@ ShaderXoChip::~ShaderXoChip()
 
 void ShaderXoChip::reset()
 {
-    // TODO: Function not working...
-    for (GLuint m_texture : m_textures)
+    // TODO: Improve this clean function
+    std::vector<uint8> data(WIDTH * HEIGHT, 0);
+    for (int i = 0; i < XoChipPpu::PLANE_COUNT; ++i)
     {
-        glBindTexture(GL_TEXTURE_2D, m_texture);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, WIDTH, HEIGHT, 0, GL_RED, GL_UNSIGNED_BYTE, nullptr);
+        glBindTexture(GL_TEXTURE_2D, m_textures[i]);
+        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, WIDTH, HEIGHT, GL_RED, GL_UNSIGNED_BYTE, data.data());
     }
 
     glBindTexture(GL_TEXTURE_2D, 0);
-
-    m_shader.use();
 }
 
 void ShaderXoChip::updateTexture(const uint8* videoMemory, const uint8 planeIndex)
