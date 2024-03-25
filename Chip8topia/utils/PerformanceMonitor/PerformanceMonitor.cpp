@@ -38,32 +38,32 @@ void PerformanceMonitor::update()
 
 auto PerformanceMonitor::getTotalVirtualMemory() const -> DWORDLONG
 {
-    return m_memInfo.ullTotalPageFile;
+    return m_memInfo.ullTotalPageFile / RAM_MB_FACTOR;
 }
 
 auto PerformanceMonitor::getVirtualMemoryUsed() const -> DWORDLONG
 {
-    return m_memInfo.ullTotalPageFile - m_memInfo.ullAvailPageFile;
+    return (m_memInfo.ullTotalPageFile - m_memInfo.ullAvailPageFile) / RAM_MB_FACTOR;
 }
 
 auto PerformanceMonitor::getVirtualMemoryUsedByCurrentProcess() const -> SIZE_T
 {
-    return m_pmc.PrivateUsage;
+    return m_pmc.PrivateUsage / RAM_MB_FACTOR;
 }
 
 auto PerformanceMonitor::getTotalPhysicalMemory() const -> DWORDLONG
 {
-    return m_memInfo.ullTotalPhys;
+    return m_memInfo.ullTotalPhys / RAM_MB_FACTOR;
 }
 
 auto PerformanceMonitor::getPhysicalMemoryUsed() const -> DWORDLONG
 {
-    return m_memInfo.ullTotalPhys - m_memInfo.ullAvailPhys;
+    return (m_memInfo.ullTotalPhys - m_memInfo.ullAvailPhys) / RAM_MB_FACTOR;
 }
 
 auto PerformanceMonitor::getPhysicalMemoryUsedByCurrentProcess() const -> SIZE_T
 {
-    return m_pmc.WorkingSetSize;
+    return m_pmc.WorkingSetSize / RAM_MB_FACTOR;
 }
 
 auto PerformanceMonitor::getCpuUsed() -> float

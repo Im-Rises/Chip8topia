@@ -11,6 +11,8 @@
 
 class PerformanceMonitor
 {
+    static constexpr float RAM_MB_FACTOR = 1024.0F * 1024.0F;
+
 public:
     PerformanceMonitor();
     PerformanceMonitor(const PerformanceMonitor&) = delete;
@@ -46,4 +48,6 @@ private:
     ULARGE_INTEGER m_lastCPU, m_lastSysCPU, m_lastUserCPU;
     int m_numProcessors;
     HANDLE m_self;
+
+    // TODO: Add error handling everywhere
 };
