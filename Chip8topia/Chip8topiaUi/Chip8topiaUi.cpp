@@ -54,7 +54,11 @@ void Chip8topiaUi::drawMainMenuBar(Chip8topia& chip8topia)
     m_chip8topiaEmulationUi.drawEmulationWindows(chip8topia);
     m_chip8topiaAbout.drawAboutWindows();
     m_chip8topiaError.showMessages();
-    m_chip8topiaPerformanceMonitor.drawWindow();
+
+    if (m_showPerformanceMonitor)
+    {
+        m_chip8topiaPerformanceMonitor.drawWindow();
+    }
 
 #if defined(BUILD_DEBUG)
     if (m_showDemo)
@@ -102,7 +106,6 @@ void Chip8topiaUi::closeAllWindows()
     m_chip8topiatopiaDebugger.closeAllWindows();
     m_chip8topiaRomLoaderUi.closeAllWindows();
     m_chip8topiaEmulationUi.closeAllWindows();
-    //    m_chip8topiaAbout.closeAboutWindows();
 
 #if defined(BUILD_DEBUG)
     m_showDemo = false;

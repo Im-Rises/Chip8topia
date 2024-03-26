@@ -32,13 +32,13 @@ void Chip8topiaPerformanceMonitor::drawWindow()
 
     // TODO: Add color to the text (red when bad, yellow when warning, green when good), use a lerp function
 
-    //    ImGui::Text("Total Virtual Memory: %0.f", m_performanceMonitor.getTotalVirtualMemory());
-    //    ImGui::Text("Virtual Memory Used: %0.f", m_performanceMonitor.getVirtualMemoryUsed());
-    //    ImGui::Text("Virtual Memory Used by process: %0.f", m_performanceMonitor.getVirtualMemoryUsedByCurrentProcess());
+    ImGui::Text("FPS: %0.f", ImGui::GetIO().Framerate);
+    ImGui::SameLine();
+    ImGui::Text("DeltaTime: %0.3f", ImGui::GetIO().DeltaTime);
 
-    ImGui::Text("Total Physical Memory: %0.f", m_performanceMonitor.getTotalPhysicalMemory());
-    ImGui::Text("Physical Memory Used: %0.f", m_performanceMonitor.getPhysicalMemoryUsed());
-    ImGui::Text("Physical Memory Used by process: %0.f", m_performanceMonitor.getPhysicalMemoryUsedByCurrentProcess());
+    ImGui::Text("RAM: %0.f", m_performanceMonitor.getTotalPhysicalMemory());
+    ImGui::Text("RAM Used: %0.f", m_performanceMonitor.getPhysicalMemoryUsed());
+    ImGui::Text("RAM Using: %0.f", m_performanceMonitor.getPhysicalMemoryUsedByCurrentProcess());
 
     ImGui::Text("CPU Usage: %f", m_performanceMonitor.getCpuUsed());
     ImGui::Text("CPU Usage by process: %f", m_performanceMonitor.getCpuUsedByCurrentProcess());

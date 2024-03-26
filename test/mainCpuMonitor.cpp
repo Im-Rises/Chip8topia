@@ -51,19 +51,24 @@ int main()
     double startCPUTime = getCPUTime();
     time_t startTime = time(nullptr);
 
-    // Do some CPU intensive work here
-    for (int i = 0; i < 1000000000; ++i)
+    while (true)
     {
-        // Some dummy computation
-        int x = i * i;
+        // Do some CPU intensive work here
+        for (int i = 0; i < 1000000000; ++i)
+        {
+            // Some dummy computation
+            int x = i * i;
+        }
+
+        double endCPUTime = getCPUTime();
+        time_t endTime = time(nullptr);
+
+        int numLogicalCores = getNumLogicalCores();
+        double cpuUsage = (endCPUTime - startCPUTime) / numLogicalCores / difftime(endTime, startTime) * 100;
+        //        double cpuUsage = (endCPUTime - startCPUTime) / 1 / difftime(endTime, startTime) * 100;
+        cout << "CPU Usage: " << cpuUsage << "%" << endl;
+        startCPUTime = endCPUTime;
+        startTime = endTime;
     }
-
-    double endCPUTime = getCPUTime();
-    time_t endTime = time(nullptr);
-
-    int numLogicalCores = getNumLogicalCores();
-    double cpuUsage = (endCPUTime - startCPUTime) / numLogicalCores / difftime(endTime, startTime) * 100;
-    cout << "CPU Usage: " << cpuUsage << "%" << endl;
-
     return 0;
 }

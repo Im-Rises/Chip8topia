@@ -4,6 +4,27 @@
 // https://stackoverflow.com/questions/63166/how-to-determine-cpu-and-memory-consumption-from-inside-a-process
 // https://stackoverflow.com/questions/8501706/how-to-get-the-cpu-usage-in-c
 
+/*
+ *                                   | Windows | Linux
+ * - Total Virtual Memory            | Yes     | No
+ * - Virtual Memory Used             | Yes     | No
+ * - Virtual Memory Used by process  | Yes     | No
+ * - Total Physical Memory           | Yes     | Yes
+ * - Physical Memory Used            | Yes     | Yes
+ * - Physical Memory Used by process | Yes     | Yes
+ * - CPU Usage                       | No      | No
+ * - CPU Usage by process            | No      | No
+ * */
+
+#ifdef _WIN32 // Windows platform
+#include <windows.h>
+#include <iostream>
+#else // Linux platform
+#include <unistd.h>
+#include <ctime>
+#include <iostream>
+#endif
+
 #if defined(PLATFORM_WINDOWS)
 #include <cstdio>
 #include <windows.h>
@@ -59,4 +80,64 @@ private:
 #elif defined(PLATFORM_LINUX)
     struct sysinfo m_info;
 #endif
+
+#ifdef _WIN32
+    double getFileTimeAsDouble(const FILETIME& ft)
+    {
+        LARGE_INTEGER li;
+        li.LowPart = ft.dwLowDateTime;
+        li.HighPart = ft.dwHighDateTime;
+        return li.QuadPart / static_cast<double>(10000000); // Convert 100-nanosecond intervals to seconds
+    }
+
+    double getCPUTime()
+    {
+        FILETIME createTime, exitTime, kernelTime, userTime;
+        GetProcessTimes(GetCurrentProcess(), &createTime, &exitTime, &kernelTime, &userTime);
+        double kernelTimeInSeconds = getFileTimeAsDouble(kernelTime);
+        double userTimeInSeconds = getFileTimeAsDouble(userTime);
+        return kernelTimeInSeconds + userTimeInSeconds;
+    }
+
+    int getNumLogicalCores()
+    {
+        SYSTEM_INFO sysinfo;
+        GetSystemInfo(&sysinfo);
+        return sysinfo.dwNumberOfProcessors;
+    }
+#else
+    double getCPUTime()
+    {
+        clock_t t = clock();
+        return ((double)t) / CLOCKS_PER_SEC;
+    }
+
+    int getNumLogicalCores()
+    {
+        return sysconf(_SC_NPROCESSORS_ONLN);
+    }
+#endif
+
+    double startCPUTime = getCPUTime();
+    time_t startTime = time(nullptr);
+
+public:
+    double getCpuTest()
+    {
+        double endCPUTime = getCPUTime();
+        time_t endTime = time(nullptr);
+
+        if (endTime - startTime < 1)
+        {
+            return -1.0F;
+        }
+
+        int numLogicalCores = getNumLogicalCores();
+        double cpuUsage = (endCPUTime - startCPUTime) / numLogicalCores / difftime(endTime, startTime) * 100;
+        startCPUTime = endCPUTime;
+        startTime = endTime;
+
+        std::cout << "CPU Usage: " << cpuUsage << "%" << std::endl;
+        return cpuUsage;
+    }
 };

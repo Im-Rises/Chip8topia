@@ -10,3 +10,5 @@ project("Chip8topia" VERSION ${CHIP8TOPIA_VERSION})
 add_subdirectory(${PROJECT_NAME})
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE CHIP8TOPIA_VERSION="${CHIP8TOPIA_VERSION}")
+
+add_subdirectory("test")

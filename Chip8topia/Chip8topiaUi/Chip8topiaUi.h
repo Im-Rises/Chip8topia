@@ -44,7 +44,7 @@ private:
     Chip8topiaPerformanceMonitor m_chip8topiaPerformanceMonitor;
 
     bool m_isMenuBarOpen = true;
-
+    bool m_showPerformanceMonitor = true;
 #if defined(BUILD_DEBUG)
     bool m_showDemo = true;
 #endif
