@@ -1,5 +1,6 @@
 #include "PerformanceMonitor.h"
 
+#if defined(PLATFORM_WINDOWS)
 PerformanceMonitor::PerformanceMonitor() : m_memInfo(), m_pmc()
 {
     // RAM (virtual memory) usage
@@ -36,32 +37,32 @@ void PerformanceMonitor::update()
     GetProcessMemoryInfo(GetCurrentProcess(), (PROCESS_MEMORY_COUNTERS*)&m_pmc, sizeof(m_pmc));
 }
 
-auto PerformanceMonitor::getTotalVirtualMemory() const -> DWORDLONG
+auto PerformanceMonitor::getTotalVirtualMemory() const -> float
 {
     return m_memInfo.ullTotalPageFile / RAM_MB_FACTOR;
 }
 
-auto PerformanceMonitor::getVirtualMemoryUsed() const -> DWORDLONG
+auto PerformanceMonitor::getVirtualMemoryUsed() const -> float
 {
     return (m_memInfo.ullTotalPageFile - m_memInfo.ullAvailPageFile) / RAM_MB_FACTOR;
 }
 
-auto PerformanceMonitor::getVirtualMemoryUsedByCurrentProcess() const -> SIZE_T
+auto PerformanceMonitor::getVirtualMemoryUsedByCurrentProcess() const -> float
 {
     return m_pmc.PrivateUsage / RAM_MB_FACTOR;
 }
 
-auto PerformanceMonitor::getTotalPhysicalMemory() const -> DWORDLONG
+auto PerformanceMonitor::getTotalPhysicalMemory() const -> float
 {
     return m_memInfo.ullTotalPhys / RAM_MB_FACTOR;
 }
 
-auto PerformanceMonitor::getPhysicalMemoryUsed() const -> DWORDLONG
+auto PerformanceMonitor::getPhysicalMemoryUsed() const -> float
 {
     return (m_memInfo.ullTotalPhys - m_memInfo.ullAvailPhys) / RAM_MB_FACTOR;
 }
 
-auto PerformanceMonitor::getPhysicalMemoryUsedByCurrentProcess() const -> SIZE_T
+auto PerformanceMonitor::getPhysicalMemoryUsedByCurrentProcess() const -> float
 {
     return m_pmc.WorkingSetSize / RAM_MB_FACTOR;
 }
@@ -98,3 +99,58 @@ auto PerformanceMonitor::getCpuUsedByCurrentProcess() -> float
 
     return percent * 100;
 }
+#elif defined(PLATFORM_LINUX)
+PerformanceMonitor::PerformanceMonitor() : m_memInfo(), m_pmc()
+{
+}
+
+PerformanceMonitor::~PerformanceMonitor()
+{
+}
+
+void PerformanceMonitor::update()
+{
+    // RAM
+    sysinfo(&m_info);
+}
+
+auto PerformanceMonitor::getTotalVirtualMemory() const -> float
+{
+    return -1.0F;
+}
+
+auto PerformanceMonitor::getVirtualMemoryUsed() const -> float
+{
+    return -1.0F;
+}
+
+auto PerformanceMonitor::getVirtualMemoryUsedByCurrentProcess() const -> float
+{
+    return -1.0F;
+}
+
+auto PerformanceMonitor::getTotalPhysicalMemory() const -> float
+{
+    return m_info.totalram / RAM_MB_FACTOR;
+}
+
+auto PerformanceMonitor::getPhysicalMemoryUsed() const -> float
+{
+    return (m_info.totalram - m_info.freeram) / RAM_MB_FACTOR;
+}
+
+auto PerformanceMonitor::getPhysicalMemoryUsedByCurrentProcess() const -> float
+{
+    return m_info.totalram / RAM_MB_FACTOR;
+}
+
+auto PerformanceMonitor::getCpuUsed() -> float
+{
+    return -1.0F;
+}
+
+auto PerformanceMonitor::getCpuUsedByCurrentProcess() -> float
+{
+    return -1.0F;
+}
+#endif

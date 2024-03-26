@@ -1,13 +1,20 @@
 #pragma once
 
-// https://stackoverflow.com/questions/63166/how-to-determine-cpu-and-memory-consumption-from-inside-a-process
 // https://learn.microsoft.com/en-us/windows/win32/psapi/collecting-memory-usage-information-for-a-process
+// https://stackoverflow.com/questions/63166/how-to-determine-cpu-and-memory-consumption-from-inside-a-process
+// https://stackoverflow.com/questions/8501706/how-to-get-the-cpu-usage-in-c
 
+#if defined(PLATFORM_WINDOWS)
 #include <cstdio>
 #include <windows.h>
 #include <psapi.h>
 #include <Pdh.h>
 #include <TCHAR.h>
+#elif defined(PLATFORM_LINUX)
+#include <sys/sysinfo.h>
+#endif
+
+// TODO: Add error handling everywhere
 
 class PerformanceMonitor
 {
@@ -24,18 +31,19 @@ public:
 public:
     void update();
 
-    [[nodiscard]] auto getTotalVirtualMemory() const -> DWORDLONG;
-    [[nodiscard]] auto getVirtualMemoryUsed() const -> DWORDLONG;
-    [[nodiscard]] auto getVirtualMemoryUsedByCurrentProcess() const -> SIZE_T;
+    [[nodiscard]] auto getTotalVirtualMemory() const -> float;
+    [[nodiscard]] auto getVirtualMemoryUsed() const -> float;
+    [[nodiscard]] auto getVirtualMemoryUsedByCurrentProcess() const -> float;
 
-    [[nodiscard]] auto getTotalPhysicalMemory() const -> DWORDLONG;
-    [[nodiscard]] auto getPhysicalMemoryUsed() const -> DWORDLONG;
-    [[nodiscard]] auto getPhysicalMemoryUsedByCurrentProcess() const -> SIZE_T;
+    [[nodiscard]] auto getTotalPhysicalMemory() const -> float;
+    [[nodiscard]] auto getPhysicalMemoryUsed() const -> float;
+    [[nodiscard]] auto getPhysicalMemoryUsedByCurrentProcess() const -> float;
 
     [[nodiscard]] auto getCpuUsed() -> float;
     [[nodiscard]] auto getCpuUsedByCurrentProcess() -> float;
 
 private:
+#if defined(PLATFORM_WINDOWS)
     // RAM (virtual memory) usage
     MEMORYSTATUSEX m_memInfo;
     // RAM (physical memory) usage
@@ -48,6 +56,7 @@ private:
     ULARGE_INTEGER m_lastCPU, m_lastSysCPU, m_lastUserCPU;
     int m_numProcessors;
     HANDLE m_self;
-
-    // TODO: Add error handling everywhere
+#elif defined(PLATFORM_LINUX)
+    struct sysinfo m_info;
+#endif
 };

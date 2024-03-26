@@ -29,13 +29,15 @@ void Chip8topiaPerformanceMonitor::drawWindow()
     ImGui::Text("APPLE");
 #endif
 
-    ImGui::Text("Total Virtual Memory: %llu", m_performanceMonitor.getTotalVirtualMemory());
-    ImGui::Text("Virtual Memory Used: %llu", m_performanceMonitor.getVirtualMemoryUsed());
-    ImGui::Text("Virtual Memory Used by process: %zu", m_performanceMonitor.getVirtualMemoryUsedByCurrentProcess());
+    // TODO: Add color to the text (red when bad, yellow when warning, green when good)
 
-    ImGui::Text("Total Physical Memory: %llu", m_performanceMonitor.getTotalPhysicalMemory());
-    ImGui::Text("Physical Memory Used: %llu", m_performanceMonitor.getPhysicalMemoryUsed());
-    ImGui::Text("Physical Memory Used by process: %zu", m_performanceMonitor.getPhysicalMemoryUsedByCurrentProcess());
+    //    ImGui::Text("Total Virtual Memory: %0.f", m_performanceMonitor.getTotalVirtualMemory());
+    //    ImGui::Text("Virtual Memory Used: %0.f", m_performanceMonitor.getVirtualMemoryUsed());
+    //    ImGui::Text("Virtual Memory Used by process: %0.f", m_performanceMonitor.getVirtualMemoryUsedByCurrentProcess());
+
+    ImGui::Text("Total Physical Memory: %0.f", m_performanceMonitor.getTotalPhysicalMemory());
+    ImGui::Text("Physical Memory Used: %0.f", m_performanceMonitor.getPhysicalMemoryUsed());
+    ImGui::Text("Physical Memory Used by process: %0.f", m_performanceMonitor.getPhysicalMemoryUsedByCurrentProcess());
 
     ImGui::Text("CPU Usage: %f", m_performanceMonitor.getCpuUsed());
     ImGui::Text("CPU Usage by process: %f", m_performanceMonitor.getCpuUsedByCurrentProcess());
