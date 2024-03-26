@@ -1,6 +1,7 @@
 #include "Chip8topiaPerformanceMonitor.h"
 
 #include <imgui.h>
+#include <GLFW/glfw3.h>
 
 void Chip8topiaPerformanceMonitor::drawWindow()
 {
@@ -29,7 +30,7 @@ void Chip8topiaPerformanceMonitor::drawWindow()
     ImGui::Text("APPLE");
 #endif
 
-    // TODO: Add color to the text (red when bad, yellow when warning, green when good)
+    // TODO: Add color to the text (red when bad, yellow when warning, green when good), use a lerp function
 
     //    ImGui::Text("Total Virtual Memory: %0.f", m_performanceMonitor.getTotalVirtualMemory());
     //    ImGui::Text("Virtual Memory Used: %0.f", m_performanceMonitor.getVirtualMemoryUsed());
@@ -44,4 +45,16 @@ void Chip8topiaPerformanceMonitor::drawWindow()
 
     ImGui::End();
     ImGui::PopStyleColor();
+
+    // Get glfw window position
+    int x, y;
+    glfwGetWindowPos(glfwGetCurrentContext(), &x, &y);
+
+    // TODO: Chenge y position if Main Menu is open or not
+    //  Set position to the top left corner of the glfw window
+    ImGui::SetNextWindowPos(ImVec2(x + 20, y + 20));
+    ImGui::SetNextWindowBgAlpha(0.35F);
+    ImGui::Begin("tefdsfdfdsq", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
+    ImGui::Text("tefdsfdfdsq");
+    ImGui::End();
 }
