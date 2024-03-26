@@ -1,9 +1,10 @@
 #include "Chip8topiaPerformanceMonitor.h"
 
-#include <imgui.h>
-#include <GLFW/glfw3.h>
+#include "../Chip8topia.h"
 
-void Chip8topiaPerformanceMonitor::drawWindow()
+#include <imgui.h>
+
+void Chip8topiaPerformanceMonitor::drawWindow(Chip8topia& chip8topia, bool isMainBarOpen)
 {
     m_performanceMonitor.update();
 
@@ -47,12 +48,18 @@ void Chip8topiaPerformanceMonitor::drawWindow()
     ImGui::PopStyleColor();
 
     // Get glfw window position
-    int x, y;
-    glfwGetWindowPos(glfwGetCurrentContext(), &x, &y);
+    std::pair<int, int> windowPosition = chip8topia.getWindowPosition();
 
-    // TODO: Chenge y position if Main Menu is open or not
+    // TODO: Change y position if Main Menu is open or not
     //  Set position to the top left corner of the glfw window
-    ImGui::SetNextWindowPos(ImVec2(x + 20, y + 20));
+    if (isMainBarOpen)
+    {
+        ImGui::SetNextWindowPos(ImVec2(windowPosition.first + 20, windowPosition.second + 20 + 20));
+    }
+    else
+    {
+        ImGui::SetNextWindowPos(ImVec2(windowPosition.first + 20, windowPosition.second + 20));
+    }
     ImGui::SetNextWindowBgAlpha(0.35F);
     ImGui::Begin("tefdsfdfdsq", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
     ImGui::Text("tefdsfdfdsq");

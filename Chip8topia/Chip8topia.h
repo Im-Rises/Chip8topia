@@ -75,10 +75,11 @@ public:
     [[nodiscard]] auto getChip8Emulator() -> Chip8Emulator&;
     [[nodiscard]] auto getIsTurboMode() const -> bool;
 
+    [[nodiscard]] auto getWindowPosition() const -> std::pair<int, int>;
     [[nodiscard]] auto getWindowDimensions() const -> std::pair<int, int>;
     [[nodiscard]] auto getWindowWidth() const -> int;
     [[nodiscard]] auto getWindowHeight() const -> int;
-    //    [[nodiscard]] auto getWindowMinimized() const -> bool;
+    [[nodiscard]] auto getWindowMinimized() const -> bool;
 
 private:
     static auto getOpenGLVendor() -> std::string_view;

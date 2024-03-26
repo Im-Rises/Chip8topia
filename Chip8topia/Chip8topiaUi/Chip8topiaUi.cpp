@@ -57,7 +57,7 @@ void Chip8topiaUi::drawMainMenuBar(Chip8topia& chip8topia)
 
     if (m_showPerformanceMonitor)
     {
-        m_chip8topiaPerformanceMonitor.drawWindow();
+        m_chip8topiaPerformanceMonitor.drawWindow(chip8topia, m_isMenuBarOpen);
     }
 
 #if defined(BUILD_DEBUG)

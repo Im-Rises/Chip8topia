@@ -2,6 +2,7 @@
 
 #include <PerformanceMonitor/PerformanceMonitor.h>
 
+class Chip8topia;
 class Chip8topiaPerformanceMonitor
 {
 public:
@@ -13,7 +14,7 @@ public:
     ~Chip8topiaPerformanceMonitor() = default;
 
 public:
-    void drawWindow();
+    void drawWindow(Chip8topia& chip8topia, bool isMainBarOpen);
 
 private:
     PerformanceMonitor m_performanceMonitor;

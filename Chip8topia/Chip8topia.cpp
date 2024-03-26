@@ -406,6 +406,11 @@ auto Chip8topia::getIsTurboMode() const -> bool
     return m_isTurboMode;
 }
 
+auto Chip8topia::getWindowPosition() const -> std::pair<int, int>
+{
+    return { m_windowedPosX, m_windowedPosY };
+}
+
 auto Chip8topia::getWindowDimensions() const -> std::pair<int, int>
 {
     return { m_currentWidth, m_currentHeight };
@@ -420,9 +425,10 @@ auto Chip8topia::getWindowHeight() const -> int
     return m_currentHeight;
 }
 
-// auto Chip8topia::getWindowMinimized() const -> bool {
-//     return glfwGetWindowAttrib(m_window, GLFW_ICONIFIED) != 0;
-// }
+auto Chip8topia::getWindowMinimized() const -> bool
+{
+    return glfwGetWindowAttrib(m_window, GLFW_ICONIFIED) != 0;
+}
 
 auto Chip8topia::getOpenGLVendor() -> std::string_view
 {
