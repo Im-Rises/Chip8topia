@@ -9,8 +9,6 @@
 #include "Chip8topiaRomLoaderUi/Chip8topiaRomLoaderUi.h"
 #include "Chip8topiaEmulationUi/Chip8topiaEmulationUi.h"
 #include "Chip8topiaMessageHandler/Chip8topiaMessageHandler.h"
-#include "Chip8topiaPerformanceMonitor/Chip8topiaPerformanceMonitor.h"
-
 class Chip8topia;
 class Chip8topiaUi
 {
@@ -41,10 +39,7 @@ private:
     Chip8topiaAbout m_chip8topiaAbout;
     Chip8topiaMessageHandler m_chip8topiaError;
 
-    Chip8topiaPerformanceMonitor m_chip8topiaPerformanceMonitor;
-
     bool m_isMenuBarOpen = true;
-    bool m_showPerformanceMonitor = true;
 #if defined(BUILD_DEBUG)
     bool m_showDemo = true;
 #endif

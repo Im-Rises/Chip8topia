@@ -8,35 +8,6 @@ void Chip8topiaPerformanceMonitor::drawWindow(Chip8topia& chip8topia, bool isMai
 {
     m_performanceMonitor.update();
 
-    /*
-     //    // Get glfw window position
-//    // TODO: Change y position if Main Menu is open or not
-//    //  Set position to the top left corner of the glfw window
-//    std::pair<int, int> windowPosition = chip8topia.getWindowPosition();
-//    if (isMainBarOpen)
-//    {
-//        ImGui::SetNextWindowPos(ImVec2(windowPosition.first + 20, windowPosition.second + 20 + 20));
-//    }
-//    else
-//    {
-//        ImGui::SetNextWindowPos(ImVec2(windowPosition.first + 20, windowPosition.second + 20));
-//    }
-ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
-//    if (isMainBarOpen)
-//    {
-//        ImGui::SetNextWindowPos(ImVec2(20, 20 + 20));
-//    }
-//    else
-//    {
-//        ImGui::SetNextWindowPos(ImVec2(20, 20));
-//    }
-ImGui::SetNextWindowPos(ImVec2(200, 200));
-ImGui::SetNextWindowBgAlpha(0.35F);
-ImGui::Begin("tefdsfdfdsq", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
-ImGui::Text("tefdsfdfdsq");
-ImGui::End();
-     * */
-
     ImGui::SetNextWindowBgAlpha(0.35F);
     ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0F, 0.0F, 1.0F, 1.0F));
     ImGui::Begin("Performance Monitor", nullptr);
@@ -56,6 +27,8 @@ ImGui::End();
 #elif defined(PLATFORM_APPLE)
     ImGui::Text("APPLE");
 #endif
+    ImGui::SameLine();
+    ImGui::Text("VERSION %s", CHIP8TOPIA_VERSION);
 
     // TODO: Make it not visible in release and not available everytime for Emscripten builds
     //  TODO: Add color to the text (red when bad, yellow when warning, green when good)

@@ -5,6 +5,7 @@
 
 #include "../ImGuiHelper/ImGuiHelper.h"
 #include "../../Chip8Emulator/Chip8Emulator.h"
+#include "Chip8topiaPerformanceMonitor.h"
 
 class Chip8topia;
 class Chip8topiaEmulationUi
@@ -30,18 +31,21 @@ public:
     void closeAllWindows();
 
 private:
-    void drawEmulationStats(Chip8topia& chip8topia);
     void drawEmulationSettings(Chip8topia* chip8topia);
+    void drawEmulationStats(Chip8topia& chip8topia);
 
 private:
-    // TODO: Replace EMulation Stat by the window at the top right corner which indicates CPU, RAM, and FPS
-    std::array<ImGuiMenuItemWindow<Chip8topia>, 2> m_menuItems = {
-        ImGuiMenuItemWindow<Chip8topia>(ICON_FA_GEAR " Chip8 Settings", true, [this](Chip8topia* chip8topia)
-            { drawEmulationSettings(chip8topia); }),
-        ImGuiMenuItemWindow<Chip8topia>(ICON_FA_CHARGING_STATION " Emulation Stats", INITIAL_WINDOW_STATE, [this](Chip8topia* chip8topia)
-            { drawEmulationStats(*chip8topia); })
-    };
+    //    std::array<ImGuiMenuItemWindow<Chip8topia>, 2> m_menuItems = {
+    //        ImGuiMenuItemWindow<Chip8topia>(ICON_FA_GEAR " Chip8 Settings", true, [this](Chip8topia* chip8topia)
+    //            { drawEmulationSettings(chip8topia); }),
+    //        ImGuiMenuItemWindow<Chip8topia>(ICON_FA_CHARGING_STATION " Emulation Stats", INITIAL_WINDOW_STATE, [this](Chip8topia* chip8topia)
+    //            { drawEmulationStats(*chip8topia); })
+    //    };
 
+    Chip8topiaPerformanceMonitor m_performanceMonitor;
     Chip8CoreType m_selectedCore = Chip8Emulator::DEFAULT_CORE_TYPE;
     Chip8Frequency m_selectedFrequency = Chip8Emulator::DEFAULT_FREQUENCY;
+
+    bool m_emulationSettingsOpen = INITIAL_WINDOW_STATE;
+    bool m_emulationStatsOpen = INITIAL_WINDOW_STATE;
 };

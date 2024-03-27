@@ -9,9 +9,12 @@ void Chip8topiaEmulationUi::drawEmulationMenu(Chip8topia& chip8topia)
 {
     if (ImGui::BeginMenu(ICON_FA_GAMEPAD " Emulation"))
     {
-        for (auto& menuItem : m_menuItems)
+        if (ImGui::MenuItem(ICON_FA_GEAR " Chip8 Settings", nullptr, &m_emulationSettingsOpen))
         {
-            menuItem.drawMenuItem();
+        }
+
+        if (ImGui::MenuItem(ICON_FA_CHARGING_STATION " Emulation Stats", nullptr, &m_emulationStatsOpen))
+        {
         }
 
         if (ImGui::MenuItem(fmt::format(ICON_FA_ROCKET " Toggle turbo mode : {}", chip8topia.getIsTurboMode() ? "ON " : "OFF").c_str(), "Y", chip8topia.getIsTurboMode()))
@@ -19,10 +22,8 @@ void Chip8topiaEmulationUi::drawEmulationMenu(Chip8topia& chip8topia)
             chip8topia.toggleTurboMode();
         }
 
-        static constexpr const char* const PAUSE_TEXT = ICON_FA_PAUSE " Pause";
-        static constexpr const char* const RESUME_TEXT = ICON_FA_PLAY " Play";
         const bool isPaused = chip8topia.getChip8Emulator().getIsBreak();
-        if (ImGui::MenuItem(isPaused ? RESUME_TEXT : PAUSE_TEXT, "P", isPaused))
+        if (ImGui::MenuItem(isPaused ? ICON_FA_PLAY " Play" : ICON_FA_PAUSE " Pause", "P", isPaused))
         {
             Chip8topiaInputHandler::getInstance().m_TogglePauseEmulationEvent.trigger();
         }
@@ -38,84 +39,92 @@ void Chip8topiaEmulationUi::drawEmulationMenu(Chip8topia& chip8topia)
 
 void Chip8topiaEmulationUi::drawEmulationWindows(Chip8topia& chip8topia)
 {
-    for (auto& menuItem : m_menuItems)
-    {
-        menuItem.drawWindow(&chip8topia);
-    }
+    drawEmulationSettings(&chip8topia);
+    drawEmulationStats(chip8topia);
 }
 
 void Chip8topiaEmulationUi::closeAllWindows()
 {
-    for (auto& menuItem : m_menuItems)
-    {
-        menuItem.m_isOpen = false;
-    }
+    m_emulationSettingsOpen = false;
+    m_emulationStatsOpen = false;
 }
 
 void Chip8topiaEmulationUi::drawEmulationStats(Chip8topia& chip8topia)
 {
-    ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
-    //    ImGui::Text("Screen size: %dx%d", chip8topia.getWindowWidth(), chip8topia.getWindowHeight());
-    ImGui::Text("Frame time: %.3f ms", 1000.0F / ImGui::GetIO().Framerate);
+    if (m_emulationStatsOpen)
+    {
+        m_performanceMonitor.drawWindow(chip8topia, true);
+    }
 }
 
 void Chip8topiaEmulationUi::drawEmulationSettings(Chip8topia* chip8topia)
 {
     Chip8Emulator& emulator = chip8topia->getChip8Emulator();
 
-    ImGui::Text("Current core: %s", emulator.getConsoleName().c_str());
-    ImGui::Text("Current frequency: %uHZ", static_cast<unsigned int>(emulator.getFrequency()));
-
-    ImGui::NewLine();
-    ImGui::Separator();
-
-    ImGui::TextColored(ImVec4(1.0F, 1.0F, 0.0F, 1.0F), "Console version");
-
-    if (ImGui::Selectable("Chip8", m_selectedCore == Chip8CoreType::Chip8))
+    if (!m_emulationSettingsOpen)
     {
-        m_selectedCore = Chip8CoreType::Chip8;
+        return;
     }
-    if (ImGui::Selectable("SChip 1.1 (legacy)", m_selectedCore == Chip8CoreType::SChip11Legacy))
+    
+    if (ImGui::Begin(ICON_FA_GEAR " Chip8 Settings", &m_emulationSettingsOpen))
     {
-        m_selectedCore = Chip8CoreType::SChip11Legacy;
-    }
-    if (ImGui::Selectable("SChip 1.1 (modern)", m_selectedCore == Chip8CoreType::SChip11Modern))
-    {
-        m_selectedCore = Chip8CoreType::SChip11Modern;
-    }
-    if (ImGui::Selectable("SChipC", m_selectedCore == Chip8CoreType::SChipC))
-    {
-        m_selectedCore = Chip8CoreType::SChipC;
-    }
-    if (ImGui::Selectable("Xo-Chip", m_selectedCore == Chip8CoreType::XoChip))
-    {
-        m_selectedCore = Chip8CoreType::XoChip;
-    }
 
-    ImGui::NewLine();
-    ImGui::Separator();
+        ImGui::Text("Current core: %s", emulator.getConsoleName().c_str());
+        ImGui::Text("Current frequency: %uHZ", static_cast<unsigned int>(emulator.getFrequency()));
 
-    ImGui::TextColored(ImVec4(1.0F, 1.0F, 0.0F, 1.0F), "Emulation Speed");
-    if (ImGui::Selectable("600HZ", m_selectedFrequency == Chip8Frequency::Freq600Hz))
-    {
-        m_selectedFrequency = Chip8Frequency::Freq600Hz;
-    }
+        ImGui::NewLine();
+        ImGui::Separator();
 
-    if (ImGui::Selectable("1200HZ", m_selectedFrequency == Chip8Frequency::Freq1200Hz))
-    {
-        m_selectedFrequency = Chip8Frequency::Freq1200Hz;
-    }
+        ImGui::TextColored(ImVec4(1.0F, 1.0F, 0.0F, 1.0F), "Console version");
 
-    if (ImGui::Selectable("1800HZ", m_selectedFrequency == Chip8Frequency::Freq1800Hz))
-    {
-        m_selectedFrequency = Chip8Frequency::Freq1800Hz;
-    }
+        if (ImGui::Selectable("Chip8", m_selectedCore == Chip8CoreType::Chip8))
+        {
+            m_selectedCore = Chip8CoreType::Chip8;
+        }
+        if (ImGui::Selectable("SChip 1.1 (legacy)", m_selectedCore == Chip8CoreType::SChip11Legacy))
+        {
+            m_selectedCore = Chip8CoreType::SChip11Legacy;
+        }
+        if (ImGui::Selectable("SChip 1.1 (modern)", m_selectedCore == Chip8CoreType::SChip11Modern))
+        {
+            m_selectedCore = Chip8CoreType::SChip11Modern;
+        }
+        if (ImGui::Selectable("SChipC", m_selectedCore == Chip8CoreType::SChipC))
+        {
+            m_selectedCore = Chip8CoreType::SChipC;
+        }
+        if (ImGui::Selectable("Xo-Chip", m_selectedCore == Chip8CoreType::XoChip))
+        {
+            m_selectedCore = Chip8CoreType::XoChip;
+        }
 
-    ImGui::NewLine();
-    ImGui::Separator();
-    if (ImGui::Button("Apply"))
-    {
-        emulator.switchCoreFrequency(m_selectedCore, m_selectedFrequency);
-        m_menuItems[0].m_isOpen = false;
+        ImGui::NewLine();
+        ImGui::Separator();
+
+        ImGui::TextColored(ImVec4(1.0F, 1.0F, 0.0F, 1.0F), "Emulation Speed");
+        if (ImGui::Selectable("600HZ", m_selectedFrequency == Chip8Frequency::Freq600Hz))
+        {
+            m_selectedFrequency = Chip8Frequency::Freq600Hz;
+        }
+
+        if (ImGui::Selectable("1200HZ", m_selectedFrequency == Chip8Frequency::Freq1200Hz))
+        {
+            m_selectedFrequency = Chip8Frequency::Freq1200Hz;
+        }
+
+        if (ImGui::Selectable("1800HZ", m_selectedFrequency == Chip8Frequency::Freq1800Hz))
+        {
+            m_selectedFrequency = Chip8Frequency::Freq1800Hz;
+        }
+
+        ImGui::NewLine();
+        ImGui::Separator();
+        if (ImGui::Button("Apply"))
+        {
+            emulator.switchCoreFrequency(m_selectedCore, m_selectedFrequency);
+            m_emulationSettingsOpen = false;
+        }
+
+        ImGui::End();
     }
 }
