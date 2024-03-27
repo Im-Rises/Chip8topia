@@ -10,7 +10,7 @@ void Chip8topiaPerformanceMonitor::drawWindow(Chip8topia& chip8topia, bool isMai
 
     ImGui::SetNextWindowBgAlpha(0.35F);
     ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0F, 0.0F, 1.0F, 1.0F));
-    ImGui::Begin("Performance Monitor", nullptr);
+    ImGui::Begin("Performance Monitor", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoSavedSettings);
 
 #if defined(BUILD_DEBUG)
     ImGui::Text("DEBUG");
@@ -30,7 +30,6 @@ void Chip8topiaPerformanceMonitor::drawWindow(Chip8topia& chip8topia, bool isMai
     ImGui::SameLine();
     ImGui::Text("VERSION %s", CHIP8TOPIA_VERSION);
 
-    // TODO: Make it not visible in release and not available everytime for Emscripten builds
     //  TODO: Add color to the text (red when bad, yellow when warning, green when good)
     //     ImGui::TextColored(ImGui::GetIO().Framerate > 60.0F ? ImVec4(0.0F, 1.0F, 0.0F, 1.0F) : ImVec4(1.0F, 0.0F, 0.0F, 1.0F), "FPS: %0.f", ImGui::GetIO().Framerate);
     ImGui::Text("Resolution: %dx%d", chip8topia.getCurrentWidth(), chip8topia.getCurrentHeight());

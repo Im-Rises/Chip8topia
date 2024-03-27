@@ -12,18 +12,9 @@
  * - Total Physical Memory           | Yes     | Yes
  * - Physical Memory Used            | Yes     | Yes
  * - Physical Memory Used by process | Yes     | Yes
- * - CPU Usage                       | No      | No
+ * - CPU Usage                       | Yes     | Yes
  * - CPU Usage by process            | No      | No
  * */
-
-#ifdef _WIN32 // Windows platform
-#include <windows.h>
-#include <iostream>
-#else // Linux platform
-#include <unistd.h>
-#include <ctime>
-#include <iostream>
-#endif
 
 #if defined(PLATFORM_WINDOWS)
 #include <cstdio>
@@ -32,6 +23,8 @@
 #include <Pdh.h>
 #include <TCHAR.h>
 #elif defined(PLATFORM_LINUX)
+#include <unistd.h>
+#include <ctime>
 #include <sys/sysinfo.h>
 #include <sys/time.h>
 #include <sys/resource.h>
