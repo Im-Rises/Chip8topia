@@ -33,6 +33,8 @@
 #include <TCHAR.h>
 #elif defined(PLATFORM_LINUX)
 #include <sys/sysinfo.h>
+#include <sys/time.h>
+#include <sys/resource.h>
 #endif
 
 // TODO: Add error handling everywhere
@@ -65,9 +67,9 @@ public:
 
 private:
 #if defined(PLATFORM_WINDOWS)
-    // RAM (virtual memory) usage
+    // RAM (virtual memory)
     MEMORYSTATUSEX m_memInfo;
-    // RAM (physical memory) usage
+    // RAM (physical memory)
     PROCESS_MEMORY_COUNTERS_EX m_pmc;
 
     // CPU usage
@@ -78,66 +80,7 @@ private:
     int m_numProcessors;
     HANDLE m_self;
 #elif defined(PLATFORM_LINUX)
+    // RAM (physical memory)
     struct sysinfo m_info;
 #endif
-
-#ifdef _WIN32
-    double getFileTimeAsDouble(const FILETIME& ft)
-    {
-        LARGE_INTEGER li;
-        li.LowPart = ft.dwLowDateTime;
-        li.HighPart = ft.dwHighDateTime;
-        return li.QuadPart / static_cast<double>(10000000); // Convert 100-nanosecond intervals to seconds
-    }
-
-    double getCPUTime()
-    {
-        FILETIME createTime, exitTime, kernelTime, userTime;
-        GetProcessTimes(GetCurrentProcess(), &createTime, &exitTime, &kernelTime, &userTime);
-        double kernelTimeInSeconds = getFileTimeAsDouble(kernelTime);
-        double userTimeInSeconds = getFileTimeAsDouble(userTime);
-        return kernelTimeInSeconds + userTimeInSeconds;
-    }
-
-    int getNumLogicalCores()
-    {
-        SYSTEM_INFO sysinfo;
-        GetSystemInfo(&sysinfo);
-        return sysinfo.dwNumberOfProcessors;
-    }
-#else
-    double getCPUTime()
-    {
-        clock_t t = clock();
-        return ((double)t) / CLOCKS_PER_SEC;
-    }
-
-    int getNumLogicalCores()
-    {
-        return sysconf(_SC_NPROCESSORS_ONLN);
-    }
-#endif
-
-    double startCPUTime = getCPUTime();
-    time_t startTime = time(nullptr);
-
-public:
-    double getCpuTest()
-    {
-        double endCPUTime = getCPUTime();
-        time_t endTime = time(nullptr);
-
-        if (endTime - startTime < 1)
-        {
-            return -1.0F;
-        }
-
-        int numLogicalCores = getNumLogicalCores();
-        double cpuUsage = (endCPUTime - startCPUTime) / numLogicalCores / difftime(endTime, startTime) * 100;
-        startCPUTime = endCPUTime;
-        startTime = endTime;
-
-        std::cout << "CPU Usage: " << cpuUsage << "%" << std::endl;
-        return cpuUsage;
-    }
 };

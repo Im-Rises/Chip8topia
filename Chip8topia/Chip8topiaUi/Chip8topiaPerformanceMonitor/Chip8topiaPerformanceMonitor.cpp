@@ -33,33 +33,41 @@ void Chip8topiaPerformanceMonitor::drawWindow(Chip8topia& chip8topia, bool isMai
 
     // TODO: Add color to the text (red when bad, yellow when warning, green when good), use a lerp function
 
+    ImGui::Text("CPU Usage: %f", m_performanceMonitor.getCpuUsed());
+    ImGui::SameLine();
+    ImGui::Text("RAM: %0.f", m_performanceMonitor.getTotalPhysicalMemory());
+    ImGui::SameLine();
+    ImGui::Text("RAM Used: %0.f", m_performanceMonitor.getPhysicalMemoryUsed());
+
     ImGui::Text("FPS: %0.f", ImGui::GetIO().Framerate);
     ImGui::SameLine();
     ImGui::Text("DeltaTime: %0.3f", ImGui::GetIO().DeltaTime);
 
-    ImGui::Text("RAM: %0.f", m_performanceMonitor.getTotalPhysicalMemory());
-    ImGui::Text("RAM Used: %0.f", m_performanceMonitor.getPhysicalMemoryUsed());
-    ImGui::Text("RAM Using: %0.f", m_performanceMonitor.getPhysicalMemoryUsedByCurrentProcess());
-
-    ImGui::Text("CPU Usage: %f", m_performanceMonitor.getCpuUsed());
-    ImGui::Text("CPU Usage by process: %f", m_performanceMonitor.getCpuUsedByCurrentProcess());
-
     ImGui::End();
     ImGui::PopStyleColor();
 
-    // Get glfw window position
-    std::pair<int, int> windowPosition = chip8topia.getWindowPosition();
-
-    // TODO: Change y position if Main Menu is open or not
-    //  Set position to the top left corner of the glfw window
-    if (isMainBarOpen)
-    {
-        ImGui::SetNextWindowPos(ImVec2(windowPosition.first + 20, windowPosition.second + 20 + 20));
-    }
-    else
-    {
-        ImGui::SetNextWindowPos(ImVec2(windowPosition.first + 20, windowPosition.second + 20));
-    }
+    //    // Get glfw window position
+    //    // TODO: Change y position if Main Menu is open or not
+    //    //  Set position to the top left corner of the glfw window
+    //    std::pair<int, int> windowPosition = chip8topia.getWindowPosition();
+    //    if (isMainBarOpen)
+    //    {
+    //        ImGui::SetNextWindowPos(ImVec2(windowPosition.first + 20, windowPosition.second + 20 + 20));
+    //    }
+    //    else
+    //    {
+    //        ImGui::SetNextWindowPos(ImVec2(windowPosition.first + 20, windowPosition.second + 20));
+    //    }
+    ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
+    //    if (isMainBarOpen)
+    //    {
+    //        ImGui::SetNextWindowPos(ImVec2(20, 20 + 20));
+    //    }
+    //    else
+    //    {
+    //        ImGui::SetNextWindowPos(ImVec2(20, 20));
+    //    }
+    ImGui::SetNextWindowPos(ImVec2(200, 200));
     ImGui::SetNextWindowBgAlpha(0.35F);
     ImGui::Begin("tefdsfdfdsq", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
     ImGui::Text("tefdsfdfdsq");

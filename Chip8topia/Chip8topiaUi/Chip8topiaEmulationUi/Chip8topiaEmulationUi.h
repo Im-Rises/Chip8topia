@@ -15,7 +15,7 @@ private:
 #else
     static constexpr auto INITIAL_WINDOW_STATE = true;
 #endif
-    
+
 public:
     Chip8topiaEmulationUi() = default;
     Chip8topiaEmulationUi(const Chip8topiaEmulationUi&) = delete;
@@ -34,6 +34,7 @@ private:
     void drawEmulationSettings(Chip8topia* chip8topia);
 
 private:
+    // TODO: Replace EMulation Stat by the window at the top right corner which indicates CPU, RAM, and FPS
     std::array<ImGuiMenuItemWindow<Chip8topia>, 2> m_menuItems = {
         ImGuiMenuItemWindow<Chip8topia>(ICON_FA_GEAR " Chip8 Settings", true, [this](Chip8topia* chip8topia)
             { drawEmulationSettings(chip8topia); }),

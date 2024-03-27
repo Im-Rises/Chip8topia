@@ -55,7 +55,9 @@ Screenshot of the differents debug tools here ?
 
 Major:
 
-- [ ] Correct the draw issue when in break step by step mode drawing is working better than in normal run mode wtf???
+- [ ] Add code to get CPU usage
+- [x] Add code to get memory usage
+- [x] Add fixed window at the to right corner with the memory usage and CPU usage
 - [-] Correct the Xo-Chip games not working properly 5think its the CPU that is not working properlym the Ppu should be
   fine)
 - [-] Add performance monitoring with ImGui (with floating window transparent in and no button at the top left corner.

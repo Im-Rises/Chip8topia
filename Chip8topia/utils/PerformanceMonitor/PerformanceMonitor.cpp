@@ -27,6 +27,8 @@ PerformanceMonitor::PerformanceMonitor() : m_memInfo(), m_pmc()
 
 PerformanceMonitor::~PerformanceMonitor()
 {
+    // CPU usage
+    PdhCloseQuery(m_cpuQuery);
 }
 
 void PerformanceMonitor::update()
@@ -100,7 +102,7 @@ auto PerformanceMonitor::getCpuUsedByCurrentProcess() -> float
     return percent * 100;
 }
 #elif defined(PLATFORM_LINUX)
-PerformanceMonitor::PerformanceMonitor() : m_memInfo(), m_pmc()
+PerformanceMonitor::PerformanceMonitor()
 {
 }
 
@@ -112,6 +114,8 @@ void PerformanceMonitor::update()
 {
     // RAM
     sysinfo(&m_info);
+    // CPU getrusage()
+    getrusage()
 }
 
 auto PerformanceMonitor::getTotalVirtualMemory() const -> float
@@ -141,7 +145,7 @@ auto PerformanceMonitor::getPhysicalMemoryUsed() const -> float
 
 auto PerformanceMonitor::getPhysicalMemoryUsedByCurrentProcess() const -> float
 {
-    return m_info.totalram / RAM_MB_FACTOR;
+    return -1.0F;
 }
 
 auto PerformanceMonitor::getCpuUsed() -> float
