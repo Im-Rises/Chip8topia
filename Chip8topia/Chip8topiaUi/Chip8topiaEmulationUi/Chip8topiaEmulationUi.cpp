@@ -9,13 +9,9 @@ void Chip8topiaEmulationUi::drawEmulationMenu(Chip8topia& chip8topia)
 {
     if (ImGui::BeginMenu(ICON_FA_GAMEPAD " Emulation"))
     {
-        if (ImGui::MenuItem(ICON_FA_GEAR " Chip8 Settings", nullptr, &m_emulationSettingsOpen))
-        {
-        }
+        ImGui::MenuItem(CHIP8_SETTINGS_STRING, nullptr, &m_emulationSettingsOpen);
 
-        if (ImGui::MenuItem(ICON_FA_CHARGING_STATION " Emulation Stats", nullptr, &m_emulationStatsOpen))
-        {
-        }
+        ImGui::MenuItem(CHIP8_STATS_STRING, nullptr, &m_emulationStatsOpen);
 
         if (ImGui::MenuItem(fmt::format(ICON_FA_ROCKET " Toggle turbo mode : {}", chip8topia.getIsTurboMode() ? "ON " : "OFF").c_str(), "Y", chip8topia.getIsTurboMode()))
         {
@@ -46,7 +42,9 @@ void Chip8topiaEmulationUi::drawEmulationWindows(Chip8topia& chip8topia)
 void Chip8topiaEmulationUi::closeAllWindows()
 {
     m_emulationSettingsOpen = false;
+#if !defined(BUILD_DEBUG)
     m_emulationStatsOpen = false;
+#endif
 }
 
 void Chip8topiaEmulationUi::drawEmulationStats(Chip8topia& chip8topia)
@@ -65,10 +63,9 @@ void Chip8topiaEmulationUi::drawEmulationSettings(Chip8topia* chip8topia)
     {
         return;
     }
-    
-    if (ImGui::Begin(ICON_FA_GEAR " Chip8 Settings", &m_emulationSettingsOpen))
-    {
 
+    if (ImGui::Begin(CHIP8_SETTINGS_STRING, &m_emulationSettingsOpen))
+    {
         ImGui::Text("Current core: %s", emulator.getConsoleName().c_str());
         ImGui::Text("Current frequency: %uHZ", static_cast<unsigned int>(emulator.getFrequency()));
 

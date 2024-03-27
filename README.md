@@ -55,7 +55,6 @@ Screenshot of the differents debug tools here ?
 
 Major:
 
-- [-] Add code to get CPU usage
 - [-] Correct the Xo-Chip games not working properly I think its the CPU that is not working properlym the Ppu should be
   fine)
 - [ ] Restarting a game when playing big xo-chip games will not reload the game from the start (we should reset memory

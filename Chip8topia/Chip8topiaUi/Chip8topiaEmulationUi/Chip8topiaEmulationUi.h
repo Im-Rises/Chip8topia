@@ -17,6 +17,9 @@ private:
     static constexpr auto INITIAL_WINDOW_STATE = true;
 #endif
 
+    static constexpr const char* const CHIP8_SETTINGS_STRING = ICON_FA_GEAR " Chip8 Settings";
+    static constexpr const char* const CHIP8_STATS_STRING = ICON_FA_CHARGING_STATION " Emulation Stats";
+
 public:
     Chip8topiaEmulationUi() = default;
     Chip8topiaEmulationUi(const Chip8topiaEmulationUi&) = delete;
@@ -35,13 +38,6 @@ private:
     void drawEmulationStats(Chip8topia& chip8topia);
 
 private:
-    //    std::array<ImGuiMenuItemWindow<Chip8topia>, 2> m_menuItems = {
-    //        ImGuiMenuItemWindow<Chip8topia>(ICON_FA_GEAR " Chip8 Settings", true, [this](Chip8topia* chip8topia)
-    //            { drawEmulationSettings(chip8topia); }),
-    //        ImGuiMenuItemWindow<Chip8topia>(ICON_FA_CHARGING_STATION " Emulation Stats", INITIAL_WINDOW_STATE, [this](Chip8topia* chip8topia)
-    //            { drawEmulationStats(*chip8topia); })
-    //    };
-
     Chip8topiaPerformanceMonitor m_performanceMonitor;
     Chip8CoreType m_selectedCore = Chip8Emulator::DEFAULT_CORE_TYPE;
     Chip8Frequency m_selectedFrequency = Chip8Emulator::DEFAULT_FREQUENCY;
