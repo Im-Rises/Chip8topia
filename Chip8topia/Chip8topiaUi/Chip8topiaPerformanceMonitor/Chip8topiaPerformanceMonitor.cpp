@@ -8,12 +8,38 @@ void Chip8topiaPerformanceMonitor::drawWindow(Chip8topia& chip8topia, bool isMai
 {
     m_performanceMonitor.update();
 
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0F, 0.0F, 1.0F, 1.0F));
-    ImGui::SetNextWindowPos(ImVec2(0, 0));
-    //    ImGui::SetNextWindowSize(ImVec2(200, 200));
+    /*
+     //    // Get glfw window position
+//    // TODO: Change y position if Main Menu is open or not
+//    //  Set position to the top left corner of the glfw window
+//    std::pair<int, int> windowPosition = chip8topia.getWindowPosition();
+//    if (isMainBarOpen)
+//    {
+//        ImGui::SetNextWindowPos(ImVec2(windowPosition.first + 20, windowPosition.second + 20 + 20));
+//    }
+//    else
+//    {
+//        ImGui::SetNextWindowPos(ImVec2(windowPosition.first + 20, windowPosition.second + 20));
+//    }
+ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
+//    if (isMainBarOpen)
+//    {
+//        ImGui::SetNextWindowPos(ImVec2(20, 20 + 20));
+//    }
+//    else
+//    {
+//        ImGui::SetNextWindowPos(ImVec2(20, 20));
+//    }
+ImGui::SetNextWindowPos(ImVec2(200, 200));
+ImGui::SetNextWindowBgAlpha(0.35F);
+ImGui::Begin("tefdsfdfdsq", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
+ImGui::Text("tefdsfdfdsq");
+ImGui::End();
+     * */
 
-    ImGui::Begin("Performance Monitor", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoNavInputs);
-    //    ImGui::Begin("Performance Monitor", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoNavFocus);
+    ImGui::SetNextWindowBgAlpha(0.35F);
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0F, 0.0F, 1.0F, 1.0F));
+    ImGui::Begin("Performance Monitor", nullptr);
 
 #if defined(BUILD_DEBUG)
     ImGui::Text("DEBUG");
@@ -31,45 +57,21 @@ void Chip8topiaPerformanceMonitor::drawWindow(Chip8topia& chip8topia, bool isMai
     ImGui::Text("APPLE");
 #endif
 
-    // TODO: Add color to the text (red when bad, yellow when warning, green when good), use a lerp function
-
-    ImGui::Text("CPU Usage: %f", m_performanceMonitor.getCpuUsed());
-    ImGui::SameLine();
-    ImGui::Text("RAM: %0.f", m_performanceMonitor.getTotalPhysicalMemory());
-    ImGui::SameLine();
-    ImGui::Text("RAM Used: %0.f", m_performanceMonitor.getPhysicalMemoryUsed());
-
+    // TODO: Add color to the text (red when bad, yellow when warning, green when good)
+    //    ImGui::TextColored(ImGui::GetIO().Framerate > 60.0F ? ImVec4(0.0F, 1.0F, 0.0F, 1.0F) : ImVec4(1.0F, 0.0F, 0.0F, 1.0F), "FPS: %0.f", ImGui::GetIO().Framerate);
     ImGui::Text("FPS: %0.f", ImGui::GetIO().Framerate);
     ImGui::SameLine();
     ImGui::Text("DeltaTime: %0.3f", ImGui::GetIO().DeltaTime);
 
+    ImGui::Text("RAM: %0.f", m_performanceMonitor.getTotalPhysicalMemory());
+    ImGui::SameLine();
+    ImGui::Text("RAM Used: %0.f", m_performanceMonitor.getPhysicalMemoryUsed());
+
+    ImGui::Text("CPU Usage: %2.2f", m_performanceMonitor.getCpuUsed());
+    ImGui::SameLine();
+
+    //    ImGui::Text("Resolution: %dx%d", chip8topia.getChip8Emulator().getVideo().getScreenWidth(), chip8topia.getChip8Emulator().getVideo().getScreenHeight());
+
     ImGui::End();
     ImGui::PopStyleColor();
-
-    //    // Get glfw window position
-    //    // TODO: Change y position if Main Menu is open or not
-    //    //  Set position to the top left corner of the glfw window
-    //    std::pair<int, int> windowPosition = chip8topia.getWindowPosition();
-    //    if (isMainBarOpen)
-    //    {
-    //        ImGui::SetNextWindowPos(ImVec2(windowPosition.first + 20, windowPosition.second + 20 + 20));
-    //    }
-    //    else
-    //    {
-    //        ImGui::SetNextWindowPos(ImVec2(windowPosition.first + 20, windowPosition.second + 20));
-    //    }
-    ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
-    //    if (isMainBarOpen)
-    //    {
-    //        ImGui::SetNextWindowPos(ImVec2(20, 20 + 20));
-    //    }
-    //    else
-    //    {
-    //        ImGui::SetNextWindowPos(ImVec2(20, 20));
-    //    }
-    ImGui::SetNextWindowPos(ImVec2(200, 200));
-    ImGui::SetNextWindowBgAlpha(0.35F);
-    ImGui::Begin("tefdsfdfdsq", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings);
-    ImGui::Text("tefdsfdfdsq");
-    ImGui::End();
 }

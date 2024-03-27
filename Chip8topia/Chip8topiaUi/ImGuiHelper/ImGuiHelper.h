@@ -171,9 +171,45 @@ private:
     bool m_canPushMessage = true;
 };
 
-
-// Text on screen
-/*
- * ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize |
-ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav))
- */
+// TODO: Finish these classes
+// class ImGuiText
+//{
+// public:
+//    ImGuiText() = default;
+//    ImGuiText(const ImGuiText&) = delete;
+//    ImGuiText(ImGuiText&&) = delete;
+//    auto operator=(const ImGuiText&) -> ImGuiText& = delete;
+//    auto operator=(ImGuiText&&) -> ImGuiText& = delete;
+//    ~ImGuiText() = default;
+//
+// public:
+//    void drawText(const char* text)
+//    {
+//        ImGui::Begin("Text", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav);
+//        ImGui::Text("%s", text);
+//        ImGui::End();
+//    }
+//};
+//
+// class ImGuiFixedWindow
+//{
+// public:
+//    ImGuiFixedWindow(const char* name, const ImVec2& size, const ImVec2& position)
+//        : m_name(name), m_size(size), m_position(position) {}
+//    ImGuiFixedWindow(const ImGuiFixedWindow&) = delete;
+//    ImGuiFixedWindow(ImGuiFixedWindow&&) = delete;
+//    auto operator=(const ImGuiFixedWindow&) -> ImGuiFixedWindow& = delete;
+//    auto operator=(ImGuiFixedWindow&&) -> ImGuiFixedWindow& = delete;
+//    ~ImGuiFixedWindow() = default;
+//
+// public:
+//    void drawWindow(std::function<void()> drawFunction)
+//    {
+//        ImGui::SetNextWindowSize(m_size);
+//        ImGui::SetNextWindowPos(m_position);
+//        // ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoNavInputs
+//        ImGui::Begin(m_name, nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoNavInputs);
+//        drawFunction();
+//        ImGui::End();
+//    }
+//};
