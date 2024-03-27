@@ -57,8 +57,11 @@ ImGui::End();
     ImGui::Text("APPLE");
 #endif
 
-    // TODO: Add color to the text (red when bad, yellow when warning, green when good)
-    //    ImGui::TextColored(ImGui::GetIO().Framerate > 60.0F ? ImVec4(0.0F, 1.0F, 0.0F, 1.0F) : ImVec4(1.0F, 0.0F, 0.0F, 1.0F), "FPS: %0.f", ImGui::GetIO().Framerate);
+    // TODO: Make it not visible in release and not available everytime for Emscripten builds
+    //  TODO: Add color to the text (red when bad, yellow when warning, green when good)
+    //     ImGui::TextColored(ImGui::GetIO().Framerate > 60.0F ? ImVec4(0.0F, 1.0F, 0.0F, 1.0F) : ImVec4(1.0F, 0.0F, 0.0F, 1.0F), "FPS: %0.f", ImGui::GetIO().Framerate);
+    ImGui::Text("Resolution: %dx%d", chip8topia.getCurrentWidth(), chip8topia.getCurrentHeight());
+
     ImGui::Text("FPS: %0.f", ImGui::GetIO().Framerate);
     ImGui::SameLine();
     ImGui::Text("DeltaTime: %0.3f", ImGui::GetIO().DeltaTime);
@@ -67,10 +70,8 @@ ImGui::End();
     ImGui::SameLine();
     ImGui::Text("RAM Used: %0.f", m_performanceMonitor.getPhysicalMemoryUsed());
 
-    ImGui::Text("CPU Usage: %2.2f", m_performanceMonitor.getCpuUsed());
+    ImGui::Text("CPU Usage: %06.2f", m_performanceMonitor.getCpuUsed());
     ImGui::SameLine();
-
-    //    ImGui::Text("Resolution: %dx%d", chip8topia.getChip8Emulator().getVideo().getScreenWidth(), chip8topia.getChip8Emulator().getVideo().getScreenHeight());
 
     ImGui::End();
     ImGui::PopStyleColor();

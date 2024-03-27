@@ -55,7 +55,7 @@ void Chip8topiaEmulationUi::closeAllWindows()
 void Chip8topiaEmulationUi::drawEmulationStats(Chip8topia& chip8topia)
 {
     ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
-    ImGui::Text("Screen size: %dx%d", chip8topia.getWindowWidth(), chip8topia.getWindowHeight());
+    //    ImGui::Text("Screen size: %dx%d", chip8topia.getWindowWidth(), chip8topia.getWindowHeight());
     ImGui::Text("Frame time: %.3f ms", 1000.0F / ImGui::GetIO().Framerate);
 }
 

@@ -55,13 +55,9 @@ Screenshot of the differents debug tools here ?
 
 Major:
 
-- [ ] Add code to get CPU usage
-- [x] Add code to get memory usage
-- [x] Add fixed window at the to right corner with the memory usage and CPU usage
-- [-] Correct the Xo-Chip games not working properly 5think its the CPU that is not working properlym the Ppu should be
+- [-] Add code to get CPU usage
+- [-] Correct the Xo-Chip games not working properly I think its the CPU that is not working properlym the Ppu should be
   fine)
-- [-] Add performance monitoring with ImGui (with floating window transparent in and no button at the top left corner.
-  Make it not visible when in Release mdoe and togglable in debug mode)
 - [ ] Restarting a game when playing big xo-chip games will not reload the game from the start (we should reset memory
   and reload the game rom)
 

@@ -60,14 +60,9 @@ void Chip8topiaRomLoaderUi::drawFileMenu(Chip8topia& chip8topia)
 
 void Chip8topiaRomLoaderUi::drawRomWindow(Chip8topia& chip8topia)
 {
-    std::pair windowSize = chip8topia.getWindowDimensions();
-
-#ifdef __EMSCRIPTEN__
+    const auto windowSize = chip8topia.getCurrentDimensions();
     const ImVec2 windowDimensions(static_cast<float>(windowSize.first / 2), static_cast<float>(windowSize.second / 2));
-#else
-    const ImVec2 windowDimensions(static_cast<float>(windowSize.first), static_cast<float>(windowSize.second));
-#endif
-
+    
     if (ImGuiFileDialog::Instance()->Display(FILE_DIALOG_NAME, ImGuiWindowFlags_NoCollapse, windowDimensions))
     {
         if (ImGuiFileDialog::Instance()->IsOk())

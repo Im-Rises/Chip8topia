@@ -38,6 +38,7 @@
 #endif
 
 // TODO: Add error handling everywhere
+// TODO: To work better, maybe we should only update it every second or so
 
 class PerformanceMonitor
 {
