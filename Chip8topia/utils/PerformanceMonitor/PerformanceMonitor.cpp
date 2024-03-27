@@ -114,8 +114,6 @@ void PerformanceMonitor::update()
 {
     // RAM
     sysinfo(&m_info);
-    // CPU getrusage()
-    getrusage()
 }
 
 auto PerformanceMonitor::getTotalVirtualMemory() const -> float
