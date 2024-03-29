@@ -29,7 +29,9 @@ auto calculateCpuColor(float cpu) -> ImVec4
 
 void Chip8topiaPerformanceMonitor::drawWindow(Chip8topia& chip8topia, bool isMainBarOpen)
 {
+#if !defined(__EMSCRIPTEN__)
     m_performanceMonitor.update();
+#endif
 
     const ImVec2 mainWindowPos = ImGui::GetMainViewport()->Pos;
     ImGui::SetNextWindowPos(ImVec2(mainWindowPos.x + 10.0F, mainWindowPos.y + (isMainBarOpen ? 30.0F : 10.0F)), ImGuiCond_Always);
@@ -59,6 +61,7 @@ void Chip8topiaPerformanceMonitor::drawWindow(Chip8topia& chip8topia, bool isMai
     ImGui::SameLine();
     ImGui::TextColored(BLUE_COLOR, "%dx%d", chip8topia.getCurrentWidth(), chip8topia.getCurrentHeight());
 
+#if !defined(__EMSCRIPTEN__)
     ImGui::Text("RAM:");
     ImGui::SameLine();
     ImGui::TextColored(BLUE_COLOR, "%0.f", m_performanceMonitor.getTotalPhysicalMemory());
@@ -75,6 +78,7 @@ void Chip8topiaPerformanceMonitor::drawWindow(Chip8topia& chip8topia, bool isMai
     ImGui::Text("CPU Usage:");
     ImGui::SameLine();
     ImGui::TextColored(colorCpu, "%06.2f", cpuUsage);
+#endif
 
     const ImVec4 colorFps = calculateFpsColor(ImGui::GetIO().Framerate);
     ImGui::Text("DeltaTime:");

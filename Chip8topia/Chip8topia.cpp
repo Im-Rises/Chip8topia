@@ -268,7 +268,9 @@ void Chip8topia::handleInputs()
 void Chip8topia::handleUi(const float /*deltaTime*/)
 {
     ImGuiIO& io = ImGui::GetIO();
+#ifndef __EMSCRIPTEN__
     setWindowTitle(io.Framerate);
+#endif
 
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();

@@ -152,9 +152,9 @@ auto PerformanceMonitor::getPhysicalMemoryUsedByCurrentProcess() const -> float
 
 auto PerformanceMonitor::getCpuUsed(float deltaTime) -> float
 {
-    __suseconds_t user = m_usage.ru_utime.tv_sec * 1000000 + m_usage.ru_utime.tv_usec;
-    __suseconds_t sys = m_usage.ru_stime.tv_sec * 1000000 + m_usage.ru_stime.tv_usec;
-    __suseconds_t totalCpuTime = user + sys - m_lastTimeUsec;
+    suseconds_t user = m_usage.ru_utime.tv_sec * 1000000 + m_usage.ru_utime.tv_usec;
+    suseconds_t sys = m_usage.ru_stime.tv_sec * 1000000 + m_usage.ru_stime.tv_usec;
+    suseconds_t totalCpuTime = user + sys - m_lastTimeUsec;
     m_lastTimeUsec = user + sys;
 
     return (static_cast<float>(totalCpuTime) / deltaTime) * 100;

@@ -17,5 +17,7 @@ public:
     void drawWindow(Chip8topia& chip8topia, bool isMainBarOpen);
 
 private:
+#if !defined(__EMSCRIPTEN__)
     PerformanceMonitor m_performanceMonitor;
+#endif
 };

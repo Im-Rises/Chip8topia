@@ -80,6 +80,6 @@ private:
     struct sysinfo m_info;
     // CPU usage
     struct rusage m_usage;
-    __suseconds_t m_lastTimeUsec;
+    suseconds_t m_lastTimeUsec;
 #endif
 };
