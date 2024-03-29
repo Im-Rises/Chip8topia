@@ -69,7 +69,7 @@ auto PerformanceMonitor::getPhysicalMemoryUsedByCurrentProcess() const -> float
     return m_pmc.WorkingSetSize / RAM_MB_FACTOR;
 }
 
-auto PerformanceMonitor::getCpuUsed() -> float
+auto PerformanceMonitor::getCpuUsed(float deltaTime) -> float
 {
     PDH_FMT_COUNTERVALUE counterVal;
 
@@ -104,6 +104,10 @@ auto PerformanceMonitor::getCpuUsedByCurrentProcess() -> float
 #elif defined(PLATFORM_LINUX)
 PerformanceMonitor::PerformanceMonitor()
 {
+    // RAM
+    sysinfo(&m_info);
+    // CPU
+    getrusage(RUSAGE_SELF, &m_usage);
 }
 
 PerformanceMonitor::~PerformanceMonitor()
@@ -146,9 +150,14 @@ auto PerformanceMonitor::getPhysicalMemoryUsedByCurrentProcess() const -> float
     return -1.0F;
 }
 
-auto PerformanceMonitor::getCpuUsed() -> float
+auto PerformanceMonitor::getCpuUsed(float deltaTime) -> float
 {
-    return -1.0F;
+    __suseconds_t user = m_usage.ru_utime.tv_sec * 1000000 + m_usage.ru_utime.tv_usec;
+    __suseconds_t sys = m_usage.ru_stime.tv_sec * 1000000 + m_usage.ru_stime.tv_usec;
+    __suseconds_t totalCpuTime = user + sys - m_lastTimeUsec;
+    m_lastTimeUsec = user + sys;
+
+    return (static_cast<float>(totalCpuTime) / deltaTime) * 100;
 }
 
 auto PerformanceMonitor::getCpuUsedByCurrentProcess() -> float

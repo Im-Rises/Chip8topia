@@ -33,10 +33,10 @@ void Chip8topiaEmulationUi::drawEmulationMenu(Chip8topia& chip8topia)
     }
 }
 
-void Chip8topiaEmulationUi::drawEmulationWindows(Chip8topia& chip8topia)
+void Chip8topiaEmulationUi::drawEmulationWindows(Chip8topia& chip8topia, bool isMainBarOpen)
 {
     drawEmulationSettings(&chip8topia);
-    drawEmulationStats(chip8topia);
+    drawEmulationStats(chip8topia, isMainBarOpen);
 }
 
 void Chip8topiaEmulationUi::closeAllWindows()
@@ -47,11 +47,11 @@ void Chip8topiaEmulationUi::closeAllWindows()
 #endif
 }
 
-void Chip8topiaEmulationUi::drawEmulationStats(Chip8topia& chip8topia)
+void Chip8topiaEmulationUi::drawEmulationStats(Chip8topia& chip8topia, bool isMainBarOpen)
 {
     if (m_emulationStatsOpen)
     {
-        m_performanceMonitor.drawWindow(chip8topia, true);
+        m_performanceMonitor.drawWindow(chip8topia, isMainBarOpen);
     }
 }
 

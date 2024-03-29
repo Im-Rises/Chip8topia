@@ -16,6 +16,9 @@
  * - CPU Usage by process            | No      | No
  * */
 
+// TODO: Add error handling everywhere
+// TODO: To work better, maybe we should only update it every second or an average value would be better
+
 #if defined(PLATFORM_WINDOWS)
 #include <cstdio>
 #include <windows.h>
@@ -30,9 +33,7 @@
 #include <sys/resource.h>
 #endif
 
-// TODO: Add error handling everywhere
-// TODO: To work better, maybe we should only update it every second or an average value would be better
-// TODO: Add Linux support
+
 
 class PerformanceMonitor
 {
@@ -57,7 +58,7 @@ public:
     [[nodiscard]] auto getPhysicalMemoryUsed() const -> float;
     [[nodiscard]] auto getPhysicalMemoryUsedByCurrentProcess() const -> float;
 
-    [[nodiscard]] auto getCpuUsed() -> float;
+    [[nodiscard]] auto getCpuUsed(float deltaTime) -> float;
     [[nodiscard]] auto getCpuUsedByCurrentProcess() -> float;
 
 private:
@@ -77,5 +78,8 @@ private:
 #elif defined(PLATFORM_LINUX)
     // RAM (physical memory)
     struct sysinfo m_info;
+    // CPU usage
+    struct rusage m_usage;
+    __suseconds_t m_lastTimeUsec;
 #endif
 };

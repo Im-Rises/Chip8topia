@@ -1,13 +1,38 @@
 #include "Chip8topiaPerformanceMonitor.h"
 
+#include <imgui.h>
+
 #include "../Chip8topia.h"
 
-#include <imgui.h>
+static constexpr ImVec4 GREEN_COLOR = ImVec4(0.0F, 1.0F, 0.0F, 1.0F);
+static constexpr ImVec4 YELLOW_COLOR = ImVec4(1.0F, 1.0F, 0.0F, 1.0F);
+static constexpr ImVec4 RED_COLOR = ImVec4(1.0F, 0.0F, 0.0F, 1.0F);
+static constexpr ImVec4 BLUE_COLOR = ImVec4(0.0F, 1.0F, 1.0F, 1.0F);
+
+auto calculateRamColor(float ramPercentUsed) -> ImVec4
+{
+    return ramPercentUsed > 80.0F ? RED_COLOR : ramPercentUsed > 60.0F ? YELLOW_COLOR
+                                                                       : GREEN_COLOR;
+}
+
+auto calculateFpsColor(float fps) -> ImVec4
+{
+    return fps < 55.0F ? RED_COLOR : fps < 57.5F ? YELLOW_COLOR
+                                                 : GREEN_COLOR;
+}
+
+auto calculateCpuColor(float cpu) -> ImVec4
+{
+    return cpu > 80.0F ? RED_COLOR : cpu > 60.0F ? YELLOW_COLOR
+                                                 : GREEN_COLOR;
+}
 
 void Chip8topiaPerformanceMonitor::drawWindow(Chip8topia& chip8topia, bool isMainBarOpen)
 {
     m_performanceMonitor.update();
 
+    const ImVec2 mainWindowPos = ImGui::GetMainViewport()->Pos;
+    ImGui::SetNextWindowPos(ImVec2(mainWindowPos.x + 10.0F, mainWindowPos.y + (isMainBarOpen ? 30.0F : 10.0F)), ImGuiCond_Always);
     ImGui::SetNextWindowBgAlpha(0.35F);
     ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0F, 0.0F, 1.0F, 1.0F));
     ImGui::Begin("Performance Monitor", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoSavedSettings);
@@ -30,20 +55,34 @@ void Chip8topiaPerformanceMonitor::drawWindow(Chip8topia& chip8topia, bool isMai
     ImGui::SameLine();
     ImGui::Text("VERSION %s", CHIP8TOPIA_VERSION);
 
-    //  TODO: Add color to the text (red when bad, yellow when warning, green when good)
-    //     ImGui::TextColored(ImGui::GetIO().Framerate > 60.0F ? ImVec4(0.0F, 1.0F, 0.0F, 1.0F) : ImVec4(1.0F, 0.0F, 0.0F, 1.0F), "FPS: %0.f", ImGui::GetIO().Framerate);
-    ImGui::Text("Resolution: %dx%d", chip8topia.getCurrentWidth(), chip8topia.getCurrentHeight());
-
-    ImGui::Text("FPS: %0.f", ImGui::GetIO().Framerate);
+    ImGui::Text("Resolution:");
     ImGui::SameLine();
-    ImGui::Text("DeltaTime: %0.3f", ImGui::GetIO().DeltaTime);
+    ImGui::TextColored(BLUE_COLOR, "%dx%d", chip8topia.getCurrentWidth(), chip8topia.getCurrentHeight());
 
-    ImGui::Text("RAM: %0.f", m_performanceMonitor.getTotalPhysicalMemory());
+    ImGui::Text("RAM:");
     ImGui::SameLine();
-    ImGui::Text("RAM Used: %0.f", m_performanceMonitor.getPhysicalMemoryUsed());
+    ImGui::TextColored(BLUE_COLOR, "%0.f", m_performanceMonitor.getTotalPhysicalMemory());
+    ImGui::SameLine();
+    ImGui::Text("RAM Used:");
+    ImGui::SameLine();
+    const float ramUsed = m_performanceMonitor.getPhysicalMemoryUsed();
+    const ImVec4 colorRam = calculateRamColor((ramUsed / m_performanceMonitor.getTotalPhysicalMemory() * 100));
+    ImGui::TextColored(colorRam, "%0.f", ramUsed);
 
-    ImGui::Text("CPU Usage: %06.2f", m_performanceMonitor.getCpuUsed());
+    // TODO: Maybe replace with real delta time (this one is an average)
+    const float cpuUsage = m_performanceMonitor.getCpuUsed(ImGui::GetIO().DeltaTime);
+    const ImVec4 colorCpu = calculateCpuColor(cpuUsage);
+    ImGui::Text("CPU Usage:");
     ImGui::SameLine();
+    ImGui::TextColored(colorCpu, "%06.2f", cpuUsage);
+
+    const ImVec4 colorFps = calculateFpsColor(ImGui::GetIO().Framerate);
+    ImGui::Text("DeltaTime:");
+    ImGui::SameLine();
+    ImGui::TextColored(colorFps, "%0.4f", ImGui::GetIO().DeltaTime);
+    ImGui::Text("FPS:");
+    ImGui::SameLine();
+    ImGui::TextColored(colorFps, "%0.f", ImGui::GetIO().Framerate);
 
     ImGui::End();
     ImGui::PopStyleColor();

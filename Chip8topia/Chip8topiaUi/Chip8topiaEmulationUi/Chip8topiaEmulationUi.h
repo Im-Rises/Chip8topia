@@ -30,12 +30,12 @@ public:
 
 public:
     void drawEmulationMenu(Chip8topia& chip8topia);
-    void drawEmulationWindows(Chip8topia& chip8topia);
+    void drawEmulationWindows(Chip8topia& chip8topia, bool isMainBarOpen);
     void closeAllWindows();
 
 private:
     void drawEmulationSettings(Chip8topia* chip8topia);
-    void drawEmulationStats(Chip8topia& chip8topia);
+    void drawEmulationStats(Chip8topia& chip8topia, bool isMainBarOpen);
 
 private:
     Chip8topiaPerformanceMonitor m_performanceMonitor;
