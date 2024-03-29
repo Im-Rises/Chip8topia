@@ -25,7 +25,8 @@ Emulatated consoles:
 
 ## Features
 
-- [x] Load Chip8, SCHIP1.1, SCHIPC and Xo-Chip games
+- [x] Desktop and WebAssembly version
+- [x] Play Chip8, SCHIP1.1, SCHIPC and Xo-Chip games
 - [x] Pause/Resume the emulation
 - [x] Restart the emulation
 - [x] Change the emulation speed
@@ -35,9 +36,9 @@ Emulatated consoles:
 - [x] Memory Editor
 - [x] Register Editor
 - [x] Plane viewer (SCHIP1.1, SCHIPC and Xo-Chip)
-- [x] Desktop and WebAssembly version
 - [x] Load ROMs from the browser (WebAssembly)
-- [x] Load integrated ROMs (WebAssembly)
+
+[//]: # (- [x] Load integrated ROMs &#40;WebAssembly&#41;)
 
 ## Screenshots
 
