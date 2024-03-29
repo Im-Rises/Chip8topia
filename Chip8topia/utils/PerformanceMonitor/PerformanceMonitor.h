@@ -32,7 +32,7 @@
 #include <sys/time.h>
 #include <sys/resource.h>
 #endif
-
+#include <chrono>
 
 
 class PerformanceMonitor
@@ -58,7 +58,7 @@ public:
     [[nodiscard]] auto getPhysicalMemoryUsed() const -> float;
     [[nodiscard]] auto getPhysicalMemoryUsedByCurrentProcess() const -> float;
 
-    [[nodiscard]] auto getCpuUsed(float deltaTime) -> float;
+    [[nodiscard]] auto getCpuUsed() -> float;
     [[nodiscard]] auto getCpuUsedByCurrentProcess() -> float;
 
 private:
@@ -81,5 +81,8 @@ private:
     // CPU usage
     struct rusage m_usage;
     suseconds_t m_lastTimeUsec;
+    // TIMER
+    std::chrono::time_point<std::chrono::high_resolution_clock> m_lastTime;
+    long m_deltaTime;
 #endif
 };

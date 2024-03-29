@@ -69,7 +69,7 @@ auto PerformanceMonitor::getPhysicalMemoryUsedByCurrentProcess() const -> float
     return m_pmc.WorkingSetSize / RAM_MB_FACTOR;
 }
 
-auto PerformanceMonitor::getCpuUsed(float deltaTime) -> float
+auto PerformanceMonitor::getCpuUsed() -> float
 {
     PDH_FMT_COUNTERVALUE counterVal;
 
@@ -102,12 +102,15 @@ auto PerformanceMonitor::getCpuUsedByCurrentProcess() -> float
     return percent * 100;
 }
 #elif defined(PLATFORM_LINUX)
-PerformanceMonitor::PerformanceMonitor()
+PerformanceMonitor::PerformanceMonitor() : m_deltaTime(0.0F), m_lastTime(std::chrono::high_resolution_clock::now())
 {
     // RAM
     sysinfo(&m_info);
     // CPU
     getrusage(RUSAGE_SELF, &m_usage);
+    __suseconds_t user = m_usage.ru_utime.tv_sec * 1000000 + m_usage.ru_utime.tv_usec;
+    __suseconds_t sys = m_usage.ru_stime.tv_sec * 1000000 + m_usage.ru_stime.tv_usec;
+    m_lastTimeUsec = user + sys;
 }
 
 PerformanceMonitor::~PerformanceMonitor()
@@ -118,6 +121,11 @@ void PerformanceMonitor::update()
 {
     // RAM
     sysinfo(&m_info);
+    // CPU
+    getrusage(RUSAGE_SELF, &m_usage);
+    // Delta time
+    m_deltaTime = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - m_lastTime).count();
+    m_lastTime = std::chrono::high_resolution_clock::now();
 }
 
 auto PerformanceMonitor::getTotalVirtualMemory() const -> float
@@ -150,14 +158,14 @@ auto PerformanceMonitor::getPhysicalMemoryUsedByCurrentProcess() const -> float
     return -1.0F;
 }
 
-auto PerformanceMonitor::getCpuUsed(float deltaTime) -> float
+auto PerformanceMonitor::getCpuUsed() -> float
 {
     suseconds_t user = m_usage.ru_utime.tv_sec * 1000000 + m_usage.ru_utime.tv_usec;
     suseconds_t sys = m_usage.ru_stime.tv_sec * 1000000 + m_usage.ru_stime.tv_usec;
     suseconds_t totalCpuTime = user + sys - m_lastTimeUsec;
     m_lastTimeUsec = user + sys;
 
-    return (static_cast<float>(totalCpuTime) / deltaTime) * 100;
+    return (static_cast<float>(totalCpuTime) / m_deltaTime) * 100;
 }
 
 auto PerformanceMonitor::getCpuUsedByCurrentProcess() -> float
