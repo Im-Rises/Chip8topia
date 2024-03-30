@@ -34,9 +34,10 @@ private:
     static constexpr auto FONT_AWESOME_INIT_ERROR_CODE = 5;
 #if !defined(BUILD_RELEASE)
     //    static constexpr auto DEBUG_ROM_PATH = "trash/chip8-test-suite-main/bin/8-scrolling.ch8";
-    static constexpr auto DEBUG_ROM_PATH = "trash/games/t8nks.ch8";
-    //    static constexpr auto DEBUG_ROM_PATH = "trash/games/alien-inv8sion.ch8";
-    //    static constexpr auto DEBUG_ROM_PATH = "trash/games/color-scroll-test-xochip.ch8";
+    static constexpr auto DEBUG_ROM_PATH = "trash/chip8-test-suite-main/bin/5-quirks.ch8";
+//    static constexpr auto DEBUG_ROM_PATH = "trash/games/t8nks.ch8";
+//    static constexpr auto DEBUG_ROM_PATH = "trash/games/alien-inv8sion.ch8";
+//    static constexpr auto DEBUG_ROM_PATH = "trash/games/color-scroll-test-xochip.ch8";
 #endif
 
 public:

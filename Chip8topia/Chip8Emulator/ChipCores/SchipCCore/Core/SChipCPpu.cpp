@@ -83,8 +83,8 @@ auto SChipCPpu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array
     const unsigned int screenWidth = isLoresMode ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
     const unsigned int screenHeight = isLoresMode ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
 
-    Vx %= screenWidth;
-    Vy %= screenHeight;
+    Vx = Vx % screenWidth;
+    Vy = Vy % screenHeight;
 
     for (unsigned int i = 0; i < n; ++i)
     {
@@ -93,13 +93,11 @@ auto SChipCPpu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array
         {
             if (((spriteByte) & (0x1 << (7 - j))) != 0)
             {
-                // Clip the sprite if it goes out of bounds
                 if (((Vx + j) >= screenWidth && j > 0) || ((Vy + i) >= screenHeight && i > 0))
                 {
                     continue;
                 }
 
-                // Draw the pixel
                 const unsigned int index = (Vx + j) % screenWidth + ((Vy + i) % screenHeight) * screenWidth;
                 if (videoMemory[index] == PIXEL_ON)
                 {
@@ -120,6 +118,9 @@ auto SChipCPpu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array
 auto SChipCPpu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array<uint8, CpuBase::MEMORY_SIZE>& memory, uint8* videoMemory) -> bool
 {
     bool collision = false;
+
+    Vx = Vx % PpuBase::SCREEN_HIRES_MODE_WIDTH;
+    Vy = Vy % PpuBase::SCREEN_HIRES_MODE_HEIGHT;
 
     for (unsigned int i = 0; i < 16; i++) // 16 rows
     {

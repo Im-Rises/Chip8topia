@@ -56,6 +56,7 @@ Emulatated consoles:
 
 Major:
 
+- [-] Need to check which Chip8 clip or wrap the sprites when drawing for all consoles except Xo-Chip
 - [-] Correct the Xo-Chip games not working properly on T8NKS
 - [ ] Add the Font for HIRES screen (SCHIP1.1, SCHIPC and Xo-Chip)
 - [ ] Add safe and unsafe code version (set the callback error in Core and Cpu, and Ppu, the call it on error) Create an
