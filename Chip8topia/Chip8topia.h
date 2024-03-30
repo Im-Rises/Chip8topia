@@ -14,8 +14,8 @@ public:
     static constexpr auto PROJECT_VERSION = CHIP8TOPIA_VERSION;
     static constexpr auto PROJECT_LINK = "https://github.com/Im-Rises/Chip8topia";
     static constexpr auto PROJECT_AUTHOR = "Im-Rises (Quentin Morel)";
-    static constexpr auto PROJECT_DESCRIPTION = "Chip8topia is a Chip8 emulator made with modern C++ and OpenGL."
-                                                "It is currently emulating the Original Chip8.";
+    static constexpr auto PROJECT_DESCRIPTION = "Chip8topia is a Chip8 emulator made with modern C++, ImGui and OpenGL."
+                                                "It is emulating the Chip8, SuperChip, SuperChipC and XO-Chip consoles.";
     static constexpr auto PROJECT_EMULATION_CONSOLE_NAME = "Chip8";
     static constexpr auto PROJECT_EMULATION_CONSOLE_DESCRIPTION = R"(
 Chip8 is an interpreted programming language, developed by Joseph Weisbecker.
@@ -27,15 +27,16 @@ It was made to allow video games to be more easily programmed for said computers
 
 private:
     static constexpr auto SUCCESS_CODE = 0;
-    static constexpr auto GLFW_INIT_ERROR_CODE = 1;
-    static constexpr auto WINDOW_INIT_ERROR_CODE = 2;
-    static constexpr auto GLAD_INIT_ERROR_CODE = 3;
-    static constexpr auto FONT_AWESOME_INIT_ERROR_CODE = 4;
+    static constexpr auto GLFW_ERROR_CALLBACK_ERROR_CODE = 1;
+    static constexpr auto GLFW_INIT_ERROR_CODE = 2;
+    static constexpr auto WINDOW_INIT_ERROR_CODE = 3;
+    static constexpr auto GLAD_INIT_ERROR_CODE = 4;
+    static constexpr auto FONT_AWESOME_INIT_ERROR_CODE = 5;
 #if !defined(BUILD_RELEASE)
     //    static constexpr auto DEBUG_ROM_PATH = "trash/chip8-test-suite-main/bin/8-scrolling.ch8";
-    //    static constexpr auto DEBUG_ROM_PATH = "trash/games/t8nks.ch8";
+    static constexpr auto DEBUG_ROM_PATH = "trash/games/t8nks.ch8";
     //    static constexpr auto DEBUG_ROM_PATH = "trash/games/alien-inv8sion.ch8";
-    static constexpr auto DEBUG_ROM_PATH = "trash/games/color-scroll-test-xochip.ch8";
+    //    static constexpr auto DEBUG_ROM_PATH = "trash/games/color-scroll-test-xochip.ch8";
 #endif
 
 public:

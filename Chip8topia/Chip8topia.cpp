@@ -494,7 +494,7 @@ void Chip8topia::printDependenciesInfos()
 void Chip8topia::glfw_error_callback(int error, const char* description)
 {
     Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(fmt::format("Glfw Error {}: {}", error, description), []()
-        { exit(1); });
+        { exit(GLFW_ERROR_CALLBACK_ERROR_CODE); });
 }
 
 void Chip8topia::glfw_drop_callback(GLFWwindow* window, int count, const char** paths)
