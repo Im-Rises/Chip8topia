@@ -117,6 +117,7 @@ void Chip8topiaDisassembler::drawDisassemblyControls(Chip8Emulator* emulator)
     if (ImGui::Button("Break"))
     {
         inputHandler.m_BreakEmulationEvent.trigger();
+        requestMoveToPc(emulator->getChip8Core()->getCpu()->getPc());
     }
 
     ImGui::SameLine();
@@ -124,6 +125,7 @@ void Chip8topiaDisassembler::drawDisassemblyControls(Chip8Emulator* emulator)
     if (ImGui::Button("Step"))
     {
         inputHandler.m_StepEmulationEvent.trigger();
+        requestMoveToPc(emulator->getChip8Core()->getCpu()->getPc());
     }
 
     ImGui::SameLine();
@@ -131,6 +133,13 @@ void Chip8topiaDisassembler::drawDisassemblyControls(Chip8Emulator* emulator)
     if (ImGui::Button("Run"))
     {
         inputHandler.m_RunEmulationEvent.trigger();
+    }
+
+    ImGui::SameLine();
+
+    if (ImGui::Button("Go to PC"))
+    {
+        requestMoveToPc(emulator->getChip8Core()->getCpu()->getPc());
     }
 
     ImGui::SameLine();
@@ -176,8 +185,7 @@ void Chip8topiaDisassembler::drawBreakpoints(Chip8Emulator* emulator)
                 ImGui::PushID(breakpoint);
                 if (ImGui::Button(ICON_FA_ARROW_RIGHT))
                 {
-                    m_requestMoveToPc = true;
-                    m_requestedPc = breakpoint;
+                    requestMoveToPc(breakpoint);
                     m_followPc = false;
                 }
                 ImGui::PopID();
@@ -196,4 +204,10 @@ void Chip8topiaDisassembler::drawBreakpoints(Chip8Emulator* emulator)
 
         ImGui::EndTable();
     }
+}
+
+void Chip8topiaDisassembler::requestMoveToPc(uint16 address)
+{
+    m_requestMoveToPc = true;
+    m_requestedPc = address;
 }

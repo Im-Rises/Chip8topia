@@ -114,6 +114,16 @@ void Chip8topiaEmulationUi::drawEmulationSettings(Chip8topia* chip8topia)
             m_selectedFrequency = Chip8Frequency::Freq1800Hz;
         }
 
+        if (ImGui::Selectable("1.2MHZ", m_selectedFrequency == Chip8Frequency::Freq1200000Hz))
+        {
+            m_selectedFrequency = Chip8Frequency::Freq1200000Hz;
+        }
+
+        if (ImGui::Selectable("24MHZ", m_selectedFrequency == Chip8Frequency::Freq24000000Hz))
+        {
+            m_selectedFrequency = Chip8Frequency::Freq24000000Hz;
+        }
+
         ImGui::NewLine();
         ImGui::Separator();
         if (ImGui::Button("Apply"))

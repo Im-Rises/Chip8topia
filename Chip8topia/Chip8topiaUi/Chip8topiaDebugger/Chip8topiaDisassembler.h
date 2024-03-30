@@ -21,6 +21,9 @@ public:
     void drawBreakpoints(Chip8Emulator* emulator);
 
 private:
+    void requestMoveToPc(uint16 pc);
+
+private:
     bool m_followPc = true;
     uint16 m_previousPc = 0;
 

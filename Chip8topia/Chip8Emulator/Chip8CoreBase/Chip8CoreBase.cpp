@@ -6,7 +6,7 @@
 #include "Core/CpuBase.h"
 #include "Core/PpuBase.h"
 
-Chip8CoreBase::Chip8CoreBase(Chip8Frequency cpuClockFrequency, std::unique_ptr<CpuBase> cpu, std::shared_ptr<PpuBase> ppu) : CPU_CLOCK_FREQUENCY(static_cast<unsigned int>(cpuClockFrequency)),
+Chip8CoreBase::Chip8CoreBase(Chip8Frequency cpuClockFrequency, std::unique_ptr<CpuBase> cpu, std::shared_ptr<PpuBase> ppu) : CPU_CLOCK_FREQUENCY(static_cast<uint32>(cpuClockFrequency)),
                                                                                                                              CPU_CLOCK_FREQUENCY_ENUM(cpuClockFrequency),
                                                                                                                              m_cpu(std::move(cpu)),
                                                                                                                              m_ppu(std::move(ppu)),

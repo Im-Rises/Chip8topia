@@ -38,31 +38,32 @@ Emulatated consoles:
 - [x] Plane viewer (SCHIP1.1, SCHIPC and Xo-Chip)
 - [x] Load ROMs from the browser (WebAssembly)
 
-[//]: # (- [x] Load integrated ROMs &#40;WebAssembly&#41;)
-
 ## Screenshots
 
-Screenshot of the differents debug tools here ?
+| Chip8topia Tools                                                                                                      | Chip8topia Debug Tools                                                                                                 |
+|-----------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|
+| ![chip8topia-main-tools](https://github.com/Im-Rises/Chip8topia/assets/59691442/0024eddd-8af2-49fa-89e4-6b4e11660712) | ![chip8topia-debug-tools](https://github.com/Im-Rises/Chip8topia/assets/59691442/44ed037c-4921-4c83-9411-54c9a0b51f53) |
 
 | Invaders (Chip8)                                                                                                         | Car (SCHIP)                                                                                                         | T8NKS (Xo-Chip)                                                                                                       |                                                                                                                   
 |--------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
 | ![invaders-game-screenshot](https://github.com/Im-Rises/Chip8topia/assets/59691442/3e5a2078-2cf7-4929-94c2-ea42cea24efd) | ![car-game-screenshot](https://github.com/Im-Rises/Chip8topia/assets/59691442/13774fed-1ce4-4ab6-b73d-40aa374661a0) | ![t8nks-game-screenshot](https://github.com/Im-Rises/Chip8topia/assets/59691442/e4ab6b1f-e5a4-485f-a26b-dab63e20aff1) |
 
-| Alien Inv8sion | 
-|----------------|
-|                |
+| Alien Inv8sion Title Screen (Xo-Chip Octo)                                                                                 | Alien Inv8sion Gameplay (Xo-Chip Octo)                                                                                  |
+|----------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------|
+| ![alien-inv8sion-titlescreen](https://github.com/Im-Rises/Chip8topia/assets/59691442/71eb63c2-4716-49ba-868b-1525f593529e) | ![alien-inv8sion-gameplay](https://github.com/Im-Rises/Chip8topia/assets/59691442/b1c7441a-6045-4cf3-bb98-7fd6d03835d3) |
 
 ## TODO
 
 Major:
 
-- [-] Correct the Xo-Chip games not working properly on T8NKS and Alien Inv8sion (nothing is happening after title
-  screen)
+- [-] Correct the Xo-Chip games not working properly on T8NKS
 - [ ] Add the Font for HIRES screen (SCHIP1.1, SCHIPC and Xo-Chip)
 - [ ] Add safe and unsafe code version (set the callback error in Core and Cpu, and Ppu, the call it on error) Create an
   error code when calling Core.clock(); if it returns 1 it means it needs a screen refresh if 2 its an
   error and -1 means emulation issue, so the program should stop (also add a normal exit on EXIT opcode)
 - [ ] Add audio
+- [ ] Improve disassembly view to draw only odd or even pc address?
+- [ ] Optimize the code!!!
 
 Minor:
 
@@ -70,9 +71,6 @@ Minor:
   and reload the game rom)
 - [ ] Add a way to change the input keys
 - [ ] Add a background when no rom is loaded
-- [ ] Update window title only on rom loaded (put rom name immediately and do not display fps so it isn't updated every
-  frame)
-- [ ] Improve disassembly view to draw only odd or even pc address?
 
 ## Controls
 
@@ -99,9 +97,11 @@ Minor:
 - [Timendus/chip8-test-suite](https://github.com/Timendus/chip8-test-suite)
 - [chip-8.github.io](https://chip-8.github.io/)
 - [tobiasvl.github.io](https://tobiasvl.github.io/blog/write-a-chip-8-emulator/)
-- [johnearnest.github.io](http://johnearnest.github.io/Octo/docs/XO-ChipSpecification.html)
 - [Timendus/silicon8](https://github.com/Timendus/silicon8/tree/)
+- [Timendus/alien-inv8sion](https://github.com/Timendus/alien-inv8sion)
+- [johnearnest.github.io](http://johnearnest.github.io/Octo/docs/XO-ChipSpecification.html)
 - [johnearnest.github.io/chip8Archive](https://johnearnest.github.io/chip8Archive/?sort=platform)
+- [johnearnest.github.io/Octo](https://johnearnest.github.io/Octo/)
 
 <!--
 ### Other resources

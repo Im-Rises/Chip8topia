@@ -17,12 +17,13 @@ enum class Chip8CoreType : uint8
     XoChip         // XO-Chip
 };
 
-// TODO: Add new frequencies (need to check the rom tests), 2400Hz, 3000Hz, 3600Hz, 4200Hz, 4800Hz, 5400Hz, 6000Hz
-enum class Chip8Frequency : uint16
+enum class Chip8Frequency : uint32
 {
     Freq600Hz = 600,
     Freq1200Hz = 1200,
-    Freq1800Hz = 1800
+    Freq1800Hz = 1800,
+    Freq1200000Hz = 1200000,  // 1.2MHz for Octo
+    Freq24000000Hz = 24000000 // 24MHz for Alien-Inv8sion
 };
 
 // class CpuBase;
@@ -61,5 +62,5 @@ protected:
 
     unsigned int m_clockCounter;
     const Chip8Frequency CPU_CLOCK_FREQUENCY_ENUM;
-    const unsigned int CPU_CLOCK_FREQUENCY;
+    const uint32 CPU_CLOCK_FREQUENCY;
 };
