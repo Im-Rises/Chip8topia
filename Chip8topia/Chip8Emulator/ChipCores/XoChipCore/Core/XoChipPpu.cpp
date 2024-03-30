@@ -187,15 +187,17 @@ auto XoChipPpu::draw8xNSprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::array
         {
             if (((spriteByte) & (0x1 << (7 - j))) != 0)
             {
-                const unsigned int index = (Vx + j) % screenWidth + ((Vy + i) % screenHeight) * screenWidth;
-                if (videoMemory[index] == PIXEL_ON)
+                unsigned int x = (Vx + j) % screenWidth;
+                unsigned int y = (Vy + i) % screenHeight;
+
+                if (videoMemory[y * screenWidth + x] == PIXEL_ON)
                 {
-                    videoMemory[index] = PIXEL_OFF;
+                    videoMemory[y * screenWidth + x] = PIXEL_OFF;
                     collision = true;
                 }
                 else
                 {
-                    videoMemory[index] = PIXEL_ON;
+                    videoMemory[y * screenWidth + x] = PIXEL_ON;
                 }
             }
         }
