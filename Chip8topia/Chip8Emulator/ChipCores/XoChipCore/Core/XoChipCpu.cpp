@@ -28,6 +28,7 @@ void XoChipCpu::computeOpcode(const uint16 opcode)
     {
         switch (nibble2)
         {
+        case 0x0: HALT(); break;       // 0000
         case 0xC: SCD(nibble1); break; // 00CN
         case 0xD: SCU(nibble1); break; // 00DN
         case 0xE:
@@ -143,6 +144,13 @@ void XoChipCpu::computeOpcode(const uint16 opcode)
         break;
     }
     }
+}
+
+void XoChipCpu::HALT()
+{
+    // TODO: Implement HALT
+    // Should block until an interrupt is received (screen, key, which one ???)
+    // For the moment we will just skip to the next instruction
 }
 
 void XoChipCpu::SCR(const uint8 n)

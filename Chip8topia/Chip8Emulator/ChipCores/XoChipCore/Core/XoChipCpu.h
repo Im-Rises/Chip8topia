@@ -19,6 +19,7 @@ public:
 private:
     void computeOpcode(const uint16 opcode) final;
 
+    void HALT();                                                         // 0000
     void SCR(const uint8 n) final;                                       // 00FB
     void SCL(const uint8 n) final;                                       // 00FC
     void LORES() final;                                                  // 00FE
