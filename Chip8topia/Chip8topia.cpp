@@ -269,7 +269,7 @@ void Chip8topia::handleUi(const float /*deltaTime*/)
 {
     ImGuiIO& io = ImGui::GetIO();
 #ifndef __EMSCRIPTEN__
-    setWindowTitle(io.Framerate);
+    updateWindowTitle(io.Framerate);
 #endif
 
     ImGui_ImplOpenGL3_NewFrame();
@@ -392,8 +392,9 @@ void Chip8topia::setWindowIcon()
     glfwSetWindowIcon(m_window, 1, &images);
 }
 
-void Chip8topia::setWindowTitle(const float fps)
+void Chip8topia::updateWindowTitle(const float fps)
 {
+    // TODO: Only call on rom loaded and when rom name changes (do not display fps)
     glfwSetWindowTitle(m_window, fmt::format("{} - {} - {} - {:.1f} fps", PROJECT_NAME, m_chip8Emulator->getConsoleName().c_str(), m_chip8Emulator->getRomName().c_str(), fps).c_str());
 }
 #endif

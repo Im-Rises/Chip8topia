@@ -58,21 +58,21 @@ Major:
 
 - [-] Correct the Xo-Chip games not working properly I think its the CPU that is not working properlym the Ppu should be
   fine)
-- [ ] Restarting a game when playing big xo-chip games will not reload the game from the start (we should reset memory
-  and reload the game rom)
+- [ ] Add the Font for HIRES screen (SCHIP1.1, SCHIPC and Xo-Chip)
 - [ ] Add safe and unsafe code version (set the callback error in Core and Cpu, and Ppu, the call it on error) Create an
   error code when calling Core.clock(); if it returns 1 it means it needs a screen refresh if 2 its an
   error and -1 means emulation issue, so the program should stop (also add a normal exit on EXIT opcode)
-
-Future:
-
 - [ ] Add audio
 
 Minor:
 
+- [ ] Restarting a game when playing big xo-chip games will not reload the game from the start (we should reset memory
+  and reload the game rom)
 - [ ] Correct disassembly Scroll opcode pixel move value not displayed for all consoles except Xo-Chip and Chip8
 - [ ] Add a way to change the input keys
 - [ ] Add a background when no rom is loaded
+- [ ] Update window title only on rom loaded (put rom name immediately and do not display fps so it isn't updated every
+  frame)
 
 ## Controls
 

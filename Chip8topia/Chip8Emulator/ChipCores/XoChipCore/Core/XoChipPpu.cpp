@@ -139,7 +139,7 @@ auto XoChipPpu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, 
     bool collision = false;
 
     const bool isLoresMode = getMode() == PpuMode::LORES;
-    if (isLoresMode || (getMode() == PpuMode::HIRES && n != 0)) // Draw 8xN sprite
+    if (n != 0) // Draw 8xN sprite
     {
         uint8 drawCount = 0;
 
@@ -160,7 +160,7 @@ auto XoChipPpu::drawSprite(uint8 Vx, uint8 Vy, uint8 n, const std::array<uint8, 
         {
             if (getBit(m_planeMask, i))
             {
-                collision |= draw16x16Sprite(Vx, Vy, I_reg + drawCount * 32, memory, m_hiresVideoMemoryPlanes[i].data());
+                collision |= draw16x16Sprite(Vx, Vy, I_reg + drawCount * 32, memory, isLoresMode ? m_loresVideoMemoryPlanes[i].data() : m_hiresVideoMemoryPlanes[i].data());
                 drawCount++;
             }
         }
@@ -208,6 +208,13 @@ auto XoChipPpu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::arr
 {
     bool collision = false;
 
+    const bool isLoresMode = getMode() == PpuMode::LORES;
+    const unsigned int screenWidth = isLoresMode ? PpuBase::SCREEN_LORES_MODE_WIDTH : PpuBase::SCREEN_HIRES_MODE_WIDTH;
+    const unsigned int screenHeight = isLoresMode ? PpuBase::SCREEN_LORES_MODE_HEIGHT : PpuBase::SCREEN_HIRES_MODE_HEIGHT;
+
+    Vx %= screenWidth;
+    Vy %= screenHeight;
+
     for (unsigned int i = 0; i < 16; i++) // 16 rows
     {
         for (unsigned int byteIndex = 0; byteIndex < 2; byteIndex++) // Two bytes per row (16 pixels) each pixel is 1 bit
@@ -217,17 +224,17 @@ auto XoChipPpu::draw16x16Sprite(uint8 Vx, uint8 Vy, uint16 I_reg, const std::arr
             {
                 if ((spriteByte & (0x1 << (7 - j))) != 0)
                 {
-                    unsigned int x = (Vx + j + byteIndex * 8) % PpuBase::SCREEN_HIRES_MODE_WIDTH;
-                    unsigned int y = (Vy + i) % PpuBase::SCREEN_HIRES_MODE_HEIGHT;
+                    unsigned int x = (Vx + j + byteIndex * 8) % screenWidth;
+                    unsigned int y = (Vy + i) % screenHeight;
 
-                    if (videoMemory[y * PpuBase::SCREEN_HIRES_MODE_WIDTH + x] == PIXEL_ON)
+                    if (videoMemory[y * screenWidth + x] == PIXEL_ON)
                     {
-                        videoMemory[y * PpuBase::SCREEN_HIRES_MODE_WIDTH + x] = PIXEL_OFF;
+                        videoMemory[y * screenWidth + x] = PIXEL_OFF;
                         collision = true;
                     }
                     else
                     {
-                        videoMemory[y * PpuBase::SCREEN_HIRES_MODE_WIDTH + x] = PIXEL_ON;
+                        videoMemory[y * screenWidth + x] = PIXEL_ON;
                     }
                 }
             }

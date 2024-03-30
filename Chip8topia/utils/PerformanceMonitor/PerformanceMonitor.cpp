@@ -164,8 +164,8 @@ auto PerformanceMonitor::getCpuUsed() -> float
     suseconds_t sys = m_usage.ru_stime.tv_sec * 1000000 + m_usage.ru_stime.tv_usec;
     suseconds_t totalCpuTime = user + sys - m_lastTimeUsec;
     m_lastTimeUsec = user + sys;
-
-    return (static_cast<float>(totalCpuTime) / m_deltaTime) * 100;
+    
+    return std::clamp((static_cast<float>(totalCpuTime) / m_deltaTime) * 100, 0.0F, 100.0F);
 }
 
 auto PerformanceMonitor::getCpuUsedByCurrentProcess() -> float

@@ -40,11 +40,11 @@ auto Chip8CpuDisassembly::disassembleOpcode(const uint16 opcode) -> std::string
         case 0x7: return fmt::format("SUBN V{:X}, V{:X}", nibble3, nibble2); // 8XY7
         case 0xE: return fmt::format("SHL V{:X}, V{:X}", nibble3, nibble2);  // 8XYE
         }
-    case 0x9: return fmt::format("SNE V{:X}, V{:X}", nibble3, nibble2);                  // 9XY0
-    case 0xA: return fmt::format("LD I, 0x{:03X}", opcode & 0x0FFF);                     // ANNN
-    case 0xB: return fmt::format("JP 0x{:03X}, V0", opcode & 0x0FFF);                    // BNNN
-    case 0xC: return fmt::format("RND V{:X}, 0x{:02X}", nibble3, opcode & 0x00FF);       // CXNN
-    case 0xD: return fmt::format("DRW V{:X}, V{:X}, 0x{:X}", nibble3, nibble2, nibble1); // DXYN
+    case 0x9: return fmt::format("SNE V{:X}, V{:X}", nibble3, nibble2);                    // 9XY0
+    case 0xA: return fmt::format("LD I, 0x{:03X}", opcode & 0x0FFF);                       // ANNN
+    case 0xB: return fmt::format("JP 0x{:03X}, V0", opcode & 0x0FFF);                      // BNNN
+    case 0xC: return fmt::format("RND V{:X}, 0x{:02X}", nibble3, opcode & 0x00FF);         // CXNN
+    case 0xD: return fmt::format("DRW V{:X}, V{:X}, 0x{:02X}", nibble3, nibble2, nibble1); // DXYN
     case 0xE:
         switch (nibble1)
         {

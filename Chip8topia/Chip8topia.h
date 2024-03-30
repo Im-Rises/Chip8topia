@@ -69,7 +69,7 @@ public:
 
 #ifndef __EMSCRIPTEN__
     void setWindowIcon();
-    void setWindowTitle(const float fps);
+    void updateWindowTitle(const float fps);
 #endif
 
     [[nodiscard]] auto getChip8Emulator() -> Chip8Emulator&;
