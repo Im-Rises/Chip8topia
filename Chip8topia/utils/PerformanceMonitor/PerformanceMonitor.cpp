@@ -1,5 +1,7 @@
 #include "PerformanceMonitor.h"
 
+#include <algorithm>
+
 #if defined(PLATFORM_WINDOWS)
 PerformanceMonitor::PerformanceMonitor() : m_memInfo(), m_pmc()
 {
@@ -108,8 +110,8 @@ PerformanceMonitor::PerformanceMonitor() : m_deltaTime(0.0F), m_lastTime(std::ch
     sysinfo(&m_info);
     // CPU
     getrusage(RUSAGE_SELF, &m_usage);
-    __suseconds_t user = m_usage.ru_utime.tv_sec * 1000000 + m_usage.ru_utime.tv_usec;
-    __suseconds_t sys = m_usage.ru_stime.tv_sec * 1000000 + m_usage.ru_stime.tv_usec;
+    suseconds_t user = m_usage.ru_utime.tv_sec * 1000000 + m_usage.ru_utime.tv_usec;
+    suseconds_t sys = m_usage.ru_stime.tv_sec * 1000000 + m_usage.ru_stime.tv_usec;
     m_lastTimeUsec = user + sys;
 }
 
@@ -164,7 +166,7 @@ auto PerformanceMonitor::getCpuUsed() -> float
     suseconds_t sys = m_usage.ru_stime.tv_sec * 1000000 + m_usage.ru_stime.tv_usec;
     suseconds_t totalCpuTime = user + sys - m_lastTimeUsec;
     m_lastTimeUsec = user + sys;
-    
+
     return std::clamp((static_cast<float>(totalCpuTime) / m_deltaTime) * 100, 0.0F, 100.0F);
 }
 
