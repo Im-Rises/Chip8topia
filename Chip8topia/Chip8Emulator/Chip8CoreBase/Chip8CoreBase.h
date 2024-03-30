@@ -6,6 +6,8 @@
 #include <binaryLib/binaryLib.h>
 #include <functional>
 
+#include "Core/CpuBase.h"
+
 enum class Chip8CoreType : uint8
 {
     Chip8,         // Chip-8 (COSMAC VIP)
@@ -15,6 +17,7 @@ enum class Chip8CoreType : uint8
     XoChip         // XO-Chip
 };
 
+// TODO: Add new frequencies (need to check the rom tests), 2400Hz, 3000Hz, 3600Hz, 4200Hz, 4800Hz, 5400Hz, 6000Hz
 enum class Chip8Frequency : uint16
 {
     Freq600Hz = 600,
@@ -22,10 +25,7 @@ enum class Chip8Frequency : uint16
     Freq1800Hz = 1800
 };
 
-#include "Core/CpuBase.h"
-
 // class CpuBase;
-class PpuBase;
 class Input;
 class Chip8CoreBase
 {

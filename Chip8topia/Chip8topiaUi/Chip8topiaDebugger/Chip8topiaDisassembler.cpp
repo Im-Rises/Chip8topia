@@ -5,12 +5,16 @@
 #include <IconsFontAwesome6.h>
 
 #include "../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
+#include "../Chip8Emulator/Disassembly/disassemblySettings.h"
 #include "../Chip8Emulator/Disassembly/Chip8CpuDisassembly.h"
 #include "../Chip8Emulator/Disassembly/SChip11CpuDisassembly.h"
 #include "../Chip8Emulator/Disassembly/SChipCCpuDisassembly.h"
 #include "../Chip8Emulator/Disassembly/XoChipCpuDisassembly.h"
 #include "../../Chip8Emulator/Chip8Emulator.h"
 #include "../../Chip8Emulator/ChipCores/SChip11Core/Core/SChip11Cpu.h"
+
+// TODO: Improve disassembly... Some game may have an odd pc value. We are only displaying opcodes two by two here.
+// TO use the odd pc version, just comment and uncomment the lines with comments below.
 
 void Chip8topiaDisassembler::drawDisassembly(Chip8Emulator* emulator)
 {
@@ -43,11 +47,14 @@ void Chip8topiaDisassembler::drawDisassembly(Chip8Emulator* emulator)
     std::string buffer;
     ImGuiListClipper clipper;
     clipper.Begin(Chip8Cpu::MEMORY_SIZE - 1);
+    //    clipper.Begin(Chip8Cpu::MEMORY_SIZE / OPCODE_SIZE);
     while (clipper.Step())
     {
         for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
         {
             const int memoryIndex = i;
+            //            const int memoryIndex = i * OPCODE_SIZE;
+
             uint16 opcode = (memory[memoryIndex] << 8) | memory[(memoryIndex) + 1];
 
             buffer = fmt::format("  0x{:04X}: ({:04X}) {}", memoryIndex, opcode, disassembler(opcode));
@@ -83,6 +90,7 @@ void Chip8topiaDisassembler::drawDisassembly(Chip8Emulator* emulator)
     if (m_previousPc != pc && m_followPc && !currentPcInViewport)
     {
         ImGui::SetScrollY((static_cast<float>(pc)) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
+        //        ImGui::SetScrollY((static_cast<float>(pc) / OPCODE_SIZE) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
     }
 
     if (m_requestMoveToPc)
@@ -90,6 +98,7 @@ void Chip8topiaDisassembler::drawDisassembly(Chip8Emulator* emulator)
         m_requestMoveToPc = false;
         m_followPc = false;
         ImGui::SetScrollY((static_cast<float>(m_requestedPc)) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
+        //        ImGui::SetScrollY((static_cast<float>(m_requestedPc) / OPCODE_SIZE) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
     }
 
     m_previousPc = pc;
