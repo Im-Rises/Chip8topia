@@ -10,6 +10,7 @@
 #include "../Chip8Emulator/Disassembly/SChipCCpuDisassembly.h"
 #include "../Chip8Emulator/Disassembly/XoChipCpuDisassembly.h"
 #include "../../Chip8Emulator/Chip8Emulator.h"
+#include "../../Chip8Emulator/ChipCores/SChip11Core/Core/SChip11Cpu.h"
 
 void Chip8topiaDisassembler::drawDisassembly(Chip8Emulator* emulator)
 {
@@ -25,10 +26,12 @@ void Chip8topiaDisassembler::drawDisassembly(Chip8Emulator* emulator)
         break;
     case Chip8CoreType::SChip11Legacy:
     case Chip8CoreType::SChip11Modern:
-        disassembler = SChip11CpuDisassembly::disassembleOpcode;
+        disassembler = [&](const uint16 opcode)
+        { return SChip11CpuDisassembly::disassembleOpcode(opcode, dynamic_cast<SChip11Cpu*>(emulator->getChip8Core()->getCpu().get())->getIsModernMode(), emulator->getChip8Core()->getPpu()->getMode() == PpuBase::PpuMode::LORES); };
         break;
     case Chip8CoreType::SChipC:
-        disassembler = SChipCCpuDisassembly::disassembleOpcode;
+        disassembler = [&](const uint16 opcode)
+        { return SChipCCpuDisassembly::disassembleOpcode(opcode, emulator->getChip8Core()->getPpu()->getMode() == PpuBase::PpuMode::LORES); };
         break;
     case Chip8CoreType::XoChip:
         disassembler = XoChipCpuDisassembly::disassembleOpcode;

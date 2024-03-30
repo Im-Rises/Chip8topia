@@ -4,7 +4,7 @@
 
 #include "disassemblySettings.h"
 
-auto SChip11CpuDisassembly::disassembleOpcode(const uint16 opcode) -> std::string
+auto SChip11CpuDisassembly::disassembleOpcode(const uint16 opcode, bool isModern, bool isLowRes) -> std::string
 {
     const uint8 nibble4 = (opcode & 0xF000) >> 12;
     const uint8 nibble3 = (opcode & 0x0F00) >> 8;
@@ -17,7 +17,7 @@ auto SChip11CpuDisassembly::disassembleOpcode(const uint16 opcode) -> std::strin
     {
         switch (nibble2)
         {
-        case 0xC: return fmt::format("SCD"); // 00CN
+        case 0xC: return fmt::format("SCD 0x{:X}", (isLowRes && !isModern) ? nibble1 / 2 : nibble1); // 00CN
         case 0xE:
         {
             switch (nibble1)
@@ -31,11 +31,11 @@ auto SChip11CpuDisassembly::disassembleOpcode(const uint16 opcode) -> std::strin
         {
             switch (nibble1)
             {
-            case 0xB: return fmt::format("SCR"); // 00FB
-            case 0xC: return fmt::format("SCL"); // 00FC
-            case 0xD: return "EXIT";             // 00FD
-            case 0xE: return "LORES";            // 00FE
-            case 0xF: return "HIRES";            // 00FF
+            case 0xB: return fmt::format("SCR 0x{:X}", isLowRes && !isModern ? 2 : 4); // 00FB
+            case 0xC: return fmt::format("SCL 0x{:X}", isLowRes && !isModern ? 2 : 4); // 00FC
+            case 0xD: return "EXIT";                                                   // 00FD
+            case 0xE: return "LORES";                                                  // 00FE
+            case 0xF: return "HIRES";                                                  // 00FF
             }
             break;
         }
