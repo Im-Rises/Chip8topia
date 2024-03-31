@@ -16,27 +16,12 @@ For the WebAssembly version, it uses Emscripten to compile with vcpkg for most d
 It can emulate the original Chip8, the SCHIP1.1, SCHIPC and Xo-Chip.
 Currently, no sound is implemented, but it is planned.
 
-Emulatated consoles:
+Emulated consoles:
 
 - [x] Chip8
 - [x] SCHIP1.1
 - [x] SCHIPC
 - [x] Xo-Chip
-
-## Features
-
-- [x] Desktop and WebAssembly version
-- [x] Play Chip8, SCHIP1.1, SCHIPC and Xo-Chip games
-- [x] Pause/Resume the emulation
-- [x] Restart the emulation
-- [x] Change the emulation speed
-- [x] Change the color of the screen
-- [x] Disassemble
-- [x] Breakpoint
-- [x] Memory Editor
-- [x] Register Editor
-- [x] Plane viewer (SCHIP1.1, SCHIPC and Xo-Chip)
-- [x] Load ROMs from the browser (WebAssembly)
 
 ## Screenshots
 
@@ -52,15 +37,37 @@ Emulatated consoles:
 |----------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------|
 | ![alien-inv8sion-titlescreen](https://github.com/Im-Rises/Chip8topia/assets/59691442/71eb63c2-4716-49ba-868b-1525f593529e) | ![alien-inv8sion-gameplay](https://github.com/Im-Rises/Chip8topia/assets/59691442/b1c7441a-6045-4cf3-bb98-7fd6d03835d3) |
 
+## Features
+
+### Main
+
+- [x] Desktop and WebAssembly version
+- [x] Chip8, SCHIP1.1, SCHIPC and Xo-Chip support
+- [x] Pause/Resume/Restart the emulation
+- [x] Change the emulation speed
+- [x] Change the color of the screen
+- [x] Fullscreen mode (on the current screen the window is in)
+- [x] Load rom from file in Desktop and WebAssembly build
+- [x] Load integrated games in WebAssembly build
+
+### Debug Tools
+
+- [x] Registers viewer
+- [x] Stack viewer
+- [x] Memory Editor
+- [x] Virtual Keypad
+- [x] Disassembly
+- [x] Disassembly controls (break, step, run, reset)
+- [x] Breakpoints
+- [x] Planes viewer
+
 ## TODO
 
 Major:
 
-- [-] Need to check which Chip8 clip or wrap the sprites when drawing for all consoles except Xo-Chip
 - [-] Correct the Xo-Chip games not working properly on T8NKS
-- [ ] Add the Font for HIRES screen (SCHIP1.1, SCHIPC and Xo-Chip)
 - [ ] Add safe and unsafe code version (set the callback error in Core and Cpu, and Ppu, the call it on error) Create an
-  error code when calling Core.clock(); if it returns 1 it means it needs a screen refresh if 2 its an
+  error code when calling Core.clock(); if it returns 1 it means it needs a screen refresh if 2 it's an
   error and -1 means emulation issue, so the program should stop (also add a normal exit on EXIT opcode)
 - [ ] Add audio
 - [ ] Improve disassembly view to draw only odd or even pc address?

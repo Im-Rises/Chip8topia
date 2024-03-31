@@ -137,6 +137,13 @@ void Chip8topiaDisassembler::drawDisassemblyControls(Chip8Emulator* emulator)
 
     ImGui::SameLine();
 
+    if (ImGui::Button("Restart"))
+    {
+        inputHandler.m_RestartEmulationEvent.trigger();
+    }
+
+    ImGui::SameLine();
+
     if (ImGui::Button("Go to PC"))
     {
         requestMoveToPc(emulator->getChip8Core()->getCpu()->getPc());
@@ -147,13 +154,6 @@ void Chip8topiaDisassembler::drawDisassemblyControls(Chip8Emulator* emulator)
     if (ImGui::Button("Clear Breakpoints"))
     {
         inputHandler.m_ClearBreakpointsEvent.trigger();
-    }
-
-    ImGui::SameLine();
-
-    if (ImGui::Button("Restart"))
-    {
-        inputHandler.m_RestartEmulationEvent.trigger();
     }
 }
 
