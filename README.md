@@ -77,6 +77,7 @@ Minor:
 
 - [ ] Restarting a game when playing big xo-chip games will not reload the game from the start (we should reset memory
   and reload the game rom)
+- [ ] Correct all TODO in the code
 - [ ] Add a way to change the input keys
 - [ ] Add a background when no rom is loaded
 

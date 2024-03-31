@@ -45,9 +45,9 @@ void ShaderXoChip::reset()
 {
     // TODO: Improve this clean function
     std::vector<uint8> data(WIDTH * HEIGHT, 0);
-    for (int i = 0; i < XoChipPpu::PLANE_COUNT; ++i)
+    for (GLuint m_texture : m_textures)
     {
-        glBindTexture(GL_TEXTURE_2D, m_textures[i]);
+        glBindTexture(GL_TEXTURE_2D, m_texture);
         glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, WIDTH, HEIGHT, GL_RED, GL_UNSIGNED_BYTE, data.data());
     }
 

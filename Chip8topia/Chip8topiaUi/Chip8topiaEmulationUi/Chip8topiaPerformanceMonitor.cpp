@@ -9,19 +9,19 @@ static constexpr ImVec4 YELLOW_COLOR = ImVec4(1.0F, 1.0F, 0.0F, 1.0F);
 static constexpr ImVec4 RED_COLOR = ImVec4(1.0F, 0.0F, 0.0F, 1.0F);
 static constexpr ImVec4 BLUE_COLOR = ImVec4(0.0F, 1.0F, 1.0F, 1.0F);
 
-auto calculateRamColor(float ramPercentUsed) -> ImVec4
+inline auto calculateRamColor(float ramPercentUsed) -> ImVec4
 {
     return ramPercentUsed > 80.0F ? RED_COLOR : ramPercentUsed > 60.0F ? YELLOW_COLOR
                                                                        : GREEN_COLOR;
 }
 
-auto calculateFpsColor(float fps) -> ImVec4
+inline auto calculateFpsColor(float fps) -> ImVec4
 {
     return fps < 55.0F ? RED_COLOR : fps < 57.5F ? YELLOW_COLOR
                                                  : GREEN_COLOR;
 }
 
-auto calculateCpuColor(float cpu) -> ImVec4
+inline auto calculateCpuColor(float cpu) -> ImVec4
 {
     return cpu > 80.0F ? RED_COLOR : cpu > 60.0F ? YELLOW_COLOR
                                                  : GREEN_COLOR;

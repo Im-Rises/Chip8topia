@@ -45,19 +45,6 @@ Chip8Emulator::~Chip8Emulator()
 
 void Chip8Emulator::resetColorPalette()
 {
-    //    switch (m_core->getType())
-    //    {
-    //    case Chip8CoreType::Chip8:
-    //    case Chip8CoreType::SChip11Legacy:
-    //    case Chip8CoreType::SChip11Modern:
-    //    case Chip8CoreType::SChipC:
-    //        m_videoEmulation.resetToBWColors();
-    //        break;
-    //    case Chip8CoreType::XoChip:
-    //        m_videoEmulation.resetToColorColors();
-    //        break;
-    //    }
-
     m_videoEmulation.resetToColorColors();
 }
 
