@@ -8,7 +8,7 @@
 class Input
 {
 public:
-    static constexpr auto KEY_COUNT = 16;
+    static constexpr int KEY_COUNT = 16;
     static constexpr std::array<const uint8, KEY_COUNT> KEYS = {
         0x1, 0x2, 0x3, 0xC,
         0x4, 0x5, 0x6, 0xD,

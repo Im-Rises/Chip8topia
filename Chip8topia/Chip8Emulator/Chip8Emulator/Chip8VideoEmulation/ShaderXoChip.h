@@ -17,11 +17,11 @@ class ShaderXoChip
 {
 private:
 #if defined(__EMSCRIPTEN__)
-    static constexpr auto VERTEX_SHADER_PATH = "shaders/Chip8topiaXoChip_es.vert";
-    static constexpr auto FRAGMENT_SHADER_PATH = "shaders/Chip8topiaXoChip_es.frag";
+    static constexpr const char* const VERTEX_SHADER_PATH = "shaders/Chip8topiaXoChip_es.vert";
+    static constexpr const char* const FRAGMENT_SHADER_PATH = "shaders/Chip8topiaXoChip_es.frag";
 #else
-    static constexpr auto VERTEX_SHADER_PATH = "shaders/Chip8topiaXoChip.vert";
-    static constexpr auto FRAGMENT_SHADER_PATH = "shaders/Chip8topiaXoChip.frag";
+    static constexpr const char* const VERTEX_SHADER_PATH = "shaders/Chip8topiaXoChip.vert";
+    static constexpr const char* const FRAGMENT_SHADER_PATH = "shaders/Chip8topiaXoChip.frag";
 #endif
 
     static constexpr std::array<GLfloat, 12> VERTICES = {

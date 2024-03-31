@@ -39,6 +39,8 @@ private:
 //    static constexpr auto DEBUG_ROM_PATH = "trash/games/alien-inv8sion.ch8";
 //    static constexpr auto DEBUG_ROM_PATH = "trash/games/color-scroll-test-xochip.ch8";
 #endif
+    static constexpr int TOAST_DURATION_SUCCESS = 1000;
+    static constexpr int TOAST_DURATION_ERROR = 3000;
 
 public:
     Chip8topia();

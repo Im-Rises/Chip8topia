@@ -6,12 +6,12 @@ class Chip8topia;
 class Chip8topiaRomLoaderUi
 {
 private:
-    static constexpr auto FILE_DIALOG_NAME = "RomFileWindowDialog";
+    static constexpr const char* const FILE_DIALOG_NAME = "RomFileWindowDialog";
 #if defined(__EMSCRIPTEN__)
-    static constexpr auto DEFAULT_FOLDER_PATH = "Chip8Games";
-#else
-    static constexpr auto DEFAULT_FOLDER_PATH = ".";
+    static constexpr const char* const DEFAULT_FOLDER_PATH = "Chip8Games";
 #endif
+    static constexpr int TOAST_DURATION_SUCCESS = 1000;
+    static constexpr int TOAST_DURATION_ERROR = 3000;
 
 public:
     Chip8topiaRomLoaderUi();

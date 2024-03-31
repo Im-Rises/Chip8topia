@@ -14,9 +14,9 @@ class Chip8topiaDebugger
 {
 private:
 #if defined(BUILD_RELEASE)
-    static constexpr auto INITIAL_WINDOW_STATE = false;
+    static constexpr bool INITIAL_WINDOW_STATE = false;
 #else
-    static constexpr auto INITIAL_WINDOW_STATE = true;
+    static constexpr bool INITIAL_WINDOW_STATE = true;
 #endif
 
 public:

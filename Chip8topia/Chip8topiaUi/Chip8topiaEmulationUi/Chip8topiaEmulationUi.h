@@ -12,9 +12,9 @@ class Chip8topiaEmulationUi
 {
 private:
 #if defined(BUILD_RELEASE)
-    static constexpr auto INITIAL_WINDOW_STATE = false;
+    static constexpr bool INITIAL_WINDOW_STATE = false;
 #else
-    static constexpr auto INITIAL_WINDOW_STATE = true;
+    static constexpr bool INITIAL_WINDOW_STATE = true;
 #endif
 
     static constexpr const char* const CHIP8_SETTINGS_STRING = ICON_FA_GEAR " Chip8 Settings";

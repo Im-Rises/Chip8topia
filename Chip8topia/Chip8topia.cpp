@@ -381,7 +381,7 @@ void Chip8topia::setWindowIcon()
     unsigned char* imagePixels = stbi_load(CHIP8TOPIA_ICON_PATH, &width, &height, &channelsCount, 0);
     if (imagePixels == nullptr)
     {
-        ImGui::InsertNotification({ ImGuiToastType::Error, 3000, "Failed to load window icon" });
+        ImGui::InsertNotification({ ImGuiToastType::Error, TOAST_DURATION_ERROR, "Failed to load window icon" });
         return;
     }
 
@@ -508,11 +508,11 @@ void Chip8topia::glfw_drop_callback(GLFWwindow* window, int count, const char** 
         auto* engine = reinterpret_cast<Chip8topia*>(glfwGetWindowUserPointer(window));
         engine->getChip8Emulator().loadRom(rom);
         engine->getChip8Emulator().setRomName(Chip8RomLoader::getRomNameFromPath(path));
-        ImGui::InsertNotification({ ImGuiToastType::Success, 1000, "Rom loaded successfully" });
+        ImGui::InsertNotification({ ImGuiToastType::Success, TOAST_DURATION_SUCCESS, "Rom loaded successfully" });
     }
     catch (const std::exception& e)
     {
-        ImGui::InsertNotification({ ImGuiToastType::Error, 3000, e.what() });
+        ImGui::InsertNotification({ ImGuiToastType::Error, TOAST_DURATION_ERROR, e.what() });
     }
 }
 
@@ -524,11 +524,11 @@ void Chip8topia::loadDebugRom()
         std::vector<uint8> rom = Chip8RomLoader::loadRomFromPath(DEBUG_ROM_PATH);
         m_chip8Emulator->loadRom(rom);
         m_chip8Emulator->setRomName(Chip8RomLoader::getRomNameFromPath(DEBUG_ROM_PATH));
-        ImGui::InsertNotification({ ImGuiToastType::Success, 1000, "Debug rom loaded successfully" });
+        ImGui::InsertNotification({ ImGuiToastType::Success, TOAST_DURATION_SUCCESS, "Debug rom loaded successfully" });
     }
     catch (const std::exception& e)
     {
-        ImGui::InsertNotification({ ImGuiToastType::Error, 3000, e.what() });
+        ImGui::InsertNotification({ ImGuiToastType::Error, TOAST_DURATION_ERROR, e.what() });
     }
 }
 #endif

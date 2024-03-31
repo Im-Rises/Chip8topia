@@ -62,7 +62,7 @@ void Chip8topiaRomLoaderUi::drawRomWindow(Chip8topia& chip8topia)
 {
     const auto windowSize = chip8topia.getCurrentDimensions();
     const ImVec2 windowDimensions(static_cast<float>(windowSize.first / 2), static_cast<float>(windowSize.second / 2));
-    
+
     if (ImGuiFileDialog::Instance()->Display(FILE_DIALOG_NAME, ImGuiWindowFlags_NoCollapse, windowDimensions))
     {
         if (ImGuiFileDialog::Instance()->IsOk())
@@ -74,11 +74,11 @@ void Chip8topiaRomLoaderUi::drawRomWindow(Chip8topia& chip8topia)
                 std::vector<uint8> rom = Chip8RomLoader::loadRomFromPath(filePathName);
                 chip8topia.getChip8Emulator().loadRom(rom);
                 chip8topia.getChip8Emulator().setRomName(Chip8RomLoader::getRomNameFromPath(filePathName));
-                ImGui::InsertNotification({ ImGuiToastType::Success, 1000, "Rom loaded successfully" });
+                ImGui::InsertNotification({ ImGuiToastType::Success, TOAST_DURATION_SUCCESS, "Rom loaded successfully" });
             }
             catch (const std::exception& e)
             {
-                ImGui::InsertNotification({ ImGuiToastType::Error, 3000, e.what() });
+                ImGui::InsertNotification({ ImGuiToastType::Error, TOAST_DURATION_ERROR, e.what() });
             }
         }
 
@@ -99,11 +99,11 @@ void Chip8topiaRomLoaderUi::handle_upload_file(std::string const& filename, std:
     {
         std::vector<uint8> rom = Chip8RomLoader::loadRomFromData(buffer);
         chip8Emulator->loadRom(rom);
-        ImGui::InsertNotification({ ImGuiToastType::Success, 1000, "Rom loaded successfully" });
+        ImGui::InsertNotification({ ImGuiToastType::Success, TOAST_DURATION_SUCCESS, "Rom loaded successfully" });
     }
     catch (const std::exception& e)
     {
-        ImGui::InsertNotification({ ImGuiToastType::Error, 3000, e.what() });
+        ImGui::InsertNotification({ ImGuiToastType::Error, TOAST_DURATION_ERROR, e.what() });
     }
 }
 #endif
@@ -116,6 +116,8 @@ void Chip8topiaRomLoaderUi::closeAllWindows()
 void Chip8topiaRomLoaderUi::openRomWindow()
 {
     IGFD::FileDialogConfig config;
+#if defined(__EMSCRIPTEN__)
     config.path = DEFAULT_FOLDER_PATH;
+#endif
     ImGuiFileDialog::Instance()->OpenDialog(FILE_DIALOG_NAME, "Select a game rom", Chip8RomLoader::CHIP8_ROM_FILE_EXTENSIONS_STRING, config);
 }

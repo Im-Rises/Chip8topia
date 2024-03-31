@@ -160,9 +160,16 @@ auto Chip8Emulator::getFrequency() const -> Chip8Frequency
 
 void Chip8Emulator::stop()
 {
-    m_isRomLoaded = false;
-    m_romName = "ROM";
-    ImGui::InsertNotification({ ImGuiToastType::Info, "Emulation stopped", "The emulation has been stopped. Please load a ROM to continue." });
+    if (m_isRomLoaded)
+    {
+        m_isRomLoaded = false;
+        m_romName = "ROM";
+        ImGui::InsertNotification({ ImGuiToastType::Info, TOAST_DURATION_INFO, "Emulation stopped", "The emulation has been stopped. Please load a ROM to continue." });
+    }
+    else
+    {
+        ImGui::InsertNotification({ ImGuiToastType::Info, TOAST_DURATION_INFO, "Emulation already stopped", "The emulation is already stopped. Please load a ROM to continue." });
+    }
 }
 
 void Chip8Emulator::setIsTurboMode(const bool isTurboMode)
@@ -200,7 +207,7 @@ void Chip8Emulator::switchCoreFrequency(const Chip8CoreType coreType, const Chip
 
     m_isRomLoaded = false;
 
-    ImGui::InsertNotification({ ImGuiToastType::Info, "Core and frequency changed", "The core and frequency have been changed. Please load a ROM to continue." });
+    ImGui::InsertNotification({ ImGuiToastType::Info, TOAST_DURATION_INFO, "Core and frequency changed", "The core and frequency have been changed. Please load a ROM to continue." });
 }
 
 void Chip8Emulator::clearBreakpoints()

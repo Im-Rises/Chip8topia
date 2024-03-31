@@ -18,7 +18,7 @@
 
 // TODO: PerformanceMonitor
 // - Add error handling everywhere
-// - To work better, maybe we should only update it every second or an average value would be better
+// - To work better, maybe we should only update it every second
 
 #if defined(PLATFORM_WINDOWS)
 #include <cstdio>

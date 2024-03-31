@@ -89,8 +89,8 @@ public:
 class ImGuiMessageQueue
 {
 private:
-    static constexpr auto TOO_MANY_MESSAGES_TITLE = "Too many messages";
-    static constexpr auto TOO_MANY_MESSAGES_MESSAGE = "Skipping next messages.";
+    static constexpr const char* const TOO_MANY_MESSAGES_TITLE = "Too many messages";
+    static constexpr const char* const TOO_MANY_MESSAGES_MESSAGE = "Skipping next messages.";
 
     struct MessageData
     {
@@ -171,50 +171,52 @@ private:
     bool m_canPushMessage = true;
 };
 
-class ImGuiText
-{
-public:
-    ImGuiText(float x, float y, float fontScale = 1.0F, ImVec4 color = ImVec4(1.0F, 1.0F, 1.0F, 1.0F)) : m_x(x), m_y(y), m_fontScale(fontScale), m_color(color) {}
-    ImGuiText(const ImGuiText&) = delete;
-    ImGuiText(ImGuiText&&) = delete;
-    auto operator=(const ImGuiText&) -> ImGuiText& = delete;
-    auto operator=(ImGuiText&&) -> ImGuiText& = delete;
-    ~ImGuiText() = default;
-
-public:
-    void drawText(const char* text) const
-    {
-        const ImVec2 mainWindowPos = ImGui::GetMainViewport()->Pos;
-        ImGui::SetNextWindowPos(ImVec2(mainWindowPos.x + m_x, mainWindowPos.y + m_y), ImGuiCond_Always);
-
-        // TODO: ImGuiText:
-        //  - Needs to change the name in ImGui::Begin or set ID manually when using ?
-        //  - SetWindowFontScale seems obsolete
-        ImGui::Begin("Text", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav);
-        ImGui::SetWindowFontScale(m_fontScale);
-        ImGui::PushStyleColor(ImGuiCol_Text, m_color);
-        ImGui::Text("%s", text);
-        ImGui::PopStyleColor();
-        ImGui::SetWindowFontScale(1.0F);
-        ImGui::End();
-    }
-
-    void setPos(float x, float y)
-    {
-        m_x = x;
-        m_y = y;
-    }
-
-    void setColor(const ImVec4& color)
-    {
-        m_color = color;
-    }
-
-private:
-    float m_x;
-    float m_y;
-    float m_fontScale;
-    ImVec4 m_color;
-};
+// // Rename class...
+//
+// class ImGuiText
+//{
+// public:
+//     ImGuiText(float x, float y, float fontScale = 1.0F, ImVec4 color = ImVec4(1.0F, 1.0F, 1.0F, 1.0F)) : m_x(x), m_y(y), m_fontScale(fontScale), m_color(color) {}
+//     ImGuiText(const ImGuiText&) = delete;
+//     ImGuiText(ImGuiText&&) = delete;
+//     auto operator=(const ImGuiText&) -> ImGuiText& = delete;
+//     auto operator=(ImGuiText&&) -> ImGuiText& = delete;
+//     ~ImGuiText() = default;
+//
+// public:
+//     void drawText(const char* text) const
+//     {
+//         const ImVec2 mainWindowPos = ImGui::GetMainViewport()->Pos;
+//         ImGui::SetNextWindowPos(ImVec2(mainWindowPos.x + m_x, mainWindowPos.y + m_y), ImGuiCond_Always);
+//
+//         // ImGuiText:
+//         //  - Needs to change the name in ImGui::Begin or set ID manually when using ?
+//         //  - SetWindowFontScale seems obsolete
+//         ImGui::Begin("Text", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav);
+//         ImGui::SetWindowFontScale(m_fontScale);
+//         ImGui::PushStyleColor(ImGuiCol_Text, m_color);
+//         ImGui::Text("%s", text);
+//         ImGui::PopStyleColor();
+//         ImGui::SetWindowFontScale(1.0F);
+//         ImGui::End();
+//     }
+//
+//     void setPos(float x, float y)
+//     {
+//         m_x = x;
+//         m_y = y;
+//     }
+//
+//     void setColor(const ImVec4& color)
+//     {
+//         m_color = color;
+//     }
+//
+// private:
+//     float m_x;
+//     float m_y;
+//     float m_fontScale;
+//     ImVec4 m_color;
+// };
 
 // class ImGuiFixedWindow (use the one in the Chip8topiaPerformanceMonitor.cpp)
