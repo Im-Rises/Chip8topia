@@ -175,7 +175,7 @@ void SChip11Cpu::DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n)
 
         if (m_isHalted)
         {
-            m_pc -= 2;
+            haltCurrentInstruction();
             return;
         }
     }

@@ -217,7 +217,7 @@ auto Chip8topia::init() -> int
     m_chip8topiaInputHandler.m_ToggleFullScreenEvent.subscribe(this, &Chip8topia::toggleFullScreen);
 #endif
 
-#if !defined(BUILD_RELEASE)
+#if !defined(BUILD_RELEASE) && !defined(__EMSCRIPTEN__)
     m_chip8topiaInputHandler.m_DebugRomFastLoadEvent.subscribe(this, &Chip8topia::loadDebugRom);
 #endif
 
@@ -517,7 +517,7 @@ void Chip8topia::glfw_drop_callback(GLFWwindow* window, int count, const char** 
     }
 }
 
-#if !defined(BUILD_RELEASE)
+#if !defined(BUILD_RELEASE) && !defined(__EMSCRIPTEN__)
 void Chip8topia::loadDebugRom()
 {
     try

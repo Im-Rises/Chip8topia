@@ -65,6 +65,8 @@ Emulated consoles:
 
 Major:
 
+- [ ] Correct all opcode tables (be more explicit and check correctly opcode for incorrect opcodes)
+- [ ] instruction overflow on ADD 8xyN cannot work?
 - [-] Correct the Xo-Chip games not working properly on T8NKS
 - [ ] Add safe and unsafe code version (set the callback error in Core and Cpu, and Ppu, the call it on error) Create an
   error code when calling Core.clock(); if it returns 1 it means it needs a screen refresh if 2 it's an

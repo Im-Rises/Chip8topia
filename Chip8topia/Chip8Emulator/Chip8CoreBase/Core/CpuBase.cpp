@@ -78,6 +78,16 @@ auto CpuBase::readNextWord() -> uint16
     return (m_memory[m_pc] << 8) | (m_memory[m_pc + 1]);
 }
 
+void CpuBase::skipNextInstruction()
+{
+    m_pc += 2;
+}
+
+void CpuBase::haltCurrentInstruction()
+{
+    m_pc -= 2;
+}
+
 void CpuBase::SCD(const uint8 n)
 {
     m_ppu->scrollDown(n);
@@ -111,7 +121,7 @@ void CpuBase::SCL(const uint8 n)
 void CpuBase::EXIT()
 {
     // TODO: Implement exit by restarting game ?
-    m_pc -= 2;
+    haltCurrentInstruction();
 }
 
 void CpuBase::LORES()
@@ -128,7 +138,7 @@ void CpuBase::SYS(const uint16 /*address*/)
 {
     // This opcode is only used on the old computers on which Chip-8 was originally implemented.
     // It is ignored by modern interpreters.
-    m_pc += 2;
+    skipNextInstruction();
 }
 
 void CpuBase::JP_addr(const uint16 addr)
@@ -146,7 +156,7 @@ void CpuBase::SE_Vx_nn(const uint8 x, const uint8 nn)
 {
     if (m_V[x] == nn)
     {
-        m_pc += 2;
+        skipNextInstruction();
     }
 }
 
@@ -154,7 +164,7 @@ void CpuBase::SNE_Vx_nn(const uint8 x, const uint8 nn)
 {
     if (m_V[x] != nn)
     {
-        m_pc += 2;
+        skipNextInstruction();
     }
 }
 
@@ -162,7 +172,7 @@ void CpuBase::SE_Vx_Vy(const uint8 x, const uint8 y)
 {
     if (m_V[x] == m_V[y])
     {
-        m_pc += 2;
+        skipNextInstruction();
     }
 }
 
@@ -199,7 +209,7 @@ void CpuBase::XOR_Vx_Vy(const uint8 x, const uint8 y)
 void CpuBase::ADD_Vx_Vy(const uint8 x, const uint8 y)
 {
     m_V[x] += m_V[y];
-    m_V[0xF] = static_cast<uint8>(m_V[x] < m_V[y]);
+    m_V[0xF] = static_cast<uint8>(m_V[x] < m_V[y]); // TODO: Correct this flag?
 }
 
 void CpuBase::SUB_Vx_Vy(const uint8 x, const uint8 y)
@@ -234,7 +244,7 @@ void CpuBase::SNE_Vx_Vy(const uint8 x, const uint8 y)
 {
     if (m_V[x] != m_V[y])
     {
-        m_pc += 2;
+        skipNextInstruction();
     }
 }
 
@@ -262,7 +272,7 @@ void CpuBase::SKP_Vx(const uint8 x)
 {
     if (m_input->isKeyPressed(m_V[x]))
     {
-        m_pc += 2;
+        skipNextInstruction();
     }
 }
 
@@ -270,7 +280,7 @@ void CpuBase::SKNP_Vx(const uint8 x)
 {
     if (!m_input->isKeyPressed(m_V[x]))
     {
-        m_pc += 2;
+        skipNextInstruction();
     }
 }
 
@@ -288,7 +298,7 @@ void CpuBase::LD_Vx_K(const uint8 x)
     }
     else
     {
-        m_pc -= 2;
+        haltCurrentInstruction();
     }
 }
 void CpuBase::LD_DT_Vx(const uint8 x)

@@ -10,31 +10,31 @@ struct GLFWwindow;
 class Chip8topia
 {
 public:
-    static constexpr auto PROJECT_NAME = "Chip8topia";
-    static constexpr auto PROJECT_VERSION = CHIP8TOPIA_VERSION;
-    static constexpr auto PROJECT_LINK = "https://github.com/Im-Rises/Chip8topia";
-    static constexpr auto PROJECT_AUTHOR = "Im-Rises (Quentin Morel)";
-    static constexpr auto PROJECT_DESCRIPTION = "Chip8topia is a Chip8 emulator made with modern C++, ImGui and OpenGL."
-                                                "It is emulating the Chip8, SuperChip, SuperChipC and XO-Chip consoles.";
-    static constexpr auto PROJECT_EMULATION_CONSOLE_NAME = "Chip8";
-    static constexpr auto PROJECT_EMULATION_CONSOLE_DESCRIPTION = R"(
+    static constexpr const char* const PROJECT_NAME = "Chip8topia";
+    static constexpr const char* const PROJECT_VERSION = CHIP8TOPIA_VERSION;
+    static constexpr const char* const PROJECT_LINK = "https://github.com/Im-Rises/Chip8topia";
+    static constexpr const char* const PROJECT_AUTHOR = "Im-Rises (Quentin Morel)";
+    static constexpr const char* const PROJECT_DESCRIPTION = "Chip8topia is a Chip8 emulator made with modern C++, ImGui and OpenGL."
+                                                             "It is emulating the Chip8, SuperChip, SuperChipC and XO-Chip consoles.";
+    static constexpr const char* const PROJECT_EMULATION_CONSOLE_NAME = "Chip8";
+    static constexpr const char* const PROJECT_EMULATION_CONSOLE_DESCRIPTION = R"(
 Chip8 is an interpreted programming language, developed by Joseph Weisbecker.
 It was initially used on the COSMAC VIP and Telmac 1800 8-bit microcomputers in the mid-1970s.
 It was made to allow video games to be more easily programmed for said computers.)";
 
-    static constexpr auto WEB_CANVAS_ID = "#canvas";
-    static constexpr auto CHIP8TOPIA_ICON_PATH = "res/icon.png";
+    static constexpr const char* const WEB_CANVAS_ID = "#canvas";
+    static constexpr const char* const CHIP8TOPIA_ICON_PATH = "res/icon.png";
 
 private:
-    static constexpr auto SUCCESS_CODE = 0;
-    static constexpr auto GLFW_ERROR_CALLBACK_ERROR_CODE = 1;
-    static constexpr auto GLFW_INIT_ERROR_CODE = 2;
-    static constexpr auto WINDOW_INIT_ERROR_CODE = 3;
-    static constexpr auto GLAD_INIT_ERROR_CODE = 4;
-    static constexpr auto FONT_AWESOME_INIT_ERROR_CODE = 5;
+    static constexpr int SUCCESS_CODE = 0;
+    static constexpr int GLFW_ERROR_CALLBACK_ERROR_CODE = 1;
+    static constexpr int GLFW_INIT_ERROR_CODE = 2;
+    static constexpr int WINDOW_INIT_ERROR_CODE = 3;
+    static constexpr int GLAD_INIT_ERROR_CODE = 4;
+    static constexpr int FONT_AWESOME_INIT_ERROR_CODE = 5;
 #if !defined(BUILD_RELEASE)
     //    static constexpr auto DEBUG_ROM_PATH = "trash/chip8-test-suite-main/bin/8-scrolling.ch8";
-    static constexpr auto DEBUG_ROM_PATH = "trash/chip8-test-suite-main/bin/5-quirks.ch8";
+    static constexpr const char* const DEBUG_ROM_PATH = "trash/chip8-test-suite-main/bin/5-quirks.ch8";
 //    static constexpr auto DEBUG_ROM_PATH = "trash/games/t8nks.ch8";
 //    static constexpr auto DEBUG_ROM_PATH = "trash/games/alien-inv8sion.ch8";
 //    static constexpr auto DEBUG_ROM_PATH = "trash/games/color-scroll-test-xochip.ch8";
@@ -98,7 +98,7 @@ private:
     static void glfw_error_callback(int error, const char* description);
     static void glfw_drop_callback(GLFWwindow* window, int count, const char** paths);
 
-#if !defined(BUILD_RELEASE)
+#if !defined(BUILD_RELEASE) && !defined(__EMSCRIPTEN__)
     void loadDebugRom();
 #endif
 

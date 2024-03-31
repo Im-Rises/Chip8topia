@@ -17,6 +17,8 @@ public:
     void reset() final;
 
 private:
+    void skipNextInstruction() final;
+
     void computeOpcode(const uint16 opcode) final;
 
     void HALT();                                                         // 0000

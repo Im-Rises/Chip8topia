@@ -15,6 +15,18 @@ void XoChipCpu::reset()
     std::copy(XO_CHIP_FONTSET.begin(), XO_CHIP_FONTSET.end(), m_memory.begin());
 }
 
+void XoChipCpu::skipNextInstruction()
+{
+    if (readNextWord() == 0xF000)
+    {
+        m_pc += 4;
+    }
+    else
+    {
+        m_pc += 2;
+    }
+}
+
 void XoChipCpu::computeOpcode(const uint16 opcode)
 {
     const uint8 nibble4 = (opcode & 0xF000) >> 12;
@@ -179,7 +191,7 @@ void XoChipCpu::SE_Vx_nn(const uint8 x, const uint8 nn)
 {
     if (m_V[x] == nn)
     {
-        readNextWord() == 0xF000 ? m_pc += 4 : m_pc += 2;
+        skipNextInstruction();
     }
 }
 
@@ -187,7 +199,7 @@ void XoChipCpu::SNE_Vx_nn(const uint8 x, const uint8 nn)
 {
     if (m_V[x] != nn)
     {
-        readNextWord() == 0xF000 ? m_pc += 4 : m_pc += 2;
+        skipNextInstruction();
     }
 }
 
@@ -195,7 +207,7 @@ void XoChipCpu::SE_Vx_Vy(const uint8 x, const uint8 y)
 {
     if (m_V[x] == m_V[y])
     {
-        readNextWord() == 0xF000 ? m_pc += 4 : m_pc += 2;
+        skipNextInstruction();
     }
 }
 
@@ -233,7 +245,7 @@ void XoChipCpu::SNE_Vx_Vy(const uint8 x, const uint8 y)
 {
     if (m_V[x] != m_V[y])
     {
-        readNextWord() == 0xF000 ? m_pc += 4 : m_pc += 2;
+        skipNextInstruction();
     }
 }
 
@@ -246,14 +258,14 @@ void XoChipCpu::SKP_Vx(const uint8 x)
 {
     if (m_input->isKeyPressed(m_V[x]))
     {
-        readNextWord() == 0xF000 ? m_pc += 4 : m_pc += 2;
+        skipNextInstruction();
     }
 }
 void XoChipCpu::SKNP_Vx(const uint8 x)
 {
     if (!m_input->isKeyPressed(m_V[x]))
     {
-        readNextWord() == 0xF000 ? m_pc += 4 : m_pc += 2;
+        skipNextInstruction();
     }
 }
 

@@ -43,6 +43,8 @@ private:
 protected:
     [[nodiscard]] auto fetchWord() -> uint16;
     [[nodiscard]] auto readNextWord() -> uint16;
+    virtual void skipNextInstruction();
+    virtual void haltCurrentInstruction();
 
     virtual void computeOpcode(const uint16 opcode) = 0;
 
