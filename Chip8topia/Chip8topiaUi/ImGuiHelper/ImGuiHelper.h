@@ -187,8 +187,9 @@ public:
         const ImVec2 mainWindowPos = ImGui::GetMainViewport()->Pos;
         ImGui::SetNextWindowPos(ImVec2(mainWindowPos.x + m_x, mainWindowPos.y + m_y), ImGuiCond_Always);
 
-        // TODO: Needs to change the name in ImGui::Begin or set ID manually when using ?
-        // TODO: SetWindowFontScale seems obsolete
+        // TODO: ImGuiText:
+        //  - Needs to change the name in ImGui::Begin or set ID manually when using ?
+        //  - SetWindowFontScale seems obsolete
         ImGui::Begin("Text", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav);
         ImGui::SetWindowFontScale(m_fontScale);
         ImGui::PushStyleColor(ImGuiCol_Text, m_color);

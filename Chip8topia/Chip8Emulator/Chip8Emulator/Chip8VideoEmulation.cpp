@@ -50,7 +50,6 @@ void Chip8VideoEmulation::resetToColorColors()
 
 void Chip8VideoEmulation::updateTexture(const std::unique_ptr<Chip8CoreBase>& core)
 {
-    // TODO: Could be optimized by only updating the plane that changed, but this might cause issue if we change two time the plane mask in the same frame
     if (core->getPpu()->getMode() == PpuBase::PpuMode::LORES)
     {
         for (int i = 0; i < PpuBase::PLANE_COUNT; i++)

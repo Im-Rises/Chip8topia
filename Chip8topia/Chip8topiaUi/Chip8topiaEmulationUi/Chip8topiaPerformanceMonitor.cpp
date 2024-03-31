@@ -72,7 +72,6 @@ void Chip8topiaPerformanceMonitor::drawWindow(Chip8topia& chip8topia, bool isMai
     const ImVec4 colorRam = calculateRamColor((ramUsed / m_performanceMonitor.getTotalPhysicalMemory() * 100));
     ImGui::TextColored(colorRam, "%0.f", ramUsed);
 
-    // TODO: Maybe replace with real delta time (this one is an average)
     const float cpuUsage = m_performanceMonitor.getCpuUsed();
     const ImVec4 colorCpu = calculateCpuColor(cpuUsage);
     ImGui::Text("CPU Usage:");

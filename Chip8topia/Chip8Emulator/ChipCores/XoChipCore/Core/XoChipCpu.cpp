@@ -160,9 +160,9 @@ void XoChipCpu::computeOpcode(const uint16 opcode)
 
 void XoChipCpu::HALT()
 {
-    // TODO: Implement HALT
-    // Should block until an interrupt is received (screen, key, which one ???)
-    // For the moment we will just skip to the next instruction
+    // TODO: HALT instruction
+    // - Should block until an interrupt is received (screen, key, which one ???)
+    // - For the moment we will just skip to the next instruction
 }
 
 void XoChipCpu::SCR(const uint8 n)
@@ -213,10 +213,11 @@ void XoChipCpu::SE_Vx_Vy(const uint8 x, const uint8 y)
 
 void XoChipCpu::SV_RNG_Vx_Vy(uint8 x, uint8 y)
 {
-    if (x > y)
-    {
-        std::swap(x, y);
-    }
+    //    // TODO: Correct this opcode
+    //    if (x > y)
+    //    {
+    //        std::swap(x, y);
+    //    }
 
     const int range = y - x;
 
@@ -228,10 +229,11 @@ void XoChipCpu::SV_RNG_Vx_Vy(uint8 x, uint8 y)
 
 void XoChipCpu::LD_RNG_Vx_Vy(uint8 x, uint8 y)
 {
-    if (x > y)
-    {
-        std::swap(x, y);
-    }
+    //    // TODO: Correct this opcode
+    //    if (x > y)
+    //    {
+    //        std::swap(x, y);
+    //    }
 
     const int range = y - x;
 

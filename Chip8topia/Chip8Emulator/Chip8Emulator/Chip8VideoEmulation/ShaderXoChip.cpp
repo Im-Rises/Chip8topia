@@ -43,7 +43,8 @@ ShaderXoChip::~ShaderXoChip()
 
 void ShaderXoChip::reset()
 {
-    // TODO: Improve this clean function
+    // This function should be called only on reset, not on every frame
+    // There is surely a better way to do this
     std::vector<uint8> data(WIDTH * HEIGHT, 0);
     for (GLuint m_texture : m_textures)
     {

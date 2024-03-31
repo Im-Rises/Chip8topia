@@ -120,7 +120,8 @@ void CpuBase::SCL(const uint8 n)
 
 void CpuBase::EXIT()
 {
-    // TODO: Implement exit by restarting game ?
+    // TODO: EXIT instruction:
+    //  - Blocking execution on EXIT, maybe add a message to the user?
     haltCurrentInstruction();
 }
 
@@ -208,8 +209,12 @@ void CpuBase::XOR_Vx_Vy(const uint8 x, const uint8 y)
 
 void CpuBase::ADD_Vx_Vy(const uint8 x, const uint8 y)
 {
-    m_V[x] += m_V[y];
-    m_V[0xF] = static_cast<uint8>(m_V[x] < m_V[y]); // TODO: Correct this flag?
+    //    m_V[x] += m_V[y];
+    //    m_V[0xF] = static_cast<uint8>(m_V[x] < m_V[y]);
+
+    const uint16 sum = m_V[x] + m_V[y];
+    m_V[x] = static_cast<uint8>(sum & 0xFF);
+    m_V[0xF] = static_cast<uint8>(sum > 0xFF);
 }
 
 void CpuBase::SUB_Vx_Vy(const uint8 x, const uint8 y)

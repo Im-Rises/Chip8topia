@@ -16,8 +16,9 @@
  * - CPU Usage by process            | No      | No
  * */
 
-// TODO: Add error handling everywhere
-// TODO: To work better, maybe we should only update it every second or an average value would be better
+// TODO: PerformanceMonitor
+// - Add error handling everywhere
+// - To work better, maybe we should only update it every second or an average value would be better
 
 #if defined(PLATFORM_WINDOWS)
 #include <cstdio>

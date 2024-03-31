@@ -394,7 +394,6 @@ void Chip8topia::setWindowIcon()
 
 void Chip8topia::updateWindowTitle(const float fps)
 {
-    // TODO: Only call on rom loaded and when rom name changes (do not display fps)
     glfwSetWindowTitle(m_window, fmt::format("{} - {} - {} - {:.1f} fps", PROJECT_NAME, m_chip8Emulator->getConsoleName().c_str(), m_chip8Emulator->getRomName().c_str(), fps).c_str());
 }
 #endif
