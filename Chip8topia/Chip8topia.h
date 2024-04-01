@@ -33,11 +33,11 @@ private:
     static constexpr int GLAD_INIT_ERROR_CODE = 4;
     static constexpr int FONT_AWESOME_INIT_ERROR_CODE = 5;
 #if !defined(BUILD_RELEASE)
-    //    static constexpr auto DEBUG_ROM_PATH = "trash/chip8-test-suite-main/bin/8-scrolling.ch8";
-    static constexpr const char* const DEBUG_ROM_PATH = "trash/chip8-test-suite-main/bin/5-quirks.ch8";
-//    static constexpr auto DEBUG_ROM_PATH = "trash/games/t8nks.ch8";
-//    static constexpr auto DEBUG_ROM_PATH = "trash/games/alien-inv8sion.ch8";
-//    static constexpr auto DEBUG_ROM_PATH = "trash/games/color-scroll-test-xochip.ch8";
+    //    static constexpr const char* const DEBUG_ROM_PATH = "trash/chip8-test-suite-main/bin/8-scrolling.ch8";
+    //    static constexpr const char* const DEBUG_ROM_PATH = "trash/chip8-test-suite-main/bin/5-quirks.ch8";
+    static constexpr const char* const DEBUG_ROM_PATH = "trash/games/t8nks.ch8";
+//    static constexpr const char* const DEBUG_ROM_PATH = "trash/games/alien-inv8sion.ch8";
+//    static constexpr const char* const DEBUG_ROM_PATH = "trash/games/color-scroll-test-xochip.ch8";
 #endif
     static constexpr int TOAST_DURATION_SUCCESS = 1000;
     static constexpr int TOAST_DURATION_ERROR = 3000;

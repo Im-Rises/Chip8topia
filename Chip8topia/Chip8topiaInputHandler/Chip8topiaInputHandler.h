@@ -8,7 +8,8 @@
 #include "SubscriberEventSystem/SingleSubscriberEvent.h"
 
 struct GLFWwindow;
-class Chip8topiaInputHandler final : public Singleton<Chip8topiaInputHandler> {
+class Chip8topiaInputHandler final : public Singleton<Chip8topiaInputHandler>
+{
     friend class Singleton<Chip8topiaInputHandler>;
 
 protected:
@@ -57,6 +58,8 @@ public:
     SingleSubscriberEvent<const std::string&, std::function<void()>> m_ErrorEvent;
     SingleSubscriberEvent<const std::string&, std::function<void()>> m_WarningEvent;
     SingleSubscriberEvent<const std::string&, std::function<void()>> m_InfoEvent;
+
+    MultiSubscriberEvent<const std::string&> m_EmulationError;
 
 private:
     bool m_inputEnabled = true;

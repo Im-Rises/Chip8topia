@@ -7,18 +7,26 @@
 
 Chip8topiaMessageHandler::Chip8topiaMessageHandler()
 {
-    Chip8topiaInputHandler::getInstance().m_SuccessEvent.subscribe(this, &Chip8topiaMessageHandler::triggerSuccess);
-    Chip8topiaInputHandler::getInstance().m_ErrorEvent.subscribe(this, &Chip8topiaMessageHandler::triggerError);
-    Chip8topiaInputHandler::getInstance().m_WarningEvent.subscribe(this, &Chip8topiaMessageHandler::triggerWarning);
-    Chip8topiaInputHandler::getInstance().m_InfoEvent.subscribe(this, &Chip8topiaMessageHandler::triggerInfo);
+    Chip8topiaInputHandler& inputHandler = Chip8topiaInputHandler::getInstance();
+
+    inputHandler.m_SuccessEvent.subscribe(this, &Chip8topiaMessageHandler::triggerSuccess);
+    inputHandler.m_ErrorEvent.subscribe(this, &Chip8topiaMessageHandler::triggerError);
+    inputHandler.m_WarningEvent.subscribe(this, &Chip8topiaMessageHandler::triggerWarning);
+    inputHandler.m_InfoEvent.subscribe(this, &Chip8topiaMessageHandler::triggerInfo);
+
+    inputHandler.m_EmulationError.subscribe(this, &Chip8topiaMessageHandler::triggerEmulationError);
 }
 
 Chip8topiaMessageHandler::~Chip8topiaMessageHandler()
 {
-    Chip8topiaInputHandler::getInstance().m_SuccessEvent.unsubscribe(this, &Chip8topiaMessageHandler::triggerSuccess);
-    Chip8topiaInputHandler::getInstance().m_ErrorEvent.unsubscribe(this, &Chip8topiaMessageHandler::triggerError);
-    Chip8topiaInputHandler::getInstance().m_WarningEvent.unsubscribe(this, &Chip8topiaMessageHandler::triggerWarning);
-    Chip8topiaInputHandler::getInstance().m_InfoEvent.unsubscribe(this, &Chip8topiaMessageHandler::triggerInfo);
+    Chip8topiaInputHandler& inputHandler = Chip8topiaInputHandler::getInstance();
+
+    inputHandler.m_SuccessEvent.unsubscribe(this, &Chip8topiaMessageHandler::triggerSuccess);
+    inputHandler.m_ErrorEvent.unsubscribe(this, &Chip8topiaMessageHandler::triggerError);
+    inputHandler.m_WarningEvent.unsubscribe(this, &Chip8topiaMessageHandler::triggerWarning);
+    inputHandler.m_InfoEvent.unsubscribe(this, &Chip8topiaMessageHandler::triggerInfo);
+
+    inputHandler.m_EmulationError.unsubscribe(this, &Chip8topiaMessageHandler::triggerEmulationError);
 }
 
 void Chip8topiaMessageHandler::triggerError(const std::string& message, std::function<void()> callback)
@@ -39,6 +47,11 @@ void Chip8topiaMessageHandler::triggerInfo(const std::string& message, std::func
 void Chip8topiaMessageHandler::triggerSuccess(const std::string& message, std::function<void()> callback)
 {
     m_messageQueue.pushMessage(ICON_FA_CIRCLE_CHECK " Success", message, std::move(callback));
+}
+
+void Chip8topiaMessageHandler::triggerEmulationError(const std::string& message)
+{
+    m_messageQueue.pushMessage(ICON_FA_CIRCLE_EXCLAMATION " Emulation Error", message);
 }
 
 void Chip8topiaMessageHandler::showMessages()

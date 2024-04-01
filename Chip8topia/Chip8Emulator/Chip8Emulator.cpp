@@ -1,6 +1,11 @@
 #include "Chip8Emulator.h"
 
 #include <ImGuiNotify.hpp>
+#if !defined(__EMSCRIPTEN__)
+#include <spdlog/spdlog.h>
+#else
+#include <iostream>
+#endif
 
 #include "../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
 #include "ChipCores/Chip8Core/Chip8Core.h"
@@ -27,6 +32,10 @@ Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<XoChipCore>(DEFAULT_FRE
     inputHandler.m_RunEmulationEvent.subscribe(this, &Chip8Emulator::runEmulation);
     inputHandler.m_ClearBreakpointsEvent.subscribe(this, &Chip8Emulator::clearBreakpoints);
 
+#if defined(BUILD_PARAM_SAFE)
+    inputHandler.m_EmulationError.subscribe(this, &Chip8Emulator::triggerEmulationError);
+#endif
+
     resetColorPalette();
 }
 
@@ -41,6 +50,10 @@ Chip8Emulator::~Chip8Emulator()
     inputHandler.m_StepEmulationEvent.unsubscribe(this, &Chip8Emulator::stepEmulation);
     inputHandler.m_RunEmulationEvent.unsubscribe(this, &Chip8Emulator::runEmulation);
     inputHandler.m_ClearBreakpointsEvent.unsubscribe(this, &Chip8Emulator::clearBreakpoints);
+
+#if defined(BUILD_PARAM_SAFE)
+    inputHandler.m_EmulationError.unsubscribe(this, &Chip8Emulator::triggerEmulationError);
+#endif
 }
 
 void Chip8Emulator::resetColorPalette()
@@ -50,13 +63,9 @@ void Chip8Emulator::resetColorPalette()
 
 void Chip8Emulator::restart()
 {
-    m_videoEmulation.reset();
     m_core->reset();
+    m_videoEmulation.reset();
     m_accumulator = 0.0F;
-    // TODO: Restart is disabled for now, it causes issue on XoChip games
-    //  Reload rom here !
-    Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger("Restart is disabled for now, it causes issue on XoChip games", nullptr);
-    m_isRomLoaded = false;
 }
 
 void Chip8Emulator::loadRom(const std::vector<uint8_t>& romData)
@@ -93,7 +102,7 @@ void Chip8Emulator::update(const float deltaTime)
             while (!screenUpdated && !m_isBreak)
             {
                 screenUpdated = m_core->clock();
-                if (m_breakpoints.find(m_core->getCpu()->getPc()) != m_breakpoints.end() && m_canBreak)
+                if (m_canBreak && m_breakpoints.find(m_core->getCpu()->getPc()) != m_breakpoints.end())
                 {
                     m_isBreak = true;
                 }
@@ -171,6 +180,22 @@ void Chip8Emulator::stop()
         ImGui::InsertNotification({ ImGuiToastType::Info, TOAST_DURATION_INFO, "Emulation already stopped", "The emulation is already stopped. Please load a ROM to continue." });
     }
 }
+
+#if defined(BUILD_PARAM_SAFE)
+void Chip8Emulator::triggerEmulationError(const std::string& message)
+{
+    m_isRomLoaded = false;
+    m_isBreak = true;
+    // TODO: Maybe use a spacial variable when error is triggered to prevent being in break mode when starting a new game ?
+    //     m_errorTriggered = true;
+
+#if !defined(__EMSCRIPTEN__)
+    spdlog::info("Emulation error: {}", message);
+#else
+    std::cout << "Emulation error: " << message << std::endl;
+#endif
+}
+#endif
 
 void Chip8Emulator::setIsTurboMode(const bool isTurboMode)
 {

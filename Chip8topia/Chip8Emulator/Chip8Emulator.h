@@ -47,6 +47,9 @@ public:
     [[nodiscard]] auto getFrequency() const -> Chip8Frequency;
 
     void stop();
+#if defined(BUILD_PARAM_SAFE)
+    void triggerEmulationError(const std::string& message);
+#endif
     void setIsTurboMode(const bool isTurboMode);
     void setRomName(const std::string& romName);
     void switchCoreFrequency(const Chip8CoreType coreType, const Chip8Frequency frequency);
@@ -66,12 +69,14 @@ private:
     Chip8VideoEmulation m_videoEmulation;
     //    Chip8SoundEmulation m_soundEmulation;
 
+    // TODO: Move to constructor
     float m_accumulator = 0.0F;
     bool m_isRomLoaded = false;
     bool m_isTurboMode = false;
     bool m_isBreak = false;
     bool m_step = false;
     bool m_canBreak = true;
+    //    bool m_errorTriggered = false;
 
     std::set<uint16> m_breakpoints;
 };

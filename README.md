@@ -65,13 +65,15 @@ Emulated consoles:
 
 Major:
 
-- [-] Correct the Xo-Chip games not working properly on T8NKS
-- [ ] Correct all opcode tables (be more explicit and check correctly opcode for incorrect opcodes)
-- [ ] Add audio
 - [ ] Improve disassembly view to draw only odd or even pc address?
-- [ ] Add safe and unsafe code version (set the callback error in Core and Cpu, and Ppu, the call it on error) Create an
-  error code when calling Core.clock(); if it returns 1 it means it needs a screen refresh if 2 it's an
-  error and -1 means emulation issue, so the program should stop (also add a normal exit on EXIT opcode)
+- [ ] Disassembly is not scrolling correctly and buggy
+- [ ] Add safe and unsafe code version
+
+- [ ] Correct the Xo-Chip games not working properly on T8NKS
+- [ ] Correct all opcode tables (be more explicit and check correctly opcode for incorrect opcodes)
+- [ ] On big games restart is buggy, currently we do not reload the rom and keep memory as it is (we should reset memory
+  and reload the game rom), for now I leave it for testing purposes
+- [ ] Add audio
 - [ ] Optimize the code!!!
 
 Minor:

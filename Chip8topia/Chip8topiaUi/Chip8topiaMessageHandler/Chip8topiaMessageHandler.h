@@ -21,6 +21,8 @@ public:
     void triggerWarning(const std::string& message, std::function<void()> callback = nullptr);
     void triggerInfo(const std::string& message, std::function<void()> callback = nullptr);
     void triggerSuccess(const std::string& message, std::function<void()> callback = nullptr);
+    void triggerEmulationError(const std::string& message);
+
     void showMessages();
 
 private:

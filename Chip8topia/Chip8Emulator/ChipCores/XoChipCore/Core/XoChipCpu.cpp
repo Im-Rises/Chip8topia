@@ -219,7 +219,7 @@ void XoChipCpu::SV_RNG_Vx_Vy(uint8 x, uint8 y)
 #if defined(BUILD_PARAM_SAFE)
     if (x > y)
     {
-        Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger("XoChipCpu::SV_RNG_Vx_Vy: x > y", nullptr);
+        Chip8topiaInputHandler::getInstance().m_EmulationError.trigger("XoChipCpu::SV_RNG_Vx_Vy: x > y");
         return;
     }
 #endif
@@ -236,7 +236,7 @@ void XoChipCpu::LD_RNG_Vx_Vy(uint8 x, uint8 y)
 #if defined(BUILD_PARAM_SAFE)
     if (x > y)
     {
-        Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger("XoChipCpu::SV_RNG_Vx_Vy: x > y", nullptr);
+        Chip8topiaInputHandler::getInstance().m_EmulationError.trigger("XoChipCpu::SV_RNG_Vx_Vy: x > y");
         return;
     }
 #endif
