@@ -3,9 +3,7 @@
 #include "XoChipPpu.h"
 
 #include "../../../Chip8CoreBase/Core/Input.h"
-#if defined(BUILD_PARAM_SAFE)
 #include "../../../../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
-#endif
 
 XoChipCpu::XoChipCpu()
 {
@@ -216,13 +214,8 @@ void XoChipCpu::SE_Vx_Vy(const uint8 x, const uint8 y)
 
 void XoChipCpu::SV_RNG_Vx_Vy(uint8 x, uint8 y)
 {
-#if defined(BUILD_PARAM_SAFE)
-    if (x > y)
-    {
-        Chip8topiaInputHandler::getInstance().m_EmulationError.trigger("XoChipCpu::SV_RNG_Vx_Vy: x > y");
-        return;
-    }
-#endif
+    TRIGGER_EMULATION_ERROR(x > y, "XoChipCpu::SV_RNG_Vx_Vy: x > y");
+
     const int range = y - x;
 
     for (int i = 0; i <= range; i++)
@@ -233,13 +226,7 @@ void XoChipCpu::SV_RNG_Vx_Vy(uint8 x, uint8 y)
 
 void XoChipCpu::LD_RNG_Vx_Vy(uint8 x, uint8 y)
 {
-#if defined(BUILD_PARAM_SAFE)
-    if (x > y)
-    {
-        Chip8topiaInputHandler::getInstance().m_EmulationError.trigger("XoChipCpu::SV_RNG_Vx_Vy: x > y");
-        return;
-    }
-#endif
+    TRIGGER_EMULATION_ERROR(x > y, "XoChipCpu::SV_RNG_Vx_Vy: x > y");
 
     const int range = y - x;
 

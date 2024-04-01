@@ -64,3 +64,23 @@ public:
 private:
     bool m_inputEnabled = true;
 };
+
+// #define CHIP8TOPIA_INPUT_HANDLER Chip8topiaInputHandler::getInstance()
+
+#if defined(BUILD_PARAM_SAFE)
+#define TRIGGER_EMULATION_ERROR(condition, message)                                                              \
+    do                                                                                                           \
+    {                                                                                                            \
+        static_assert(std::is_same<decltype(condition), bool>::value, "Condition must be a boolean expression"); \
+        if ((condition))                                                                                         \
+        {                                                                                                        \
+            Chip8topiaInputHandler::getInstance().m_EmulationError.trigger((message));                           \
+        }                                                                                                        \
+    } while (false)
+#else
+#define TRIGGER_EMULATION_ERROR(condition, message) \
+    do                                              \
+    {                                               \
+        (void)(message);                            \
+    } while (false)
+#endif
