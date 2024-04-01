@@ -22,6 +22,9 @@ public:
 
 private:
     void requestMoveToPc(uint16 pc);
+    void requestMoveToNextPc();
+
+    void setScollToPc(uint16 pc);
 
 private:
     bool m_followPc = true;
@@ -29,4 +32,6 @@ private:
 
     bool m_requestMoveToPc = false;
     uint16 m_requestedPc = 0;
+
+    bool m_requestMoveToNextPc = false;
 };

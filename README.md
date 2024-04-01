@@ -65,9 +65,8 @@ Emulated consoles:
 
 Major:
 
-- [ ] Improve disassembly view to draw only odd or even pc address?
-- [ ] Disassembly is not scrolling correctly and buggy
 - [ ] Add safe and unsafe code version
+- [ ] Improve disassembly view to draw only odd or even pc address?
 
 - [ ] Correct the Xo-Chip games not working properly on T8NKS
 - [ ] Correct all opcode tables (be more explicit and check correctly opcode for incorrect opcodes)

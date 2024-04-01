@@ -89,16 +89,24 @@ void Chip8topiaDisassembler::drawDisassembly(Chip8Emulator* emulator)
 
     if (m_previousPc != pc && m_followPc && !currentPcInViewport)
     {
-        ImGui::SetScrollY((static_cast<float>(pc)) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
-        //        ImGui::SetScrollY((static_cast<float>(pc) / OPCODE_SIZE) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
+        setScollToPc(pc);
     }
 
     if (m_requestMoveToPc)
     {
         m_requestMoveToPc = false;
         m_followPc = false;
-        ImGui::SetScrollY((static_cast<float>(m_requestedPc)) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
-        //        ImGui::SetScrollY((static_cast<float>(m_requestedPc) / OPCODE_SIZE) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
+        setScollToPc(m_requestedPc);
+    }
+
+    if (m_requestMoveToNextPc)
+    {
+        m_requestMoveToNextPc = false;
+        m_followPc = false;
+        if (!currentPcInViewport)
+        {
+            setScollToPc(pc);
+        }
     }
 
     m_previousPc = pc;
@@ -125,7 +133,7 @@ void Chip8topiaDisassembler::drawDisassemblyControls(Chip8Emulator* emulator)
     if (ImGui::Button("Step"))
     {
         inputHandler.m_StepEmulationEvent.trigger();
-        requestMoveToPc(emulator->getChip8Core()->getCpu()->getPc());
+        requestMoveToNextPc();
     }
 
     ImGui::SameLine();
@@ -210,4 +218,15 @@ void Chip8topiaDisassembler::requestMoveToPc(uint16 address)
 {
     m_requestMoveToPc = true;
     m_requestedPc = address;
+}
+
+void Chip8topiaDisassembler::requestMoveToNextPc()
+{
+    m_requestMoveToNextPc = true;
+}
+
+void Chip8topiaDisassembler::setScollToPc(uint16 pc)
+{
+    ImGui::SetScrollY((static_cast<float>(pc)) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
+    //        ImGui::SetScrollY((static_cast<float>(m_requestedPc) / OPCODE_SIZE) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
 }
