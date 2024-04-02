@@ -65,7 +65,8 @@ Emulated consoles:
 
 Major:
 
-- [ ] Correct the Xo-Chip games not working properly on T8NKS
+- [ ] Correct the Xo-Chip games not working properly on "T8NKS" and "An Evening To Die For a try" (it seems to be 5xy2
+  and 5xy3 instructions)
 - [ ] Add safe and unsafe code version to every operation (not only opcode tables)
 - [ ] Correct all opcode tables like in Xo-Chip for all other consoles
 - [ ] Add audio
@@ -78,6 +79,7 @@ Minor:
 - [ ] Improve disassembly (check TODO in the Chip8topiaDisassembly.cpp file)
 - [ ] Add a way to change the input keys
 - [ ] Add a background when no rom is loaded
+- [ ] Maybe change the bloody file dialog
 
 ## Controls
 
@@ -203,3 +205,7 @@ Quentin MOREL :
 - <https://github.com/Im-Rises>
 
 [![GitHub contributors](https://contrib.rocks/image?repo=Im-Rises/Chip8topia)](https://github.com/Im-Rises/Chip8topia/graphs/contributors)
+
+## Special Thanks
+
+TODO: add the special thanks !!!
