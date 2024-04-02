@@ -50,6 +50,7 @@ void XoChipCpu::computeOpcode(const uint16 opcode)
             {
             case 0x0: CLS(); break; // 00E0
             case 0xE: RET(); break; // 00EE
+            default: TRIGGER_EMULATION_ERROR(true, "XoChipCpu::computeOpcode: Invalid opcode 0x{:04X}", opcode); break;
             }
             break;
         }
@@ -62,9 +63,11 @@ void XoChipCpu::computeOpcode(const uint16 opcode)
             case 0xD: EXIT(); break;       // 00FD
             case 0xE: LORES(); break;      // 00FE
             case 0xF: HIRES(); break;      // 00FF
+            default: TRIGGER_EMULATION_ERROR(true, "XoChipCpu::computeOpcode: Invalid opcode 0x{:04X}", opcode); break;
             }
             break;
         }
+        default: TRIGGER_EMULATION_ERROR(true, "XoChipCpu::computeOpcode: Invalid opcode 0x{:04X}", opcode); break;
         }
         break;
     }
@@ -79,6 +82,7 @@ void XoChipCpu::computeOpcode(const uint16 opcode)
         case 0x0: SE_Vx_Vy(nibble3, nibble2); break;     // 5XY0
         case 0x2: SV_RNG_Vx_Vy(nibble3, nibble2); break; // 5XY2
         case 0x3: LD_RNG_Vx_Vy(nibble3, nibble2); break; // 5XY3
+        default: TRIGGER_EMULATION_ERROR(true, "XoChipCpu::computeOpcode: Invalid opcode 0x{:04X}", opcode); break;
         }
         break;
     }
@@ -97,6 +101,7 @@ void XoChipCpu::computeOpcode(const uint16 opcode)
         case 0x6: SHR_Vx_Vy(nibble3, nibble2); break;  // 8XY6
         case 0x7: SUBN_Vx_Vy(nibble3, nibble2); break; // 8XY7
         case 0xE: SHL_Vx_Vy(nibble3, nibble2); break;  // 8XYE
+        default: TRIGGER_EMULATION_ERROR(true, "XoChipCpu::computeOpcode: Invalid opcode 0x{:04X}", opcode); break;
         }
         break;
     }
@@ -107,52 +112,42 @@ void XoChipCpu::computeOpcode(const uint16 opcode)
     case 0xD: DRW_Vx_Vy_n(nibble3, nibble2, nibble1); break; // Dxyn
     case 0xE:
     {
-        switch (nibble1)
+        switch (opcode & 0x00FF)
         {
-        case 0xE: SKP_Vx(nibble3); break;  // EX9E
-        case 0x1: SKNP_Vx(nibble3); break; // EXA1
+        case 0x9E: SKP_Vx(nibble3); break;  // EX9E
+        case 0xA1: SKNP_Vx(nibble3); break; // EXA1
+        default: TRIGGER_EMULATION_ERROR(true, "XoChipCpu::computeOpcode: Invalid opcode 0x{:04X}", opcode); break;
         }
         break;
     }
-    case 0xF:
+    case 0xF: // TODO:Resume here
     {
-        switch (nibble2)
+        switch (opcode)
         {
-        case 0x0:
+        case 0xF000: LD_I_NNNN(); break;   // F000
+        case 0xF002: LD_AUDIO_aI(); break; // F002
+        default:
         {
-            switch (nibble1)
+            switch (opcode & 0x00FF)
             {
-            case 0x0: LD_I_NNNN(); break;       // F000
-            case 0x1: SET_PLN(nibble3); break;  // FX01
-            case 0x2: LD_AUDIO_aI(); break;     // F002
-            case 0x7: LD_Vx_DT(nibble3); break; // FX07
-            case 0xA: LD_Vx_K(nibble3); break;  // FX0A
+            case 0x01: SET_PLN(nibble3); break;     // FX01
+            case 0x07: LD_Vx_DT(nibble3); break;    // FX07
+            case 0x0A: LD_Vx_K(nibble3); break;     // FX0A
+            case 0x15: LD_DT_Vx(nibble3); break;    // FX15
+            case 0x18: LD_ST_Vx(nibble3); break;    // FX18
+            case 0x1E: ADD_I_Vx(nibble3); break;    // FX1E
+            case 0x29: LD_F_Vx(nibble3); break;     // FX29
+            case 0x30: LD_HF_Vx(nibble3); break;    // FX30
+            case 0x33: LD_B_Vx(nibble3); break;     // FX33
+            case 0x3A: SET_PITCH_x(nibble3); break; // FX3A
+            case 0x55: LD_aI_Vx(nibble3); break;    // FX55
+            case 0x65: LD_Vx_aI(nibble3); break;    // FX65
+            case 0x75: LD_R_Vx(nibble3); break;     // FX75
+            case 0x85: LD_Vx_R(nibble3); break;     // FX85
+            default: TRIGGER_EMULATION_ERROR(true, "XoChipCpu::computeOpcode: Invalid opcode 0x{:04X}", opcode); break;
             }
             break;
         }
-        case 0x1:
-            switch (nibble1)
-            {
-            case 0x5: LD_DT_Vx(nibble3); break; // FX15
-            case 0x8: LD_ST_Vx(nibble3); break; // FX18
-            case 0xE: ADD_I_Vx(nibble3); break; // FX1E
-            }
-            break;
-        case 0x2: LD_F_Vx(nibble3); break; // FX29
-        case 0x3:
-        {
-            switch (nibble1)
-            {
-            case 0x0: LD_HF_Vx(nibble3); break;    // FX30
-            case 0x3: LD_B_Vx(nibble3); break;     // FX33
-            case 0xA: SET_PITCH_x(nibble3); break; // FX3A
-            }
-            break;
-        }
-        case 0x5: LD_aI_Vx(nibble3); break; // FX55
-        case 0x6: LD_Vx_aI(nibble3); break; // FX65
-        case 0x7: LD_R_Vx(nibble3); break;  // FX75
-        case 0x8: LD_Vx_R(nibble3); break;  // FX85
         }
         break;
     }

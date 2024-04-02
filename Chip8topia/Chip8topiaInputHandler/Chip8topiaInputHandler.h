@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <fmt/format.h>
 #include <binaryLib/binaryLib.h>
 #include <Singleton/Singleton.h>
 
@@ -68,19 +69,19 @@ private:
 // #define CHIP8TOPIA_INPUT_HANDLER Chip8topiaInputHandler::getInstance()
 
 #if defined(BUILD_PARAM_SAFE)
-#define TRIGGER_EMULATION_ERROR(condition, message)                                                              \
+#define TRIGGER_EMULATION_ERROR(condition, message, ...)                                                         \
     do                                                                                                           \
     {                                                                                                            \
         static_assert(std::is_same<decltype(condition), bool>::value, "Condition must be a boolean expression"); \
         if ((condition))                                                                                         \
         {                                                                                                        \
-            Chip8topiaInputHandler::getInstance().m_EmulationError.trigger((message));                           \
+            Chip8topiaInputHandler::getInstance().m_EmulationError.trigger(fmt::format(message, __VA_ARGS__));   \
         }                                                                                                        \
     } while (false)
 #else
-#define TRIGGER_EMULATION_ERROR(condition, message) \
-    do                                              \
-    {                                               \
-        (void)(message);                            \
+#define TRIGGER_EMULATION_ERROR(condition, message, ...) \
+    do                                                   \
+    {                                                    \
+        (void)(message);                                 \
     } while (false)
 #endif

@@ -42,6 +42,6 @@ private:
     Chip8CoreType m_selectedCore = Chip8Emulator::DEFAULT_CORE_TYPE;
     Chip8Frequency m_selectedFrequency = Chip8Emulator::DEFAULT_FREQUENCY;
 
-    bool m_emulationSettingsOpen = INITIAL_WINDOW_STATE;
+    bool m_emulationSettingsOpen = true;
     bool m_emulationStatsOpen = INITIAL_WINDOW_STATE;
 };
