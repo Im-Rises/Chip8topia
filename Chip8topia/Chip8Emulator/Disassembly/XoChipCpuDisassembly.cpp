@@ -17,6 +17,7 @@ auto XoChipCpuDisassembly::disassembleOpcode(const uint16 opcode) -> std::string
     {
         switch (nibble2)
         {
+        case 0x0: return "HALT";                             // 0000
         case 0xC: return fmt::format("SCD 0x{:X}", nibble1); // 00CN
         case 0xD: return fmt::format("SCU 0x{:X}", nibble1); // 00DN
         case 0xE:
@@ -25,6 +26,7 @@ auto XoChipCpuDisassembly::disassembleOpcode(const uint16 opcode) -> std::string
             {
             case 0x0: return "CLS"; // 00E0
             case 0xE: return "RET"; // 00EE
+            default: return INVALID_OPCODE_TEXT;
             }
             break;
         }
@@ -37,9 +39,11 @@ auto XoChipCpuDisassembly::disassembleOpcode(const uint16 opcode) -> std::string
             case 0xD: return "EXIT";                       // 00FD
             case 0xE: return "LORES";                      // 00FE
             case 0xF: return "HIRES";                      // 00FF
+            default: return INVALID_OPCODE_TEXT;
             }
             break;
         }
+        default: return INVALID_OPCODE_TEXT;
         }
         break;
     }
@@ -51,9 +55,10 @@ auto XoChipCpuDisassembly::disassembleOpcode(const uint16 opcode) -> std::string
     {
         switch (nibble1)
         {
-        case 0x5: return fmt::format("SE V{:X}, V{:X}", nibble3, nibble2);     // 5XY0
+        case 0x0: return fmt::format("SE V{:X}, V{:X}", nibble3, nibble2);     // 5XY0
         case 0x2: return fmt::format("SV_RNG V{:X}, V{:X}", nibble3, nibble2); // 5XY2
         case 0x3: return fmt::format("LD_RNG V{:X}, V{:X}", nibble3, nibble2); // 5XY3
+        default: return INVALID_OPCODE_TEXT;
         }
         break;
     }
@@ -72,6 +77,7 @@ auto XoChipCpuDisassembly::disassembleOpcode(const uint16 opcode) -> std::string
         case 0x6: return fmt::format("SHR V{:X}, V{:X}", nibble3, nibble2);  // 8XY6
         case 0x7: return fmt::format("SUBN V{:X}, V{:X}", nibble3, nibble2); // 8XY7
         case 0xE: return fmt::format("SHL V{:X}, V{:X}", nibble3, nibble2);  // 8XYE
+        default: return INVALID_OPCODE_TEXT;
         }
         break;
     }
@@ -82,52 +88,42 @@ auto XoChipCpuDisassembly::disassembleOpcode(const uint16 opcode) -> std::string
     case 0xD: return fmt::format("DRW V{:X}, V{:X}, 0x{:02X}", nibble3, nibble2, nibble1); // DXYN
     case 0xE:
     {
-        switch (nibble1)
+        switch (opcode & 0x00FF)
         {
-        case 0xE: return fmt::format("SKP V{:X}", nibble3);  // EX9E
-        case 0x1: return fmt::format("SKNP V{:X}", nibble3); // EXA1
+        case 0x9E: return fmt::format("SKP V{:X}", nibble3);  // EX9E
+        case 0xA1: return fmt::format("SKNP V{:X}", nibble3); // EXA1
+        default: return INVALID_OPCODE_TEXT;
         }
         break;
     }
-    case 0xF:
+    case 0xF: // TODO:Resume here
     {
-        switch (nibble2)
+        switch (opcode)
         {
-        case 0x0:
+        case 0xF000: return fmt::format("LD I, NNNN");            // F000
+        case 0xF002: return fmt::format("LD_AUDIO [I]", nibble3); // FX02
+        default:
         {
-            switch (nibble1)
+            switch (opcode & 0x00FF)
             {
-            case 0x0: return fmt::format("LD I, NNNN");              // F000
-            case 0x1: return fmt::format("SET_PLN 0x{:X}", nibble3); // FX01
-            case 0x2: return fmt::format("LD_AUDIO [I]", nibble3);   // FX02
-            case 0x7: return fmt::format("LD V{:X}, DT", nibble3);   // FX07
-            case 0xA: return fmt::format("LD V{:X}, K", nibble3);    // FX0A
+            case 0x01: return fmt::format("SET_PLN 0x{:X}", nibble3); // FX01
+            case 0x07: return fmt::format("LD V{:X}, DT", nibble3);   // FX07
+            case 0x0A: return fmt::format("LD V{:X}, K", nibble3);    // FX0A
+            case 0x15: return fmt::format("LD DT, V{:X}", nibble3);   // FX15
+            case 0x18: return fmt::format("LD ST, V{:X}", nibble3);   // FX18
+            case 0x1E: return fmt::format("ADD I, V{:X}", nibble3);   // FX1E
+            case 0x29: return fmt::format("LD F, V{:X}", nibble3);    // FX29
+            case 0x30: return fmt::format("LD HF, V{:X}", nibble3);   // FX30
+            case 0x33: return fmt::format("LD B, V{:X}", nibble3);    // FX33
+            case 0x3A: return fmt::format("SET_PITCH {:X}", nibble3); // FX3A
+            case 0x55: return fmt::format("LD [I], V{:X}", nibble3);  // FX55
+            case 0x65: return fmt::format("LD V{:X}, [I]", nibble3);  // FX65
+            case 0x75: return fmt::format("LD R, V{:X}", nibble3);    // FX75
+            case 0x85: return fmt::format("LD V{:X}, R", nibble3);    // FX85
+            default: return INVALID_OPCODE_TEXT;
             }
             break;
         }
-        case 0x1:
-            switch (nibble1)
-            {
-            case 0x5: return fmt::format("LD DT, V{:X}", nibble3); // FX15
-            case 0x8: return fmt::format("LD ST, V{:X}", nibble3); // FX18
-            case 0xE: return fmt::format("ADD I, V{:X}", nibble3); // FX1E
-            }
-            break;
-        case 0x2: return fmt::format("LD F, V{:X}", nibble3); // FX29
-        case 0x3:
-        {
-            switch (nibble1)
-            {
-            case 0x0: return fmt::format("LD HF, V{:X}", nibble3);   // FX30
-            case 0x3: return fmt::format("LD B, V{:X}", nibble3);    // FX33
-            case 0xA: return fmt::format("SET_PITCH {:X}", nibble3); // FX3A
-            }
-            break;
-        }
-        case 0x5: return fmt::format("LD [I], V{:X}", nibble3); // FX55
-        case 0x6: return fmt::format("LD V{:X}, [I]", nibble3); // FX65
-        case 0x7: return fmt::format("LD R, V{:X}", nibble3);   // FX75
-        case 0x8: return fmt::format("LD V{:X}, R", nibble3);   // FX85
         }
         break;
     }
