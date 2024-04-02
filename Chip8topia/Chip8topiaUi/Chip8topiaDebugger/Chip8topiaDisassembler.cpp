@@ -43,17 +43,19 @@ void Chip8topiaDisassembler::drawDisassembly(Chip8Emulator* emulator)
     }
 
     bool currentPcInViewport = false;
+    bool pcIsOdd = pc % 2 != 0;
 
+    // TODO: Disassembly:
+    //  - Improve this code to not draw the data read for opcode 0xF000
+    //  - Correct the begin code which is a bit strangely written
     std::string buffer;
     ImGuiListClipper clipper;
-    //    clipper.Begin(Chip8Cpu::MEMORY_SIZE - 1);
-    clipper.Begin(Chip8Cpu::MEMORY_SIZE / OPCODE_SIZE);
+    clipper.Begin((Chip8Cpu::MEMORY_SIZE - (pcIsOdd ? 1 : 0)) / OPCODE_SIZE);
     while (clipper.Step())
     {
         for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
         {
-            //            const int memoryIndex = i;
-            const int memoryIndex = i * OPCODE_SIZE;
+            const int memoryIndex = i * OPCODE_SIZE + (pcIsOdd ? 1 : 0);
 
             uint16 opcode = (memory[memoryIndex] << 8) | memory[(memoryIndex) + 1];
 
@@ -227,6 +229,5 @@ void Chip8topiaDisassembler::requestMoveToNextPc()
 
 void Chip8topiaDisassembler::setScollToPc(uint16 pc)
 {
-    //    ImGui::SetScrollY((static_cast<float>(pc)) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
     ImGui::SetScrollY((static_cast<float>(pc) / OPCODE_SIZE) * (ImGui::GetTextLineHeight() + ImGui::GetStyle().ItemSpacing.y));
 }

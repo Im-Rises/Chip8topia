@@ -65,9 +65,7 @@ Emulated consoles:
 
 Major:
 
-- [ ] Improve disassembly view to draw only odd or even pc address?
 - [ ] Add safe and unsafe code version
-
 - [ ] Correct the Xo-Chip games not working properly on T8NKS
 - [ ] Correct all opcode tables (be more explicit and check correctly opcode for incorrect opcodes)
 - [ ] On big games restart is buggy, currently we do not reload the rom and keep memory as it is (we should reset memory
@@ -79,6 +77,7 @@ Minor:
 
 - [ ] Restarting a game when playing big xo-chip games will not reload the game from the start (we should reset memory
   and reload the game rom)
+- [ ] Improve disassembly (check TODO in the Chip8topiaDisassembly.cpp file)
 - [ ] Add a way to change the input keys
 - [ ] Add a background when no rom is loaded
 
