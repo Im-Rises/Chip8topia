@@ -209,25 +209,37 @@ void XoChipCpu::SE_Vx_Vy(const uint8 x, const uint8 y)
 
 void XoChipCpu::SV_RNG_Vx_Vy(uint8 x, uint8 y)
 {
-    TRIGGER_EMULATION_ERROR(x > y, "XoChipCpu::SV_RNG_Vx_Vy: x > y");
-
-    const int range = y - x;
-
-    for (int i = 0; i <= range; i++)
+    if (y >= x)
     {
-        m_memory[m_I + i] = m_V[x + i];
+        for (int r = 0; r <= (y - x); r++)
+        {
+            m_memory[m_I + r] = m_V[x + r];
+        }
+    }
+    else
+    {
+        for (int r = 0; r <= (x - y); r++)
+        {
+            m_memory[m_I + r] = m_V[x - r];
+        }
     }
 }
 
 void XoChipCpu::LD_RNG_Vx_Vy(uint8 x, uint8 y)
 {
-    TRIGGER_EMULATION_ERROR(x > y, "XoChipCpu::SV_RNG_Vx_Vy: x > y");
-
-    const int range = y - x;
-
-    for (int i = 0; i <= range; i++)
+    if (y >= x)
     {
-        m_V[x + i] = m_memory[m_I + i];
+        for (int r = 0; r <= (y - x); r++)
+        {
+            m_V[x + r] = m_memory[m_I + r];
+        }
+    }
+    else
+    {
+        for (int r = 0; r <= (x - y); r++)
+        {
+            m_V[x - r] = m_memory[m_I + r];
+        }
     }
 }
 

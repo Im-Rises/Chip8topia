@@ -65,8 +65,6 @@ Emulated consoles:
 
 Major:
 
-- [ ] Correct the Xo-Chip games not working properly on "T8NKS" and "An Evening To Die For a try" (it seems to be 5xy2
-  and 5xy3 instructions)
 - [ ] Add safe and unsafe code version to every operation (not only opcode tables)
 - [ ] Correct all opcode tables like in Xo-Chip for all other consoles
 - [ ] Add audio
