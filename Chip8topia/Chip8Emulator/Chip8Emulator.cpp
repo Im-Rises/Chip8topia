@@ -66,12 +66,12 @@ void Chip8Emulator::restart()
     m_core->reset();
     m_videoEmulation.reset();
     m_accumulator = 0.0F;
+    m_errorTriggered = false;
 }
 
 void Chip8Emulator::loadRom(const std::vector<uint8_t>& romData)
 {
-    m_videoEmulation.reset();
-    m_core->reset();
+    restart();
     m_core->readRom(romData);
     m_isRomLoaded = true;
 }
@@ -99,7 +99,7 @@ void Chip8Emulator::update(const float deltaTime)
         {
             m_accumulator = 0.0F;
             bool screenUpdated = false;
-            while (!screenUpdated && !m_isBreak)
+            while (!screenUpdated && !m_isBreak && !m_errorTriggered)
             {
                 screenUpdated = m_core->clock();
                 if (m_canBreak && m_breakpoints.find(m_core->getCpu()->getPc()) != m_breakpoints.end())
@@ -184,15 +184,15 @@ void Chip8Emulator::stop()
 #if defined(BUILD_PARAM_SAFE)
 void Chip8Emulator::triggerEmulationError(const std::string& message)
 {
-    m_isRomLoaded = false;
-    m_isBreak = true;
+    //    m_isRomLoaded = false;
+    //    m_isBreak = true;
     // TODO: Maybe use a spacial variable when error is triggered to prevent being in break mode when starting a new game ?
-    //     m_errorTriggered = true;
+    m_errorTriggered = true;
 
 #if !defined(__EMSCRIPTEN__)
-    spdlog::info("Emulation error: {}", message);
+    spdlog::error("Emulation error: {}", message);
 #else
-    std::cout << "Emulation error: " << message << std::endl;
+    std::cerr << "Emulation error: " << message << '\n';
 #endif
 }
 #endif

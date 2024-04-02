@@ -76,7 +76,7 @@ private:
     bool m_isBreak = false;
     bool m_step = false;
     bool m_canBreak = true;
-    //    bool m_errorTriggered = false;
+    bool m_errorTriggered = false;
 
     std::set<uint16> m_breakpoints;
 };

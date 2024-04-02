@@ -1,6 +1,7 @@
 #include "Chip8Cpu.h"
 
 #include "Chip8Ppu.h"
+#include "../../../../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
 
 Chip8Cpu::Chip8Cpu() : m_isHalted(false),
                        m_requestDisableHalt(false)

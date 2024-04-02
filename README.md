@@ -65,11 +65,9 @@ Emulated consoles:
 
 Major:
 
-- [ ] Add safe and unsafe code version
 - [ ] Correct the Xo-Chip games not working properly on T8NKS
-- [ ] Correct all opcode tables (be more explicit and check correctly opcode for incorrect opcodes)
-- [ ] On big games restart is buggy, currently we do not reload the rom and keep memory as it is (we should reset memory
-  and reload the game rom), for now I leave it for testing purposes
+- [ ] Add safe and unsafe code version to every operation (not only opcode tables)
+- [ ] Correct all opcode tables like in Xo-Chip for all other consoles
 - [ ] Add audio
 - [ ] Optimize the code!!!
 
