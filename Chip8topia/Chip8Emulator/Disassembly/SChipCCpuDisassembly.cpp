@@ -17,18 +17,18 @@ auto SChipCCpuDisassembly::disassembleOpcode(const uint16 opcode, bool isLowRes)
     {
         switch (opcode & 0x00FF)
         {
-        case 0xE0: return "CLS";                                                    // 00E0
-        case 0xEE: return "RET";                                                    // 00EE
-        case 0xFB: return fmt::format("SCR 0x{:X}", isLowRes && !isModern ? 2 : 4); // 00FB
-        case 0xFC: return fmt::format("SCL 0x{:X}", isLowRes && !isModern ? 2 : 4); // 00FC
-        case 0xFD: return "EXIT";                                                   // 00FD
-        case 0xFE: return "LORES";                                                  // 00FE
-        case 0xFF: return "HIRES";                                                  // 00FF
+        case 0xE0: return "CLS";                                       // 00E0
+        case 0xEE: return "RET";                                       // 00EE
+        case 0xFB: return fmt::format("SCR 0x{:X}", isLowRes ? 2 : 4); // 00FB
+        case 0xFC: return fmt::format("SCL 0x{:X}", isLowRes ? 2 : 4); // 00FC
+        case 0xFD: return "EXIT";                                      // 00FD
+        case 0xFE: return "LORES";                                     // 00FE
+        case 0xFF: return "HIRES";                                     // 00FF
         default:
         {
             switch (nibble2)
             {
-            case 0xC: return fmt::format("SCD 0x{:X}", (isLowRes && !isModern) ? nibble1 / 2 : nibble1); // 00CN
+            case 0xC: return fmt::format("SCD 0x{:X}", isLowRes ? nibble1 / 2 : nibble1); // 00CN
             default: return INVALID_OPCODE_TEXT;
             }
         }

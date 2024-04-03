@@ -5,6 +5,8 @@
 #include "../../../Chip8CoreBase/Core/Input.h"
 #include "../../../../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
 
+#define TRIGGER_COMPUTE_OPCODE_ERROR(opcode) TRIGGER_EMULATION_ERROR(true, "XoChipCpu::computeOpcode: Invalid opcode 0x{:04X}", opcode)
+
 XoChipCpu::XoChipCpu()
 {
     std::copy(XO_CHIP_FONTSET.begin(), XO_CHIP_FONTSET.end(), m_memory.begin());
@@ -50,7 +52,7 @@ void XoChipCpu::computeOpcode(const uint16 opcode)
             {
             case 0x0: CLS(); break; // 00E0
             case 0xE: RET(); break; // 00EE
-            default: TRIGGER_EMULATION_ERROR(true, "XoChipCpu::computeOpcode: Invalid opcode 0x{:04X}", opcode); break;
+            default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
             }
             break;
         }
@@ -63,11 +65,11 @@ void XoChipCpu::computeOpcode(const uint16 opcode)
             case 0xD: EXIT(); break;       // 00FD
             case 0xE: LORES(); break;      // 00FE
             case 0xF: HIRES(); break;      // 00FF
-            default: TRIGGER_EMULATION_ERROR(true, "XoChipCpu::computeOpcode: Invalid opcode 0x{:04X}", opcode); break;
+            default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
             }
             break;
         }
-        default: TRIGGER_EMULATION_ERROR(true, "XoChipCpu::computeOpcode: Invalid opcode 0x{:04X}", opcode); break;
+        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
         }
         break;
     }
@@ -82,7 +84,7 @@ void XoChipCpu::computeOpcode(const uint16 opcode)
         case 0x0: SE_Vx_Vy(nibble3, nibble2); break;     // 5XY0
         case 0x2: SV_RNG_Vx_Vy(nibble3, nibble2); break; // 5XY2
         case 0x3: LD_RNG_Vx_Vy(nibble3, nibble2); break; // 5XY3
-        default: TRIGGER_EMULATION_ERROR(true, "XoChipCpu::computeOpcode: Invalid opcode 0x{:04X}", opcode); break;
+        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
         }
         break;
     }
@@ -101,7 +103,7 @@ void XoChipCpu::computeOpcode(const uint16 opcode)
         case 0x6: SHR_Vx_Vy(nibble3, nibble2); break;  // 8XY6
         case 0x7: SUBN_Vx_Vy(nibble3, nibble2); break; // 8XY7
         case 0xE: SHL_Vx_Vy(nibble3, nibble2); break;  // 8XYE
-        default: TRIGGER_EMULATION_ERROR(true, "XoChipCpu::computeOpcode: Invalid opcode 0x{:04X}", opcode); break;
+        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
         }
         break;
     }
@@ -110,7 +112,7 @@ void XoChipCpu::computeOpcode(const uint16 opcode)
         switch (nibble1)
         {
         case 0x0: SNE_Vx_Vy(nibble3, nibble2); break; // 9XY0
-        default: TRIGGER_EMULATION_ERROR(true, "XoChipCpu::computeOpcode: Invalid opcode 0x{:04X}", opcode); break;
+        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
         }
         break;
     }
@@ -124,7 +126,7 @@ void XoChipCpu::computeOpcode(const uint16 opcode)
         {
         case 0x9E: SKP_Vx(nibble3); break;  // EX9E
         case 0xA1: SKNP_Vx(nibble3); break; // EXA1
-        default: TRIGGER_EMULATION_ERROR(true, "XoChipCpu::computeOpcode: Invalid opcode 0x{:04X}", opcode); break;
+        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
         }
         break;
     }
@@ -152,14 +154,14 @@ void XoChipCpu::computeOpcode(const uint16 opcode)
             case 0x65: LD_Vx_aI(nibble3); break;    // FX65
             case 0x75: LD_R_Vx(nibble3); break;     // FX75
             case 0x85: LD_Vx_R(nibble3); break;     // FX85
-            default: TRIGGER_EMULATION_ERROR(true, "XoChipCpu::computeOpcode: Invalid opcode 0x{:04X}", opcode); break;
+            default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
             }
             break;
         }
         }
         break;
     }
-    default: TRIGGER_EMULATION_ERROR(true, "XoChipCpu::computeOpcode: Invalid opcode 0x{:04X}", opcode); break;
+    default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
     }
 }
 

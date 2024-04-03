@@ -3,6 +3,8 @@
 #include "SChip11Ppu.h"
 #include "../../../../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
 
+#define TRIGGER_COMPUTE_OPCODE_ERROR(opcode) TRIGGER_EMULATION_ERROR(true, "SChip11Cpu::computeOpcode: Invalid opcode 0x{:04X}", opcode)
+
 SChip11Cpu::SChip11Cpu(bool isModernMode) : m_isModernMode(isModernMode), m_isHalted(false), m_requestDisableHalt(false)
 {
     std::copy(SCHIP_FONTSET.begin(), SCHIP_FONTSET.end(), m_memory.begin());
@@ -41,7 +43,7 @@ void SChip11Cpu::computeOpcode(const uint16 opcode)
             switch (nibble2)
             {
             case 0xC: SCD(nibble1); break; // 00CN
-            default: TRIGGER_EMULATION_ERROR(true, "Chip8Cpu::computeOpcode: Invalid opcode 0x{:04X}", opcode); break;
+            default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
             }
         }
         }
@@ -56,7 +58,7 @@ void SChip11Cpu::computeOpcode(const uint16 opcode)
         switch (nibble1)
         {
         case 0x0: SE_Vx_Vy(nibble3, nibble2); break; // 5XY0
-        default: TRIGGER_EMULATION_ERROR(true, "Chip8Cpu::computeOpcode: Invalid opcode 0x{:04X}", opcode); break;
+        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
         }
         break;
     }
@@ -75,7 +77,7 @@ void SChip11Cpu::computeOpcode(const uint16 opcode)
         case 0x6: SHR_Vx_Vy(nibble3, nibble2); break;  // 8XY6
         case 0x7: SUBN_Vx_Vy(nibble3, nibble2); break; // 8XY7
         case 0xE: SHL_Vx_Vy(nibble3, nibble2); break;  // 8XYE
-        default: TRIGGER_EMULATION_ERROR(true, "Chip8Cpu::computeOpcode: Invalid opcode 0x{:04X}", opcode); break;
+        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
         }
         break;
     }
@@ -84,7 +86,7 @@ void SChip11Cpu::computeOpcode(const uint16 opcode)
         switch (nibble1)
         {
         case 0x0: SNE_Vx_Vy(nibble3, nibble2); break; // 9XY0
-        default: TRIGGER_EMULATION_ERROR(true, "Chip8Cpu::computeOpcode: Invalid opcode 0x{:04X}", opcode); break;
+        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
         }
         break;
     }
@@ -98,7 +100,7 @@ void SChip11Cpu::computeOpcode(const uint16 opcode)
         {
         case 0x9E: SKP_Vx(nibble3); break;  // EX9E
         case 0xA1: SKNP_Vx(nibble3); break; // EXA1
-        default: TRIGGER_EMULATION_ERROR(true, "Chip8Cpu::computeOpcode: Invalid opcode 0x{:04X}", opcode); break;
+        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
         }
         break;
     }
@@ -118,10 +120,10 @@ void SChip11Cpu::computeOpcode(const uint16 opcode)
         case 0x65: LD_Vx_aI(nibble3); break; // FX65
         case 0x75: LD_R_Vx(nibble3); break;  // FX75
         case 0x85: LD_Vx_R(nibble3); break;  // FX85
-        default: TRIGGER_EMULATION_ERROR(true, "Chip8Cpu::computeOpcode: Invalid opcode 0x{:04X}", opcode); break;
+        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
         }
     }
-    default: TRIGGER_EMULATION_ERROR(true, "Chip8Cpu::computeOpcode: Invalid opcode 0x{:04X}", opcode); break;
+    default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
     }
 }
 
