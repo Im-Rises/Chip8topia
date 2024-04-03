@@ -15,6 +15,11 @@ jobs:
     outputs:
       upload_url: ${{ steps.create-release.outputs.upload_url }}
     steps:
+      - name: Get build version from CMakelists.txt
+        run: |
+          version=$(grep -oP 'set\(CHIP8TOPIA_VERSION "\K[^"]+' CMakeLists.txt)
+          echo "VERSION=$version" >> "$GITHUB_ENV"
+
       - name: Create Release
         id: create-release
         uses: actions/create-release@v1
@@ -43,11 +48,13 @@ jobs:
             cpp_compiler: cl
             executable_name: "Chip8topia"
             executable_extension: ".exe"
+            platform_name: "windows"
           - os: ubuntu-latest
             c_compiler: gcc
             cpp_compiler: g++
             executable_name: "Chip8topia"
             executable_extension: ""
+            platform_name: "linux"
         exclude:
           - os: windows-latest
             c_compiler: gcc
@@ -90,43 +97,43 @@ jobs:
       - name: Build
         run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
-      - name: Get build version from CMakelists.txt
-        run: |
-          version=$(grep -oP 'set\(CHIP8TOPIA_VERSION "\K[^"]+' CMakeLists.txt)
-          echo "VERSION=$version" >> "$GITHUB_ENV"
+      #      - name: Get build version from CMakelists.txt
+      #        run: |
+      #          version=$(grep -oP 'set\(CHIP8TOPIA_VERSION "\K[^"]+' CMakeLists.txt)
+      #          echo "VERSION=$version" >> "$GITHUB_ENV"
 
       - name: Copy common artifacts
         run: |
-          mkdir ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ env.VERSION }}
-          cp -r ${{ github.workspace }}/imgui.ini ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ env.VERSION }}
-          cp -r ${{ github.workspace }}/shaders ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ env.VERSION }}
-          cp -r ${{ github.workspace }}/Chip8Games ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ env.VERSION }}
-          cp -r ${{ github.workspace }}/res ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ env.VERSION }}
-          cp -r ${{ github.workspace }}/fonts ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ env.VERSION }}
+          mkdir ${{ github.workspace }}/${{ matrix.platform_name }}-${{ matrix.os }}-v${{ env.VERSION }}
+          cp -r ${{ github.workspace }}/imgui.ini ${{ github.workspace }}/${{ matrix.platform_name }}-${{ matrix.os }}-v${{ env.VERSION }}
+          cp -r ${{ github.workspace }}/shaders ${{ github.workspace }}/${{ matrix.platform_name }}-${{ matrix.os }}-v${{ env.VERSION }}
+          cp -r ${{ github.workspace }}/Chip8Games ${{ github.workspace }}/${{ matrix.platform_name }}-${{ matrix.os }}-v${{ env.VERSION }}
+          cp -r ${{ github.workspace }}/res ${{ github.workspace }}/${{ matrix.platform_name }}-${{ matrix.os }}-v${{ env.VERSION }}
+          cp -r ${{ github.workspace }}/fonts ${{ github.workspace }}/${{ matrix.platform_name }}-${{ matrix.os }}-v${{ env.VERSION }}
 
       - name: Copy artifacts ubuntu
         if: matrix.os == 'ubuntu-latest'
         run: |
-          cp -r ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.executable_name }}/${{ matrix.executable_name }} ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ env.VERSION }}
+          cp -r ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.platform_name }}/${{ matrix.platform_name }} ${{ github.workspace }}/${{ matrix.platform_name }}-${{ matrix.os }}-v${{ env.VERSION }}
 
       - name: Copy artifacts windows
         if: matrix.os == 'windows-latest'
         run: |
-          cp -r ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.executable_name }}/${{ matrix.build_type }}/${{ matrix.executable_name }}${{ matrix.executable_extension }} ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ env.VERSION }}
-          cp -r ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.executable_name }}/${{ matrix.build_type }}/glfw3.dll ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ env.VERSION }}
-          cp -r ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.executable_name }}/${{ matrix.build_type }}/fmt.dll ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ env.VERSION }}
+          cp -r ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.platform_name }}/${{ matrix.build_type }}/${{ matrix.platform_name }}${{ matrix.executable_extension }} ${{ github.workspace }}/${{ matrix.platform_name }}-${{ matrix.os }}-v${{ env.VERSION }}
+          cp -r ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.platform_name }}/${{ matrix.build_type }}/glfw3.dll ${{ github.workspace }}/${{ matrix.platform_name }}-${{ matrix.os }}-v${{ env.VERSION }}
+          cp -r ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.platform_name }}/${{ matrix.build_type }}/fmt.dll ${{ github.workspace }}/${{ matrix.platform_name }}-${{ matrix.os }}-v${{ env.VERSION }}
 
       - name: Zip artifacts (ubuntu)
         if: matrix.os == 'ubuntu-latest'
         run: |
           cd ${{ github.workspace }}
-            zip -r ${{ matrix.executable_name }}-${{ matrix.os }}-v${{ env.VERSION }}.zip ${{ matrix.executable_name }}-${{ matrix.os }}-v${{ env.VERSION }}
+            zip -r ${{ matrix.platform_name }}-${{ matrix.os }}-v${{ env.VERSION }}.zip ${{ matrix.platform_name }}-${{ matrix.os }}-v${{ env.VERSION }}
 
       - name: Zip artifacts (windows)
         if: matrix.os == 'windows-latest'
         run: |
           cd ${{ github.workspace }}
-            Compress-Archive -Path ${{ matrix.executable_name }}-${{ matrix.os }}-v${{ env.VERSION }} -DestinationPath ${{ matrix.executable_name }}-${{ matrix.os }}-v${{ env.VERSION }}.zip
+            Compress-Archive -Path ${{ matrix.platform_name }}-${{ matrix.os }}-v${{ env.VERSION }} -DestinationPath ${{ matrix.platform_name }}-${{ matrix.os }}-v${{ env.VERSION }}.zip
 
       - name: Upload release
         uses: actions/upload-release-asset@v1
@@ -134,6 +141,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.create-release.outputs.upload_url }}
-          asset_path: ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.os }}-v${{ env.VERSION }}.zip
-          asset_name: ${{ matrix.executable_name }}-${{ matrix.os }}-v${{ env.VERSION }}.zip
+          asset_path: ${{ github.workspace }}/${{ matrix.platform_name }}-${{ matrix.os }}-v${{ env.VERSION }}.zip
+          asset_name: ${{ matrix.platform_name }}-${{ matrix.os }}-v${{ env.VERSION }}.zip
           asset_content_type: application/zip
