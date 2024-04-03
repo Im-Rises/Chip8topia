@@ -80,6 +80,7 @@ Minor:
 - [ ] Add a way to change the input keys
 - [ ] Add a background when no rom is loaded
 - [ ] Maybe change the bloody file dialog
+- [ ] Use cpack to create a release
 
 ## Controls
 
