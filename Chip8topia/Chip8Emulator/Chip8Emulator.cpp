@@ -184,9 +184,6 @@ void Chip8Emulator::stop()
 #if defined(BUILD_PARAM_SAFE)
 void Chip8Emulator::triggerEmulationError(const std::string& message)
 {
-    //    m_isRomLoaded = false;
-    //    m_isBreak = true;
-    // TODO: Maybe use a spacial variable when error is triggered to prevent being in break mode when starting a new game ?
     m_errorTriggered = true;
 
 #if !defined(__EMSCRIPTEN__)
