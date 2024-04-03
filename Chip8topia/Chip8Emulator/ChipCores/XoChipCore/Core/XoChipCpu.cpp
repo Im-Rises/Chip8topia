@@ -105,7 +105,15 @@ void XoChipCpu::computeOpcode(const uint16 opcode)
         }
         break;
     }
-    case 0x9: SNE_Vx_Vy(nibble3, nibble2); break;            // 9XY0
+    case 0x9:
+    {
+        switch (nibble1)
+        {
+        case 0x0: SNE_Vx_Vy(nibble3, nibble2); break; // 9XY0
+        default: TRIGGER_EMULATION_ERROR(true, "XoChipCpu::computeOpcode: Invalid opcode 0x{:04X}", opcode); break;
+        }
+        break;
+    }
     case 0xA: LD_I_addr(opcode & 0x0FFF); break;             // ANNN
     case 0xB: JP_nnn_V0(opcode & 0x0FFF); break;             // BNNN
     case 0xC: RND_Vx_nn(nibble3, opcode & 0x00FF); break;    // CXNN
@@ -151,6 +159,7 @@ void XoChipCpu::computeOpcode(const uint16 opcode)
         }
         break;
     }
+    default: TRIGGER_EMULATION_ERROR(true, "XoChipCpu::computeOpcode: Invalid opcode 0x{:04X}", opcode); break;
     }
 }
 

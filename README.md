@@ -65,8 +65,6 @@ Emulated consoles:
 
 Major:
 
-- [ ] Add safe and unsafe code version to every operation (not only opcode tables)
-- [ ] Correct all opcode tables like in Xo-Chip for all other consoles
 - [ ] Add audio
 - [ ] Optimize the code!!!
 

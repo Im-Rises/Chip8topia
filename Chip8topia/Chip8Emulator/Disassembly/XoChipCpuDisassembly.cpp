@@ -28,7 +28,6 @@ auto XoChipCpuDisassembly::disassembleOpcode(const uint16 opcode) -> std::string
             case 0xE: return "RET"; // 00EE
             default: return INVALID_OPCODE_TEXT;
             }
-            break;
         }
         case 0xF:
         {
@@ -41,11 +40,9 @@ auto XoChipCpuDisassembly::disassembleOpcode(const uint16 opcode) -> std::string
             case 0xF: return "HIRES";                      // 00FF
             default: return INVALID_OPCODE_TEXT;
             }
-            break;
         }
         default: return INVALID_OPCODE_TEXT;
         }
-        break;
     }
     case 0x1: return fmt::format("JP 0x{:03X}", opcode & 0x0FFF);                  // 1NNN
     case 0x2: return fmt::format("CALL 0x{:03X}", opcode & 0x0FFF);                // 2NNN
@@ -60,7 +57,6 @@ auto XoChipCpuDisassembly::disassembleOpcode(const uint16 opcode) -> std::string
         case 0x3: return fmt::format("LD_RNG V{:X}, V{:X}", nibble3, nibble2); // 5XY3
         default: return INVALID_OPCODE_TEXT;
         }
-        break;
     }
     case 0x6: return fmt::format("LD V{:X}, 0x{:02X}", nibble3, opcode & 0x00FF);  // 6XNN
     case 0x7: return fmt::format("ADD V{:X}, 0x{:02X}", nibble3, opcode & 0x00FF); // 7XNN
@@ -79,9 +75,15 @@ auto XoChipCpuDisassembly::disassembleOpcode(const uint16 opcode) -> std::string
         case 0xE: return fmt::format("SHL V{:X}, V{:X}", nibble3, nibble2);  // 8XYE
         default: return INVALID_OPCODE_TEXT;
         }
-        break;
     }
-    case 0x9: return fmt::format("SNE V{:X}, V{:X}", nibble3, nibble2);                    // 9XY0
+    case 0x9:
+    {
+        switch (nibble1)
+        {
+        case 0x0: return fmt::format("SNE V{:X}, V{:X}", nibble3, nibble2); // 9XY0
+        default: return INVALID_OPCODE_TEXT;
+        }
+    }
     case 0xA: return fmt::format("LD I, 0x{:03X}", opcode & 0x0FFF);                       // ANNN
     case 0xB: return fmt::format("JP 0x{:03X}, V0", opcode & 0x0FFF);                      // BNNN
     case 0xC: return fmt::format("RND V{:X}, 0x{:02X}", nibble3, opcode & 0x00FF);         // CXNN
@@ -94,7 +96,6 @@ auto XoChipCpuDisassembly::disassembleOpcode(const uint16 opcode) -> std::string
         case 0xA1: return fmt::format("SKNP V{:X}", nibble3); // EXA1
         default: return INVALID_OPCODE_TEXT;
         }
-        break;
     }
     case 0xF: // TODO:Resume here
     {
@@ -122,12 +123,9 @@ auto XoChipCpuDisassembly::disassembleOpcode(const uint16 opcode) -> std::string
             case 0x85: return fmt::format("LD V{:X}, R", nibble3);    // FX85
             default: return INVALID_OPCODE_TEXT;
             }
-            break;
         }
         }
-        break;
     }
+    default: return INVALID_OPCODE_TEXT;
     }
-
-    return INVALID_OPCODE_TEXT;
 }
