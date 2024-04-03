@@ -66,6 +66,7 @@ Emulated consoles:
 Major:
 
 - [ ] Correct the new crash on t8nks game
+- [ ] Do a rebase of the project
 - [ ] Add audio
 - [ ] Optimize the code!!!
 

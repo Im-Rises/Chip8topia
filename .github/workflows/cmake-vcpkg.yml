@@ -68,11 +68,6 @@ jobs:
       - name: Build
         run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
-      - name: Get build version from CMakelists.txt
-        id: get_version
-        run: |
-          grep -oP 'set\(CHIP8TOPIA_VERSION "\K[^"]+' CMakeLists.txt
-
       - name: Test
         working-directory: ${{ steps.strings.outputs.build-output-dir }}
         run: ctest --build-config ${{ matrix.build_type }}
