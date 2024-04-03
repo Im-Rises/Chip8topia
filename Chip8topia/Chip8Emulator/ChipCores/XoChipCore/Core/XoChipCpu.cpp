@@ -274,6 +274,7 @@ void XoChipCpu::SKP_Vx(const uint8 x)
         skipNextInstruction();
     }
 }
+
 void XoChipCpu::SKNP_Vx(const uint8 x)
 {
     if (!m_input->isKeyPressed(m_V[x]))

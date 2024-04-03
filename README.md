@@ -65,11 +65,14 @@ Emulated consoles:
 
 Major:
 
+- [ ] Correct the new crash on t8nks game
 - [ ] Add audio
 - [ ] Optimize the code!!!
 
 Minor:
 
+- [ ] Add file logging with spdlog (every logs will be written in a file, the only console print will be the error and
+  warning)
 - [ ] Restarting a game when playing big xo-chip games will not reload the game from the start (we should reset memory
   and reload the game rom)
 - [ ] Improve disassembly (check TODO in the Chip8topiaDisassembly.cpp file)
