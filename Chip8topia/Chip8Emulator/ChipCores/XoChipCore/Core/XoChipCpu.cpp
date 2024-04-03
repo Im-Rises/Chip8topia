@@ -130,7 +130,7 @@ void XoChipCpu::computeOpcode(const uint16 opcode)
         }
         break;
     }
-    case 0xF: // TODO:Resume here
+    case 0xF:
     {
         switch (opcode)
         {

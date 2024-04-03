@@ -33,7 +33,6 @@ auto SChip11CpuDisassembly::disassembleOpcode(const uint16 opcode, bool isModern
             }
         }
         }
-        break;
     }
     case 0x1: return fmt::format("JP 0x{:03X}", opcode & 0x0FFF);                  // 1NNN
     case 0x2: return fmt::format("CALL 0x{:03X}", opcode & 0x0FFF);                // 2NNN
@@ -64,7 +63,6 @@ auto SChip11CpuDisassembly::disassembleOpcode(const uint16 opcode, bool isModern
         case 0xE: return fmt::format("SHL V{:X}, V{:X}", nibble3, nibble2);  // 8XYE
         default: return "INVALID OPCODE";
         }
-        break;
     }
     case 0x9:
     {
@@ -73,7 +71,6 @@ auto SChip11CpuDisassembly::disassembleOpcode(const uint16 opcode, bool isModern
         case 0x0: return fmt::format("SNE V{:X}, V{:X}", nibble3, nibble2); // 9XY0
         default: return "INVALID OPCODE";
         }
-        break;
     }
     case 0xA: return fmt::format("LD I, 0x{:03X}", opcode & 0x0FFF);                       // ANNN
     case 0xB: return fmt::format("JP 0x{:03X}, V{:X}", opcode & 0x0FFF, nibble3);          // BXNN
@@ -87,7 +84,6 @@ auto SChip11CpuDisassembly::disassembleOpcode(const uint16 opcode, bool isModern
         case 0xA1: return fmt::format("SKNP V{:X}", nibble3); // EXA1
         default: return "INVALID OPCODE";
         }
-        break;
     }
     case 0xF:
     {

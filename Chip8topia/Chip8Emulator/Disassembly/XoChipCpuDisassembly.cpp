@@ -97,7 +97,7 @@ auto XoChipCpuDisassembly::disassembleOpcode(const uint16 opcode) -> std::string
         default: return INVALID_OPCODE_TEXT;
         }
     }
-    case 0xF: // TODO:Resume here
+    case 0xF:
     {
         switch (opcode)
         {
