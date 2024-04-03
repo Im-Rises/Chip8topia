@@ -323,12 +323,12 @@ void CpuBase::ADD_I_Vx(const uint8 x)
 
 void CpuBase::LD_F_Vx(const uint8 x)
 {
-    m_I = m_V[x] * 5;
+    m_I = (m_V[x] & 0xF) * 5;
 }
 
 void CpuBase::LD_HF_Vx(const uint8 x)
 {
-    m_I = (m_V[x] * 10) + 0x50;
+    m_I = ((m_V[x] & 0xF) * 10) + 0x50;
 }
 
 void CpuBase::LD_B_Vx(const uint8 x)
