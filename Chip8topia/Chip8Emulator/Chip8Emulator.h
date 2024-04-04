@@ -46,7 +46,7 @@ public:
     [[nodiscard]] auto getBreakpoints() -> std::set<uint16>&;
     [[nodiscard]] auto getCoreType() const -> Chip8CoreType;
     [[nodiscard]] auto getFrequency() const -> Chip8Frequency;
-    [[nodiscard]] auto getPcHistory() const -> const std::vector<uint16>&;
+    //    [[nodiscard]] auto getPcHistory() const -> const std::vector<uint16>&;
 
     void stop();
 #if defined(BUILD_PARAM_SAFE)
@@ -82,5 +82,5 @@ private:
     bool m_errorTriggered = false;
 
     std::set<uint16> m_breakpoints;
-    std::vector<uint16> m_pcHistory;
+    //    std::vector<uint16> m_pcHistory;
 };
