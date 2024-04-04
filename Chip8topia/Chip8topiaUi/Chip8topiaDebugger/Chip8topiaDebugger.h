@@ -39,12 +39,13 @@ private:
     void drawKeypad(Chip8CoreBase* chip8);
     void drawDisassembly(Chip8Emulator* emulator);
     void drawDisassemblyControls(Chip8Emulator* emulator);
+    void drawPcHistory(Chip8Emulator* emulator);
 
 private:
     MemoryEditor m_memoryEditor;
     Chip8topiaDisassembler m_disassembler;
 
-    std::array<ImGuiMenuItemWindow<Chip8Emulator>, 7> m_menuItems = {
+    std::array<ImGuiMenuItemWindow<Chip8Emulator>, 8> m_menuItems = {
         ImGuiMenuItemWindow<Chip8Emulator>("Registers", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator)
             { drawRegisters(emulator->getChip8Core()); }),
         ImGuiMenuItemWindow<Chip8Emulator>("Stack", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator)
@@ -58,6 +59,8 @@ private:
         ImGuiMenuItemWindow<Chip8Emulator>("Assembly Controls", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator)
             { drawDisassemblyControls(emulator); }),
         ImGuiMenuItemWindow<Chip8Emulator>("Breakpoints", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator)
-            { m_disassembler.drawBreakpoints(emulator); })
+            { m_disassembler.drawBreakpoints(emulator); }),
+        ImGuiMenuItemWindow<Chip8Emulator>("PC History", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator)
+            { drawPcHistory(emulator); })
     };
 };

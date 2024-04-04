@@ -18,6 +18,7 @@ private:
     static constexpr int TOAST_DURATION_INFO = 1000;
     static constexpr int TOAST_DURATION_SUCCESS = 1000;
     static constexpr int TOAST_DURATION_ERROR = 3000;
+    static constexpr int PC_HISTORY_SIZE = 10;
 
 public:
     Chip8Emulator();
@@ -45,6 +46,7 @@ public:
     [[nodiscard]] auto getBreakpoints() -> std::set<uint16>&;
     [[nodiscard]] auto getCoreType() const -> Chip8CoreType;
     [[nodiscard]] auto getFrequency() const -> Chip8Frequency;
+    [[nodiscard]] auto getPcHistory() const -> const std::vector<uint16>&;
 
     void stop();
 #if defined(BUILD_PARAM_SAFE)
@@ -58,6 +60,7 @@ public:
     void runEmulation();
     void breakEmulation();
     void toggleBreakEmulation();
+    void updatePcHistory();
 
 private:
     void OnInput(const uint8 key, const bool isPressed);
@@ -79,4 +82,5 @@ private:
     bool m_errorTriggered = false;
 
     std::set<uint16> m_breakpoints;
+    std::vector<uint16> m_pcHistory;
 };

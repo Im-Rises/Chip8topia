@@ -36,6 +36,9 @@ Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<XoChipCore>(DEFAULT_FRE
     inputHandler.m_EmulationError.subscribe(this, &Chip8Emulator::triggerEmulationError);
 #endif
 
+    m_pcHistory.reserve(PC_HISTORY_SIZE);
+    m_pcHistory.push_back(CpuBase::START_ADDRESS);
+
     resetColorPalette();
 }
 
@@ -89,6 +92,7 @@ void Chip8Emulator::update(const float deltaTime)
         {
             m_step = false;
             m_core->clock();
+            updatePcHistory();
         }
     }
     else
@@ -102,6 +106,8 @@ void Chip8Emulator::update(const float deltaTime)
             while (!screenUpdated && !m_isBreak && !m_errorTriggered)
             {
                 screenUpdated = m_core->clock();
+                updatePcHistory();
+
                 if (m_canBreak && m_breakpoints.find(m_core->getCpu()->getPc()) != m_breakpoints.end())
                 {
                     m_isBreak = true;
@@ -165,6 +171,11 @@ auto Chip8Emulator::getCoreType() const -> Chip8CoreType
 auto Chip8Emulator::getFrequency() const -> Chip8Frequency
 {
     return m_core->getFrequency();
+}
+
+auto Chip8Emulator::getPcHistory() const -> const std::vector<uint16>&
+{
+    return m_pcHistory;
 }
 
 void Chip8Emulator::stop()
@@ -253,6 +264,19 @@ void Chip8Emulator::breakEmulation()
 void Chip8Emulator::toggleBreakEmulation()
 {
     m_isBreak = !m_isBreak;
+}
+
+void Chip8Emulator::updatePcHistory()
+{
+    if (m_pcHistory.back() != m_core->getCpu()->getPc())
+    {
+        if (m_pcHistory.size() >= PC_HISTORY_SIZE)
+        {
+            m_pcHistory.erase(m_pcHistory.begin());
+        }
+
+        m_pcHistory.push_back(m_core->getCpu()->getPc());
+    }
 }
 
 void Chip8Emulator::OnInput(const uint8 key, const bool isPressed)

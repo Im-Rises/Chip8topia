@@ -13,9 +13,6 @@
 #include "../../Chip8Emulator/Chip8Emulator.h"
 #include "../../Chip8Emulator/ChipCores/SChip11Core/Core/SChip11Cpu.h"
 
-// TODO: Improve disassembly... Some game may have an odd pc value. We are only displaying opcodes two by two here.
-// TO use the odd pc version, just comment and uncomment the lines with comments below.
-
 void Chip8topiaDisassembler::drawDisassembly(Chip8Emulator* emulator)
 {
     const std::array<uint8, CpuBase::MEMORY_SIZE>& memory = emulator->getChip8Core()->getCpu()->getMemory();

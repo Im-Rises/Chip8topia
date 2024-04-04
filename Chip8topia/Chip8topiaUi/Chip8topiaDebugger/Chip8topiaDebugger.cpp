@@ -43,7 +43,7 @@ void Chip8topiaDebugger::drawRegisters(Chip8CoreBase* chip8)
     ImGui::Text("%s", chip8->getPpu()->getMode() == PpuBase::PpuMode::LORES ? "Low resolution" : "High resolution");
 
     ImGui::NewLine();
-    
+
     ImGui::Text("Plane mask:");
     ImGui::SameLine();
     ImGui::InputScalar("##PlaneMask", ImGuiDataType_U8, &chip8->getPpu()->getPlaneMask(), nullptr, nullptr, "%02X", ImGuiInputTextFlags_CharsHexadecimal);
@@ -170,4 +170,17 @@ void Chip8topiaDebugger::drawDisassembly(Chip8Emulator* emulator)
 void Chip8topiaDebugger::drawDisassemblyControls(Chip8Emulator* emulator)
 {
     m_disassembler.drawDisassemblyControls(emulator);
+}
+
+void Chip8topiaDebugger::drawPcHistory(Chip8Emulator* emulator)
+{
+    ImGuiListClipper clipper;
+    clipper.Begin(emulator->getPcHistory().size());
+    while (clipper.Step())
+    {
+        for (auto& pc : emulator->getPcHistory())
+        {
+            ImGui::Text("0x%04X", pc);
+        }
+    }
 }
