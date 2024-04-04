@@ -174,13 +174,15 @@ void Chip8topiaDebugger::drawDisassemblyControls(Chip8Emulator* emulator)
 
 void Chip8topiaDebugger::drawPcHistory(Chip8Emulator* emulator)
 {
+    const auto& pcHistory = emulator->getPcHistory();
+
     ImGuiListClipper clipper;
     clipper.Begin(emulator->getPcHistory().size());
     while (clipper.Step())
     {
-        for (auto& pc : emulator->getPcHistory())
+        for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
         {
-            ImGui::Text("0x%04X", pc);
+            ImGui::Text("0x%04X", pcHistory[i]);
         }
     }
 }
