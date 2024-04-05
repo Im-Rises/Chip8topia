@@ -79,7 +79,7 @@ protected:
     void JP_nnn_V0(const uint16 address);                                      // Bnnn
     void JP_xnn_Vx(const uint16 address, const uint8 x);                       // Bxnn
     void RND_Vx_nn(const uint8 x, const uint8 nn);                             // Cxnn
-    virtual void DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) = 0; // Dxyn
+    virtual void DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) = 0; // DXYN
     void SKP_Vx(const uint8 x);                                                // Ex9E
     void SKNP_Vx(const uint8 x);                                               // ExA1
     void LD_Vx_DT(const uint8 x);                                              // Fx07
@@ -94,7 +94,7 @@ protected:
     virtual void LD_Vx_aI(const uint8 x);                                      // Fx65
     virtual void LD_R_Vx(const uint8 x);                                       // Fx75
     virtual void LD_Vx_R(const uint8 x);                                       // Fx85
-    
+
 public:
     auto getMemory() -> std::array<uint8, MEMORY_SIZE>& { return m_memory; }
     auto getPc() -> uint16& { return m_pc; }

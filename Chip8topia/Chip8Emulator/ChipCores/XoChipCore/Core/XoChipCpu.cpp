@@ -41,35 +41,26 @@ void XoChipCpu::computeOpcode(const uint16 opcode)
     {
     case 0x0:
     {
-        switch (nibble2)
+        switch (opcode)
         {
-        case 0x0: HALT(); break;       // 0000
-        case 0xC: SCD(nibble1); break; // 00CN
-        case 0xD: SCU(nibble1); break; // 00DN
-        case 0xE:
+        case 0x0000: HALT(); break;       // 0000
+        case 0x00E0: CLS(); break;        // 00E0
+        case 0x00EE: RET(); break;        // 00EE
+        case 0x00FB: SCR(nibble1); break; // 00FB
+        case 0x00FC: SCL(nibble1); break; // 00FC
+        case 0x00FD: EXIT(); break;       // 00FD
+        case 0x00FE: LORES(); break;      // 00FE
+        case 0x00FF: HIRES(); break;      // 00FF
+        default:
         {
-            switch (nibble1)
+            switch (opcode & 0xFFF0)
             {
-            case 0x0: CLS(); break; // 00E0
-            case 0xE: RET(); break; // 00EE
+            case 0x00C0: SCD(nibble1); break; // 00CN
+            case 0x00D0: SCU(nibble1); break; // 00DN
             default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
             }
             break;
         }
-        case 0xF:
-        {
-            switch (nibble1)
-            {
-            case 0xB: SCR(nibble1); break; // 00FB
-            case 0xC: SCL(nibble1); break; // 00FC
-            case 0xD: EXIT(); break;       // 00FD
-            case 0xE: LORES(); break;      // 00FE
-            case 0xF: HIRES(); break;      // 00FF
-            default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
-            }
-            break;
-        }
-        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
         }
         break;
     }
@@ -119,7 +110,7 @@ void XoChipCpu::computeOpcode(const uint16 opcode)
     case 0xA: LD_I_addr(opcode & 0x0FFF); break;             // ANNN
     case 0xB: JP_nnn_V0(opcode & 0x0FFF); break;             // BNNN
     case 0xC: RND_Vx_nn(nibble3, opcode & 0x00FF); break;    // CXNN
-    case 0xD: DRW_Vx_Vy_n(nibble3, nibble2, nibble1); break; // Dxyn
+    case 0xD: DRW_Vx_Vy_n(nibble3, nibble2, nibble1); break; // DXYN
     case 0xE:
     {
         switch (opcode & 0x00FF)

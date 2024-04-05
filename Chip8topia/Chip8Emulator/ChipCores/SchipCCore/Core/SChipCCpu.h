@@ -27,7 +27,7 @@ private:
     void OR_Vx_Vy(const uint8 x, const uint8 y) final;                   // 8xy1
     void AND_Vx_Vy(const uint8 x, const uint8 y) final;                  // 8xy2
     void XOR_Vx_Vy(const uint8 x, const uint8 y) final;                  // 8xy3
-    void DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) final; // Dxyn
+    void DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) final; // DXYN
     void LD_aI_Vx(const uint8 x) final;                                  // Fx55
     void LD_Vx_aI(const uint8 x) final;                                  // Fx65
     void LD_R_Vx(const uint8 x) final;                                   // Fx75
