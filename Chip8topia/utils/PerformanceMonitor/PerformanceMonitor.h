@@ -86,7 +86,7 @@ private:
     // TIMER
     std::chrono::time_point<std::chrono::high_resolution_clock> m_lastTime;
     long m_deltaTime;
-#elif defined(PLATFORM_APPLE)
+#elif defined(PLATFORM_MACOS)
 
 #endif
 };

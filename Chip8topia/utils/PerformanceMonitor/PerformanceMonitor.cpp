@@ -178,7 +178,7 @@ auto PerformanceMonitor::getCpuUsedByCurrentProcess() -> float
     return -1.0F;
 }
 
-#elif defined(PLATFORM_APPLE)
+#elif defined(PLATFORM_MACOS)
 
 PerformanceMonitor::PerformanceMonitor()
 {
