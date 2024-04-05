@@ -18,7 +18,7 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            c_compiler: g
+            c_compiler: gcc
             cpp_compiler: g++
           - os: windows-latest
             c_compiler: cl
