@@ -65,24 +65,25 @@ Emulated consoles:
 
 Major:
 
-- [ ] Add profiler and find the issues
 - [ ] Correct the new crash on t8nks game
 - [ ] Add audio
+- [ ] Add a try catch (check Chip8CoreBase todo)
+- [ ] Add profiler and find the issues
 - [ ] Optimize the code!!!
 - [ ] Opengl draw only if a screen update is needed
 
 Minor:
 
-- [ ] Add file logging with spdlog (every logs will be written in a file, the only console print will be the error and
+- [ ] Add file logging with spdlog (every log will be written in a file, the only console print will be the error and
   warning)
 - [ ] Restarting a game when playing big xo-chip games will not reload the game from the start (we should reset memory
   and reload the game rom)
 - [ ] Improve disassembly (check TODO in the Chip8topiaDisassembly.cpp file)
 - [ ] Add a way to change the input keys
 - [ ] Add a background when no rom is loaded
-- [ ] Maybe change the bloody file dialog
 - [ ] Use cpack to create a release
-- [ ] Performance Monitor add macOs support
+- [ ] Improve publish actions to publish Desktop builds
+- [ ] Performance Monitor add macOS support
 
 ## Controls
 
