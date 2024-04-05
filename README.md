@@ -69,6 +69,7 @@ Major:
 - [ ] Correct the new crash on t8nks game
 - [ ] Add audio
 - [ ] Optimize the code!!!
+- [ ] Opengl draw only if a screen update is needed
 
 Minor:
 
