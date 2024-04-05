@@ -65,7 +65,7 @@ Emulated consoles:
 
 Major:
 
-- [ ] Add macOS build, vcpkg should have it...
+- [ ] Add profiler and find the issues
 - [ ] Correct the new crash on t8nks game
 - [ ] Add audio
 - [ ] Optimize the code!!!
@@ -81,6 +81,7 @@ Minor:
 - [ ] Add a background when no rom is loaded
 - [ ] Maybe change the bloody file dialog
 - [ ] Use cpack to create a release
+- [ ] Performance Monitor add macOs support
 
 ## Controls
 

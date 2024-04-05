@@ -87,3 +87,5 @@ elseif (APPLE)
 endif ()
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE PROJECT_CPP_VERSION="${CMAKE_CXX_STANDARD}")
+
+message("Building ${PROJECT_NAME} for ${PLATFORM_NAME}  with C++${CMAKE_CXX_STANDARD} on ${CMAKE_SYSTEM_NAME}")
