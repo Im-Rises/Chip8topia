@@ -1,8 +1,14 @@
 cmake_minimum_required(VERSION 3.8)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-project("Chip8topia" VERSION 1.0.0)
+set(CHIP8TOPIA_VERSION "1.7.1")
+
+project("Chip8topia" VERSION ${CHIP8TOPIA_VERSION})
 add_subdirectory(${PROJECT_NAME})
+
+target_compile_definitions(${PROJECT_NAME} PRIVATE CHIP8TOPIA_VERSION="${CHIP8TOPIA_VERSION}")
+
+add_subdirectory("test")

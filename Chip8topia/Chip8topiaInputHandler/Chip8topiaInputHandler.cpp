@@ -4,36 +4,26 @@
 
 void Chip8topiaInputHandler::update(GLFWwindow* window) const {
     glfwPollEvents();
-
-    //    auto& inputHandler = Chip8topiaInputHandler::getInstance();
-    //
-    //    inputHandler.m_GameInput.trigger(0x1, glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS);
-    //    inputHandler.m_GameInput.trigger(0x2, glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS);
-    //    inputHandler.m_GameInput.trigger(0x3, glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS);
-    //    inputHandler.m_GameInput.trigger(0xC, glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS);
-    //
-    //    inputHandler.m_GameInput.trigger(0x4, glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS);
-    //    inputHandler.m_GameInput.trigger(0x5, glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS);
-    //    inputHandler.m_GameInput.trigger(0x6, glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS);
-    //    inputHandler.m_GameInput.trigger(0xD, glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS);
-    //
-    //    inputHandler.m_GameInput.trigger(0x7, glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS);
-    //    inputHandler.m_GameInput.trigger(0x8, glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS);
-    //    inputHandler.m_GameInput.trigger(0x9, glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS);
-    //    inputHandler.m_GameInput.trigger(0xE, glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS);
-    //
-    //    inputHandler.m_GameInput.trigger(0xA, glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS);
-    //    inputHandler.m_GameInput.trigger(0x0, glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS);
-    //    inputHandler.m_GameInput.trigger(0xB, glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS);
-    //    inputHandler.m_GameInput.trigger(0xF, glfwGetKey(window, GLFW_KEY_V) == GLFW_PRESS);
 }
 
 void Chip8topiaInputHandler::key_callback(GLFWwindow* /*window*/, int key, int /*scancode*/, int action, int mods) {
     auto& inputHandler = Chip8topiaInputHandler::getInstance();
 
-    if (action == GLFW_PRESS && (key == GLFW_KEY_O && mods == GLFW_MOD_CONTROL))
+#if !defined(BUILD_RELEASE)
+    if (action == GLFW_PRESS)
     {
-        inputHandler.m_CTRL_OKeyButtonPressedEvent.trigger();
+        switch (key)
+        {
+        case GLFW_KEY_B: inputHandler.m_SuccessEvent.trigger("Test error message", nullptr); break;
+        case GLFW_KEY_N: inputHandler.m_ErrorEvent.trigger("Test error message", nullptr); break;
+        case GLFW_KEY_M: inputHandler.m_WarningEvent.trigger("Test warning message", nullptr); break;
+        case GLFW_KEY_COMMA: inputHandler.m_InfoEvent.trigger("Test info message", nullptr); break;
+        }
+    }
+#endif
+
+    if (!inputHandler.getInputEnabled())
+    {
         return;
     }
 
@@ -41,17 +31,19 @@ void Chip8topiaInputHandler::key_callback(GLFWwindow* /*window*/, int key, int /
     {
         switch (key)
         {
+        case GLFW_KEY_U: inputHandler.m_ToggleMainBarEvent.trigger(); break;
+        case GLFW_KEY_I: inputHandler.m_CloseAllWindowsEvent.trigger(); break;
+        case GLFW_KEY_P: inputHandler.m_TogglePauseEmulationEvent.trigger(); break;
+        case GLFW_KEY_L: inputHandler.m_RestartEmulationEvent.trigger(); break;
+        case GLFW_KEY_O: inputHandler.m_OpenRomExplorerEvent.trigger(); break;
 #ifndef __EMSCRIPTEN__
-        case GLFW_KEY_ESCAPE: inputHandler.m_EscapeKeyButtonPressedEvent.trigger(); break;
+        case GLFW_KEY_ESCAPE: inputHandler.m_ExitChip8topiaEvent.trigger(); break;
+        case GLFW_KEY_Y: inputHandler.m_ToggleTurboModeEvent.trigger(); break;
+        case GLFW_KEY_F10: inputHandler.m_CenterWindowEvent.trigger(); break;
+        case GLFW_KEY_F11: inputHandler.m_ToggleFullScreenEvent.trigger(); break;
 #endif
-        case GLFW_KEY_P: inputHandler.m_PKeyButtonPressedEvent.trigger(); break;
-        case GLFW_KEY_F1: inputHandler.m_F1KeyButtonPressedEvent.trigger(); break;
-        case GLFW_KEY_F2: inputHandler.m_F2KeyButtonPressedEvent.trigger(); break;
-        case GLFW_KEY_F3: inputHandler.m_F3KeyButtonPressedEvent.trigger(); break;
-        case GLFW_KEY_F10: inputHandler.m_F10KeyButtonPressedEvent.trigger(); break;
-        case GLFW_KEY_F11: inputHandler.m_F11KeyButtonPressedEvent.trigger(); break;
 #if !defined(BUILD_RELEASE)
-        case GLFW_KEY_F12: inputHandler.m_F12KeyDebugButtonPressedEvent.trigger(); break;
+        case GLFW_KEY_F12: inputHandler.m_DebugRomFastLoadEvent.trigger(); break;
 #endif
         case GLFW_KEY_1: inputHandler.m_GameInput.trigger(0x1, true); break;
         case GLFW_KEY_2: inputHandler.m_GameInput.trigger(0x2, true); break;

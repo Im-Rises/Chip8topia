@@ -2,20 +2,20 @@
   "name": "chip8topia",
   "version-string": "1.0.0",
   "builtin-baseline": "42bb0d9e8d4cf33485afb9ee2229150f79f61a1f",
+  "description": [
+    "A CHIP-8 emulator written in C++ for Windows, Linux, and the Web."
+  ],
+  "homepage": "https://github.com/Im-Rises/Chip8topia/",
+  "supports": "windows, linux, emscripten",
   "dependencies": [
-    {
-      "name": "glad",
-      "version>=": "0.1.36",
-      "platform": "!emscripten"
-    },
     {
       "name": "glfw3",
       "version>=": "3.3.9",
       "platform": "!emscripten"
     },
     {
-      "name": "stb",
-      "version>=": "2023-04-11#1",
+      "name": "glad",
+      "version>=": "0.1.36",
       "platform": "!emscripten"
     },
     {
@@ -26,6 +26,20 @@
         "opengl3-binding",
         "docking-experimental"
       ]
+    },
+    {
+      "name": "fmt",
+      "version>=": "10.2.1"
+    },
+    {
+      "name": "spdlog",
+      "version>=": "1.13.0",
+      "platform": "!emscripten"
+    },
+    {
+      "name": "stb",
+      "version>=": "2023-04-11#1",
+      "platform": "!emscripten"
     }
   ]
 }

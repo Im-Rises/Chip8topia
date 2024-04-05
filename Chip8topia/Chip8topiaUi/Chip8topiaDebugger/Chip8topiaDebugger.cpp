@@ -1,9 +1,12 @@
 #include "Chip8topiaDebugger.h"
 
-#include "../../Chip8Emulator/Chip8Core/Core/Input.h"
+#include <IconsFontAwesome6.h>
 
-void Chip8topiaDebugger::drawDebuggerMenu() {
-    if (ImGui::BeginMenu("Debugger"))
+#include "../../Chip8Emulator/Chip8CoreBase/Core/Input.h"
+
+void Chip8topiaDebugger::drawDebuggerMenu()
+{
+    if (ImGui::BeginMenu(ICON_FA_BUG " Debugger"))
     {
         for (auto& menuItem : m_menuItems)
         {
@@ -14,43 +17,63 @@ void Chip8topiaDebugger::drawDebuggerMenu() {
     }
 }
 
-void Chip8topiaDebugger::drawDebuggerWindows(Chip8Emulator& emulator) {
+void Chip8topiaDebugger::drawDebuggerWindows(Chip8Emulator& emulator)
+{
     for (auto& menuItem : m_menuItems)
     {
-        menuItem.drawWindow(emulator.getChip8Core());
+        menuItem.drawWindow(&emulator);
     }
 }
 
-void Chip8topiaDebugger::drawRegisters(Chip8Core* chip8) {
-    Cpu& cpu = chip8->getCpu();
+void Chip8topiaDebugger::closeAllWindows()
+{
+    for (auto& menuItem : m_menuItems)
+    {
+        menuItem.m_isOpen = false;
+    }
+}
+
+void Chip8topiaDebugger::drawRegisters(Chip8CoreBase* chip8)
+{
+    std::unique_ptr<CpuBase>& cpu = chip8->getCpu();
 
     ImGui::PushItemWidth(-FLT_MIN);
+    ImGui::Text("Screen mode:");
+    ImGui::SameLine();
+    ImGui::Text("%s", chip8->getPpu()->getMode() == PpuBase::PpuMode::LORES ? "Low resolution" : "High resolution");
+
+    ImGui::NewLine();
+
+    ImGui::Text("Plane mask:");
+    ImGui::SameLine();
+    ImGui::InputScalar("##PlaneMask", ImGuiDataType_U8, &chip8->getPpu()->getPlaneMask(), nullptr, nullptr, "%02X", ImGuiInputTextFlags_CharsHexadecimal);
+
     ImGui::Text("PC:");
     ImGui::SameLine();
-    ImGui::InputScalar("##PC", ImGuiDataType_U16, &cpu.getPc(), nullptr, nullptr, "%04X", ImGuiInputTextFlags_CharsHexadecimal);
+    ImGui::InputScalar("##PC", ImGuiDataType_U16, &cpu->getPc(), nullptr, nullptr, "%04X", ImGuiInputTextFlags_CharsHexadecimal);
 
     ImGui::Text(" I:");
     ImGui::SameLine();
-    ImGui::InputScalar("##I", ImGuiDataType_U16, &cpu.getI(), nullptr, nullptr, "%04X", ImGuiInputTextFlags_CharsHexadecimal);
+    ImGui::InputScalar("##I", ImGuiDataType_U16, &cpu->getI(), nullptr, nullptr, "%04X", ImGuiInputTextFlags_CharsHexadecimal);
 
     ImGui::Text("DT:");
     ImGui::SameLine();
-    ImGui::InputScalar("##DT", ImGuiDataType_U8, &cpu.getDT(), nullptr, nullptr, "%02X", ImGuiInputTextFlags_CharsHexadecimal);
+    ImGui::InputScalar("##DT", ImGuiDataType_U8, &cpu->getDT(), nullptr, nullptr, "%02X", ImGuiInputTextFlags_CharsHexadecimal);
 
     ImGui::Text("ST:");
     ImGui::SameLine();
-    ImGui::InputScalar("##ST", ImGuiDataType_U8, &cpu.getST(), nullptr, nullptr, "%02X", ImGuiInputTextFlags_CharsHexadecimal);
+    ImGui::InputScalar("##ST", ImGuiDataType_U8, &cpu->getST(), nullptr, nullptr, "%02X", ImGuiInputTextFlags_CharsHexadecimal);
     ImGui::PopItemWidth();
 
     ImGui::AlignTextToFramePadding();
     ImGui::PushItemWidth(30.0F);
     static constexpr int WINDOW_COUNT_PER_LINE = 4;
-    for (auto i = 0; i < Cpu::REGISTER_V_SIZE; i++)
+    for (auto i = 0; i < Chip8Cpu::REGISTER_V_SIZE; i++)
     {
         ImGui::Text("V%X", i);
         ImGui::SameLine();
         ImGui::PushID(i);
-        ImGui::InputScalar("##V", ImGuiDataType_U8, &cpu.getV()[i], nullptr, nullptr, "%02X", ImGuiInputTextFlags_CharsHexadecimal);
+        ImGui::InputScalar("##V", ImGuiDataType_U8, &cpu->getV()[i], nullptr, nullptr, "%02X", ImGuiInputTextFlags_CharsHexadecimal);
         ImGui::PopID();
 
         if ((i % WINDOW_COUNT_PER_LINE) < WINDOW_COUNT_PER_LINE - 1)
@@ -60,30 +83,15 @@ void Chip8topiaDebugger::drawRegisters(Chip8Core* chip8) {
     }
 
     ImGui::PopItemWidth();
-
-    //    static constexpr int WINDOW_COUNT_PER_LINE = 4;
-    //    const auto windowWidth = ImGui::GetWindowWidth() / (WINDOW_COUNT_PER_LINE + 1);
-    //    for (auto i = 0; i < Cpu::REGISTER_V_SIZE; i++)
-    //    {
-    //        //        ImGui::SameLine();
-    //        ImGui::PushID(i);
-    //        ImGui::SetNextItemWidth(windowWidth);
-    //        ImGui::InputScalar(std::format("V{:02d}##V", i).c_str(), ImGuiDataType_U8, &cpu.getV()[i], nullptr, nullptr, "%02X", ImGuiInputTextFlags_CharsHexadecimal);
-    //        ImGui::PopID();
-    //
-    //        if ((i % WINDOW_COUNT_PER_LINE) < WINDOW_COUNT_PER_LINE - 1)
-    //        {
-    //            ImGui::SameLine();
-    //        }
-    //    }
 }
 
-void Chip8topiaDebugger::drawStack(Chip8Core* chip8) {
-    Cpu& cpu = chip8->getCpu();
+void Chip8topiaDebugger::drawStack(Chip8CoreBase* chip8)
+{
+    std::unique_ptr<CpuBase>& cpu = chip8->getCpu();
 
     ImGui::Text("SP:");
     ImGui::SameLine();
-    ImGui::InputScalar("##SP", ImGuiDataType_U8, &cpu.getSp(), nullptr, nullptr, "%02X", ImGuiInputTextFlags_CharsHexadecimal);
+    ImGui::InputScalar("##SP", ImGuiDataType_U8, &cpu->getSp(), nullptr, nullptr, "%02X", ImGuiInputTextFlags_CharsHexadecimal);
 
     ImGui::NewLine();
 
@@ -93,7 +101,7 @@ void Chip8topiaDebugger::drawStack(Chip8Core* chip8) {
         ImGui::TableSetupColumn("Value");
         ImGui::TableHeadersRow();
 
-        for (auto row = 0; row < Cpu::STACK_SIZE; row++)
+        for (auto row = 0; row < Chip8Cpu::STACK_SIZE; row++)
         {
             ImGui::TableNextRow();
 
@@ -107,7 +115,7 @@ void Chip8topiaDebugger::drawStack(Chip8Core* chip8) {
             ImGui::TableSetColumnIndex(0);
             ImGui::Text("%02X", row);
             ImGui::TableSetColumnIndex(1);
-            ImGui::InputScalar("##Stack", ImGuiDataType_U16, &cpu.getStack()[row], nullptr, nullptr, "%04X", ImGuiInputTextFlags_CharsHexadecimal);
+            ImGui::InputScalar("##Stack", ImGuiDataType_U16, &cpu->getStack()[row], nullptr, nullptr, "%04X", ImGuiInputTextFlags_CharsHexadecimal);
             ImGui::PopID();
         }
 
@@ -115,11 +123,13 @@ void Chip8topiaDebugger::drawStack(Chip8Core* chip8) {
     }
 }
 
-void Chip8topiaDebugger::drawMemory(Chip8Core* chip8) {
-    m_memoryEditor.DrawWindow("Memory Editor", &chip8->getCpu().getMemory(), Cpu::MEMORY_SIZE);
+void Chip8topiaDebugger::drawMemory(Chip8CoreBase* chip8)
+{
+    m_memoryEditor.DrawWindow("Memory Editor", &chip8->getCpu()->getMemory(), Chip8Cpu::MEMORY_SIZE);
 }
 
-void Chip8topiaDebugger::drawKeypad(Chip8Core* chip8) {
+void Chip8topiaDebugger::drawKeypad(Chip8CoreBase* chip8)
+{
     static constexpr int WINDOW_SIZE = 50;
     static constexpr int WINDOW_COUNT_PER_LINE = 4;
 
@@ -152,10 +162,27 @@ void Chip8topiaDebugger::drawKeypad(Chip8Core* chip8) {
     ImGui::SetWindowFontScale(1.0F);
 }
 
-void Chip8topiaDebugger::drawAssembly(Chip8Core* chip8) {
-    m_disassembler.drawAssembly(chip8->getCpu().getMemory(), chip8->getCpu().getPc());
+void Chip8topiaDebugger::drawDisassembly(Chip8Emulator* emulator)
+{
+    m_disassembler.drawDisassembly(emulator);
 }
 
-void Chip8topiaDebugger::drawDisassemblyControls(Chip8Core* chip8) {
-    m_disassembler.drawAssemblyControls();
+void Chip8topiaDebugger::drawDisassemblyControls(Chip8Emulator* emulator)
+{
+    m_disassembler.drawDisassemblyControls(emulator);
 }
+
+// void Chip8topiaDebugger::drawPcHistory(Chip8Emulator* emulator)
+//{
+//     const auto& pcHistory = emulator->getPcHistory();
+//
+//     ImGuiListClipper clipper;
+//     clipper.Begin(emulator->getPcHistory().size());
+//     while (clipper.Step())
+//     {
+//         for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
+//         {
+//             ImGui::Text("0x%04X", pcHistory[i]);
+//         }
+//     }
+// }

@@ -2,38 +2,22 @@
 
 #include <imgui.h>
 #include <imgui_memory_editor/imgui_memory_editor.h>
-#include <functional>
 #include <array>
 
 #include "../../Chip8Emulator/Chip8Emulator.h"
-#include "../../Chip8Emulator/Chip8Core/Chip8Core.h"
-#include "Chip8Disassembler.h"
+#include "../../Chip8Emulator/ChipCores/Chip8Core/Chip8Core.h"
+#include "../ImGuiHelper/ImGuiHelper.h"
+#include "Chip8topiaDisassembler.h"
 
 class Chip8Emulator;
-class Chip8topiaDebugger {
-    template <typename... Args>
-    struct MenuItem {
-        const char* m_name;
-        bool m_isOpen;
-        std::function<void(Args*...)> m_drawFunction;
-
-        void drawMenuItem() {
-            if (ImGui::MenuItem(m_name, nullptr, &m_isOpen))
-            {
-            }
-        }
-
-        void drawWindow(Args*... args) {
-            if (m_isOpen)
-            {
-                if (ImGui::Begin(m_name, &m_isOpen))
-                {
-                    m_drawFunction(args...);
-                    ImGui::End();
-                }
-            }
-        }
-    };
+class Chip8topiaDebugger
+{
+private:
+#if defined(BUILD_RELEASE)
+    static constexpr bool INITIAL_WINDOW_STATE = false;
+#else
+    static constexpr bool INITIAL_WINDOW_STATE = true;
+#endif
 
 public:
     Chip8topiaDebugger() = default;
@@ -46,32 +30,37 @@ public:
 public:
     void drawDebuggerMenu();
     void drawDebuggerWindows(Chip8Emulator& emulator);
+    void closeAllWindows();
 
 private:
-    void drawRegisters(Chip8Core* chip8);
-    void drawStack(Chip8Core* chip8);
-    void drawMemory(Chip8Core* chip8);
-    void drawKeypad(Chip8Core* chip8);
-    void drawAssembly(Chip8Core* chip8);
-    void drawDisassemblyControls(Chip8Core* chip8);
+    void drawRegisters(Chip8CoreBase* chip8);
+    void drawStack(Chip8CoreBase* chip8);
+    void drawMemory(Chip8CoreBase* chip8);
+    void drawKeypad(Chip8CoreBase* chip8);
+    void drawDisassembly(Chip8Emulator* emulator);
+    void drawDisassemblyControls(Chip8Emulator* emulator);
+    //    void drawPcHistory(Chip8Emulator* emulator);
 
 private:
-#if defined(__EMSCRIPTEN__)
-    static constexpr auto INITIAL_WINDOW_STATE = false;
-#else
-    static constexpr auto INITIAL_WINDOW_STATE = true;
-#endif
-    
     MemoryEditor m_memoryEditor;
-    Chip8Disassembler m_disassembler;
+    Chip8topiaDisassembler m_disassembler;
 
-    // TODO: Add a new parameter which is the flags for the window
-    std::array<MenuItem<Chip8Core>, 6> m_menuItems = {
-        "Registers", INITIAL_WINDOW_STATE, [this](Chip8Core* chip8) { drawRegisters(chip8); },
-        "Stack", INITIAL_WINDOW_STATE, [this](Chip8Core* chip8) { drawStack(chip8); },
-        "Memory Editor", INITIAL_WINDOW_STATE, [this](Chip8Core* chip8) { drawMemory(chip8); },
-        "Keypad", INITIAL_WINDOW_STATE, [this](Chip8Core* chip8) { drawKeypad(chip8); },
-        "Assembly", INITIAL_WINDOW_STATE, [this](Chip8Core* chip8) { drawAssembly(chip8); },
-        "Assembly Controls", INITIAL_WINDOW_STATE, [this](Chip8Core* chip8) { drawDisassemblyControls(chip8); }
+    std::array<ImGuiMenuItemWindow<Chip8Emulator>, 7> m_menuItems = {
+        ImGuiMenuItemWindow<Chip8Emulator>("Registers", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator)
+            { drawRegisters(emulator->getChip8Core()); }),
+        ImGuiMenuItemWindow<Chip8Emulator>("Stack", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator)
+            { drawStack(emulator->getChip8Core()); }),
+        ImGuiMenuItemWindow<Chip8Emulator>("Memory Editor", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator)
+            { drawMemory(emulator->getChip8Core()); }),
+        ImGuiMenuItemWindow<Chip8Emulator>("Keypad", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator)
+            { drawKeypad(emulator->getChip8Core()); }),
+        ImGuiMenuItemWindow<Chip8Emulator>("Assembly", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator)
+            { drawDisassembly(emulator); }),
+        ImGuiMenuItemWindow<Chip8Emulator>("Assembly Controls", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator)
+            { drawDisassemblyControls(emulator); }),
+        ImGuiMenuItemWindow<Chip8Emulator>("Breakpoints", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator)
+            { m_disassembler.drawBreakpoints(emulator); }),
+        //        ImGuiMenuItemWindow<Chip8Emulator>("PC History", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator)
+        //            { drawPcHistory(emulator); })
     };
 };

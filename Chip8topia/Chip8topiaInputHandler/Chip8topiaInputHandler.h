@@ -1,14 +1,16 @@
 #pragma once
 
+#include <string>
+#include <fmt/format.h>
 #include <binaryLib/binaryLib.h>
 #include <Singleton/Singleton.h>
-#include <plateformIdentifier/plateformIdentifier.h>
 
 #include "SubscriberEventSystem/MultiSubscriberEvent.h"
 #include "SubscriberEventSystem/SingleSubscriberEvent.h"
 
 struct GLFWwindow;
-class Chip8topiaInputHandler final : public Singleton<Chip8topiaInputHandler> {
+class Chip8topiaInputHandler final : public Singleton<Chip8topiaInputHandler>
+{
     friend class Singleton<Chip8topiaInputHandler>;
 
 protected:
@@ -24,33 +26,62 @@ public:
 public:
     void update(GLFWwindow* window) const;
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+    [[nodiscard]] auto getInputEnabled() const -> bool { return m_inputEnabled; }
+    void setInputEnabled(const bool inputEnabled) { m_inputEnabled = inputEnabled; }
 
 public:
-    /*
-     * UI Input
-     * */
-    // TODO: Rename all the event to what they really do!
-    [[maybe_unused]] SingleSubscriberEvent<> m_F1KeyButtonPressedEvent;
-    [[maybe_unused]] SingleSubscriberEvent<> m_F2KeyButtonPressedEvent;
-    [[maybe_unused]] SingleSubscriberEvent<> m_F3KeyButtonPressedEvent;
-    [[maybe_unused]] SingleSubscriberEvent<> m_F10KeyButtonPressedEvent;
-    [[maybe_unused]] SingleSubscriberEvent<> m_F11KeyButtonPressedEvent;
-#if !defined(BUILD_RELEASE)
-    [[maybe_unused]] SingleSubscriberEvent<> m_F12KeyDebugButtonPressedEvent;
-#endif
+    /* UI Events */
+    //    SingleSubscriberEvent<> m_StopEmulationEvent;
+    SingleSubscriberEvent<> m_BreakEmulationEvent;
+    SingleSubscriberEvent<> m_StepEmulationEvent;
+    SingleSubscriberEvent<> m_RunEmulationEvent;
+    SingleSubscriberEvent<> m_ClearBreakpointsEvent;
 
-    [[maybe_unused]] SingleSubscriberEvent<> m_CTRL_OKeyButtonPressedEvent;
-
+    /* Input Events */
 #ifndef __EMSCRIPTEN__
-    [[maybe_unused]] SingleSubscriberEvent<> m_EscapeKeyButtonPressedEvent;
+    SingleSubscriberEvent<> m_ExitChip8topiaEvent;
+    SingleSubscriberEvent<> m_ToggleTurboModeEvent;
+    SingleSubscriberEvent<> m_CenterWindowEvent;
+    SingleSubscriberEvent<> m_ToggleFullScreenEvent;
 #endif
+#if !defined(BUILD_RELEASE)
+    SingleSubscriberEvent<> m_DebugRomFastLoadEvent;
+#endif
+    SingleSubscriberEvent<> m_ToggleMainBarEvent;
+    SingleSubscriberEvent<> m_CloseAllWindowsEvent;
+    SingleSubscriberEvent<> m_TogglePauseEmulationEvent;
+    SingleSubscriberEvent<> m_RestartEmulationEvent;
+    SingleSubscriberEvent<> m_OpenRomExplorerEvent;
 
-    [[maybe_unused]] MultiSubscriberEvent<> m_PKeyButtonPressedEvent;
+    SingleSubscriberEvent<const uint8, const bool> m_GameInput;
 
-    /*
-     * Game Input
-     * */
-    [[maybe_unused]] SingleSubscriberEvent<const uint8, const bool> m_GameInput;
+    SingleSubscriberEvent<const std::string&, std::function<void()>> m_SuccessEvent;
+    SingleSubscriberEvent<const std::string&, std::function<void()>> m_ErrorEvent;
+    SingleSubscriberEvent<const std::string&, std::function<void()>> m_WarningEvent;
+    SingleSubscriberEvent<const std::string&, std::function<void()>> m_InfoEvent;
+
+    MultiSubscriberEvent<const std::string&> m_EmulationError;
 
 private:
+    bool m_inputEnabled = true;
 };
+
+// #define CHIP8TOPIA_INPUT_HANDLER Chip8topiaInputHandler::getInstance()
+
+#if defined(BUILD_PARAM_SAFE)
+#define TRIGGER_EMULATION_ERROR(condition, message, ...)                                                         \
+    do                                                                                                           \
+    {                                                                                                            \
+        static_assert(std::is_same<decltype(condition), bool>::value, "Condition must be a boolean expression"); \
+        if ((condition))                                                                                         \
+        {                                                                                                        \
+            Chip8topiaInputHandler::getInstance().m_EmulationError.trigger(fmt::format(message, __VA_ARGS__));   \
+        }                                                                                                        \
+    } while (false)
+#else
+#define TRIGGER_EMULATION_ERROR(condition, message, ...) \
+    do                                                   \
+    {                                                    \
+        (void)(message);                                 \
+    } while (false)
+#endif

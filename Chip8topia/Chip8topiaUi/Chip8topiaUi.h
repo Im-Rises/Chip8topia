@@ -4,13 +4,14 @@
 #include <string_view>
 
 #include "Chip8topiaDebugger/Chip8topiaDebugger.h"
-
+#include "Chip8topiaVideoUi/Chip8topiaVideoUi.h"
+#include "Chip8topiaAbout/Chip8topiaAbout.h"
+#include "Chip8topiaRomLoaderUi/Chip8topiaRomLoaderUi.h"
+#include "Chip8topiaEmulationUi/Chip8topiaEmulationUi.h"
+#include "Chip8topiaMessageHandler/Chip8topiaMessageHandler.h"
 class Chip8topia;
-class Chip8topiaUi {
-private:
-    static constexpr auto CHIP8_ROM_FILE_EXTENSION = ".ch8";
-    static constexpr auto FILE_DIALOG_NAME = "RomFileWindowDialog";
-
+class Chip8topiaUi
+{
 public:
     Chip8topiaUi();
     Chip8topiaUi(const Chip8topiaUi&) = delete;
@@ -24,34 +25,22 @@ public:
 
 private:
     void drawMainMenuBar(Chip8topia& chip8topia);
-
-    void drawFileMenu(Chip8topia& chip8topia);
-    void drawEngineEmulationMenu(Chip8topia& chip8topia);
     void drawViewMenu(Chip8topia& chip8topia);
-    void drawVideoMenu();
-    void drawAboutMenu();
-
-    void drawVideoWindow(Chip8topia& chip8topia);
-
-    void drawAboutChip8topiaPopUpWindow();
-    void drawAboutChip8PopUpWindow();
-    void drawAboutPopUpInternal(const std::string_view& popupName, const std::function<void()>& drawAboutPopUpContent, bool& showAboutPopup);
-
-    void openRomWindow();
-    void drawRomWindow(Chip8topia& chip8topia);
 
     void toggleMenuBarVisibility();
-    void toggleWindowsVisibility();
+
+    void closeAllWindows();
 
 private:
-    Chip8topiaDebugger m_chip8topiaDebugger;
+    Chip8topiaRomLoaderUi m_chip8topiaRomLoaderUi;
+    Chip8topiaEmulationUi m_chip8topiaEmulationUi;
+    Chip8topiaVideoUi m_chip8topiaVideoUi;
+    Chip8topiaDebugger m_chip8topiatopiaDebugger;
+    Chip8topiaAbout m_chip8topiaAbout;
+    Chip8topiaMessageHandler m_chip8topiaError;
 
     bool m_isMenuBarOpen = true;
-    bool m_windowsVisible = true;
-
-    // TODO: Move to a separate class
-    bool m_showAboutChip8topiaPopup = false;
-    bool m_showAboutChip8Popup = false;
-    bool m_showBackgroundColor = false;
-    bool m_showForegroundColor = false;
+#if defined(BUILD_DEBUG)
+    bool m_showDemo = true;
+#endif
 };

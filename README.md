@@ -1,114 +1,179 @@
 # Chip8topia
 
-https://en.wikipedia.org/wiki/CHIP-8#Further_reading
+<p align="center">
+      <img src="https://user-images.githubusercontent.com/59691442/183268126-b3d19e66-8f2d-463a-805e-ae6ef7cc6c01.png" alt="cmakeLogo" style="height:60px;"/>
+      <img src="https://img.shields.io/badge/C%2B%2B-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white" alt="cppLogo" style="height:60px;"/>
+      <img src="https://img.shields.io/badge/OpenGL-FFFFFF?style=for-the-badge&logo=opengl" alt="openglLogo" style="height:60px;"/>
+</p>
 
-http://devernay.free.fr/hacks/chip8/C8TECH10.HTM
+## Description
 
-http://tobiasvl.github.io/blog/write-a-chip-8-emulator/
+Chip8topia is a Chip8 emulator written in C++ for Windows, Linux and WebAssembly. It uses OpenGL/WebGL for the rendering
+and ImGui for the UI.
+The application is compiled with CMake and uses Vcpkg for most dependencies.
+For the WebAssembly version, it uses Emscripten to compile with vcpkg for most dependencies as well.
 
-https://www.laurencescotford.net/2020/07/19/chip-8-on-the-cosmac-vip-arithmetic-and-logic-instructions/
+It can emulate the original Chip8, the SCHIP1.1, SCHIPC and Xo-Chip.
+Currently, no sound is implemented, but it is planned.
 
-https://github.com/Timendus/chip8-test-suite
+Emulated consoles:
 
-https://www.laurencescotford.net/2020/07/19/chip-8-on-the-cosmac-vip-drawing-sprites/
+- [x] Chip8
+- [x] SCHIP1.1
+- [x] SCHIPC
+- [x] Xo-Chip
 
-https://chip8.gulrak.net/
+## Screenshots
 
-https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#8xy1-binary-or
+| Chip8topia Tools                                                                                                      | Chip8topia Debug Tools                                                                                                 |
+|-----------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|
+| ![chip8topia-main-tools](https://github.com/Im-Rises/Chip8topia/assets/59691442/0024eddd-8af2-49fa-89e4-6b4e11660712) | ![chip8topia-debug-tools](https://github.com/Im-Rises/Chip8topia/assets/59691442/44ed037c-4921-4c83-9411-54c9a0b51f53) |
+
+| Invaders (Chip8)                                                                                                         | Car (SCHIP)                                                                                                         | T8NKS (Xo-Chip)                                                                                                       |                                                                                                                   
+|--------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| ![invaders-game-screenshot](https://github.com/Im-Rises/Chip8topia/assets/59691442/3e5a2078-2cf7-4929-94c2-ea42cea24efd) | ![car-game-screenshot](https://github.com/Im-Rises/Chip8topia/assets/59691442/13774fed-1ce4-4ab6-b73d-40aa374661a0) | ![t8nks-game-screenshot](https://github.com/Im-Rises/Chip8topia/assets/59691442/e4ab6b1f-e5a4-485f-a26b-dab63e20aff1) |
+
+| Alien Inv8sion Title Screen (Xo-Chip Octo)                                                                                 | Alien Inv8sion Gameplay (Xo-Chip Octo)                                                                                  |
+|----------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------|
+| ![alien-inv8sion-titlescreen](https://github.com/Im-Rises/Chip8topia/assets/59691442/71eb63c2-4716-49ba-868b-1525f593529e) | ![alien-inv8sion-gameplay](https://github.com/Im-Rises/Chip8topia/assets/59691442/b1c7441a-6045-4cf3-bb98-7fd6d03835d3) |
+
+## Features
+
+### Main
+
+- [x] Desktop and WebAssembly version
+- [x] Chip8, SCHIP1.1, SCHIPC and Xo-Chip support
+- [x] Pause/Resume/Restart the emulation
+- [x] Change the emulation speed
+- [x] Change the color of the screen
+- [x] Fullscreen mode (on the current screen the window is in)
+- [x] Load rom from file in Desktop and WebAssembly build
+- [x] Load integrated games in WebAssembly build
+
+### Debug Tools
+
+- [x] Registers viewer
+- [x] Stack viewer
+- [x] Memory Editor
+- [x] Virtual Keypad
+- [x] Disassembly
+- [x] Disassembly controls (break, step, run, reset)
+- [x] Breakpoints
+- [x] Planes viewer
 
 ## TODO
 
-- [x] Add glad init in Chip8topia.cpp
-- [x] Add a file explorer to load roms
-- [x] Code the Chip8Core
-- [x] Code the Chip8topiaUi
-- [x] Code the Chip8topiaDebugger
-- [x] Handle file open dialog for multiple platforms (Windows, Linux, Mac), maybe use a library like GTK or WxWidgets
-- [x] Link emulator inputs and UI inputs
-- [x] Finir le code de lecture de rom
-- [x] Charger rom
-- [x] Linker rom
-- [x] Correct window size position for about window
-- [x] Add emulation video
-- [x] Add emulation speed
-- [x] Add fast rom load in debug mode
-- [x] Corriger le sp qui pointe à 1 au lieu de 0 quand on push et pas de valeur dans la pile à 0 mais à 1 oui.
-- [x] Ajouter la synchronisation entre écran et cpu avec les timers audio et gameplay qui sont synchronisés avec le cpu
-- [x] Check all the carry and borrow flags in the opcodes
-- [x] Correct collision detection
-- [x] Correct the Ppu issues not rendering correctly (never clear the screen previously, everything was drawn on top of
-  each other)
-- [x] Add a file explorer to load roms
-- [x] Add inputs to the emulator
-- [x] Throttle the emulator to 60fps
-- [x] Add Ppu clipping
-- [x] Add a way to hide all windows
-- [x] Prevent hiding the main bar to also hide the windows
-- [x] understand and correct the test roms from 5-quirks
-- [x] Add inline in the functions declarations of the opcodes (maybe not necessary)
-- [x] Add vcpkg support for dependencies
-- [x] Correct fps calculation
-- [x] Correct the emulation turbo mode (deleted currently)
-- [x] Improve the input response by using direct state read rather than callbacks
-- [x] Add a way to change the speed of the emulator
-- [x] Refactor all imgui windows to look pretty
-- [x] Add disassembly
-- [x] Change the structure of Chip8topia so it starts the window in a function and not in the constructor
-- [x] Add commands and try compilation with emscripten
-- [x] Create a macro which will identify release and debug mode and change the window title accordingly _DEBUG and
-- [x] Add OpenGL ES support for WebAssembly
-- [ ] Integrate data to the assembly like VX and VY becoming V2 and V7 depending on the opcode
-- [ ] Add break, run, step to the debugger
-- [ ] Create actions for github
-- [ ] Faire des fonctions virtuel et les override dans chaque cpu ! Pas pure virtual, pour que si c'est pas override ça
-  appelle "assert" !
-- [ ] Add emulation sound
-- [ ] Create a class Memory with the memory and the value of 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F
-- [ ] Add emulation for the SuperChip8 and the XO-Chip ?
-- [ ] Add a way to change the used version of the chip8 (ask with a window like the About window, which block user intil
-  he decides which version to use) and make it changeable before running a game and when the game is running (restart
-  the game when the version is changed while the game is running)
-- [ ] Add a way to change the frequency of the emulator
-- [ ] Faire une fenêtre imgui quand on démarre pour sélectionner la version de chip8
-- [ ] Faire héritage cpp pour cpu et pour selection et peut être Chip8Core
-- [ ] Add save states ?
-- [ ] Créer une classe ImGuiMenuItemWindowList. Améliorer code imgui des fenêtres avec un système qui contiendrait les
-  enums des fenêtres à afficher, ensuite en
-  allant dans un switch case pour chaque enum dans le tableau, on afficherait la fenêtre correspondante. Rajouter class
-  ImGui (Créer une classe ImGuiMenuItemWindowList). Faire une structure qui prend en paramètre un array seulement
-  movable
+Major:
 
-  Check later
-- [ ] Replace PlateformIdentifier.h with variable defined in the CMakeLists.txt
-- [x] Check if with emscripten it really compile in Release mode
+- [ ] Correct the new crash on t8nks game
+- [ ] Do a rebase of the project
+- [ ] Add macOS build, vcpkg should have it...
+- [ ] Add audio
+- [ ] Optimize the code!!!
+
+Minor:
+
+- [ ] Add file logging with spdlog (every logs will be written in a file, the only console print will be the error and
+  warning)
+- [ ] Restarting a game when playing big xo-chip games will not reload the game from the start (we should reset memory
+  and reload the game rom)
+- [ ] Improve disassembly (check TODO in the Chip8topiaDisassembly.cpp file)
+- [ ] Add a way to change the input keys
+- [ ] Add a background when no rom is loaded
+- [ ] Maybe change the bloody file dialog
+- [ ] Use cpack to create a release
+
+## Controls
+
+### Original game controls
+
+| 1 | 2 | 3 | C |
+|---|---|---|---|
+| 4 | 5 | 6 | D |
+| 7 | 8 | 9 | E |
+| A | 0 | B | F |
+
+### Emulator game controls (QWERTY)
+
+| 1 | 2 | 3 | 4 |
+|---|---|---|---|
+| Q | W | E | R |
+| A | S | D | F |
+| Z | X | C | V |
+
+## Documentation
+
+- [devernay.free.fr](http://devernay.free.fr/hacks/chip8/C8TECH10.HTM)
+- [chip8.gulrak.net](https://chip8.gulrak.net/)
+- [Timendus/chip8-test-suite](https://github.com/Timendus/chip8-test-suite)
+- [chip-8.github.io](https://chip-8.github.io/)
+- [tobiasvl.github.io](https://tobiasvl.github.io/blog/write-a-chip-8-emulator/)
+- [Timendus/silicon8](https://github.com/Timendus/silicon8/tree/)
+- [Timendus/alien-inv8sion](https://github.com/Timendus/alien-inv8sion)
+- [johnearnest.github.io](http://johnearnest.github.io/Octo/docs/XO-ChipSpecification.html)
+- [johnearnest.github.io/chip8Archive](https://johnearnest.github.io/chip8Archive/?sort=platform)
+- [johnearnest.github.io/Octo](https://johnearnest.github.io/Octo/)
+
+<!--
+### Other resources
+
+https://en.wikipedia.org/wiki/CHIP-8
+https://www.laurencescotford.net/2020/07/19/chip-8-on-the-cosmac-vip-arithmetic-and-logic-instructions/
+https://www.laurencescotford.net/2020/07/19/chip-8-on-the-cosmac-vip-drawing-sprites/
+https://webgl2fundamentals.org/webgl/lessons/webgl-data-textures.html
+https://emscripten.org/docs/porting/files/packaging_files.html
+https://emscripten.org/docs/porting/files/index.html
+https://emscripten.org/docs/porting/files/file_systems_overview.html#file-system-overview
+https://emscripten.org/docs/porting/files/Synchronous-Virtual-XHR-Backed-File-System-Usage.html#synchronous-virtual-xhr-backed-file-system-usage
+https://github.com/marketplace/actions/upload-release-asset
+https://github.com/mymindstorm/setup-emsdk
+https://github.com/Armchair-Software/emscripten-browser-file
+-->
 
 ## Dependencies
 
+- [Vcpkg](https://vcpkg.io/en)
 - [GLFW](https://www.glfw.org/)
 - [GLAD](https://glad.dav1d.de/)
 - [stb](https://github.com/nothings/stb)
+- [spdlog](https://github.com/gabime/spdlog)
 - [ImGui](https://github.com/ocornut/imgui)
 - [ImGuiFileDialog](https://github.com/aiekick/ImGuiFileDialog)
 - [ImGui Memory Editor](https://github.com/ocornut/imgui_club/tree/main/imgui_memory_editor)
-- [Vcpkg](https://vcpkg.io/en)
+- [ImGuiNotify](https://github.com/TyomaVader/ImGuiNotify/tree/Dev)
+- [IconFontCppHeaders](https://github.com/juliettef/IconFontCppHeaders)
+- [Font-Awesome](https://github.com/FortAwesome/Font-Awesome)
+- [emscripten-browser-file](https://github.com/Armchair-Software/emscripten-browser-file)
 
-### Other docs
+## Build
 
-https://emscripten.org/docs/porting/files/packaging_files.html
-https://webgl2fundamentals.org/webgl/lessons/webgl-data-textures.html
-
-## Commands
+Before building, be sure to fetch all the git submodules and install vcpkg.
 
 ### Submodule:
 
+To fetch the submodules:
+
 ```bash
-git submodule update --remote
 git submodule update --init --recursive
 ```
 
-### Vcpkg:
+If you want to update the submodules:
 
-In order to use vcpkg with CMake outside of an IDE, you can use the toolchain file:
+```bash
+git submodule update --remote
+```
+
+### Build
+
+Once you have fetched the submodules and installed vcpkg, you can build the project.
+Go to the root of the project and create a build directory.
+
+> **Note**
+> Be sure to change the path to vcpkg or emscripten if necessary in the following commands.
+
+#### Build for Windows or Linux
+
+Use the following command to set up the build:
 
 ```bash
 cmake -B [build directory] -S . -DCMAKE_TOOLCHAIN_FILE=[path to vcpkg]/scripts/buildsystems/vcpkg.cmake
@@ -120,9 +185,29 @@ Then build with:
 cmake --build [build directory]
 ```
 
-### Emscripten
+### Build for WebAssembly (Emscripten)
+
+Use the following command to set up the build:
 
 ```bash
-emcmake cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=~/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=${EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -DVCPKG_TARGET_TRIPLET=wasm32-emscripten "-DCMAKE_EXE_LINKER_FLAGS=-s USE_GLFW=3 -s FULL_ES3=1 -s WASM=1 -s ALLOW_MEMORY_GROWTH=1 --preload-file Chip8Games" -DCMAKE_BUILD_TYPE=Release  
-emmake make -C build
+emcmake cmake -B [build directory] -S . -DCMAKE_TOOLCHAIN_FILE=~/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=${EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -DVCPKG_TARGET_TRIPLET=wasm32-emscripten "-DCMAKE_EXE_LINKER_FLAGS=-s USE_GLFW=3 -s FULL_ES3=1 -s WASM=1 -s EXPORTED_RUNTIME_METHODS=[ccall] -s ALLOW_MEMORY_GROWTH=1 -s EXPORTED_FUNCTIONS=[_main,_malloc,_free] --preload-file ../../Chip8Games --preload-file ../../shaders --preload-file ../../fonts" -DCMAKE_BUILD_TYPE=Release
 ```
+
+then build with:
+
+```bash
+emmake make -C [build directory]
+```
+
+## Contributors
+
+Quentin MOREL :
+
+- @Im-Rises
+- <https://github.com/Im-Rises>
+
+[![GitHub contributors](https://contrib.rocks/image?repo=Im-Rises/Chip8topia)](https://github.com/Im-Rises/Chip8topia/graphs/contributors)
+
+## Special Thanks
+
+TODO: add the special thanks !!!

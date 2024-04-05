@@ -1,0 +1,153 @@
+# This starter workflow is for a CMake project running on multiple platforms. There is a different starter workflow if you just want a single platform.
+# See: https://github.com/actions/starter-workflows/blob/main/ci/cmake-single-platform.yml
+name: CMake Vcpkg Publish Binaries
+
+on:
+  push:
+    branches: [ "main" ]
+
+permissions:
+  contents: write
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create-release.outputs.upload_url }}
+      app_version: ${{ steps.get-app-version.outputs.APP_VERSION }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Get build version from CMakelists.txt
+        id: get-app-version
+        run: |
+          app_version=$(grep -oP 'set\(CHIP8TOPIA_VERSION "\K[^"]+' CMakeLists.txt)
+          echo "APP_VERSION=$app_version" >> "$GITHUB_OUTPUT"
+          echo "APP_VERSION=$app_version" >> "$GITHUB_ENV"
+          echo $app_version
+          echo ${{ env.APP_VERSION }}
+
+      - name: Create Release
+        id: create-release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ env.APP_VERSION }}
+          release_name: Chip8topia ${{ env.APP_VERSION }}
+          draft: false
+          prerelease: false
+
+  build:
+    needs: create-release
+    runs-on: ${{ matrix.os }}
+    env:
+      APP_VERSION: ${{ needs.create-release.outputs.app_version }}
+
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        os: [ ubuntu-latest, windows-latest ]
+        build_type: [ Release ]
+        c_compiler: [ gcc, cl ] # clang and clang++ for cpp_compiler
+        include:
+          - os: windows-latest
+            c_compiler: cl
+            cpp_compiler: cl
+            executable_name: "Chip8topia"
+            executable_extension: ".exe"
+            platform_name: "windows"
+            zip_extension: ".zip"
+          - os: ubuntu-latest
+            c_compiler: gcc
+            cpp_compiler: g++
+            executable_name: "Chip8topia"
+            executable_extension: ""
+            platform_name: "linux"
+            zip_extension: ".tar.gz"
+        exclude:
+          - os: windows-latest
+            c_compiler: gcc
+          - os: ubuntu-latest
+            c_compiler: cl
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: 'true'
+
+      - name: Set reusable strings
+        id: strings
+        shell: bash
+        run: |
+          echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+
+      - name: Install libs
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xorg-dev
+          sudo apt-get install -y libglu1-mesa-dev
+
+      - name: Install vcpgk
+        uses: lukka/run-vcpkg@v11
+        with:
+          vcpkgDirectory: ${{ github.workspace }}/vcpkg
+          runVcpkgInstall: true
+
+      - name: Configure CMake
+        run: >
+          cmake -B ${{ steps.strings.outputs.build-output-dir }}
+          -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
+          -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
+          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+          -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
+          -S ${{ github.workspace }}
+
+      - name: Build
+        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+
+      - name: Copy common artifacts
+        run: |
+          mkdir ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.platform_name }}-v${{ env.APP_VERSION }}
+          cp -r ${{ github.workspace }}/imgui.ini ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.platform_name }}-v${{ env.APP_VERSION }}
+          cp -r ${{ github.workspace }}/shaders ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.platform_name }}-v${{ env.APP_VERSION }}
+          cp -r ${{ github.workspace }}/Chip8Games ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.platform_name }}-v${{ env.APP_VERSION }}
+          cp -r ${{ github.workspace }}/res ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.platform_name }}-v${{ env.APP_VERSION }}
+          cp -r ${{ github.workspace }}/fonts ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.platform_name }}-v${{ env.APP_VERSION }}
+
+      - name: Copy artifacts ubuntu
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          cp -r ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.executable_name }}/${{ matrix.executable_name }} ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.platform_name }}-v${{ env.APP_VERSION }}
+
+      - name: Copy artifacts windows
+        if: matrix.os == 'windows-latest'
+        run: |
+          cp -r ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.executable_name }}/${{ matrix.build_type }}/${{ matrix.executable_name }}${{ matrix.executable_extension }} ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.platform_name }}-v${{ env.APP_VERSION }}
+          cp -r ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.executable_name }}/${{ matrix.build_type }}/glfw3.dll ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.platform_name }}-v${{ env.APP_VERSION }}
+          cp -r ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.executable_name }}/${{ matrix.build_type }}/fmt.dll ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.platform_name }}-v${{ env.APP_VERSION }}
+
+      - name: Zip artifacts (ubuntu)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          cd ${{ github.workspace }}
+            zip -r ${{ matrix.executable_name }}-${{ matrix.platform_name }}-v${{ env.APP_VERSION }}${{ matrix.zip_extension }} ${{ matrix.executable_name }}-${{ matrix.platform_name }}-v${{ env.APP_VERSION }}
+
+      - name: Zip artifacts (windows)
+        if: matrix.os == 'windows-latest'
+        run: |
+          cd ${{ github.workspace }}
+            Compress-Archive -Path ${{ matrix.executable_name }}-${{ matrix.platform_name }}-v${{ env.APP_VERSION }} -DestinationPath ${{ matrix.executable_name }}-${{ matrix.platform_name }}-v${{ env.APP_VERSION }}${{ matrix.zip_extension }}
+
+      - name: Upload release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          asset_path: ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.platform_name }}-v${{ env.APP_VERSION }}${{ matrix.zip_extension }}
+          asset_name: ${{ matrix.executable_name }}-${{ matrix.platform_name }}-v${{ env.APP_VERSION }}${{ matrix.zip_extension }}
+          asset_content_type: application/zip
