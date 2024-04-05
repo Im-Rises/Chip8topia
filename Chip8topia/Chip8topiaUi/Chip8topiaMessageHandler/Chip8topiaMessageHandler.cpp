@@ -1,6 +1,5 @@
 #include "Chip8topiaMessageHandler.h"
 
-#include <utility>
 #include <IconsFontAwesome6.h>
 
 #include "../../Chip8topiaInputHandler/Chip8topiaInputHandler.h"

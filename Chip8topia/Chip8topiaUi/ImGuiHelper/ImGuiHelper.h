@@ -97,6 +97,9 @@ private:
         const std::string m_title;
         const std::string m_message;
         const std::function<void()> m_callback;
+
+        MessageData(const std::string& title, const std::string& message, std::function<void()> callback)
+            : m_title(title), m_message(message), m_callback(std::move(callback)) {}
     };
 
 public:

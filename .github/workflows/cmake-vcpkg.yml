@@ -16,6 +16,8 @@ jobs:
       fail-fast: false
 
       matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+        build_type: [ Debug, Release ]
         include:
           - os: ubuntu-latest
             c_compiler: gcc
