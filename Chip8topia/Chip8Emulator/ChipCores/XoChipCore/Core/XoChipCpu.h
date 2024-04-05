@@ -33,8 +33,6 @@ private:
     void LD_RNG_Vx_Vy(uint8 x, uint8 y);                                 // 5xy3
     void SNE_Vx_Vy(const uint8 x, const uint8 y) final;                  // 9xy0
     void DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) final; // Dxyn
-    void SKP_Vx(const uint8 x) final;                                    // Ex9E
-    void SKNP_Vx(const uint8 x) final;                                   // ExA1
     void LD_I_NNNN();                                                    // F000
     void SET_PLN(const uint8 x);                                         // FX01
     void LD_AUDIO_aI();                                                  // F002

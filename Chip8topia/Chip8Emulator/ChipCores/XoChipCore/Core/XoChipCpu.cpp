@@ -267,22 +267,6 @@ void XoChipCpu::DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n)
     m_V[0xF] = static_cast<uint8>(m_ppu->drawSprite(m_V[x], m_V[y], n, m_memory, m_I));
 }
 
-void XoChipCpu::SKP_Vx(const uint8 x)
-{
-    if (m_input->isKeyPressed(m_V[x]))
-    {
-        skipNextInstruction();
-    }
-}
-
-void XoChipCpu::SKNP_Vx(const uint8 x)
-{
-    if (!m_input->isKeyPressed(m_V[x]))
-    {
-        skipNextInstruction();
-    }
-}
-
 void XoChipCpu::LD_I_NNNN()
 {
     m_I = fetchWord();
