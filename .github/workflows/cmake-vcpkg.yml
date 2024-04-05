@@ -18,11 +18,14 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            c_compiler: g++
+            c_compiler: g
+            cpp_compiler: g++
           - os: windows-latest
             c_compiler: cl
+            cpp_compiler: cl
           - os: macos-latest
             c_compiler: clang
+            cpp_compiler: clang++
 
 
     steps:
