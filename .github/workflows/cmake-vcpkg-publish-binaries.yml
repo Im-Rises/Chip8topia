@@ -49,9 +49,8 @@ jobs:
       fail-fast: false
 
       matrix:
-        os: [ ubuntu-latest, windows-latest ]
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
         build_type: [ Release ]
-        c_compiler: [ gcc, cl ] # clang and clang++ for cpp_compiler
         include:
           - os: windows-latest
             c_compiler: cl
@@ -67,11 +66,13 @@ jobs:
             executable_extension: ""
             platform_name: "linux"
             zip_extension: ".tar.gz"
-        exclude:
-          - os: windows-latest
-            c_compiler: gcc
-          - os: ubuntu-latest
-            c_compiler: cl
+          - os: macos-latest
+            c_compiler: clang
+            cpp_compiler: clang++
+            executable_name: "Chip8topia"
+            executable_extension: ""
+            platform_name: "macos"
+            zip_extension: ".tar.gz"
 
     steps:
       - uses: actions/checkout@v3
@@ -118,8 +119,8 @@ jobs:
           cp -r ${{ github.workspace }}/res ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.platform_name }}-v${{ env.APP_VERSION }}
           cp -r ${{ github.workspace }}/fonts ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.platform_name }}-v${{ env.APP_VERSION }}
 
-      - name: Copy artifacts ubuntu
-        if: matrix.os == 'ubuntu-latest'
+      - name: Copy artifacts ubuntu and macos
+        if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
         run: |
           cp -r ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.executable_name }}/${{ matrix.executable_name }} ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.platform_name }}-v${{ env.APP_VERSION }}
 
@@ -130,8 +131,8 @@ jobs:
           cp -r ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.executable_name }}/${{ matrix.build_type }}/glfw3.dll ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.platform_name }}-v${{ env.APP_VERSION }}
           cp -r ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.executable_name }}/${{ matrix.build_type }}/fmt.dll ${{ github.workspace }}/${{ matrix.executable_name }}-${{ matrix.platform_name }}-v${{ env.APP_VERSION }}
 
-      - name: Zip artifacts (ubuntu)
-        if: matrix.os == 'ubuntu-latest'
+      - name: Zip artifacts (ubuntu, macos)
+        if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
         run: |
           cd ${{ github.workspace }}
             zip -r ${{ matrix.executable_name }}-${{ matrix.platform_name }}-v${{ env.APP_VERSION }}${{ matrix.zip_extension }} ${{ matrix.executable_name }}-${{ matrix.platform_name }}-v${{ env.APP_VERSION }}

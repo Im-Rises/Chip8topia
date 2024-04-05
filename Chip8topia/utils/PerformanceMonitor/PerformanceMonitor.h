@@ -19,6 +19,7 @@
 // TODO: PerformanceMonitor
 // - Add error handling everywhere
 // - To work better, maybe we should only update it every second
+// - Add MacOS support
 
 #if defined(PLATFORM_WINDOWS)
 #include <cstdio>
@@ -85,5 +86,7 @@ private:
     // TIMER
     std::chrono::time_point<std::chrono::high_resolution_clock> m_lastTime;
     long m_deltaTime;
+#elif defined(PLATFORM_MACOS)
+
 #endif
 };

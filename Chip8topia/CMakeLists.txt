@@ -78,6 +78,14 @@ if (WIN32)
 elseif (UNIX AND NOT APPLE)
     target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_LINUX)
     target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_NAME="Linux")
+elseif (APPLE)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_MACOS)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_NAME="MacOS")
+#elseif (EMSCRIPTEN) # Use linux when building for web with emscripten
+#    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_WEB)
+#    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_NAME="Web")
 endif ()
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE PROJECT_CPP_VERSION="${CMAKE_CXX_STANDARD}")
+
+message("Building ${PROJECT_NAME} for ${PLATFORM_NAME}  with C++${CMAKE_CXX_STANDARD} on ${CMAKE_SYSTEM_NAME}")

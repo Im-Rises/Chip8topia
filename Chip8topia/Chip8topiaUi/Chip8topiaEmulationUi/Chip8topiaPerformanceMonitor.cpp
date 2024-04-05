@@ -51,7 +51,7 @@ void Chip8topiaPerformanceMonitor::drawWindow(Chip8topia& chip8topia, bool isMai
     ImGui::Text("WINDOWS");
 #elif defined(PLATFORM_LINUX)
     ImGui::Text("LINUX");
-#elif defined(PLATFORM_APPLE)
+#elif defined(PLATFORM_MACOS)
     ImGui::Text("APPLE");
 #endif
     ImGui::SameLine();

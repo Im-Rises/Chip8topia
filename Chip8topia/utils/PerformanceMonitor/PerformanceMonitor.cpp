@@ -3,6 +3,7 @@
 #include <algorithm>
 
 #if defined(PLATFORM_WINDOWS)
+
 PerformanceMonitor::PerformanceMonitor() : m_memInfo(), m_pmc()
 {
     // RAM (virtual memory) usage
@@ -103,7 +104,9 @@ auto PerformanceMonitor::getCpuUsedByCurrentProcess() -> float
 
     return percent * 100;
 }
+
 #elif defined(PLATFORM_LINUX)
+
 PerformanceMonitor::PerformanceMonitor() : m_deltaTime(0.0F), m_lastTime(std::chrono::high_resolution_clock::now())
 {
     // RAM
@@ -174,4 +177,61 @@ auto PerformanceMonitor::getCpuUsedByCurrentProcess() -> float
 {
     return -1.0F;
 }
+
+#elif defined(PLATFORM_MACOS)
+
+PerformanceMonitor::PerformanceMonitor()
+{
+
+}
+
+PerformanceMonitor::~PerformanceMonitor()
+{
+}
+
+void PerformanceMonitor::update()
+{
+
+}
+
+auto PerformanceMonitor::getTotalVirtualMemory() const -> float
+{
+    return -1.0F;
+}
+
+auto PerformanceMonitor::getVirtualMemoryUsed() const -> float
+{
+    return -1.0F;
+}
+
+auto PerformanceMonitor::getVirtualMemoryUsedByCurrentProcess() const -> float
+{
+    return -1.0F;
+}
+
+auto PerformanceMonitor::getTotalPhysicalMemory() const -> float
+{
+    return -1.0F;
+}
+
+auto PerformanceMonitor::getPhysicalMemoryUsed() const -> float
+{
+    return -1.0F;
+}
+
+auto PerformanceMonitor::getPhysicalMemoryUsedByCurrentProcess() const -> float
+{
+    return -1.0F;
+}
+
+auto PerformanceMonitor::getCpuUsed() -> float
+{
+    return -1.0F;
+}
+
+auto PerformanceMonitor::getCpuUsedByCurrentProcess() -> float
+{
+    return -1.0F;
+}
+
 #endif
