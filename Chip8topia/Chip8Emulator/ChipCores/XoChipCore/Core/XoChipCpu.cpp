@@ -175,13 +175,13 @@ void XoChipCpu::SCL(const uint8 n)
 
 void XoChipCpu::LORES()
 {
-    m_ppu->clearScreen();
+    m_ppu->clearAllPlanes();
     CpuBase::LORES();
 }
 
 void XoChipCpu::HIRES()
 {
-    m_ppu->clearScreen();
+    m_ppu->clearAllPlanes();
     CpuBase::HIRES();
 }
 

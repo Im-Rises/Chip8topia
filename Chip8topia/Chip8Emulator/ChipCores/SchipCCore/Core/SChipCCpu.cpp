@@ -143,12 +143,12 @@ void SChipCCpu::SCL(const uint8 n)
 
 void SChipCCpu::LORES()
 {
-    m_ppu->clearScreen();
+    m_ppu->clearAllPlanes();
     CpuBase::LORES();
 }
 void SChipCCpu::HIRES()
 {
-    m_ppu->clearScreen();
+    m_ppu->clearAllPlanes();
     CpuBase::HIRES();
 }
 
