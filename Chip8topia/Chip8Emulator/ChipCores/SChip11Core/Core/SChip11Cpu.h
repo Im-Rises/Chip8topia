@@ -27,7 +27,7 @@ private:
     void SCL(const uint8 n) final;                                       // 00FC
     void SHR_Vx_Vy(const uint8 x, const uint8 y) final;                  // 8xy6
     void SHL_Vx_Vy(const uint8 x, const uint8 y) final;                  // 8xyE
-    void DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) final; // Dxyn
+    void DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) final; // DXYN
     void LD_R_Vx(const uint8 x) final;                                   // Fx75
     void LD_Vx_R(const uint8 x) final;                                   // Fx85
 

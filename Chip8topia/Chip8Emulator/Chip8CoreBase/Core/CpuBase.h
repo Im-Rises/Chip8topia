@@ -79,9 +79,9 @@ protected:
     void JP_nnn_V0(const uint16 address);                                      // Bnnn
     void JP_xnn_Vx(const uint16 address, const uint8 x);                       // Bxnn
     void RND_Vx_nn(const uint8 x, const uint8 nn);                             // Cxnn
-    virtual void DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) = 0; // Dxyn
-    virtual void SKP_Vx(const uint8 x);                                        // Ex9E
-    virtual void SKNP_Vx(const uint8 x);                                       // ExA1
+    virtual void DRW_Vx_Vy_n(const uint8 x, const uint8 y, const uint8 n) = 0; // DXYN
+    void SKP_Vx(const uint8 x);                                                // Ex9E
+    void SKNP_Vx(const uint8 x);                                               // ExA1
     void LD_Vx_DT(const uint8 x);                                              // Fx07
     void LD_Vx_K(const uint8 x);                                               // Fx0A
     void LD_DT_Vx(const uint8 x);                                              // Fx15
