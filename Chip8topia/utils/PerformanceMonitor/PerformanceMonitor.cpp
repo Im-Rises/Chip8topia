@@ -3,6 +3,7 @@
 #include <algorithm>
 
 #if defined(PLATFORM_WINDOWS)
+
 PerformanceMonitor::PerformanceMonitor() : m_memInfo(), m_pmc()
 {
     // RAM (virtual memory) usage
@@ -101,9 +102,11 @@ auto PerformanceMonitor::getCpuUsedByCurrentProcess() -> float
     m_lastUserCPU = user;
     m_lastSysCPU = sys;
 
-    return percent * 100;
+    return percent * 100.0F;
 }
+
 #elif defined(PLATFORM_LINUX)
+
 PerformanceMonitor::PerformanceMonitor() : m_deltaTime(0.0F), m_lastTime(std::chrono::high_resolution_clock::now())
 {
     // RAM
@@ -167,11 +170,113 @@ auto PerformanceMonitor::getCpuUsed() -> float
     suseconds_t totalCpuTime = user + sys - m_lastTimeUsec;
     m_lastTimeUsec = user + sys;
 
-    return std::clamp((static_cast<float>(totalCpuTime) / m_deltaTime) * 100, 0.0F, 100.0F);
+    return std::clamp((static_cast<float>(totalCpuTime) / m_deltaTime) * 100.0F, 0.0F, 100.0F);
 }
 
 auto PerformanceMonitor::getCpuUsedByCurrentProcess() -> float
 {
     return -1.0F;
 }
+
+#elif defined(PLATFORM_MACOS)
+
+PerformanceMonitor::PerformanceMonitor()
+{
+    m_mib[0] = CTL_HW;
+    m_mib[1] = HW_MEMSIZE;
+}
+
+PerformanceMonitor::~PerformanceMonitor()
+{
+}
+
+void PerformanceMonitor::update()
+{
+}
+
+auto PerformanceMonitor::getTotalVirtualMemory() const -> float
+{
+    return -1.0F;
+}
+
+auto PerformanceMonitor::getVirtualMemoryUsed() const -> float
+{
+    return -1.0F;
+}
+
+auto PerformanceMonitor::getVirtualMemoryUsedByCurrentProcess() const -> float
+{
+    return -1.0F;
+}
+
+auto PerformanceMonitor::getTotalPhysicalMemory() const -> float
+{
+    int64_t physical_memory;
+    size_t length = sizeof(int64_t);
+    sysctl(mib, 2, &physical_memory, &length, NULL, 0);
+
+    return physical_memory / RAM_MB_FACTOR;
+}
+
+auto PerformanceMonitor::getPhysicalMemoryUsed() const -> float
+{
+    m_mach_port = mach_host_self();
+    count = sizeof(m_vm_stats) / sizeof(natural_t);
+    if (KERN_SUCCESS == host_page_size(m_mach_port, &m_page_size) &&
+        KERN_SUCCESS == host_statistics64(m_mach_port, HOST_VM_INFO,
+                            (host_info64_t)&vm_stats, &m_mac_msg_type_number))
+    {
+        //    long long free_memory = (int64_t)vm_stats.free_count * (int64_t)m_page_size;
+
+        long long used_memory = ((int64_t)m_vm_stats.active_count +
+                                    (int64_t)m_vm_stats.inactive_count +
+                                    (int64_t)m_vm_stats.wire_count) *
+                                (int64_t)m_page_size;
+
+        return (used_memory / RAM_MB_FACTOR);
+    }
+
+    return -1.0F;
+}
+
+auto PerformanceMonitor::getPhysicalMemoryUsedByCurrentProcess() const -> float
+{
+    return -1.0F;
+}
+
+float GetCPULoad()
+{
+    host_cpu_load_info_data_t cpuinfo;
+    mach_msg_type_number_t count = HOST_CPU_LOAD_INFO_COUNT;
+    if (host_statistics(mach_host_self(), HOST_CPU_LOAD_INFO, (host_info_t)&cpuinfo, &count) == KERN_SUCCESS)
+    {
+        unsigned long long totalTicks = 0;
+        for (int i = 0; i < CPU_STATE_MAX; i++)
+            totalTicks += cpuinfo.cpu_ticks[i];
+        return CalculateCPULoad(cpuinfo.cpu_ticks[CPU_STATE_IDLE], totalTicks);
+    }
+    else
+        return -1.0f;
+}
+
+float CalculateCPULoad(unsigned long long idleTicks, unsigned long long totalTicks)
+{
+    unsigned long long totalTicksSinceLastTime = totalTicks - _previousTotalTicks;
+    unsigned long long idleTicksSinceLastTime = idleTicks - _previousIdleTicks;
+    float ret = 1.0f - ((totalTicksSinceLastTime > 0) ? ((float)idleTicksSinceLastTime) / totalTicksSinceLastTime : 0);
+    _previousTotalTicks = totalTicks;
+    _previousIdleTicks = idleTicks;
+    return ret;
+}
+
+auto PerformanceMonitor::getCpuUsed() -> float
+{
+    return GetCPULoad() * 100.0F;
+}
+
+auto PerformanceMonitor::getCpuUsedByCurrentProcess() -> float
+{
+    return -1.0F;
+}
+
 #endif

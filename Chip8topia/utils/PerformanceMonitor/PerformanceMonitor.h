@@ -18,7 +18,7 @@
 
 // TODO: PerformanceMonitor
 // - Add error handling everywhere
-// - To work better, maybe we should only update it every second
+// - Add MacOS support
 
 #if defined(PLATFORM_WINDOWS)
 #include <cstdio>
@@ -32,7 +32,17 @@
 #include <sys/sysinfo.h>
 #include <sys/time.h>
 #include <sys/resource.h>
+#elif defined(PLATFORM_MACOS)
+#include <sys/types.h>
+#include <sys/sysctl.h>
+#include <mach/vm_statistics.h>
+#include <mach/mach_types.h>
+#include <mach/mach_init.h>
+#include <mach/mach_host.h>
+#include <mach/mach_error.h>
+#include <mach/vm_map.h>
 #endif
+
 #include <chrono>
 
 
@@ -85,5 +95,16 @@ private:
     // TIMER
     std::chrono::time_point<std::chrono::high_resolution_clock> m_lastTime;
     long m_deltaTime;
+#elif defined(PLATFORM_MACOS)
+    // RAM (total physical memory)
+    int m_mib[2];
+    // RAM (used physical memory)
+    vm_size_t m_page_size;
+    mach_port_t m_mach_port;
+    mach_msg_type_number_t m_mac_msg_type_number;
+    vm_statistics64_data_t m_vm_stats;
+    // CPU usage
+    unsigned long long m_previousTotalTicks = 0;
+    unsigned long long m_previousIdleTicks = 0;
 #endif
 };

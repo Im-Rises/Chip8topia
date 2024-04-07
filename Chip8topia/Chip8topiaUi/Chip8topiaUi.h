@@ -42,5 +42,6 @@ private:
     bool m_isMenuBarOpen = true;
 #if defined(BUILD_DEBUG)
     bool m_showDemo = true;
+    bool m_showImGuiMetrics = true;
 #endif
 };

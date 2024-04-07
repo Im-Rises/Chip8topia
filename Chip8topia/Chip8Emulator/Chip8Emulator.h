@@ -18,7 +18,7 @@ private:
     static constexpr int TOAST_DURATION_INFO = 1000;
     static constexpr int TOAST_DURATION_SUCCESS = 1000;
     static constexpr int TOAST_DURATION_ERROR = 3000;
-    static constexpr int PC_HISTORY_SIZE = 10;
+    //    static constexpr int PC_HISTORY_SIZE = 10;
 
 public:
     Chip8Emulator();
@@ -60,7 +60,7 @@ public:
     void runEmulation();
     void breakEmulation();
     void toggleBreakEmulation();
-//    void updatePcHistory();
+    //    void updatePcHistory();
 
 private:
     void OnInput(const uint8 key, const bool isPressed);
@@ -72,14 +72,13 @@ private:
     Chip8VideoEmulation m_videoEmulation;
     //    Chip8SoundEmulation m_soundEmulation;
 
-    // TODO: Move to constructor
-    float m_accumulator = 0.0F;
-    bool m_isRomLoaded = false;
-    bool m_isTurboMode = false;
-    bool m_isBreak = false;
-    bool m_step = false;
-    bool m_canBreak = true;
-    bool m_errorTriggered = false;
+    float m_accumulator;
+    bool m_isRomLoaded;
+    bool m_isTurboMode;
+    bool m_isBreak;
+    bool m_step;
+    bool m_canBreak;
+    bool m_errorTriggered;
 
     std::set<uint16> m_breakpoints;
     //    std::vector<uint16> m_pcHistory;

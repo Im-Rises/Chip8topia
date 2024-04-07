@@ -30,10 +30,10 @@ void Chip8Cpu::computeOpcode(const uint16 opcode)
     {
     case 0x0:
     {
-        switch (opcode & 0x00FF)
+        switch (opcode)
         {
-        case 0xE0: CLS(); break;              // 00E0
-        case 0xEE: RET(); break;              // 00EE
+        case 0x00E0: CLS(); break;            // 00E0
+        case 0x00EE: RET(); break;            // 00EE
         default: SYS(opcode & 0x0FFF); break; // 0NNN
         }
         break;

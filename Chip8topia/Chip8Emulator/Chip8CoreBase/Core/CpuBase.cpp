@@ -120,8 +120,7 @@ void CpuBase::SCL(const uint8 n)
 
 void CpuBase::EXIT()
 {
-    // TODO: EXIT instruction:
-    //  - Blocking execution on EXIT, maybe add a message to the user?
+    // For the EXIT, we will just halt the current instruction.
     haltCurrentInstruction();
 }
 
@@ -275,7 +274,7 @@ void CpuBase::RND_Vx_nn(const uint8 x, const uint8 nn)
 
 void CpuBase::SKP_Vx(const uint8 x)
 {
-    if (m_input->isKeyPressed(m_V[x]))
+    if (m_input->isKeyPressed(m_V[x] & 0xF))
     {
         skipNextInstruction();
     }
@@ -283,7 +282,7 @@ void CpuBase::SKP_Vx(const uint8 x)
 
 void CpuBase::SKNP_Vx(const uint8 x)
 {
-    if (!m_input->isKeyPressed(m_V[x]))
+    if (!m_input->isKeyPressed(m_V[x] & 0xF))
     {
         skipNextInstruction();
     }

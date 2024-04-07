@@ -15,20 +15,20 @@ auto SChip11CpuDisassembly::disassembleOpcode(const uint16 opcode, bool isModern
     {
     case 0x0:
     {
-        switch (opcode & 0x00FF)
+        switch (opcode)
         {
-        case 0xE0: return "CLS";                                                    // 00E0
-        case 0xEE: return "RET";                                                    // 00EE
-        case 0xFB: return fmt::format("SCR 0x{:X}", isLowRes && !isModern ? 2 : 4); // 00FB
-        case 0xFC: return fmt::format("SCL 0x{:X}", isLowRes && !isModern ? 2 : 4); // 00FC
-        case 0xFD: return "EXIT";                                                   // 00FD
-        case 0xFE: return "LORES";                                                  // 00FE
-        case 0xFF: return "HIRES";                                                  // 00FF
+        case 0x00E0: return "CLS";                                                    // 00E0
+        case 0x00EE: return "RET";                                                    // 00EE
+        case 0x00FB: return fmt::format("SCR 0x{:X}", isLowRes && !isModern ? 2 : 4); // 00FB
+        case 0x00FC: return fmt::format("SCL 0x{:X}", isLowRes && !isModern ? 2 : 4); // 00FC
+        case 0x00FD: return "EXIT";                                                   // 00FD
+        case 0x00FE: return "LORES";                                                  // 00FE
+        case 0x00FF: return "HIRES";                                                  // 00FF
         default:
         {
-            switch (nibble2)
+            switch (opcode & 0xFFF0)
             {
-            case 0xC: return fmt::format("SCD 0x{:X}", (isLowRes && !isModern) ? nibble1 / 2 : nibble1); // 00CN
+            case 0x00C0: return fmt::format("SCD 0x{:X}", (isLowRes && !isModern) ? nibble1 / 2 : nibble1); // 00CN
             default: return INVALID_OPCODE_TEXT;
             }
         }

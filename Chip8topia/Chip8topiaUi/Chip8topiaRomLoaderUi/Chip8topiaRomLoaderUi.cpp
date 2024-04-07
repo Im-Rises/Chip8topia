@@ -8,6 +8,7 @@
 #if defined(__EMSCRIPTEN__)
 #include <emscripten_browser_file.h>
 #endif
+#include <consoleLogger/consoleLogger.h>
 
 #include "../Chip8Emulator/Chip8Emulator/Chip8RomLoader.h"
 #include "../../Chip8topia.h"
@@ -75,10 +76,12 @@ void Chip8topiaRomLoaderUi::drawRomWindow(Chip8topia& chip8topia)
                 chip8topia.getChip8Emulator().loadRom(rom);
                 chip8topia.getChip8Emulator().setRomName(Chip8RomLoader::getRomNameFromPath(filePathName));
                 ImGui::InsertNotification({ ImGuiToastType::Success, TOAST_DURATION_SUCCESS, "Rom loaded successfully" });
+                LOG_INFO("Rom loaded successfully");
             }
             catch (const std::exception& e)
             {
                 ImGui::InsertNotification({ ImGuiToastType::Error, TOAST_DURATION_ERROR, e.what() });
+                LOG_ERROR(e.what());
             }
         }
 
@@ -100,10 +103,12 @@ void Chip8topiaRomLoaderUi::handle_upload_file(std::string const& filename, std:
         std::vector<uint8> rom = Chip8RomLoader::loadRomFromData(buffer);
         chip8Emulator->loadRom(rom);
         ImGui::InsertNotification({ ImGuiToastType::Success, TOAST_DURATION_SUCCESS, "Rom loaded successfully" });
+        LOG_INFO("Rom loaded successfully");
     }
     catch (const std::exception& e)
     {
         ImGui::InsertNotification({ ImGuiToastType::Error, TOAST_DURATION_ERROR, e.what() });
+        LOG_ERROR(e.what());
     }
 }
 #endif

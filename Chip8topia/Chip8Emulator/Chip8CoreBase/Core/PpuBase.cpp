@@ -20,6 +20,24 @@ void PpuBase::reset()
     }
 }
 
+void PpuBase::clearAllPlanes()
+{
+    if (getMode() == PpuMode::LORES)
+    {
+        for (unsigned int i = 0; i < PLANE_COUNT; i++)
+        {
+            m_loresVideoMemoryPlanes[i].fill(PIXEL_OFF);
+        }
+    }
+    else
+    {
+        for (unsigned int i = 0; i < PLANE_COUNT; i++)
+        {
+            m_hiresVideoMemoryPlanes[i].fill(PIXEL_OFF);
+        }
+    }
+}
+
 void PpuBase::scrollDown(uint8 n)
 {
 }

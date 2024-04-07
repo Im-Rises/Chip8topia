@@ -71,6 +71,7 @@ public:
     void toggleFullScreen();
     void toggleTurboMode();
 
+    void setVsyncEnabled(const bool isVSyncEnabled);
 #ifndef __EMSCRIPTEN__
     void setWindowIcon();
     void updateWindowTitle(const float fps);
@@ -81,8 +82,8 @@ public:
 
     [[nodiscard]] auto getWindowPosition() const -> std::pair<int, int>;
     [[nodiscard]] auto getCurrentDimensions() const -> std::pair<int, int>;
-    //    [[nodiscard]] auto getWindowWidth() const -> int;
-    //    [[nodiscard]] auto getWindowHeight() const -> int;
+    [[nodiscard]] auto getWindowWidth() const -> int;
+    [[nodiscard]] auto getWindowHeight() const -> int;
     [[nodiscard]] auto getCurrentWidth() const -> int;
     [[nodiscard]] auto getCurrentHeight() const -> int;
     [[nodiscard]] auto getWindowMaximized() const -> bool;
@@ -95,7 +96,10 @@ private:
     static auto getGLFWVersion() -> std::string;
     static auto getGladVersion() -> std::string_view;
     static auto getImGuiVersion() -> std::string;
-    static void printDependenciesInfos();
+    static auto getStbImageVersion() -> std::string;
+    static auto getFmtVersion() -> std::string;
+    static auto getSpdlogVersion() -> std::string;
+    static auto getDependenciesInfos() -> std::string;
 
     static void glfw_error_callback(int error, const char* description);
     static void glfw_drop_callback(GLFWwindow* window, int count, const char** paths);

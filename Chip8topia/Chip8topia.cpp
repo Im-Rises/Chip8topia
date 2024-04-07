@@ -1,7 +1,7 @@
 #include "Chip8topia.h"
 
-#ifdef _WIN32
-#include <Windows.h>
+#if defined(PLATFORM_WINDOWS)
+#include <windows.h>
 #endif
 
 #include <imgui.h>
@@ -13,7 +13,6 @@
 #include <emscripten/html5.h>
 #include <imgui_emscripten/imgui_emscripten.h>
 #else
-#include <spdlog/spdlog.h>
 #include <glad/glad.h>
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -22,9 +21,10 @@
 
 #include <fmt/format.h>
 #include <chrono>
-#include <iostream>
 #include <fstream>
 
+#include <consoleLogger/consoleLogger.h>
+#include <iostream>
 #include <ImGuiNotify.hpp>
 #include <IconsFontAwesome6.h>
 
@@ -111,6 +111,12 @@ auto Chip8topia::init() -> int
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
     glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
+#elif defined(PLATFORM_MACOS)
+    const char* glsl_version = "#version 330";
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #else
     const char* glsl_version = "#version 330";
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -131,7 +137,7 @@ auto Chip8topia::init() -> int
         return WINDOW_INIT_ERROR_CODE;
     }
     glfwMakeContextCurrent(m_window);
-    glfwSwapInterval(m_isTurboMode ? 0 : 1); // 0 = no vsync, 1 = vsync
+    setVsyncEnabled(true);
 
     // Set window callbacks
     glfwSetWindowUserPointer(m_window, this);
@@ -145,7 +151,7 @@ auto Chip8topia::init() -> int
 #ifndef __EMSCRIPTEN__
     if (gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)) == 0)
     {
-        spdlog::error("Failed to initialize OpenGL loader");
+        LOG_ERROR("Failed to initialize OpenGL loader");
         return GLAD_INIT_ERROR_CODE;
     }
 #endif
@@ -185,11 +191,8 @@ auto Chip8topia::init() -> int
 
     if (!fontAwesomeFile.good())
     {
-#if !defined(__EMSCRIPTEN__)
-        spdlog::error("Could not find font awesome file: {}", FONT_ICON_FILE_NAME_FAS);
-#else
-        std::cerr << "Could not find font awesome file: " << FONT_ICON_FILE_NAME_FAS << '\n';
-#endif
+        LOG_ERROR("Could not find font awesome file: " FONT_ICON_FILE_NAME_FAS);
+
         return FONT_AWESOME_INIT_ERROR_CODE;
     }
 
@@ -221,14 +224,8 @@ auto Chip8topia::init() -> int
     m_chip8topiaInputHandler.m_DebugRomFastLoadEvent.subscribe(this, &Chip8topia::loadDebugRom);
 #endif
 
-    printDependenciesInfos();
-
-    std::cout << "Logs:" << '\n';
-#if !defined(__EMSCRIPTEN__)
-    spdlog::info("Chip8topia initialized successfully");
-#else
-    std::cout << "Chip8topia initialized successfully" << '\n';
-#endif
+    std::cout << getDependenciesInfos() << '\n';
+    LOG_INFO("Chip8topia initialized successfully");
 
     return SUCCESS_CODE;
 }
@@ -253,11 +250,7 @@ void Chip8topia::cleanup()
     glfwDestroyWindow(m_window);
     glfwTerminate();
 
-#if !defined(__EMSCRIPTEN__)
-    spdlog::info("Chip8topia cleaned up successfully");
-#else
-    std::cout << "Chip8topia cleaned up successfully" << '\n';
-#endif
+    LOG_INFO("Chip8topia cleaned up successfully");
 }
 
 void Chip8topia::handleInputs()
@@ -364,14 +357,21 @@ void Chip8topia::toggleFullScreen()
         glfwSetWindowMonitor(m_window, nullptr, m_windowedPosX, m_windowedPosY, m_windowedWidth, m_windowedHeight, 0);
     }
 
+    setVsyncEnabled(!m_isTurboMode);
+
     m_isFullScreen = !m_isFullScreen;
 }
 
 void Chip8topia::toggleTurboMode()
 {
-    glfwSwapInterval(m_isTurboMode ? 1 : 0); // 0 = no vsync, 1 = vsync
     m_isTurboMode = !m_isTurboMode;
+    setVsyncEnabled(!m_isTurboMode);
     m_chip8Emulator->setIsTurboMode(m_isTurboMode);
+}
+
+void Chip8topia::setVsyncEnabled(const bool isVsyncEnabled)
+{
+    glfwSwapInterval(isVsyncEnabled ? 1 : 0);
 }
 
 #ifndef __EMSCRIPTEN__
@@ -381,7 +381,8 @@ void Chip8topia::setWindowIcon()
     unsigned char* imagePixels = stbi_load(CHIP8TOPIA_ICON_PATH, &width, &height, &channelsCount, 0);
     if (imagePixels == nullptr)
     {
-        ImGui::InsertNotification({ ImGuiToastType::Error, TOAST_DURATION_ERROR, "Failed to load window icon" });
+        ImGui::InsertNotification({ ImGuiToastType::Error, TOAST_DURATION_ERROR, "Failed to load window icon", fmt::format("Cannot load icon at {}", CHIP8TOPIA_ICON_PATH).c_str() });
+        LOG_ERROR(fmt::format("Failed to load window icon at {}", CHIP8TOPIA_ICON_PATH));
         return;
     }
 
@@ -418,14 +419,14 @@ auto Chip8topia::getCurrentDimensions() const -> std::pair<int, int>
     return { m_currentWidth, m_currentHeight };
 }
 
-// auto Chip8topia::getWindowWidth() const -> int
-//{
-//     return m_currentWidth;
-// }
-// auto Chip8topia::getWindowHeight() const -> int
-//{
-//     return m_currentHeight;
-// }
+auto Chip8topia::getWindowWidth() const -> int
+{
+    return m_currentWidth;
+}
+auto Chip8topia::getWindowHeight() const -> int
+{
+    return m_currentHeight;
+}
 
 auto Chip8topia::getCurrentWidth() const -> int
 {
@@ -478,16 +479,34 @@ auto Chip8topia::getImGuiVersion() -> std::string
     return IMGUI_VERSION;
 }
 
-void Chip8topia::printDependenciesInfos()
+auto Chip8topia::getStbImageVersion() -> std::string
 {
-    std::cout << "System and dependencies infos:" << '\n'
-              << " - OpenGL vendor " << Chip8topia::getOpenGLVendor() << '\n'
-              << " - OpenGL version " << Chip8topia::getOpenGLVersion() << '\n'
-              << " - OpenGL GLSL version " << Chip8topia::getGLSLVersion() << '\n'
-              << " - GLFW version " << Chip8topia::getGLFWVersion() << '\n'
-              << " - Glad version " << Chip8topia::getGladVersion() << '\n'
-              << " - ImGui version " << Chip8topia::getImGuiVersion() << '\n'
-              << '\n';
+    return std::to_string(STBI_VERSION);
+}
+
+auto Chip8topia::getFmtVersion() -> std::string
+{
+    return std::to_string(FMT_VERSION);
+}
+
+auto Chip8topia::getSpdlogVersion() -> std::string
+{
+    return std::to_string(SPDLOG_VERSION);
+}
+
+auto Chip8topia::getDependenciesInfos() -> std::string
+{
+    return fmt::format("System and dependencies infos:\n"
+                       " - OpenGL vendor {}\n"
+                       " - OpenGL version {}\n"
+                       " - OpenGL GLSL version {}\n"
+                       " - GLFW version {}\n"
+                       " - Glad version {}\n"
+                       " - ImGui version {}\n"
+                       " - stb_image version {}\n"
+                       " - fmt version {}\n"
+                       " - spdlog version {}\n",
+        getOpenGLVendor(), getOpenGLVersion(), getGLSLVersion(), getGLFWVersion(), getGladVersion(), getImGuiVersion(), getStbImageVersion(), getFmtVersion(), getSpdlogVersion());
 }
 
 void Chip8topia::glfw_error_callback(int error, const char* description)
@@ -509,10 +528,12 @@ void Chip8topia::glfw_drop_callback(GLFWwindow* window, int count, const char** 
         engine->getChip8Emulator().loadRom(rom);
         engine->getChip8Emulator().setRomName(Chip8RomLoader::getRomNameFromPath(path));
         ImGui::InsertNotification({ ImGuiToastType::Success, TOAST_DURATION_SUCCESS, "Rom loaded successfully" });
+        LOG_INFO("Rom loaded successfully");
     }
     catch (const std::exception& e)
     {
         ImGui::InsertNotification({ ImGuiToastType::Error, TOAST_DURATION_ERROR, e.what() });
+        LOG_ERROR(e.what());
     }
 }
 
@@ -525,10 +546,12 @@ void Chip8topia::loadDebugRom()
         m_chip8Emulator->loadRom(rom);
         m_chip8Emulator->setRomName(Chip8RomLoader::getRomNameFromPath(DEBUG_ROM_PATH));
         ImGui::InsertNotification({ ImGuiToastType::Success, TOAST_DURATION_SUCCESS, "Debug rom loaded successfully" });
+        LOG_INFO("Debug rom loaded successfully");
     }
     catch (const std::exception& e)
     {
         ImGui::InsertNotification({ ImGuiToastType::Error, TOAST_DURATION_ERROR, e.what() });
+        LOG_ERROR(e.what());
     }
 }
 #endif

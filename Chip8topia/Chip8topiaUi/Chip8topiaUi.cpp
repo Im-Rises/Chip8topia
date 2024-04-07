@@ -7,17 +7,13 @@
 
 Chip8topiaUi::Chip8topiaUi()
 {
-#ifndef __EMSCRIPTEN__
     Chip8topiaInputHandler::getInstance().m_ToggleMainBarEvent.subscribe(this, &Chip8topiaUi::toggleMenuBarVisibility);
-#endif
     Chip8topiaInputHandler::getInstance().m_CloseAllWindowsEvent.subscribe(this, &Chip8topiaUi::closeAllWindows);
 }
 
 Chip8topiaUi::~Chip8topiaUi()
 {
-#ifndef __EMSCRIPTEN__
     Chip8topiaInputHandler::getInstance().m_ToggleMainBarEvent.unsubscribe(this, &Chip8topiaUi::toggleMenuBarVisibility);
-#endif
     Chip8topiaInputHandler::getInstance().m_CloseAllWindowsEvent.unsubscribe(this, &Chip8topiaUi::closeAllWindows);
 }
 
@@ -41,6 +37,11 @@ void Chip8topiaUi::drawMainMenuBar(Chip8topia& chip8topia)
         {
             m_showDemo = !m_showDemo;
         }
+
+        if (ImGui::MenuItem(ICON_FA_BUG " ImGui Metrics"))
+        {
+            m_showImGuiMetrics = !m_showImGuiMetrics;
+        }
 #endif
         ImGui::Indent(ImGui::GetWindowWidth() - ImGui::GetFontSize() * 7);
         ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
@@ -60,7 +61,20 @@ void Chip8topiaUi::drawMainMenuBar(Chip8topia& chip8topia)
     {
         ImGui::ShowDemoWindow(&m_showDemo);
     }
+
+    if (m_showImGuiMetrics)
+    {
+        ImGui::ShowMetricsWindow(&m_showImGuiMetrics);
+    }
 #endif
+
+    // TODO: Add profile
+    //    if (ImGui::Begin("Profile"))
+    //    {
+    //        // Add profile for UI, emulation and video
+    //        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0F / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+    //        ImGui::End();
+    //    }
 }
 
 void Chip8topiaUi::drawViewMenu(Chip8topia& chip8topia)

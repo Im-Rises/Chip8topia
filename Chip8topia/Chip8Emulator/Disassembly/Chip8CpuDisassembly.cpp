@@ -15,11 +15,11 @@ auto Chip8CpuDisassembly::disassembleOpcode(const uint16 opcode) -> std::string
     {
     case 0x0:
     {
-        switch (opcode & 0x00FF)
+        switch (opcode)
         {
-        case 0xE0: return "CLS"; // 00E0
-        case 0xEE: return "RET"; // 00EE
-        default: return "SYS";   // 0NNN
+        case 0x00E0: return "CLS";                                    // 00E0
+        case 0x00EE: return "RET";                                    // 00EE
+        default: return fmt::format("SYS 0x{:03X}", opcode & 0x0FFF); // 0NNN
         }
     }
     case 0x1: return fmt::format("JP 0x{:03X}", opcode & 0x0FFF);                  // 1NNN

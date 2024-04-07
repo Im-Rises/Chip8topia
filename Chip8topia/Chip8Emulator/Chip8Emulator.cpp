@@ -1,11 +1,7 @@
 #include "Chip8Emulator.h"
 
 #include <ImGuiNotify.hpp>
-#if !defined(__EMSCRIPTEN__)
-#include <spdlog/spdlog.h>
-#else
-#include <iostream>
-#endif
+#include <consoleLogger/consoleLogger.h>
 
 #include "../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
 #include "ChipCores/Chip8Core/Chip8Core.h"
@@ -14,13 +10,20 @@
 #include "ChipCores/XoChipCore/XoChipCore.h"
 
 #if defined(BUILD_DEBUG)
-// Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<SChipCCore>(DEFAULT_FREQUENCY))
-// Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<SChip11Core>(DEFAULT_FREQUENCY))
-// Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<Chip8Core>(DEFAULT_FREQUENCY))
-Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<XoChipCore>(Chip8Frequency::Freq1200000Hz))
+// Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<SChipCCore>(DEFAULT_FREQUENCY)),
+// Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<SChip11Core>(DEFAULT_FREQUENCY)),
+// Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<Chip8Core>(DEFAULT_FREQUENCY)),
+Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<XoChipCore>(Chip8Frequency::Freq1200000Hz)),
 #else
-Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<XoChipCore>(DEFAULT_FREQUENCY))
+Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<XoChipCore>(DEFAULT_FREQUENCY)),
 #endif
+                                 m_accumulator(0.0F),
+                                 m_isRomLoaded(false),
+                                 m_isTurboMode(false),
+                                 m_isBreak(false),
+                                 m_step(false),
+                                 m_canBreak(true),
+                                 m_errorTriggered(false)
 {
     Chip8topiaInputHandler& inputHandler = Chip8topiaInputHandler::getInstance();
     inputHandler.m_GameInput.subscribe(this, &Chip8Emulator::OnInput);
@@ -92,7 +95,7 @@ void Chip8Emulator::update(const float deltaTime)
         {
             m_step = false;
             m_core->clock();
-//            updatePcHistory();
+            //            updatePcHistory();
         }
     }
     else
@@ -106,7 +109,7 @@ void Chip8Emulator::update(const float deltaTime)
             while (!screenUpdated && !m_isBreak && !m_errorTriggered)
             {
                 screenUpdated = m_core->clock();
-//                updatePcHistory();
+                //                updatePcHistory();
 
                 if (m_canBreak && m_breakpoints.find(m_core->getCpu()->getPc()) != m_breakpoints.end())
                 {
@@ -185,10 +188,12 @@ void Chip8Emulator::stop()
         m_isRomLoaded = false;
         m_romName = "ROM";
         ImGui::InsertNotification({ ImGuiToastType::Info, TOAST_DURATION_INFO, "Emulation stopped", "The emulation has been stopped. Please load a ROM to continue." });
+        LOG_INFO("Emulation stopped, please load a ROM to continue");
     }
     else
     {
         ImGui::InsertNotification({ ImGuiToastType::Info, TOAST_DURATION_INFO, "Emulation already stopped", "The emulation is already stopped. Please load a ROM to continue." });
+        LOG_ERROR("Emulation already stopped, please load a ROM to continue");
     }
 }
 
@@ -196,12 +201,7 @@ void Chip8Emulator::stop()
 void Chip8Emulator::triggerEmulationError(const std::string& message)
 {
     m_errorTriggered = true;
-
-#if !defined(__EMSCRIPTEN__)
-    spdlog::error("Emulation error: {}", message);
-#else
-    std::cerr << "Emulation error: " << message << '\n';
-#endif
+    LOG_ERROR(message);
 }
 #endif
 
@@ -241,6 +241,7 @@ void Chip8Emulator::switchCoreFrequency(const Chip8CoreType coreType, const Chip
     m_isRomLoaded = false;
 
     ImGui::InsertNotification({ ImGuiToastType::Info, TOAST_DURATION_INFO, "Core and frequency changed", "The core and frequency have been changed. Please load a ROM to continue." });
+    LOG_INFO("Core and frequency changed, please load a ROM to continue");
 }
 
 void Chip8Emulator::clearBreakpoints()

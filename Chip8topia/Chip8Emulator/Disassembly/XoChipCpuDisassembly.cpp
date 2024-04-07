@@ -15,33 +15,25 @@ auto XoChipCpuDisassembly::disassembleOpcode(const uint16 opcode) -> std::string
     {
     case 0x0:
     {
-        switch (nibble2)
+        switch (opcode)
         {
-        case 0x0: return "HALT";                             // 0000
-        case 0xC: return fmt::format("SCD 0x{:X}", nibble1); // 00CN
-        case 0xD: return fmt::format("SCU 0x{:X}", nibble1); // 00DN
-        case 0xE:
+        case 0x0000: return "HALT";                       // 0000
+        case 0x00E0: return "CLS";                        // 00E0
+        case 0x00EE: return "RET";                        // 00EE
+        case 0x00FB: return fmt::format("SCR 0x{:X}", 4); // 00FB
+        case 0x00FC: return fmt::format("SCL 0x{:X}", 4); // 00FC
+        case 0x00FD: return "EXIT";                       // 00FD
+        case 0x00FE: return "LORES";                      // 00FE
+        case 0x00FF: return "HIRES";                      // 00FF
+        default:
         {
-            switch (nibble1)
+            switch (opcode & 0xFFF0)
             {
-            case 0x0: return "CLS"; // 00E0
-            case 0xE: return "RET"; // 00EE
+            case 0xC: return fmt::format("SCD 0x{:X}", nibble1); // 00CN
+            case 0xD: return fmt::format("SCU 0x{:X}", nibble1); // 00DN
             default: return INVALID_OPCODE_TEXT;
             }
         }
-        case 0xF:
-        {
-            switch (nibble1)
-            {
-            case 0xB: return fmt::format("SCR 0x{:X}", 4); // 00FB
-            case 0xC: return fmt::format("SCL 0x{:X}", 4); // 00FC
-            case 0xD: return "EXIT";                       // 00FD
-            case 0xE: return "LORES";                      // 00FE
-            case 0xF: return "HIRES";                      // 00FF
-            default: return INVALID_OPCODE_TEXT;
-            }
-        }
-        default: return INVALID_OPCODE_TEXT;
         }
     }
     case 0x1: return fmt::format("JP 0x{:03X}", opcode & 0x0FFF);                  // 1NNN

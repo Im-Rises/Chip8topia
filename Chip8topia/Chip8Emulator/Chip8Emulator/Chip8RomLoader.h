@@ -9,7 +9,7 @@
 class Chip8RomLoader
 {
 public:
-    static constexpr std::array<std::string_view, 3> CHIP8_ROM_FILE_EXTENSIONS = { ".ch8", ".sc8", ".xo8" };
+    static constexpr std::array<const char* const, 3> CHIP8_ROM_FILE_EXTENSIONS = { ".ch8", ".sc8", ".xo8" };
     static constexpr const char* const CHIP8_ROM_FILE_EXTENSIONS_STRING = ".ch8, .sc8, .xo8";
 
 public:

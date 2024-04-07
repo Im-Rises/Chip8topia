@@ -26,12 +26,11 @@ public:
 public:
     void update(GLFWwindow* window) const;
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
-    [[nodiscard]] auto getInputEnabled() const -> bool { return m_inputEnabled; }
-    void setInputEnabled(const bool inputEnabled) { m_inputEnabled = inputEnabled; }
+    [[nodiscard]] auto getInputEnabled() const -> bool;
+    void setInputEnabled(const bool inputEnabled);
 
 public:
     /* UI Events */
-    //    SingleSubscriberEvent<> m_StopEmulationEvent;
     SingleSubscriberEvent<> m_BreakEmulationEvent;
     SingleSubscriberEvent<> m_StepEmulationEvent;
     SingleSubscriberEvent<> m_RunEmulationEvent;

@@ -2,11 +2,13 @@
 
 #include <GLFW/glfw3.h>
 
-void Chip8topiaInputHandler::update(GLFWwindow* window) const {
+void Chip8topiaInputHandler::update(GLFWwindow* /*window*/) const
+{
     glfwPollEvents();
 }
 
-void Chip8topiaInputHandler::key_callback(GLFWwindow* /*window*/, int key, int /*scancode*/, int action, int mods) {
+void Chip8topiaInputHandler::key_callback(GLFWwindow* /*window*/, int key, int /*scancode*/, int action, int mods)
+{
     auto& inputHandler = Chip8topiaInputHandler::getInstance();
 
 #if !defined(BUILD_RELEASE)
@@ -85,4 +87,14 @@ void Chip8topiaInputHandler::key_callback(GLFWwindow* /*window*/, int key, int /
         case GLFW_KEY_V: inputHandler.m_GameInput.trigger(0xF, false); break;
         }
     }
+}
+
+auto Chip8topiaInputHandler::getInputEnabled() const -> bool
+{
+    return m_inputEnabled;
+}
+
+void Chip8topiaInputHandler::setInputEnabled(const bool inputEnabled)
+{
+    m_inputEnabled = inputEnabled;
 }

@@ -8,13 +8,21 @@
 
 ## Description
 
-Chip8topia is a Chip8 emulator written in C++ for Windows, Linux and WebAssembly. It uses OpenGL/WebGL for the rendering
+Chip8topia is a Chip8 emulator written in C++ for Windows, Linux, macOS and WebAssembly. It uses OpenGL/WebGL for the
+rendering
 and ImGui for the UI.
 The application is compiled with CMake and uses Vcpkg for most dependencies.
 For the WebAssembly version, it uses Emscripten to compile with vcpkg for most dependencies as well.
 
 It can emulate the original Chip8, the SCHIP1.1, SCHIPC and Xo-Chip.
 Currently, no sound is implemented, but it is planned.
+
+Platforms:
+
+- [x] Windows
+- [x] Linux
+- [x] macOS
+- [x] WebAssembly
 
 Emulated consoles:
 
@@ -65,22 +73,21 @@ Emulated consoles:
 
 Major:
 
-- [ ] Add macOS build, vcpkg should have it...
-- [ ] Correct the new crash on t8nks game
 - [ ] Add audio
-- [ ] Optimize the code!!!
+- [ ] Optimize the code!!! (Add profiler and find the issues, Opengl draw only if a screen update is needed, imgui also
+  seems to have a big issue as using a demo in debug mode cause the updateScreen to take twice time it should, like the
+  viewport is being updated twice)
 
 Minor:
 
-- [ ] Add file logging with spdlog (every logs will be written in a file, the only console print will be the error and
-  warning)
-- [ ] Restarting a game when playing big xo-chip games will not reload the game from the start (we should reset memory
+- [-] Performance Monitor add macOS support
+- [-] Restarting a game when playing big xo-chip games will not reload the game from the start (we should reset memory
   and reload the game rom)
-- [ ] Improve disassembly (check TODO in the Chip8topiaDisassembly.cpp file)
+- [-] Improve disassembly (check TODO in the Chip8topiaDisassembly.cpp file)
+- [ ] Add a try catch (check Chip8CoreBase todo)
+- [ ] Use cpack to create a release (also update the GitHub Actions)
 - [ ] Add a way to change the input keys
 - [ ] Add a background when no rom is loaded
-- [ ] Maybe change the bloody file dialog
-- [ ] Use cpack to create a release
 
 ## Controls
 
@@ -197,6 +204,14 @@ then build with:
 ```bash
 emmake make -C [build directory]
 ```
+
+## GitHub Actions
+
+[![CMake Vcpkg Publish Binaries](https://github.com/Im-Rises/Chip8topia/actions/workflows/cmake-vcpkg-publish-binaries.yml/badge.svg)](https://github.com/Im-Rises/Chip8topia/actions/workflows/cmake-vcpkg-publish-binaries.yml)
+[![CMake Vcpkg Emscripten Publish](https://github.com/Im-Rises/Chip8topia/actions/workflows/cmake-vcpkg-emscripten-publish.yml/badge.svg)](https://github.com/Im-Rises/Chip8topia/actions/workflows/cmake-vcpkg-emscripten-publish.yml)
+
+The project uses GitHub Actions to build and publish the desktop builds to the GitHub release page and publish the
+WebAssembly build to GitHub Pages.
 
 ## Contributors
 

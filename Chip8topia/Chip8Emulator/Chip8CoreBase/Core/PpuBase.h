@@ -37,6 +37,7 @@ public:
 
 public:
     virtual void reset();
+    void clearAllPlanes();
     virtual void clearScreen() = 0;
     virtual void scrollDown(uint8 n);
     virtual void scrollUp(uint8 n);

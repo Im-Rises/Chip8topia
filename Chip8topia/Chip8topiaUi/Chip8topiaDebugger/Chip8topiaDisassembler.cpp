@@ -47,7 +47,7 @@ void Chip8topiaDisassembler::drawDisassembly(Chip8Emulator* emulator)
     //  - Correct the begin code which is a bit strangely written
     std::string buffer;
     ImGuiListClipper clipper;
-    clipper.Begin((Chip8Cpu::MEMORY_SIZE - (pcIsOdd ? 1 : 0)) / OPCODE_SIZE);
+    clipper.Begin(static_cast<int>((Chip8Cpu::MEMORY_SIZE - (pcIsOdd ? 1 : 0)) / OPCODE_SIZE));
     while (clipper.Step())
     {
         for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)

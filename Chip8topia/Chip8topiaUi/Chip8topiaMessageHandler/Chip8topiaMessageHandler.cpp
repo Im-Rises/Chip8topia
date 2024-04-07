@@ -1,7 +1,7 @@
 #include "Chip8topiaMessageHandler.h"
 
-#include <utility>
 #include <IconsFontAwesome6.h>
+#include <consoleLogger/consoleLogger.h>
 
 #include "../../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
 
@@ -32,31 +32,36 @@ Chip8topiaMessageHandler::~Chip8topiaMessageHandler()
 void Chip8topiaMessageHandler::triggerError(const std::string& message, std::function<void()> callback)
 {
     m_messageQueue.pushMessage(ICON_FA_CIRCLE_EXCLAMATION " Error", message, std::move(callback));
+    LOG_ERROR(message);
 }
 
 void Chip8topiaMessageHandler::triggerWarning(const std::string& message, std::function<void()> callback)
 {
     m_messageQueue.pushMessage(ICON_FA_TRIANGLE_EXCLAMATION " Warning", message, std::move(callback));
+    LOG_WARNING(message);
 }
 
 void Chip8topiaMessageHandler::triggerInfo(const std::string& message, std::function<void()> callback)
 {
     m_messageQueue.pushMessage(ICON_FA_CIRCLE_INFO " Info", message, std::move(callback));
+    LOG_INFO(message);
 }
 
 void Chip8topiaMessageHandler::triggerSuccess(const std::string& message, std::function<void()> callback)
 {
     m_messageQueue.pushMessage(ICON_FA_CIRCLE_CHECK " Success", message, std::move(callback));
+    LOG_SUCCESS(message);
 }
 
 void Chip8topiaMessageHandler::triggerEmulationError(const std::string& message)
 {
     m_messageQueue.pushMessage(ICON_FA_CIRCLE_EXCLAMATION " Emulation Error", message);
+    LOG_ERROR(message);
 }
 
 void Chip8topiaMessageHandler::showMessages()
 {
-    m_messageQueue.showMessage();
+    m_messageQueue.showMessages();
     Chip8topiaInputHandler::getInstance().setInputEnabled(m_messageQueue.empty());
 }
 
