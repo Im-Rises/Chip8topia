@@ -61,8 +61,8 @@ private:
     void cleanup();
 
     void handleInputs();
-    void handleUi(const float deltaTime);
-    void handleGameUpdate(const float deltaTime);
+    void handleUi();
+    void handleGameUpdate();
     void handleScreenUpdate();
 
 public:
@@ -79,6 +79,11 @@ public:
 
     [[nodiscard]] auto getChip8Emulator() -> Chip8Emulator&;
     [[nodiscard]] auto getIsTurboMode() const -> bool;
+
+    [[nodiscard]] auto getUiUpdateTime() const -> float;
+    [[nodiscard]] auto getGameUpdateTime() const -> float;
+    [[nodiscard]] auto getScreenUpdateTime() const -> float;
+    [[nodiscard]] auto getDeltaTime() const -> float;
 
     [[nodiscard]] auto getWindowPosition() const -> std::pair<int, int>;
     [[nodiscard]] auto getCurrentDimensions() const -> std::pair<int, int>;
@@ -124,4 +129,9 @@ private:
     int m_windowedHeight = m_currentHeight;
     int m_windowedPosX = 0;
     int m_windowedPosY = 0;
+
+    float m_uiUpdateTime = 0.0F;
+    float m_gameUpdateTime = 0.0F;
+    float m_screenUpdateTime = 0.0F;
+    float m_deltaTime = 0.0F;
 };

@@ -19,6 +19,7 @@ private:
 
     static constexpr const char* const CHIP8_SETTINGS_STRING = ICON_FA_GEAR " Chip8 Settings";
     static constexpr const char* const CHIP8_STATS_STRING = ICON_FA_CHARGING_STATION " Emulation Stats";
+    static constexpr const char* const PROFILER_STRING = ICON_FA_CHART_LINE " Profiler";
 
 public:
     Chip8topiaEmulationUi() = default;
@@ -36,6 +37,7 @@ public:
 private:
     void drawEmulationSettings(Chip8topia* chip8topia);
     void drawEmulationStats(Chip8topia& chip8topia, bool isMainBarOpen);
+    void drawProfiler(Chip8topia& chip8topia);
 
 private:
     Chip8topiaPerformanceMonitor m_performanceMonitor;
@@ -44,4 +46,5 @@ private:
 
     bool m_emulationSettingsOpen = true;
     bool m_emulationStatsOpen = INITIAL_WINDOW_STATE;
+    bool m_profilerOpen = INITIAL_WINDOW_STATE;
 };

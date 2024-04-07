@@ -46,7 +46,8 @@ auto Chip8topia::run() -> int
 
     auto lastTime = std::chrono::high_resolution_clock::now();
     auto currentTime = lastTime;
-    float deltaTime = 0.0F;
+    //    float deltaTime = 0.0F;
+    m_deltaTime = 0.0F;
 
     float elapsedTimeAccumulator = 0.0F;
 
@@ -64,15 +65,15 @@ auto Chip8topia::run() -> int
 #endif
     {
         currentTime = std::chrono::high_resolution_clock::now();
-        deltaTime = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - lastTime).count();
+        m_deltaTime = std::chrono::duration<float, std::chrono::seconds::period>(currentTime - lastTime).count();
         lastTime = currentTime;
 
         handleInputs();
-        handleUi(deltaTime);
-        handleGameUpdate(deltaTime);
+        handleUi();
+        handleGameUpdate();
         handleScreenUpdate();
 
-        elapsedTimeAccumulator += deltaTime;
+        elapsedTimeAccumulator += m_deltaTime;
         if (elapsedTimeAccumulator >= 1.0F)
         {
             elapsedTimeAccumulator = 0.0F;
@@ -258,8 +259,10 @@ void Chip8topia::handleInputs()
     m_chip8topiaInputHandler.update(m_window);
 }
 
-void Chip8topia::handleUi(const float /*deltaTime*/)
+void Chip8topia::handleUi()
 {
+    auto start = std::chrono::high_resolution_clock::now();
+
     ImGuiIO& io = ImGui::GetIO();
 #ifndef __EMSCRIPTEN__
     updateWindowTitle(io.Framerate);
@@ -271,15 +274,21 @@ void Chip8topia::handleUi(const float /*deltaTime*/)
     m_chip8topiaUi.drawUi(*this);
     ImGui::RenderNotifications();
     ImGui::Render();
+
+    m_uiUpdateTime = std::chrono::duration<float, std::chrono::milliseconds::period>(std::chrono::high_resolution_clock::now() - start).count();
 }
 
-void Chip8topia::handleGameUpdate(const float deltaTime)
+void Chip8topia::handleGameUpdate()
 {
-    m_chip8Emulator->update(deltaTime);
+    auto start = std::chrono::high_resolution_clock::now();
+    m_chip8Emulator->update(m_deltaTime);
+    m_gameUpdateTime = std::chrono::duration<float, std::chrono::milliseconds::period>(std::chrono::high_resolution_clock::now() - start).count();
 }
 
 void Chip8topia::handleScreenUpdate()
 {
+    auto start = std::chrono::high_resolution_clock::now();
+
     const ImGuiIO& io = ImGui::GetIO();
 
     if (!m_isFullScreen)
@@ -312,6 +321,8 @@ void Chip8topia::handleScreenUpdate()
     }
 
     glfwSwapBuffers(m_window);
+
+    m_screenUpdateTime = std::chrono::duration<float, std::chrono::milliseconds::period>(std::chrono::high_resolution_clock::now() - start).count();
 }
 
 void Chip8topia::centerWindow()
@@ -407,6 +418,26 @@ auto Chip8topia::getChip8Emulator() -> Chip8Emulator&
 auto Chip8topia::getIsTurboMode() const -> bool
 {
     return m_isTurboMode;
+}
+
+auto Chip8topia::getUiUpdateTime() const -> float
+{
+    return m_uiUpdateTime;
+}
+
+auto Chip8topia::getGameUpdateTime() const -> float
+{
+    return m_gameUpdateTime;
+}
+
+auto Chip8topia::getScreenUpdateTime() const -> float
+{
+    return m_screenUpdateTime;
+}
+
+auto Chip8topia::getDeltaTime() const -> float
+{
+    return m_deltaTime;
 }
 
 auto Chip8topia::getWindowPosition() const -> std::pair<int, int>

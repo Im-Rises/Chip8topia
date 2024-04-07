@@ -40,8 +40,9 @@ private:
     Chip8topiaMessageHandler m_chip8topiaError;
 
     bool m_isMenuBarOpen = true;
+    
 #if defined(BUILD_DEBUG)
-    bool m_showDemo = true;
-    bool m_showImGuiMetrics = true;
+    bool m_showDemo = false;
+    bool m_showImGuiMetrics = false;
 #endif
 };

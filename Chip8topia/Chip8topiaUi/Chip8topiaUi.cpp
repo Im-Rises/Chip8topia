@@ -67,14 +67,6 @@ void Chip8topiaUi::drawMainMenuBar(Chip8topia& chip8topia)
         ImGui::ShowMetricsWindow(&m_showImGuiMetrics);
     }
 #endif
-
-    // TODO: Add profile
-    //    if (ImGui::Begin("Profile"))
-    //    {
-    //        // Add profile for UI, emulation and video
-    //        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0F / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-    //        ImGui::End();
-    //    }
 }
 
 void Chip8topiaUi::drawViewMenu(Chip8topia& chip8topia)

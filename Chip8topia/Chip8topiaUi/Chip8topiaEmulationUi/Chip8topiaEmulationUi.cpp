@@ -13,6 +13,8 @@ void Chip8topiaEmulationUi::drawEmulationMenu(Chip8topia& chip8topia)
 
         ImGui::MenuItem(CHIP8_STATS_STRING, nullptr, &m_emulationStatsOpen);
 
+        ImGui::MenuItem(PROFILER_STRING, nullptr, &m_profilerOpen);
+
         if (ImGui::MenuItem(fmt::format(ICON_FA_ROCKET " Toggle turbo mode : {}", chip8topia.getIsTurboMode() ? "ON " : "OFF").c_str(), "Y", chip8topia.getIsTurboMode()))
         {
             chip8topia.toggleTurboMode();
@@ -37,6 +39,7 @@ void Chip8topiaEmulationUi::drawEmulationWindows(Chip8topia& chip8topia, bool is
 {
     drawEmulationSettings(&chip8topia);
     drawEmulationStats(chip8topia, isMainBarOpen);
+    drawProfiler(chip8topia);
 }
 
 void Chip8topiaEmulationUi::closeAllWindows()
@@ -44,6 +47,7 @@ void Chip8topiaEmulationUi::closeAllWindows()
     m_emulationSettingsOpen = false;
 #if !defined(BUILD_DEBUG)
     m_emulationStatsOpen = false;
+    m_profilerOpen = false;
 #endif
 }
 
@@ -133,5 +137,20 @@ void Chip8topiaEmulationUi::drawEmulationSettings(Chip8topia* chip8topia)
         }
 
         ImGui::End();
+    }
+}
+
+void Chip8topiaEmulationUi::drawProfiler(Chip8topia& chip8topia)
+{
+    if (m_profilerOpen)
+    {
+        if (ImGui::Begin(PROFILER_STRING, &m_profilerOpen))
+        {
+            ImGui::Text("UI Time: %06.3f ms", chip8topia.getUiUpdateTime());
+            ImGui::Text("Game Time: %06.3f ms", chip8topia.getGameUpdateTime());
+            ImGui::Text("Screen Time: %06.3f ms", chip8topia.getScreenUpdateTime());
+            ImGui::Text("Total Time: %06.3f ms", chip8topia.getDeltaTime() * 1000.0F);
+            ImGui::End();
+        }
     }
 }
