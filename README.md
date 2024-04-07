@@ -71,12 +71,18 @@ Emulated consoles:
 
 ## TODO
 
+Profiling logs:
+
+- Issue with imgui viewport when vsync enabled, very slow and may take twice the time it should
+- LD_Vx_K is somehow very very slow ??? (maybe the bitset is the issue)
+- Breakpoints in Chip8Emulator is slow
+
 Major:
 
-- [ ] Add audio
 - [ ] Optimize the code!!! (Add profiler and find the issues, Opengl draw only if a screen update is needed, imgui also
   seems to have a big issue as using a demo in debug mode cause the updateScreen to take twice time it should, like the
   viewport is being updated twice)
+- [ ] Add audio
 
 Minor:
 

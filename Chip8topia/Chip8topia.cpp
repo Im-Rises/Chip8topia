@@ -46,7 +46,6 @@ auto Chip8topia::run() -> int
 
     auto lastTime = std::chrono::high_resolution_clock::now();
     auto currentTime = lastTime;
-    //    float deltaTime = 0.0F;
     m_deltaTime = 0.0F;
 
     float elapsedTimeAccumulator = 0.0F;
@@ -72,12 +71,6 @@ auto Chip8topia::run() -> int
         handleUi();
         handleGameUpdate();
         handleScreenUpdate();
-
-        elapsedTimeAccumulator += m_deltaTime;
-        if (elapsedTimeAccumulator >= 1.0F)
-        {
-            elapsedTimeAccumulator = 0.0F;
-        }
     }
 #ifdef __EMSCRIPTEN__
     EMSCRIPTEN_MAINLOOP_END;
