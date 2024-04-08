@@ -103,7 +103,9 @@ private:
     static auto getImGuiVersion() -> std::string;
     static auto getStbImageVersion() -> std::string;
     static auto getFmtVersion() -> std::string;
+#if !defined(BUILD_RELEASE)
     static auto getSpdlogVersion() -> std::string;
+#endif
     static auto getDependenciesInfos() -> std::string;
 
     static void glfw_error_callback(int error, const char* description);

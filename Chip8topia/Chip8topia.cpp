@@ -513,10 +513,12 @@ auto Chip8topia::getFmtVersion() -> std::string
     return std::to_string(FMT_VERSION);
 }
 
+#if !defined(BUILD_RELEASE)
 auto Chip8topia::getSpdlogVersion() -> std::string
 {
     return std::to_string(SPDLOG_VERSION);
 }
+#endif
 
 auto Chip8topia::getDependenciesInfos() -> std::string
 {
@@ -529,8 +531,23 @@ auto Chip8topia::getDependenciesInfos() -> std::string
                        " - ImGui version {}\n"
                        " - stb_image version {}\n"
                        " - fmt version {}\n"
-                       " - spdlog version {}\n",
-        getOpenGLVendor(), getOpenGLVersion(), getGLSLVersion(), getGLFWVersion(), getGladVersion(), getImGuiVersion(), getStbImageVersion(), getFmtVersion(), getSpdlogVersion());
+#if !defined(BUILD_RELEASE)
+                       " - spdlog version {}\n"
+#endif
+        ,
+        getOpenGLVendor(),
+        getOpenGLVersion(),
+        getGLSLVersion(),
+        getGLFWVersion(),
+        getGladVersion(),
+        getImGuiVersion(),
+        getStbImageVersion(),
+        getFmtVersion()
+#if !defined(BUILD_RELEASE)
+            ,
+        getSpdlogVersion()
+#endif
+    );
 }
 
 void Chip8topia::glfw_error_callback(int error, const char* description)
