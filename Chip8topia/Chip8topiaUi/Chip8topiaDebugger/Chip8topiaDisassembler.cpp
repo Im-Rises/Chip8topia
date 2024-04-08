@@ -16,7 +16,7 @@
 void Chip8topiaDisassembler::drawDisassembly(Chip8Emulator* emulator)
 {
     const std::array<uint8, CpuBase::MEMORY_SIZE>& memory = emulator->getChip8Core()->getCpu()->getMemory();
-    std::set<uint16>& m_breakpoints = emulator->getBreakpoints();
+    std::set<uint16>& breakpoints = emulator->getBreakpoints();
     const uint16 pc = emulator->getChip8Core()->getCpu()->getPc();
 
     std::function<std::string(const uint16 opcode)> disassembler;
@@ -58,7 +58,7 @@ void Chip8topiaDisassembler::drawDisassembly(Chip8Emulator* emulator)
 
             buffer = fmt::format("  0x{:04X}: ({:04X}) {}", memoryIndex, opcode, disassembler(opcode));
 
-            const bool breakpointThisPc = m_breakpoints.find(memoryIndex) != m_breakpoints.end();
+            const bool breakpointThisPc = breakpoints.find(memoryIndex) != breakpoints.end();
 
             if (pc == memoryIndex)
             {
@@ -76,11 +76,11 @@ void Chip8topiaDisassembler::drawDisassembly(Chip8Emulator* emulator)
             {
                 if (breakpointThisPc)
                 {
-                    m_breakpoints.erase(memoryIndex);
+                    breakpoints.erase(memoryIndex);
                 }
                 else
                 {
-                    m_breakpoints.insert(memoryIndex);
+                    breakpoints.insert(memoryIndex);
                 }
             }
         }
