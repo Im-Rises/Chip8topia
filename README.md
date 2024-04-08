@@ -76,6 +76,7 @@ Profiling logs:
 - Issue with imgui viewport when vsync enabled, very slow and may take twice the time it should
 - LD_Vx_K is somehow very very slow ??? (maybe the bitset is the issue)
 - Breakpoints in Chip8Emulator is slow
+- [ ] Unset vsync and call std::this_thread::sleep_for(std::chrono::milliseconds(16)) in the main loop...
 
 Major:
 
@@ -125,6 +126,11 @@ Minor:
 - [johnearnest.github.io](http://johnearnest.github.io/Octo/docs/XO-ChipSpecification.html)
 - [johnearnest.github.io/chip8Archive](https://johnearnest.github.io/chip8Archive/?sort=platform)
 - [johnearnest.github.io/Octo](https://johnearnest.github.io/Octo/)
+
+## Rom links
+
+- [https://github.com/JohnEarnest/chip8Archive](JohnEarnest/chip8Archive)
+- [https://archive.org/details/Chip-8RomsThatAreInThePublicDomain](Chip-8RomsThatAreInThePublicDomain)
 
 <!--
 ### Other resources
@@ -227,7 +233,3 @@ Quentin MOREL :
 - <https://github.com/Im-Rises>
 
 [![GitHub contributors](https://contrib.rocks/image?repo=Im-Rises/Chip8topia)](https://github.com/Im-Rises/Chip8topia/graphs/contributors)
-
-## Special Thanks
-
-TODO: add the special thanks !!!
