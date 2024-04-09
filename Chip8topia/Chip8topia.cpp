@@ -71,6 +71,13 @@ auto Chip8topia::run() -> int
         handleUi();
         handleGameUpdate();
         handleScreenUpdate();
+
+        auto delay = std::chrono::duration<float, std::chrono::milliseconds::period>(std::chrono::high_resolution_clock::now() - currentTime).count();
+
+        if (delay < 16.6667F)
+        {
+            std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(16.6667F - delay)));
+        }
     }
 #ifdef __EMSCRIPTEN__
     EMSCRIPTEN_MAINLOOP_END;
@@ -131,7 +138,8 @@ auto Chip8topia::init() -> int
         return WINDOW_INIT_ERROR_CODE;
     }
     glfwMakeContextCurrent(m_window);
-    setVsyncEnabled(true);
+    //    setVsyncEnabled(true);
+    glfwSwapInterval(0);
 
     // Set window callbacks
     glfwSetWindowUserPointer(m_window, this);
@@ -375,7 +383,7 @@ void Chip8topia::toggleTurboMode()
 
 void Chip8topia::setVsyncEnabled(const bool isVsyncEnabled)
 {
-    glfwSwapInterval(isVsyncEnabled ? 1 : 0);
+    //    glfwSwapInterval(isVsyncEnabled ? 1 : 0);
 }
 
 #ifndef __EMSCRIPTEN__
