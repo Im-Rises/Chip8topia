@@ -2,6 +2,7 @@
 
 #include <ImGuiNotify.hpp>
 #include <consoleLogger/consoleLogger.h>
+#include <fmt/format.h>
 
 #include "../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
 #include "ChipCores/Chip8Core/Chip8Core.h"
@@ -9,13 +10,14 @@
 #include "ChipCores/SchipCCore/SChipCCore.h"
 #include "ChipCores/XoChipCore/XoChipCore.h"
 
+Chip8Emulator::Chip8Emulator() : m_breakpoints{},
 #if defined(BUILD_DEBUG)
-// Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<SChipCCore>(DEFAULT_FREQUENCY)),
-// Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<SChip11Core>(DEFAULT_FREQUENCY)),
-// Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<Chip8Core>(DEFAULT_FREQUENCY)),
-Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<XoChipCore>(Chip8Frequency::Freq1200000Hz)),
+                                 // Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<SChipCCore>(DEFAULT_FREQUENCY)),
+                                 // Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<SChip11Core>(DEFAULT_FREQUENCY)),
+                                 // Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<Chip8Core>(DEFAULT_FREQUENCY)),
+                                 m_core(std::make_unique<XoChipCore>(Chip8Frequency::Freq1200000Hz)),
 #else
-Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<XoChipCore>(DEFAULT_FREQUENCY)),
+                                 m_core(std::make_unique<XoChipCore>(DEFAULT_FREQUENCY)),
 #endif
                                  m_accumulator(0.0F),
                                  m_isRomLoaded(false),
@@ -111,9 +113,11 @@ void Chip8Emulator::update(const float deltaTime)
                 screenUpdated = m_core->clock();
                 //                updatePcHistory();
 
-                if (m_canBreak && m_breakpoints.find(m_core->getCpu()->getPc()) != m_breakpoints.end())
+                if (m_breakpoints[m_core->getCpu()->getPc()])
                 {
                     m_isBreak = true;
+                    ImGui::InsertNotification({ ImGuiToastType::Info, TOAST_DURATION_INFO,
+                        "Breakpoint hit", fmt::format("Breakpoint hit at 0x{:04X}", m_core->getCpu()->getPc()).c_str() });
                 }
             }
         }
@@ -161,9 +165,14 @@ auto Chip8Emulator::getCanBreak() -> bool*
     return &m_canBreak;
 }
 
-auto Chip8Emulator::getBreakpoints() -> std::set<uint16>&
+auto Chip8Emulator::getBreakpoints() -> std::array<bool, CpuBase::MEMORY_SIZE>&
 {
     return m_breakpoints;
+}
+
+auto Chip8Emulator::getBreakpointsList() -> std::set<uint16>&
+{
+    return m_breakpointsList;
 }
 
 auto Chip8Emulator::getCoreType() const -> Chip8CoreType
@@ -246,7 +255,8 @@ void Chip8Emulator::switchCoreFrequency(const Chip8CoreType coreType, const Chip
 
 void Chip8Emulator::clearBreakpoints()
 {
-    m_breakpoints.clear();
+    m_breakpoints.fill(false);
+    m_breakpointsList.clear();
 }
 
 void Chip8Emulator::stepEmulation()

@@ -16,7 +16,9 @@
 void Chip8topiaDisassembler::drawDisassembly(Chip8Emulator* emulator)
 {
     const std::array<uint8, CpuBase::MEMORY_SIZE>& memory = emulator->getChip8Core()->getCpu()->getMemory();
-    std::set<uint16>& breakpoints = emulator->getBreakpoints();
+    std::array<bool, CpuBase::MEMORY_SIZE>& breakpoints = emulator->getBreakpoints();
+    std::set<uint16>& breakpointsList = emulator->getBreakpointsList();
+
     const uint16 pc = emulator->getChip8Core()->getCpu()->getPc();
 
     std::function<std::string(const uint16 opcode)> disassembler;
@@ -45,6 +47,8 @@ void Chip8topiaDisassembler::drawDisassembly(Chip8Emulator* emulator)
     // TODO: Disassembly:
     //  - Improve this code to not draw the data read for opcode 0xF000
     //  - Correct the begin code which is a bit strangely written
+    //  - Correct the breakpoints list
+
     std::string buffer;
     ImGuiListClipper clipper;
     clipper.Begin(static_cast<int>((Chip8Cpu::MEMORY_SIZE - (pcIsOdd ? 1 : 0)) / OPCODE_SIZE));
@@ -58,7 +62,7 @@ void Chip8topiaDisassembler::drawDisassembly(Chip8Emulator* emulator)
 
             buffer = fmt::format("  0x{:04X}: ({:04X}) {}", memoryIndex, opcode, disassembler(opcode));
 
-            const bool breakpointThisPc = breakpoints.find(memoryIndex) != breakpoints.end();
+            const bool breakpointThisPc = breakpoints[memoryIndex];
 
             if (pc == memoryIndex)
             {
@@ -74,13 +78,15 @@ void Chip8topiaDisassembler::drawDisassembly(Chip8Emulator* emulator)
 
             if (ImGui::IsItemClicked())
             {
-                if (breakpointThisPc)
+                breakpoints[memoryIndex] = !breakpoints[memoryIndex];
+
+                if (breakpoints[memoryIndex])
                 {
-                    breakpoints.erase(memoryIndex);
+                    breakpointsList.insert(memoryIndex);
                 }
                 else
                 {
-                    breakpoints.insert(memoryIndex);
+                    breakpointsList.erase(memoryIndex);
                 }
             }
         }
@@ -166,7 +172,7 @@ void Chip8topiaDisassembler::drawDisassemblyControls(Chip8Emulator* emulator)
 
 void Chip8topiaDisassembler::drawBreakpoints(Chip8Emulator* emulator)
 {
-    std::set<uint16>& breakpoints = emulator->getBreakpoints();
+    std::set<uint16>& breakpointsList = emulator->getBreakpointsList();
 
     if (ImGui::BeginTable("Breakpoints", 3, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_Resizable))
     {
@@ -175,15 +181,15 @@ void Chip8topiaDisassembler::drawBreakpoints(Chip8Emulator* emulator)
         ImGui::TableSetupColumn("Remove");
         ImGui::TableHeadersRow();
 
-        int breakpointToRemove = -1;
+        //        int breakpointToRemove = -1;
 
         ImGuiListClipper clipper;
-        clipper.Begin(static_cast<int>(breakpoints.size()));
+        clipper.Begin(static_cast<int>(breakpointsList.size()));
         while (clipper.Step())
         {
             for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
             {
-                const uint16 breakpoint = *std::next(breakpoints.begin(), i);
+                const uint16 breakpoint = *std::next(breakpointsList.begin(), i);
                 ImGui::TableNextRow();
                 ImGui::TableSetColumnIndex(0);
                 ImGui::Text("%s", fmt::format("0x{:04X}", breakpoint).c_str());
@@ -199,15 +205,17 @@ void Chip8topiaDisassembler::drawBreakpoints(Chip8Emulator* emulator)
                 ImGui::TableSetColumnIndex(2);
                 if (ImGui::Button(fmt::format(ICON_FA_XMARK "##{}", breakpoint).c_str()))
                 {
-                    breakpointToRemove = breakpoint;
+                    //                    breakpointToRemove = breakpoint;
+                    emulator->getBreakpoints()[breakpoint] = false;
+                    breakpointsList.erase(breakpoint);
                 }
             }
         }
 
-        if (breakpointToRemove >= 0)
-        {
-            breakpoints.erase(breakpointToRemove);
-        }
+        //        if (breakpointToRemove >= 0)
+        //        {
+        //            breakpoints[breakpointToRemove] = false;
+        //        }
 
         ImGui::EndTable();
     }
