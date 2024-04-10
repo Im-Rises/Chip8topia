@@ -68,6 +68,10 @@ public:
     [[nodiscard]] auto getPhysicalMemoryUsed() const -> float;
     [[nodiscard]] auto getPhysicalMemoryUsedByCurrentProcess() const -> float;
 
+#if defined(PLATFORM_MACOS)
+    auto CalculateCPULoad(unsigned long long idleTicks, unsigned long long totalTicks) -> float;
+    auto GetCPULoad() -> float;
+#endif
     [[nodiscard]] auto getCpuUsed() -> float;
     [[nodiscard]] auto getCpuUsedByCurrentProcess() -> float;
 

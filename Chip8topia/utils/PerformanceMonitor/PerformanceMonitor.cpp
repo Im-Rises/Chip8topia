@@ -213,7 +213,7 @@ auto PerformanceMonitor::getTotalPhysicalMemory() const -> float
 {
     int64_t physical_memory;
     size_t length = sizeof(int64_t);
-    sysctl(mib, 2, &physical_memory, &length, NULL, 0);
+    sysctl(m_mib, 2, &physical_memory, &length, NULL, 0);
 
     return physical_memory / RAM_MB_FACTOR;
 }
@@ -244,7 +244,17 @@ auto PerformanceMonitor::getPhysicalMemoryUsedByCurrentProcess() const -> float
     return -1.0F;
 }
 
-float GetCPULoad()
+auto PerformanceMonitor::CalculateCPULoad(unsigned long long idleTicks, unsigned long long totalTicks) -> float
+{
+    unsigned long long totalTicksSinceLastTime = totalTicks - m_previousTotalTicks;
+    unsigned long long idleTicksSinceLastTime = idleTicks - m_previousIdleTicks;
+    float ret = 1.0f - ((totalTicksSinceLastTime > 0) ? ((float)idleTicksSinceLastTime) / totalTicksSinceLastTime : 0);
+    m_previousTotalTicks = totalTicks;
+    m_previousIdleTicks = idleTicks;
+    return ret;
+}
+
+auto PerformanceMonitor::GetCPULoad() -> float
 {
     host_cpu_load_info_data_t cpuinfo;
     mach_msg_type_number_t count = HOST_CPU_LOAD_INFO_COUNT;
@@ -257,16 +267,6 @@ float GetCPULoad()
     }
     else
         return -1.0f;
-}
-
-float CalculateCPULoad(unsigned long long idleTicks, unsigned long long totalTicks)
-{
-    unsigned long long totalTicksSinceLastTime = totalTicks - _previousTotalTicks;
-    unsigned long long idleTicksSinceLastTime = idleTicks - _previousIdleTicks;
-    float ret = 1.0f - ((totalTicksSinceLastTime > 0) ? ((float)idleTicksSinceLastTime) / totalTicksSinceLastTime : 0);
-    _previousTotalTicks = totalTicks;
-    _previousIdleTicks = idleTicks;
-    return ret;
 }
 
 auto PerformanceMonitor::getCpuUsed() -> float
