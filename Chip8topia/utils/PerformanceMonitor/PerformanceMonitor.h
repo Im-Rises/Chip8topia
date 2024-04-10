@@ -107,6 +107,7 @@ private:
     mach_port_t m_mach_port;
     mach_msg_type_number_t m_mac_msg_type_number;
     vm_statistics64_data_t m_vm_stats;
+    float m_physical_memory_used;
     // CPU usage
     unsigned long long m_previousTotalTicks = 0;
     unsigned long long m_previousIdleTicks = 0;

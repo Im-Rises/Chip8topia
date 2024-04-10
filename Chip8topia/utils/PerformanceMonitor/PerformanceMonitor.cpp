@@ -195,6 +195,24 @@ void PerformanceMonitor::update()
     // RAM (total physical memory)
     size_t length = sizeof(int64_t);
     sysctl(m_mib, 2, &m_physical_memory, &length, NULL, 0);
+    size_t count = sizeof(m_vm_stats) / sizeof(natural_t);
+    if (KERN_SUCCESS == host_page_size(m_mach_port, &m_page_size) &&
+        KERN_SUCCESS == host_statistics64(m_mach_port, HOST_VM_INFO,
+                            (host_info64_t)&m_vm_stats, &m_mac_msg_type_number))
+    {
+        //    long long free_memory = (int64_t)m_vm_stats.free_count * (int64_t)m_page_size;
+
+        long long used_memory = ((int64_t)m_vm_stats.active_count +
+                                    (int64_t)m_vm_stats.inactive_count +
+                                    (int64_t)m_vm_stats.wire_count) *
+                                (int64_t)m_page_size;
+
+        m_physical_memory_used = (used_memory / RAM_MB_FACTOR);
+    }
+    else
+    {
+        m_physical_memory_used = -1.0F;
+    }
     // RAM (used physical memory)
     m_mach_port = mach_host_self();
 }
@@ -221,22 +239,7 @@ auto PerformanceMonitor::getTotalPhysicalMemory() const -> float
 
 auto PerformanceMonitor::getPhysicalMemoryUsed() const -> float
 {
-    size_t count = sizeof(m_vm_stats) / sizeof(natural_t);
-    if (KERN_SUCCESS == host_page_size(m_mach_port, &m_page_size) &&
-        KERN_SUCCESS == host_statistics64(m_mach_port, HOST_VM_INFO,
-                            (host_info64_t)&vm_stats, &m_mac_msg_type_number))
-    {
-        //    long long free_memory = (int64_t)vm_stats.free_count * (int64_t)m_page_size;
-
-        long long used_memory = ((int64_t)m_vm_stats.active_count +
-                                    (int64_t)m_vm_stats.inactive_count +
-                                    (int64_t)m_vm_stats.wire_count) *
-                                (int64_t)m_page_size;
-
-        return (used_memory / RAM_MB_FACTOR);
-    }
-
-    return -1.0F;
+    return m_physical_memory_used;
 }
 
 auto PerformanceMonitor::getPhysicalMemoryUsedByCurrentProcess() const -> float
