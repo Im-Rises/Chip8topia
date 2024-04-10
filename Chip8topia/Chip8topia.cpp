@@ -22,6 +22,7 @@
 #include <fmt/format.h>
 #include <chrono>
 #include <fstream>
+#include <thread>
 
 #include <consoleLogger/consoleLogger.h>
 #include <iostream>
@@ -511,10 +512,12 @@ auto Chip8topia::getImGuiVersion() -> std::string
     return IMGUI_VERSION;
 }
 
+#if !defined(__EMSCRIPTEN__)
 auto Chip8topia::getStbImageVersion() -> std::string
 {
     return std::to_string(STBI_VERSION);
 }
+#endif
 
 auto Chip8topia::getFmtVersion() -> std::string
 {
@@ -537,7 +540,9 @@ auto Chip8topia::getDependenciesInfos() -> std::string
                        " - GLFW version {}\n"
                        " - Glad version {}\n"
                        " - ImGui version {}\n"
+#if !defined(__EMSCRIPTEN__)
                        " - stb_image version {}\n"
+#endif
                        " - fmt version {}\n"
 #if !defined(BUILD_RELEASE)
                        " - spdlog version {}\n"
@@ -549,7 +554,9 @@ auto Chip8topia::getDependenciesInfos() -> std::string
         getGLFWVersion(),
         getGladVersion(),
         getImGuiVersion(),
+#if !defined(__EMSCRIPTEN__)
         getStbImageVersion(),
+#endif
         getFmtVersion()
 #if !defined(BUILD_RELEASE)
             ,

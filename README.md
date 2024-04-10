@@ -69,6 +69,24 @@ Emulated consoles:
 - [x] Breakpoints
 - [x] Planes viewer
 
+## Controls
+
+### Original game controls
+
+| 1 | 2 | 3 | C |
+|---|---|---|---|
+| 4 | 5 | 6 | D |
+| 7 | 8 | 9 | E |
+| A | 0 | B | F |
+
+### Emulator game controls (QWERTY)
+
+| 1 | 2 | 3 | 4 |
+|---|---|---|---|
+| Q | W | E | R |
+| A | S | D | F |
+| Z | X | C | V |
+
 ## TODO
 
 <!--
@@ -91,24 +109,6 @@ Minor:
 - [ ] Use cpack to create a release (also update the GitHub Actions)
 - [ ] Add a way to change the input keys
 - [ ] Add a background when no rom is loaded
-
-## Controls
-
-### Original game controls
-
-| 1 | 2 | 3 | C |
-|---|---|---|---|
-| 4 | 5 | 6 | D |
-| 7 | 8 | 9 | E |
-| A | 0 | B | F |
-
-### Emulator game controls (QWERTY)
-
-| 1 | 2 | 3 | 4 |
-|---|---|---|---|
-| Q | W | E | R |
-| A | S | D | F |
-| Z | X | C | V |
 
 ## Documentation
 

@@ -68,6 +68,10 @@ public:
     [[nodiscard]] auto getPhysicalMemoryUsed() const -> float;
     [[nodiscard]] auto getPhysicalMemoryUsedByCurrentProcess() const -> float;
 
+#if defined(PLATFORM_MACOS)
+    auto CalculateCPULoad(unsigned long long idleTicks, unsigned long long totalTicks) -> float;
+    auto GetCPULoad() -> float;
+#endif
     [[nodiscard]] auto getCpuUsed() -> float;
     [[nodiscard]] auto getCpuUsedByCurrentProcess() -> float;
 
@@ -96,12 +100,14 @@ private:
     long m_deltaTime;
 #elif defined(PLATFORM_MACOS)
     // RAM (total physical memory)
+    int64_t m_physical_memory;
     int m_mib[2];
     // RAM (used physical memory)
     vm_size_t m_page_size;
     mach_port_t m_mach_port;
     mach_msg_type_number_t m_mac_msg_type_number;
     vm_statistics64_data_t m_vm_stats;
+    float m_physical_memory_used;
     // CPU usage
     unsigned long long m_previousTotalTicks = 0;
     unsigned long long m_previousIdleTicks = 0;

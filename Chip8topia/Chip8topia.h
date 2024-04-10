@@ -104,7 +104,9 @@ private:
     static auto getGLFWVersion() -> std::string;
     static auto getGladVersion() -> std::string_view;
     static auto getImGuiVersion() -> std::string;
+#if !defined(__EMSCRIPTEN__)
     static auto getStbImageVersion() -> std::string;
+#endif
     static auto getFmtVersion() -> std::string;
 #if !defined(BUILD_RELEASE)
     static auto getSpdlogVersion() -> std::string;
