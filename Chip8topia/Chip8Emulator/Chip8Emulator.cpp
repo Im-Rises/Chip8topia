@@ -21,7 +21,7 @@ Chip8Emulator::Chip8Emulator() : m_breakpoints{},
 #endif
                                  m_accumulator(0.0F),
                                  m_isRomLoaded(false),
-                                 m_isTurboMode(false),
+                                 //                                 m_isTurboMode(false),
                                  m_isBreak(false),
                                  m_step(false),
                                  m_canBreak(true),
@@ -104,23 +104,23 @@ void Chip8Emulator::update(const float deltaTime)
     {
         m_accumulator += deltaTime;
 
-        if (m_isTurboMode || m_accumulator >= 1.0F / Chip8Core::SCREEN_AND_TIMERS_FREQUENCY)
+        //        if (m_isTurboMode || m_accumulator >= 1.0F / Chip8Core::SCREEN_AND_TIMERS_FREQUENCY)
+        //        {
+        m_accumulator = 0.0F;
+        bool screenUpdated = false;
+        while (!screenUpdated && !m_isBreak && !m_errorTriggered)
         {
-            m_accumulator = 0.0F;
-            bool screenUpdated = false;
-            while (!screenUpdated && !m_isBreak && !m_errorTriggered)
-            {
-                screenUpdated = m_core->clock();
-                //                updatePcHistory();
+            screenUpdated = m_core->clock();
+            //                updatePcHistory();
 
-                if (m_breakpoints[m_core->getCpu()->getPc()])
-                {
-                    m_isBreak = true;
-                    ImGui::InsertNotification({ ImGuiToastType::Info, TOAST_DURATION_INFO,
-                        "Breakpoint hit", fmt::format("Breakpoint hit at 0x{:04X}", m_core->getCpu()->getPc()).c_str() });
-                }
+            if (m_breakpoints[m_core->getCpu()->getPc()])
+            {
+                m_isBreak = true;
+                ImGui::InsertNotification({ ImGuiToastType::Info, TOAST_DURATION_INFO,
+                    "Breakpoint hit", fmt::format("Breakpoint hit at 0x{:04X}", m_core->getCpu()->getPc()).c_str() });
             }
         }
+        //        }
     }
 }
 
@@ -214,10 +214,10 @@ void Chip8Emulator::triggerEmulationError(const std::string& message)
 }
 #endif
 
-void Chip8Emulator::setIsTurboMode(const bool isTurboMode)
-{
-    m_isTurboMode = isTurboMode;
-}
+// void Chip8Emulator::setIsTurboMode(const bool isTurboMode)
+//{
+//     m_isTurboMode = isTurboMode;
+// }
 
 void Chip8Emulator::setRomName(const std::string& romName)
 {

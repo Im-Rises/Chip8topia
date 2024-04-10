@@ -53,7 +53,7 @@ public:
 #if defined(BUILD_PARAM_SAFE)
     void triggerEmulationError(const std::string& message);
 #endif
-    void setIsTurboMode(const bool isTurboMode);
+    //    void setIsTurboMode(const bool isTurboMode);
     void setRomName(const std::string& romName);
     void switchCoreFrequency(const Chip8CoreType coreType, const Chip8Frequency frequency);
     void clearBreakpoints();
@@ -75,7 +75,7 @@ private:
 
     float m_accumulator;
     bool m_isRomLoaded;
-    bool m_isTurboMode;
+    //    bool m_isTurboMode;
     bool m_isBreak;
     bool m_step;
     bool m_canBreak;

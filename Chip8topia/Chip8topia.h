@@ -25,6 +25,9 @@ It was made to allow video games to be more easily programmed for said computers
     static constexpr const char* const WEB_CANVAS_ID = "#canvas";
     static constexpr const char* const CHIP8TOPIA_ICON_PATH = "res/icon.png";
 
+    static constexpr float REFRESH_RATE = 60.0F;
+    static constexpr float FRAME_TIME_MS = 1000.0F / REFRESH_RATE;
+
 private:
     static constexpr int SUCCESS_CODE = 0;
     static constexpr int GLFW_ERROR_CALLBACK_ERROR_CODE = 1;

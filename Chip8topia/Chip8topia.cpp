@@ -74,9 +74,9 @@ auto Chip8topia::run() -> int
 
         auto delay = std::chrono::duration<float, std::chrono::milliseconds::period>(std::chrono::high_resolution_clock::now() - currentTime).count();
 
-        if (delay < 16.6667F)
+        if (!m_isTurboMode && delay < FRAME_TIME_MS)
         {
-            std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(16.6667F - delay)));
+            std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(FRAME_TIME_MS - delay)));
         }
     }
 #ifdef __EMSCRIPTEN__
@@ -138,8 +138,7 @@ auto Chip8topia::init() -> int
         return WINDOW_INIT_ERROR_CODE;
     }
     glfwMakeContextCurrent(m_window);
-    //    setVsyncEnabled(true);
-    glfwSwapInterval(0);
+    setVsyncEnabled(false);
 
     // Set window callbacks
     glfwSetWindowUserPointer(m_window, this);
@@ -369,7 +368,7 @@ void Chip8topia::toggleFullScreen()
         glfwSetWindowMonitor(m_window, nullptr, m_windowedPosX, m_windowedPosY, m_windowedWidth, m_windowedHeight, 0);
     }
 
-    setVsyncEnabled(!m_isTurboMode);
+    setVsyncEnabled(false);
 
     m_isFullScreen = !m_isFullScreen;
 }
@@ -377,19 +376,20 @@ void Chip8topia::toggleFullScreen()
 void Chip8topia::toggleTurboMode()
 {
     m_isTurboMode = !m_isTurboMode;
-    setVsyncEnabled(!m_isTurboMode);
-    m_chip8Emulator->setIsTurboMode(m_isTurboMode);
+    //    m_chip8Emulator->setIsTurboMode(m_isTurboMode);
 }
 
 void Chip8topia::setVsyncEnabled(const bool isVsyncEnabled)
 {
-    //    glfwSwapInterval(isVsyncEnabled ? 1 : 0);
+    glfwSwapInterval(isVsyncEnabled ? 1 : 0);
 }
 
 #ifndef __EMSCRIPTEN__
 void Chip8topia::setWindowIcon()
 {
-    int width = 0, height = 0, channelsCount = 0;
+    int width = 0;
+    int height = 0;
+    int channelsCount = 0;
     unsigned char* imagePixels = stbi_load(CHIP8TOPIA_ICON_PATH, &width, &height, &channelsCount, 0);
     if (imagePixels == nullptr)
     {
