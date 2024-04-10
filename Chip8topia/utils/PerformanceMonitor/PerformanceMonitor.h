@@ -99,11 +99,11 @@ private:
     std::chrono::time_point<std::chrono::high_resolution_clock> m_lastTime;
     long m_deltaTime;
 #elif defined(PLATFORM_MACOS)
-    // RAM (total physical memory)
-    int m_mib[2];
+    //    // RAM (total physical memory)
+    //    int m_mib[2];
     // RAM (used physical memory)
     vm_size_t m_page_size;
-    mach_port_t m_mach_port;
+    //    mach_port_t m_mach_port;
     mach_msg_type_number_t m_mac_msg_type_number;
     vm_statistics64_data_t m_vm_stats;
     // CPU usage
