@@ -192,6 +192,11 @@ PerformanceMonitor::~PerformanceMonitor()
 
 void PerformanceMonitor::update()
 {
+    // RAM (total physical memory)
+    size_t length = sizeof(int64_t);
+    sysctl(m_mib, 2, &m_physical_memory, &length, NULL, 0);
+    // RAM (used physical memory)
+    m_mach_port = mach_host_self();
 }
 
 auto PerformanceMonitor::getTotalVirtualMemory() const -> float
@@ -211,21 +216,14 @@ auto PerformanceMonitor::getVirtualMemoryUsedByCurrentProcess() const -> float
 
 auto PerformanceMonitor::getTotalPhysicalMemory() const -> float
 {
-    int64_t physical_memory;
-    size_t length = sizeof(int64_t);
-    int mib[2];
-    sysctl(mib, 2, &physical_memory, &length, NULL, 0);
-
-    return physical_memory / RAM_MB_FACTOR;
+    return m_physical_memory / RAM_MB_FACTOR;
 }
 
 auto PerformanceMonitor::getPhysicalMemoryUsed() const -> float
 {
-    mach_port_t mach_port;
-    mach_port = mach_host_self();
     size_t count = sizeof(m_vm_stats) / sizeof(natural_t);
-    if (KERN_SUCCESS == host_page_size(mach_port, &m_page_size) &&
-        KERN_SUCCESS == host_statistics64(mach_port, HOST_VM_INFO,
+    if (KERN_SUCCESS == host_page_size(m_mach_port, &m_page_size) &&
+        KERN_SUCCESS == host_statistics64(m_mach_port, HOST_VM_INFO,
                             (host_info64_t)&vm_stats, &m_mac_msg_type_number))
     {
         //    long long free_memory = (int64_t)vm_stats.free_count * (int64_t)m_page_size;
