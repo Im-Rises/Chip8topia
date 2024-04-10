@@ -18,7 +18,6 @@
 
 // TODO: PerformanceMonitor
 // - Add error handling everywhere
-// - Add MacOS support
 
 #if defined(PLATFORM_WINDOWS)
 #include <cstdio>

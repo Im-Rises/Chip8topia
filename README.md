@@ -84,7 +84,6 @@ Major:
 
 Minor:
 
-- [-] Performance Monitor add macOS support
 - [-] Restarting a game when playing big xo-chip games will not reload the game from the start (we should reset memory
   and reload the game rom)
 - [-] Improve disassembly (check TODO in the Chip8topiaDisassembly.cpp file)
