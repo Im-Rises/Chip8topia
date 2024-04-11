@@ -73,7 +73,7 @@ private:
     Chip8VideoEmulation m_videoEmulation;
     //    Chip8SoundEmulation m_soundEmulation;
 
-    float m_accumulator;
+    //    float m_accumulator;
     bool m_isRomLoaded;
     //    bool m_isTurboMode;
     bool m_isBreak;

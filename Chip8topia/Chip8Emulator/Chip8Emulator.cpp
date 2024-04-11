@@ -102,11 +102,11 @@ void Chip8Emulator::update(const float deltaTime)
     }
     else
     {
-        m_accumulator += deltaTime;
+        //        m_accumulator += deltaTime;
 
         //        if (m_isTurboMode || m_accumulator >= 1.0F / Chip8Core::SCREEN_AND_TIMERS_FREQUENCY)
         //        {
-        m_accumulator = 0.0F;
+        //        m_accumulator = 0.0F;
         bool screenUpdated = false;
         while (!screenUpdated && !m_isBreak && !m_errorTriggered)
         {

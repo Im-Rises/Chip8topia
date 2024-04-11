@@ -98,6 +98,7 @@ Profiling logs:
 
 Major:
 
+- [ ] Replace GLFW by SDL2
 - [ ] Add audio
 
 Minor:
