@@ -19,7 +19,7 @@ Chip8Emulator::Chip8Emulator() : m_breakpoints{},
 #else
                                  m_core(std::make_unique<XoChipCore>(DEFAULT_FREQUENCY)),
 #endif
-                                 m_accumulator(0.0F),
+                                 //                                 m_accumulator(0.0F),
                                  m_isRomLoaded(false),
                                  //                                 m_isTurboMode(false),
                                  m_isBreak(false),
@@ -73,7 +73,7 @@ void Chip8Emulator::restart()
 {
     m_core->reset();
     m_videoEmulation.reset();
-    m_accumulator = 0.0F;
+    //    m_accumulator = 0.0F;
     m_errorTriggered = false;
 }
 

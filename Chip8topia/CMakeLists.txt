@@ -25,8 +25,8 @@ target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/u
 set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE $<CONFIG:Release>)
 
 if (NOT EMSCRIPTEN)
-    find_package(glfw3 CONFIG REQUIRED)
-    target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
+    find_package(sdl2 CONFIG REQUIRED)
+    target_link_libraries(${PROJECT_NAME} PRIVATE SDL2::SDL2 SDL2::SDL2main)
 
     find_package(glad CONFIG REQUIRED)
     target_link_libraries(${PROJECT_NAME} PRIVATE glad::glad)
@@ -44,7 +44,7 @@ if (NOT EMSCRIPTEN)
         target_link_libraries(${PROJECT_NAME} PUBLIC psapi.lib) # For CPU usage
     endif ()
 else ()
-    target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
+    target_link_libraries(${PROJECT_NAME} PRIVATE SDL2::SDL2 SDL2::SDL2main)
 endif ()
 
 find_package(imgui CONFIG REQUIRED)
@@ -81,9 +81,9 @@ elseif (UNIX AND NOT APPLE)
 elseif (APPLE)
     target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_MACOS)
     target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_NAME="MacOS")
-#elseif (EMSCRIPTEN) # Use linux when building for web with emscripten
-#    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_WEB)
-#    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_NAME="Web")
+    #elseif (EMSCRIPTEN) # Use linux when building for web with emscripten
+    #    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_WEB)
+    #    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_NAME="Web")
 endif ()
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE PROJECT_CPP_VERSION="${CMAKE_CXX_STANDARD}")

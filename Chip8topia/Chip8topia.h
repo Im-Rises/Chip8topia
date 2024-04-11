@@ -1,12 +1,12 @@
 #pragma once
 
 #include <string_view>
+#include <SDL.h>
 
 #include "Chip8topiaUi/Chip8topiaUi.h"
 #include "Chip8Emulator/Chip8Emulator.h"
 #include "Chip8topiaInputHandler/Chip8topiaInputHandler.h"
 
-struct GLFWwindow;
 class Chip8topia
 {
 public:
@@ -30,9 +30,9 @@ It was made to allow video games to be more easily programmed for said computers
 
 private:
     static constexpr int SUCCESS_CODE = 0;
-    static constexpr int GLFW_ERROR_CALLBACK_ERROR_CODE = 1;
-    static constexpr int GLFW_INIT_ERROR_CODE = 2;
-    static constexpr int WINDOW_INIT_ERROR_CODE = 3;
+    static constexpr int SDL_INIT_ERROR_CODE = 1;
+    static constexpr int WINDOW_INIT_ERROR_CODE = 2;
+    static constexpr int OPENGL_INIT_ERROR_CODE = 3;
     static constexpr int GLAD_INIT_ERROR_CODE = 4;
     static constexpr int FONT_AWESOME_INIT_ERROR_CODE = 5;
 #if !defined(BUILD_RELEASE)
@@ -101,7 +101,7 @@ private:
     static auto getOpenGLVendor() -> std::string_view;
     static auto getOpenGLVersion() -> std::string_view;
     static auto getGLSLVersion() -> std::string_view;
-    static auto getGLFWVersion() -> std::string;
+    static auto getSDLVersion() -> std::string;
     static auto getGladVersion() -> std::string_view;
     static auto getImGuiVersion() -> std::string;
 #if !defined(__EMSCRIPTEN__)
@@ -113,27 +113,29 @@ private:
 #endif
     static auto getDependenciesInfos() -> std::string;
 
-    static void glfw_error_callback(int error, const char* description);
-    static void glfw_drop_callback(GLFWwindow* window, int count, const char** paths);
+    void loadRomFromPath(const std::string& filePath);
 
 #if !defined(BUILD_RELEASE) && !defined(__EMSCRIPTEN__)
     void loadDebugRom();
 #endif
 
 private:
-    GLFWwindow* m_window;
+    SDL_Window* m_window;
+    SDL_GLContext m_gl_context;
+
     std::unique_ptr<Chip8Emulator> m_chip8Emulator;
     Chip8topiaUi m_chip8topiaUi;
     Chip8topiaInputHandler& m_chip8topiaInputHandler = Chip8topiaInputHandler::getInstance();
 
-    std::string m_romName = "ROM";
-
+    bool m_closeRequested = false;
     bool m_isFullScreen = false;
     bool m_isTurboMode = false;
+
     int m_currentWidth = 1280;
     int m_currentHeight = 720;
     int m_windowedWidth = m_currentWidth;
     int m_windowedHeight = m_currentHeight;
+
     int m_windowedPosX = 0;
     int m_windowedPosY = 0;
 
