@@ -368,6 +368,11 @@ void Chip8topia::loadRomFromPath(const std::string& filePath)
         ImGui::InsertNotification({ ImGuiToastType::Error, TOAST_DURATION_ERROR, e.what() });
         LOG_ERROR(e.what());
     }
+    catch (const char* const e)
+    {
+        ImGui::InsertNotification({ ImGuiToastType::Error, TOAST_DURATION_ERROR, e });
+        LOG_ERROR(e);
+    }
 }
 
 void Chip8topia::centerWindow()

@@ -83,6 +83,11 @@ void Chip8topiaRomLoaderUi::drawRomWindow(Chip8topia& chip8topia)
                 ImGui::InsertNotification({ ImGuiToastType::Error, TOAST_DURATION_ERROR, e.what() });
                 LOG_ERROR(e.what());
             }
+            catch (const char* const e)
+            {
+                ImGui::InsertNotification({ ImGuiToastType::Error, TOAST_DURATION_ERROR, e });
+                LOG_ERROR(e);
+            }
         }
 
         ImGuiFileDialog::Instance()->Close();
@@ -109,6 +114,11 @@ void Chip8topiaRomLoaderUi::handle_upload_file(std::string const& filename, std:
     {
         ImGui::InsertNotification({ ImGuiToastType::Error, TOAST_DURATION_ERROR, e.what() });
         LOG_ERROR(e.what());
+    }
+    catch (const char* const e)
+    {
+        ImGui::InsertNotification({ ImGuiToastType::Error, TOAST_DURATION_ERROR, e });
+        LOG_ERROR(e);
     }
 }
 #endif
