@@ -9,8 +9,8 @@
   "supports": "windows, linux, emscripten",
   "dependencies": [
     {
-      "name": "glfw3",
-      "version>=": "3.3.9",
+      "name": "sdl2",
+      "version>=": "2.30.0",
       "platform": "!emscripten"
     },
     {
@@ -22,7 +22,7 @@
       "name": "imgui",
       "version>=": "1.90#3",
       "features": [
-        "glfw-binding",
+        "sdl2-binding",
         "opengl3-binding",
         "docking-experimental"
       ]

@@ -89,13 +89,6 @@ Emulated consoles:
 
 ## TODO
 
-<!--
-Profiling logs:
-- [x] Issue with imgui viewport when vsync enabled, very slow and may take twice the time it should Unset vsync and call std::this_thread::sleep_for(std::chrono::milliseconds(16)) in the main loop... (disabled completely vsync and use of std::this_thread::sleep_for(std::chrono::milliseconds(16)) in the main loop)
-- [x] LD_Vx_K is somehow very very slow ??? (corrected by not iterating over all the keys but only checking if the previous bitset of the keys is different from the current one)
-- [x] Breakpoints in Chip8Emulator is slow (stop using a std::set when checking if we should break on the current PC and use of an array)
--->
-
 Major:
 
 - [ ] Add audio
@@ -105,10 +98,19 @@ Minor:
 - [-] Restarting a game when playing big xo-chip games will not reload the game from the start (we should reset memory
   and reload the game rom)
 - [-] Improve disassembly (check TODO in the Chip8topiaDisassembly.cpp file)
-- [ ] Add a try catch (check Chip8CoreBase todo)
-- [ ] Use cpack to create a release (also update the GitHub Actions)
+- [-] Add a try catch (check Chip8CoreBase todo)
+
+<!-- Other
+Other tasks:
+- [ ] Use cpack to create a release (also update the GitHub Actions) https://cmake.org/cmake/help/book/mastering-cmake/chapter/Packaging%20With%20CPack.html
 - [ ] Add a way to change the input keys
 - [ ] Add a background when no rom is loaded
+
+Profiling logs:
+- [x] Issue with imgui viewport when vsync enabled and window out of the sdl2/glfw main window it doubles the time of the swap buffers, like its doing it two times (disabled completely vsync and use of std::this_thread::sleep_for(std::chrono::milliseconds(16)) in the main loop)
+- [x] LD_Vx_K is somehow very very slow ??? (corrected by not iterating over all the keys but only checking if the previous bitset of the keys is different from the current one)
+- [x] Breakpoints in Chip8Emulator is slow (stop using a std::set when checking if we should break on the current PC and use of an array)
+-->
 
 ## Documentation
 
@@ -147,7 +149,7 @@ https://github.com/Armchair-Software/emscripten-browser-file
 ## Dependencies
 
 - [Vcpkg](https://vcpkg.io/en)
-- [GLFW](https://www.glfw.org/)
+- [SDL2](https://www.libsdl.org/)
 - [GLAD](https://glad.dav1d.de/)
 - [stb](https://github.com/nothings/stb)
 - [spdlog](https://github.com/gabime/spdlog)
@@ -204,7 +206,7 @@ cmake --build [build directory]
 Use the following command to set up the build:
 
 ```bash
-emcmake cmake -B [build directory] -S . -DCMAKE_TOOLCHAIN_FILE=~/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=${EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -DVCPKG_TARGET_TRIPLET=wasm32-emscripten "-DCMAKE_EXE_LINKER_FLAGS=-s USE_GLFW=3 -s FULL_ES3=1 -s WASM=1 -s EXPORTED_RUNTIME_METHODS=[ccall] -s ALLOW_MEMORY_GROWTH=1 -s EXPORTED_FUNCTIONS=[_main,_malloc,_free] --preload-file ../../Chip8Games --preload-file ../../shaders --preload-file ../../fonts" -DCMAKE_BUILD_TYPE=Release
+emcmake cmake -B [build directory] -S . -DCMAKE_TOOLCHAIN_FILE=~/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=${EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -DVCPKG_TARGET_TRIPLET=wasm32-emscripten "-DCMAKE_EXE_LINKER_FLAGS=-s USE_SDL=2 -s FULL_ES3=1 -s WASM=1 -s EXPORTED_RUNTIME_METHODS=[ccall] -s ALLOW_MEMORY_GROWTH=1 -s EXPORTED_FUNCTIONS=[_main,_malloc,_free] --preload-file ../../Chip8Games --preload-file ../../shaders --preload-file ../../fonts" -DCMAKE_BUILD_TYPE=Release
 ```
 
 then build with:

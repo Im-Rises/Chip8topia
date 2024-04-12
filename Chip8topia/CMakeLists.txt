@@ -25,8 +25,8 @@ target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/u
 set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE $<CONFIG:Release>)
 
 if (NOT EMSCRIPTEN)
-    find_package(glfw3 CONFIG REQUIRED)
-    target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
+    find_package(sdl2 CONFIG REQUIRED)
+    target_link_libraries(${PROJECT_NAME} PRIVATE SDL2::SDL2 SDL2::SDL2main)
 
     find_package(glad CONFIG REQUIRED)
     target_link_libraries(${PROJECT_NAME} PRIVATE glad::glad)
@@ -39,12 +39,11 @@ if (NOT EMSCRIPTEN)
     target_link_libraries(${PROJECT_NAME} PRIVATE ${STB_LIBRARIES})
 
     if (WIN32)
-        target_link_libraries(${PROJECT_NAME} PUBLIC winmm.lib) # For timer precision (timeBeginPeriod)
         target_link_libraries(${PROJECT_NAME} PUBLIC Pdh.lib) # For RAM usage
         target_link_libraries(${PROJECT_NAME} PUBLIC psapi.lib) # For CPU usage
     endif ()
 else ()
-    target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
+    target_link_libraries(${PROJECT_NAME} PRIVATE SDL2::SDL2 SDL2::SDL2main)
 endif ()
 
 find_package(imgui CONFIG REQUIRED)
@@ -64,7 +63,7 @@ else ()
     target_compile_definitions(${PROJECT_NAME} PRIVATE BUILD_RELEASE)
 endif ()
 
-if (TRUE)
+if (FALSE)
     target_compile_definitions(${PROJECT_NAME} PRIVATE BUILD_PARAM_SAFE)
     message("Building with safe parameter")
 else ()
@@ -73,19 +72,23 @@ else ()
 endif ()
 
 if (WIN32)
+    set(PLATFORM_NAME "Windows")
     target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_WINDOWS)
-    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_NAME="Windows")
+    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_NAME="${PLATFORM_NAME}")
 elseif (UNIX AND NOT APPLE)
+    set(PLATFORM_NAME "Linux")
     target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_LINUX)
-    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_NAME="Linux")
+    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_NAME="${PLATFORM_NAME}")
 elseif (APPLE)
+    set(PLATFORM_NAME "MacOS")
     target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_MACOS)
-    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_NAME="MacOS")
-#elseif (EMSCRIPTEN) # Use linux when building for web with emscripten
-#    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_WEB)
-#    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_NAME="Web")
+    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_NAME="${PLATFORM_NAME}")
+    #elseif (EMSCRIPTEN) # Use linux when building for web with emscripten
+    #    set(PLATFORM_NAME "Web")
+    #    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_WEB)
+    #    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_NAME="${PLATFORM_NAME}")
 endif ()
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE PROJECT_CPP_VERSION="${CMAKE_CXX_STANDARD}")
 
-message("Building ${PROJECT_NAME} for ${PLATFORM_NAME}  with C++${CMAKE_CXX_STANDARD} on ${CMAKE_SYSTEM_NAME}")
+message("Building ${PROJECT_NAME} for ${PLATFORM_NAME} with C++${CMAKE_CXX_STANDARD} on ${CMAKE_SYSTEM_NAME}")
