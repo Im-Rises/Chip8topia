@@ -43,17 +43,20 @@ jobs:
       - name: Create build directory
         run: mkdir build
 
-      - name: Configure CMake
-        run: emcmake cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=${EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -DVCPKG_TARGET_TRIPLET=wasm32-emscripten "-DCMAKE_EXE_LINKER_FLAGS=-s USE_GLFW=3 -s FULL_ES3=1 -s WASM=1 -s EXPORTED_RUNTIME_METHODS=[ccall] -s ALLOW_MEMORY_GROWTH=1 -s EXPORTED_FUNCTIONS=[_main,_malloc,_free] --preload-file ../../Chip8Games --preload-file ../../shaders --preload-file ../../fonts" -DCMAKE_BUILD_TYPE=Release
+      #      - name: Configure CMake
+      #        run: emcmake cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=${EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -DVCPKG_TARGET_TRIPLET=wasm32-emscripten "-DCMAKE_EXE_LINKER_FLAGS=-s USE_GLFW=3 -s FULL_ES3=1 -s WASM=1 -s EXPORTED_RUNTIME_METHODS=[ccall] -s ALLOW_MEMORY_GROWTH=1 -s EXPORTED_FUNCTIONS=[_main,_malloc,_free] --preload-file ../../Chip8Games --preload-file ../../shaders --preload-file ../../fonts" -DCMAKE_BUILD_TYPE=Release
+      #
+      #      - name: Build
+      #        run: emmake make -C build
 
-      - name: Build
-        run: emmake make -C build
+      - name: Configure and build with CMake
+        run: ./build-wasm.sh buildWasm
 
       - name: Copy artefacts to web folder
         run: |
-          cp build/Chip8topia/Chip8topia.js web/
-          cp build/Chip8topia/Chip8topia.wasm web/
-          cp build/Chip8topia/Chip8topia.data web/
+          cp buildWasm/Chip8topia/Chip8topia.js web/
+          cp buildWasm/Chip8topia/Chip8topia.wasm web/
+          cp buildWasm/Chip8topia/Chip8topia.data web/
 
       - name: Setup Pages
         uses: actions/configure-pages@v3

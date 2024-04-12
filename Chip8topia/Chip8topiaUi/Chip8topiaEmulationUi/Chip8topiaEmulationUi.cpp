@@ -146,6 +146,7 @@ void Chip8topiaEmulationUi::drawProfiler(Chip8topia& chip8topia)
     {
         if (ImGui::Begin(PROFILER_STRING, &m_profilerOpen))
         {
+            ImGui::Text("Input Time: %06.3f ms", chip8topia.getInputUpdateTime());
             ImGui::Text("UI Time: %06.3f ms", chip8topia.getUiUpdateTime());
             ImGui::Text("Game Time: %06.3f ms", chip8topia.getGameUpdateTime());
             ImGui::Text("Screen Time: %06.3f ms", chip8topia.getScreenUpdateTime());

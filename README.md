@@ -98,7 +98,6 @@ Profiling logs:
 
 Major:
 
-- [ ] Replace GLFW by SDL2
 - [ ] Add audio
 
 Minor:
@@ -148,7 +147,7 @@ https://github.com/Armchair-Software/emscripten-browser-file
 ## Dependencies
 
 - [Vcpkg](https://vcpkg.io/en)
-- [GLFW](https://www.glfw.org/)
+- [SDL2](https://www.libsdl.org/)
 - [GLAD](https://glad.dav1d.de/)
 - [stb](https://github.com/nothings/stb)
 - [spdlog](https://github.com/gabime/spdlog)
@@ -205,7 +204,7 @@ cmake --build [build directory]
 Use the following command to set up the build:
 
 ```bash
-emcmake cmake -B [build directory] -S . -DCMAKE_TOOLCHAIN_FILE=~/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=${EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -DVCPKG_TARGET_TRIPLET=wasm32-emscripten "-DCMAKE_EXE_LINKER_FLAGS=-s USE_GLFW=3 -s FULL_ES3=1 -s WASM=1 -s EXPORTED_RUNTIME_METHODS=[ccall] -s ALLOW_MEMORY_GROWTH=1 -s EXPORTED_FUNCTIONS=[_main,_malloc,_free] --preload-file ../../Chip8Games --preload-file ../../shaders --preload-file ../../fonts" -DCMAKE_BUILD_TYPE=Release
+emcmake cmake -B [build directory] -S . -DCMAKE_TOOLCHAIN_FILE=~/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=${EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -DVCPKG_TARGET_TRIPLET=wasm32-emscripten "-DCMAKE_EXE_LINKER_FLAGS=-s USE_SDL=2 -s FULL_ES3=1 -s WASM=1 -s EXPORTED_RUNTIME_METHODS=[ccall] -s ALLOW_MEMORY_GROWTH=1 -s EXPORTED_FUNCTIONS=[_main,_malloc,_free] --preload-file ../../Chip8Games --preload-file ../../shaders --preload-file ../../fonts" -DCMAKE_BUILD_TYPE=Release
 ```
 
 then build with:

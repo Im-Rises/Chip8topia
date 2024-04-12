@@ -83,6 +83,7 @@ public:
     [[nodiscard]] auto getChip8Emulator() -> Chip8Emulator&;
     [[nodiscard]] auto getIsTurboMode() const -> bool;
 
+    [[nodiscard]] auto getInputUpdateTime() const -> float;
     [[nodiscard]] auto getUiUpdateTime() const -> float;
     [[nodiscard]] auto getGameUpdateTime() const -> float;
     [[nodiscard]] auto getScreenUpdateTime() const -> float;
@@ -139,6 +140,7 @@ private:
     int m_windowedPosX = 0;
     int m_windowedPosY = 0;
 
+    float m_inputUpdateTime = 0.0F;
     float m_uiUpdateTime = 0.0F;
     float m_gameUpdateTime = 0.0F;
     float m_screenUpdateTime = 0.0F;

@@ -25,7 +25,7 @@ public:
 
 public:
     void update(GLFWwindow* window) const;
-    static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+    //    static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
     [[nodiscard]] auto getInputEnabled() const -> bool;
     void setInputEnabled(const bool inputEnabled);
 

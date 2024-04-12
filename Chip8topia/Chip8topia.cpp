@@ -263,6 +263,8 @@ void Chip8topia::cleanup()
 
 void Chip8topia::handleInputs()
 {
+    auto start = std::chrono::high_resolution_clock::now();
+
     SDL_Event event;
     while (SDL_PollEvent(&event) != 0)
     {
@@ -283,6 +285,8 @@ void Chip8topia::handleInputs()
     }
 
     //    m_chip8topiaInputHandler.update(m_window);
+
+    m_inputUpdateTime = std::chrono::duration<float, std::chrono::milliseconds::period>(std::chrono::high_resolution_clock::now() - start).count();
 }
 
 void Chip8topia::handleUi()
@@ -431,6 +435,11 @@ auto Chip8topia::getChip8Emulator() -> Chip8Emulator&
 auto Chip8topia::getIsTurboMode() const -> bool
 {
     return m_isTurboMode;
+}
+
+auto Chip8topia::getInputUpdateTime() const -> float
+{
+    return m_inputUpdateTime;
 }
 
 auto Chip8topia::getUiUpdateTime() const -> float
