@@ -25,7 +25,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/u
 set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE $<CONFIG:Release>)
 
 if (NOT EMSCRIPTEN)
-    find_package(sdl2 CONFIG REQUIRED)
+    find_package(SDL2 CONFIG REQUIRED)
     target_link_libraries(${PROJECT_NAME} PRIVATE SDL2::SDL2 SDL2::SDL2main)
 
     find_package(glad CONFIG REQUIRED)

@@ -52,4 +52,6 @@ jobs:
       #        run: emmake make -C build
 
       - name: Configure and build with CMake
-        run: ./build-wasm.sh buildWasm
+        run: |
+          chmod +x build-wasm.sh
+          ./build-wasm.sh buildWasm
