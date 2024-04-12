@@ -91,7 +91,7 @@ void Chip8topia::closeRequest()
 auto Chip8topia::init() -> int
 {
     // Setup SDL
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0)
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO) != 0)
     {
         LOG_ERROR("Failed to initialize SDL");
         return SDL_INIT_ERROR_CODE;

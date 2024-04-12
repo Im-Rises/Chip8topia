@@ -79,7 +79,7 @@ auto PerformanceMonitor::getCpuUsed() -> float
     PdhCollectQueryData(m_cpuQuery);
     PdhGetFormattedCounterValue(m_cpuTotal, PDH_FMT_DOUBLE, NULL, &counterVal);
 
-    return counterVal.doubleValue;
+    return static_cast<float>(counterVal.doubleValue);
 }
 
 auto PerformanceMonitor::getCpuUsedByCurrentProcess() -> float
@@ -102,7 +102,7 @@ auto PerformanceMonitor::getCpuUsedByCurrentProcess() -> float
     m_lastUserCPU = user;
     m_lastSysCPU = sys;
 
-    return percent * 100.0F;
+    return static_cast<float>(percent) * 100.0F;
 }
 
 #elif defined(PLATFORM_LINUX)

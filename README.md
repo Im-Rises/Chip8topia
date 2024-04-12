@@ -98,15 +98,14 @@ Minor:
 - [-] Restarting a game when playing big xo-chip games will not reload the game from the start (we should reset memory
   and reload the game rom)
 - [-] Improve disassembly (check TODO in the Chip8topiaDisassembly.cpp file)
-- [ ] Add a try catch (check Chip8CoreBase todo)
-- [ ] Use cpack to create a release (also update the GitHub Actions)
+- [-] Add a try catch (check Chip8CoreBase todo)
 
 <!-- Other
+Other tasks:
+- [ ] Use cpack to create a release (also update the GitHub Actions) https://cmake.org/cmake/help/book/mastering-cmake/chapter/Packaging%20With%20CPack.html
 - [ ] Add a way to change the input keys
 - [ ] Add a background when no rom is loaded
--->
 
-<!--
 Profiling logs:
 - [x] Issue with imgui viewport when vsync enabled, very slow and may take twice the time it should Unset vsync and call std::this_thread::sleep_for(std::chrono::milliseconds(16)) in the main loop... (disabled completely vsync and use of std::this_thread::sleep_for(std::chrono::milliseconds(16)) in the main loop)
 - [x] LD_Vx_K is somehow very very slow ??? (corrected by not iterating over all the keys but only checking if the previous bitset of the keys is different from the current one)

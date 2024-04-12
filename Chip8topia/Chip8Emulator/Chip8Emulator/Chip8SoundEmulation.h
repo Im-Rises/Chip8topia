@@ -1,8 +1,8 @@
 #pragma once
 
-// Handle webaudio and openal sound drawing
-
-class Chip8SoundEmulation {
+class Chip8CoreBase;
+class Chip8SoundEmulation
+{
 public:
-    void update(const float deltaTime);
+    void update(Chip8CoreBase* chip8Core);
 };
