@@ -1,6 +1,7 @@
 #include "Chip8SoundEmulation.h"
 
-#include <sdl.h>
+#include <SDL.h>
+
 #include "../Chip8CoreBase/Chip8CoreBase.h"
 
 void Chip8SoundEmulation::update(Chip8CoreBase* chip8Core)
