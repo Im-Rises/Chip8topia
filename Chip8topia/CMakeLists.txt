@@ -42,6 +42,12 @@ if (NOT EMSCRIPTEN)
         target_link_libraries(${PROJECT_NAME} PUBLIC Pdh.lib) # For RAM usage
         target_link_libraries(${PROJECT_NAME} PUBLIC psapi.lib) # For CPU usage
     endif ()
+
+    if (UNIX AND NOT APPLE)
+        find_package(X11 REQUIRED)
+        target_include_directories(${PROJECT_NAME} PRIVATE ${X11_INCLUDE_DIR})
+        target_link_libraries(${PROJECT_NAME} PRIVATE ${X11_LIBRARIES})
+    endif ()
 else ()
     target_link_libraries(${PROJECT_NAME} PRIVATE SDL2::SDL2 SDL2::SDL2main)
 endif ()
