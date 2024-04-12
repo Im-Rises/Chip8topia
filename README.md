@@ -89,13 +89,6 @@ Emulated consoles:
 
 ## TODO
 
-<!--
-Profiling logs:
-- [x] Issue with imgui viewport when vsync enabled, very slow and may take twice the time it should Unset vsync and call std::this_thread::sleep_for(std::chrono::milliseconds(16)) in the main loop... (disabled completely vsync and use of std::this_thread::sleep_for(std::chrono::milliseconds(16)) in the main loop)
-- [x] LD_Vx_K is somehow very very slow ??? (corrected by not iterating over all the keys but only checking if the previous bitset of the keys is different from the current one)
-- [x] Breakpoints in Chip8Emulator is slow (stop using a std::set when checking if we should break on the current PC and use of an array)
--->
-
 Major:
 
 - [ ] Add audio
@@ -107,8 +100,18 @@ Minor:
 - [-] Improve disassembly (check TODO in the Chip8topiaDisassembly.cpp file)
 - [ ] Add a try catch (check Chip8CoreBase todo)
 - [ ] Use cpack to create a release (also update the GitHub Actions)
+
+<!-- Other
 - [ ] Add a way to change the input keys
 - [ ] Add a background when no rom is loaded
+-->
+
+<!--
+Profiling logs:
+- [x] Issue with imgui viewport when vsync enabled, very slow and may take twice the time it should Unset vsync and call std::this_thread::sleep_for(std::chrono::milliseconds(16)) in the main loop... (disabled completely vsync and use of std::this_thread::sleep_for(std::chrono::milliseconds(16)) in the main loop)
+- [x] LD_Vx_K is somehow very very slow ??? (corrected by not iterating over all the keys but only checking if the previous bitset of the keys is different from the current one)
+- [x] Breakpoints in Chip8Emulator is slow (stop using a std::set when checking if we should break on the current PC and use of an array)
+-->
 
 ## Documentation
 

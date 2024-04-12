@@ -269,22 +269,17 @@ void Chip8topia::handleInputs()
     while (SDL_PollEvent(&event) != 0)
     {
         ImGui_ImplSDL2_ProcessEvent(&event);
+#ifndef __EMSCRIPTEN__
         if (event.type == SDL_QUIT)
             m_closeRequested = true;
         if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE && event.window.windowID == SDL_GetWindowID(m_window))
             m_closeRequested = true;
         if (event.key.keysym.sym == SDLK_ESCAPE)
             m_closeRequested = true;
+#endif
 
-        if (event.type == SDL_DROPFILE && event.drop.file != nullptr)
-        {
-            std::string romPath(event.drop.file);
-            SDL_free(event.drop.file);
-            loadRomFromPath(romPath.c_str());
-        }
+        m_chip8topiaInputHandler.update(*this, event);
     }
-
-    //    m_chip8topiaInputHandler.update(m_window);
 
     m_inputUpdateTime = std::chrono::duration<float, std::chrono::milliseconds::period>(std::chrono::high_resolution_clock::now() - start).count();
 }
@@ -356,6 +351,23 @@ void Chip8topia::handleScreenUpdate()
     SDL_GL_SwapWindow(m_window);
 
     m_screenUpdateTime = std::chrono::duration<float, std::chrono::milliseconds::period>(std::chrono::high_resolution_clock::now() - start).count();
+}
+
+void Chip8topia::loadRomFromPath(const std::string& filePath)
+{
+    try
+    {
+        std::vector<uint8> rom = Chip8RomLoader::loadRomFromPath(filePath);
+        m_chip8Emulator->loadRom(rom);
+        m_chip8Emulator->setRomName(Chip8RomLoader::getRomNameFromPath(filePath));
+        ImGui::InsertNotification({ ImGuiToastType::Success, TOAST_DURATION_SUCCESS, "Rom loaded successfully" });
+        LOG_INFO("Rom loaded successfully");
+    }
+    catch (const std::exception& e)
+    {
+        ImGui::InsertNotification({ ImGuiToastType::Error, TOAST_DURATION_ERROR, e.what() });
+        LOG_ERROR(e.what());
+    }
 }
 
 void Chip8topia::centerWindow()
@@ -582,23 +594,6 @@ auto Chip8topia::getDependenciesInfos() -> std::string
         getSpdlogVersion()
 #endif
     );
-}
-
-void Chip8topia::loadRomFromPath(const std::string& filePath)
-{
-    try
-    {
-        std::vector<uint8> rom = Chip8RomLoader::loadRomFromPath(filePath);
-        m_chip8Emulator->loadRom(rom);
-        m_chip8Emulator->setRomName(Chip8RomLoader::getRomNameFromPath(filePath));
-        ImGui::InsertNotification({ ImGuiToastType::Success, TOAST_DURATION_SUCCESS, "Rom loaded successfully" });
-        LOG_INFO("Rom loaded successfully");
-    }
-    catch (const std::exception& e)
-    {
-        ImGui::InsertNotification({ ImGuiToastType::Error, TOAST_DURATION_ERROR, e.what() });
-        LOG_ERROR(e.what());
-    }
 }
 
 #if !defined(BUILD_RELEASE) && !defined(__EMSCRIPTEN__)

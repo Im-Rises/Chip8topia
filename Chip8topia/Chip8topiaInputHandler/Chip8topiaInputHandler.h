@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <SDL.h>
 #include <fmt/format.h>
 #include <binaryLib/binaryLib.h>
 #include <Singleton/Singleton.h>
@@ -8,7 +9,7 @@
 #include "SubscriberEventSystem/MultiSubscriberEvent.h"
 #include "SubscriberEventSystem/SingleSubscriberEvent.h"
 
-struct GLFWwindow;
+class Chip8topia;
 class Chip8topiaInputHandler final : public Singleton<Chip8topiaInputHandler>
 {
     friend class Singleton<Chip8topiaInputHandler>;
@@ -24,8 +25,8 @@ public:
     auto operator=(Chip8topiaInputHandler&&) -> Chip8topiaInputHandler& = delete;
 
 public:
-    void update(GLFWwindow* window) const;
-    //    static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+    void update(Chip8topia& chip8topia, SDL_Event& event) const;
+
     [[nodiscard]] auto getInputEnabled() const -> bool;
     void setInputEnabled(const bool inputEnabled);
 

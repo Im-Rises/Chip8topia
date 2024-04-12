@@ -39,7 +39,6 @@ if (NOT EMSCRIPTEN)
     target_link_libraries(${PROJECT_NAME} PRIVATE ${STB_LIBRARIES})
 
     if (WIN32)
-        target_link_libraries(${PROJECT_NAME} PUBLIC winmm.lib) # For timer precision (timeBeginPeriod)
         target_link_libraries(${PROJECT_NAME} PUBLIC Pdh.lib) # For RAM usage
         target_link_libraries(${PROJECT_NAME} PUBLIC psapi.lib) # For CPU usage
     endif ()

@@ -69,11 +69,11 @@ private:
     void handleScreenUpdate();
 
 public:
-    void centerWindow();
+    void loadRomFromPath(const std::string& filePath);
 
+    void centerWindow();
     void toggleFullScreen();
     void toggleTurboMode();
-
     void setVsyncEnabled(const bool isVSyncEnabled);
 #ifndef __EMSCRIPTEN__
     void setWindowIcon();
@@ -113,8 +113,6 @@ private:
     static auto getSpdlogVersion() -> std::string;
 #endif
     static auto getDependenciesInfos() -> std::string;
-
-    void loadRomFromPath(const std::string& filePath);
 
 #if !defined(BUILD_RELEASE) && !defined(__EMSCRIPTEN__)
     void loadDebugRom();
