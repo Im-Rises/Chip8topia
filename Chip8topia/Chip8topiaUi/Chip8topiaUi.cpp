@@ -83,12 +83,12 @@ void Chip8topiaUi::drawViewMenu(Chip8topia& chip8topia)
 #ifndef __EMSCRIPTEN__
         if (ImGui::MenuItem(ICON_FA_WINDOW_RESTORE " Center window", "F10"))
         {
-            chip8topia.centerWindow();
+            Chip8topiaInputHandler::getInstance().m_CenterWindowEvent.trigger();
         }
 
         if (ImGui::MenuItem(ICON_FA_WINDOW_MAXIMIZE " Fullscreen", "F11"))
         {
-            chip8topia.toggleFullScreen();
+            Chip8topiaInputHandler::getInstance().m_ToggleFullScreenEvent.trigger();
         }
 #endif
 

@@ -17,7 +17,7 @@ void Chip8topiaEmulationUi::drawEmulationMenu(Chip8topia& chip8topia)
 
         if (ImGui::MenuItem(fmt::format(ICON_FA_ROCKET " Toggle turbo mode : {}", chip8topia.getIsTurboMode() ? "ON " : "OFF").c_str(), "Y", chip8topia.getIsTurboMode()))
         {
-            chip8topia.toggleTurboMode();
+            Chip8topiaInputHandler::getInstance().m_ToggleTurboModeEvent.trigger();
         }
 
         const bool isPaused = chip8topia.getChip8Emulator().getIsBreak();

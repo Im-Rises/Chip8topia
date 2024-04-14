@@ -36,10 +36,11 @@ public:
     SingleSubscriberEvent<> m_StepEmulationEvent;
     SingleSubscriberEvent<> m_RunEmulationEvent;
     SingleSubscriberEvent<> m_ClearBreakpointsEvent;
+    SingleSubscriberEvent<const std::string&> m_LoadRomFromPath;
 
     /* Input Events */
 #ifndef __EMSCRIPTEN__
-    SingleSubscriberEvent<> m_ExitChip8topiaEvent;
+    //    SingleSubscriberEvent<> m_ExitChip8topiaEvent;
     SingleSubscriberEvent<> m_ToggleTurboModeEvent;
     SingleSubscriberEvent<> m_CenterWindowEvent;
     SingleSubscriberEvent<> m_ToggleFullScreenEvent;

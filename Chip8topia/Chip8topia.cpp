@@ -220,10 +220,11 @@ auto Chip8topia::init() -> int
 
     // Set input callbacks
 #ifndef __EMSCRIPTEN__
-    m_chip8topiaInputHandler.m_ExitChip8topiaEvent.subscribe(this, &Chip8topia::closeRequest);
+    //    m_chip8topiaInputHandler.m_ExitChip8topiaEvent.subscribe(this, &Chip8topia::closeRequest);
     m_chip8topiaInputHandler.m_ToggleTurboModeEvent.subscribe(this, &Chip8topia::toggleTurboMode);
     m_chip8topiaInputHandler.m_CenterWindowEvent.subscribe(this, &Chip8topia::centerWindow);
     m_chip8topiaInputHandler.m_ToggleFullScreenEvent.subscribe(this, &Chip8topia::toggleFullScreen);
+    m_chip8topiaInputHandler.m_LoadRomFromPath.subscribe(this, &Chip8topia::loadRomFromPath);
 #endif
 
 #if !defined(BUILD_RELEASE) && !defined(__EMSCRIPTEN__)
@@ -239,10 +240,11 @@ auto Chip8topia::init() -> int
 void Chip8topia::cleanup()
 {
 #ifndef __EMSCRIPTEN__
-    m_chip8topiaInputHandler.m_ExitChip8topiaEvent.unsubscribe(this, &Chip8topia::closeRequest);
+    //    m_chip8topiaInputHandler.m_ExitChip8topiaEvent.unsubscribe(this, &Chip8topia::closeRequest);
     m_chip8topiaInputHandler.m_ToggleTurboModeEvent.unsubscribe(this, &Chip8topia::toggleTurboMode);
     m_chip8topiaInputHandler.m_CenterWindowEvent.unsubscribe(this, &Chip8topia::centerWindow);
     m_chip8topiaInputHandler.m_ToggleFullScreenEvent.unsubscribe(this, &Chip8topia::toggleFullScreen);
+    m_chip8topiaInputHandler.m_LoadRomFromPath.unsubscribe(this, &Chip8topia::loadRomFromPath);
 #endif
 
 #if !defined(BUILD_RELEASE)
@@ -353,6 +355,40 @@ void Chip8topia::handleScreenUpdate()
     m_screenUpdateTime = std::chrono::duration<float, std::chrono::milliseconds::period>(std::chrono::high_resolution_clock::now() - start).count();
 }
 
+#ifndef __EMSCRIPTEN__
+void Chip8topia::setWindowIcon()
+{
+    int width = 0;
+    int height = 0;
+    int channelsCount = 0;
+    unsigned char* imagePixels = stbi_load(CHIP8TOPIA_ICON_PATH, &width, &height, &channelsCount, 0);
+    if (imagePixels == nullptr)
+    {
+        ImGui::InsertNotification({ ImGuiToastType::Error, TOAST_DURATION_ERROR, "Failed to load window icon", fmt::format("Cannot load icon at {}", CHIP8TOPIA_ICON_PATH).c_str() });
+        LOG_ERROR(fmt::format("Failed to load window icon at {}", CHIP8TOPIA_ICON_PATH));
+        return;
+    }
+
+    SDL_Surface* icon = SDL_CreateRGBSurfaceWithFormatFrom(imagePixels, width, height, 32, width * 4, SDL_PIXELFORMAT_RGBA32);
+    SDL_SetWindowIcon(m_window, icon);
+    SDL_FreeSurface(icon);
+
+    stbi_image_free(imagePixels);
+}
+
+void Chip8topia::updateWindowTitle(const float fps)
+{
+    SDL_SetWindowTitle(m_window, fmt::format("{} - {} - {} - {:.1f} fps", PROJECT_NAME, m_chip8Emulator->getConsoleName().c_str(), m_chip8Emulator->getRomName().c_str(), fps).c_str());
+}
+#endif
+
+#if !defined(BUILD_RELEASE) && !defined(__EMSCRIPTEN__)
+void Chip8topia::loadDebugRom()
+{
+    loadRomFromPath(DEBUG_ROM_PATH);
+}
+#endif
+
 void Chip8topia::loadRomFromPath(const std::string& filePath)
 {
     try
@@ -416,33 +452,6 @@ void Chip8topia::setVsyncEnabled(const bool isVsyncEnabled)
 {
     SDL_GL_SetSwapInterval(isVsyncEnabled ? 1 : 0);
 }
-
-#ifndef __EMSCRIPTEN__
-void Chip8topia::setWindowIcon()
-{
-    int width = 0;
-    int height = 0;
-    int channelsCount = 0;
-    unsigned char* imagePixels = stbi_load(CHIP8TOPIA_ICON_PATH, &width, &height, &channelsCount, 0);
-    if (imagePixels == nullptr)
-    {
-        ImGui::InsertNotification({ ImGuiToastType::Error, TOAST_DURATION_ERROR, "Failed to load window icon", fmt::format("Cannot load icon at {}", CHIP8TOPIA_ICON_PATH).c_str() });
-        LOG_ERROR(fmt::format("Failed to load window icon at {}", CHIP8TOPIA_ICON_PATH));
-        return;
-    }
-
-    SDL_Surface* icon = SDL_CreateRGBSurfaceWithFormatFrom(imagePixels, width, height, 32, width * 4, SDL_PIXELFORMAT_RGBA32);
-    SDL_SetWindowIcon(m_window, icon);
-    SDL_FreeSurface(icon);
-
-    stbi_image_free(imagePixels);
-}
-
-void Chip8topia::updateWindowTitle(const float fps)
-{
-    SDL_SetWindowTitle(m_window, fmt::format("{} - {} - {} - {:.1f} fps", PROJECT_NAME, m_chip8Emulator->getConsoleName().c_str(), m_chip8Emulator->getRomName().c_str(), fps).c_str());
-}
-#endif
 
 auto Chip8topia::getChip8Emulator() -> Chip8Emulator&
 {
@@ -600,10 +609,3 @@ auto Chip8topia::getDependenciesInfos() -> std::string
 #endif
     );
 }
-
-#if !defined(BUILD_RELEASE) && !defined(__EMSCRIPTEN__)
-void Chip8topia::loadDebugRom()
-{
-    loadRomFromPath(DEBUG_ROM_PATH);
-}
-#endif

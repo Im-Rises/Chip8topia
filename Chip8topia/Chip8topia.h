@@ -68,18 +68,22 @@ private:
     void handleGameUpdate();
     void handleScreenUpdate();
 
-public:
+#ifndef __EMSCRIPTEN__
+    void setWindowIcon();
+    void updateWindowTitle(const float fps);
+#endif
+
+#if !defined(BUILD_RELEASE) && !defined(__EMSCRIPTEN__)
+    void loadDebugRom();
+#endif
     void loadRomFromPath(const std::string& filePath);
 
     void centerWindow();
     void toggleFullScreen();
     void toggleTurboMode();
     void setVsyncEnabled(const bool isVSyncEnabled);
-#ifndef __EMSCRIPTEN__
-    void setWindowIcon();
-    void updateWindowTitle(const float fps);
-#endif
 
+public:
     [[nodiscard]] auto getChip8Emulator() -> Chip8Emulator&;
     [[nodiscard]] auto getIsTurboMode() const -> bool;
 
@@ -98,7 +102,6 @@ public:
     [[nodiscard]] auto getWindowMaximized() const -> bool;
     [[nodiscard]] auto getWindowMinimized() const -> bool;
 
-private:
     static auto getOpenGLVendor() -> std::string_view;
     static auto getOpenGLVersion() -> std::string_view;
     static auto getGLSLVersion() -> std::string_view;
@@ -113,10 +116,6 @@ private:
     static auto getSpdlogVersion() -> std::string;
 #endif
     static auto getDependenciesInfos() -> std::string;
-
-#if !defined(BUILD_RELEASE) && !defined(__EMSCRIPTEN__)
-    void loadDebugRom();
-#endif
 
 private:
     SDL_Window* m_window;
