@@ -30,10 +30,11 @@ void Chip8topiaUi::drawMainMenuBar(Chip8topia& chip8topia)
         drawViewMenu(chip8topia);
         m_chip8topiaEmulationUi.drawEmulationMenu(chip8topia);
         m_chip8topiaVideoUi.drawVideoMenu();
+        m_chip8topiaSoundUi.drawSoundMenu();
         m_chip8topiatopiaDebugger.drawDebuggerMenu();
         m_chip8topiaAbout.drawAboutMenu();
 #if !defined(BUILD_RELEASE)
-        if (ImGui::MenuItem(ICON_FA_INDUSTRY " Demo"))
+        if (ImGui::MenuItem(ICON_FA_INDUSTRY " ImGui Demo"))
         {
             m_showDemo = !m_showDemo;
         }
@@ -50,6 +51,7 @@ void Chip8topiaUi::drawMainMenuBar(Chip8topia& chip8topia)
     }
 
     m_chip8topiaVideoUi.drawVideoWindows(chip8topia.getChip8Emulator());
+    m_chip8topiaSoundUi.drawSoundWindows(chip8topia.getChip8Emulator());
     m_chip8topiatopiaDebugger.drawDebuggerWindows(chip8topia.getChip8Emulator());
     m_chip8topiaRomLoaderUi.drawRomWindow(chip8topia);
     m_chip8topiaEmulationUi.drawEmulationWindows(chip8topia, m_isMenuBarOpen);

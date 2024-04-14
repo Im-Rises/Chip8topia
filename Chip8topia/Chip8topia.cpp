@@ -63,7 +63,8 @@ auto Chip8topia::run() -> int
         handleInputs();
         handleUi();
         handleGameUpdate();
-        handleScreenUpdate();
+        handleSoundEmission();
+        handleScreenRender();
 
         auto delay = std::chrono::duration<float, std::chrono::milliseconds::period>(std::chrono::high_resolution_clock::now() - currentTime).count();
 
@@ -313,7 +314,14 @@ void Chip8topia::handleGameUpdate()
     m_gameUpdateTime = std::chrono::duration<float, std::chrono::milliseconds::period>(std::chrono::high_resolution_clock::now() - start).count();
 }
 
-void Chip8topia::handleScreenUpdate()
+void Chip8topia::handleSoundEmission()
+{
+    auto start = std::chrono::high_resolution_clock::now();
+    m_chip8Emulator->emitSound();
+    m_soundEmissionTime = std::chrono::duration<float, std::chrono::milliseconds::period>(std::chrono::high_resolution_clock::now() - start).count();
+}
+
+void Chip8topia::handleScreenRender()
 {
     auto start = std::chrono::high_resolution_clock::now();
 
@@ -352,7 +360,7 @@ void Chip8topia::handleScreenUpdate()
 
     SDL_GL_SwapWindow(m_window);
 
-    m_screenUpdateTime = std::chrono::duration<float, std::chrono::milliseconds::period>(std::chrono::high_resolution_clock::now() - start).count();
+    m_screenRenderTime = std::chrono::duration<float, std::chrono::milliseconds::period>(std::chrono::high_resolution_clock::now() - start).count();
 }
 
 #ifndef __EMSCRIPTEN__
@@ -478,9 +486,14 @@ auto Chip8topia::getGameUpdateTime() const -> float
     return m_gameUpdateTime;
 }
 
-auto Chip8topia::getScreenUpdateTime() const -> float
+auto Chip8topia::getSoundEmissionTime() const -> float
 {
-    return m_screenUpdateTime;
+    return m_soundEmissionTime;
+}
+
+auto Chip8topia::getScreenRenderTime() const -> float
+{
+    return m_screenRenderTime;
 }
 
 auto Chip8topia::getDeltaTime() const -> float
@@ -566,13 +579,18 @@ auto Chip8topia::getStbImageVersion() -> std::string
 
 auto Chip8topia::getFmtVersion() -> std::string
 {
-    return std::to_string(FMT_VERSION);
+    //    return std::to_string(FMT_VERSION);
+    constexpr int major = FMT_VERSION / 10000;
+    constexpr int minor = (FMT_VERSION / 100) % 100;
+    constexpr int patch = FMT_VERSION % 100;
+    return fmt::format("{}.{}.{}", major, minor, patch);
 }
 
 #if !defined(BUILD_RELEASE)
 auto Chip8topia::getSpdlogVersion() -> std::string
 {
-    return std::to_string(SPDLOG_VERSION);
+    //        return std::to_string(SPDLOG_VERSION);
+    return fmt::format("{}.{}.{}", SPDLOG_VER_MAJOR, SPDLOG_VER_MINOR, SPDLOG_VER_PATCH);
 }
 #endif
 

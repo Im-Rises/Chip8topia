@@ -5,7 +5,7 @@
 #include "ChipCores/Chip8Core/Chip8Core.h"
 #include "Chip8CoreBase/Core/CpuBase.h"
 #include "Chip8Emulator/Chip8VideoEmulation.h"
-// #include "Chip8Emulation/Chip8SoundEmulation.h"
+#include "Chip8Emulator/Chip8SoundEmulation.h"
 
 class Chip8Emulator
 {
@@ -34,22 +34,12 @@ public:
     void loadRom(const std::vector<uint8_t>& romData);
 
     void update(const float deltaTime);
+    void emitSound();
     void render(const float screenWidth, const float screenHeight);
 
-    [[nodiscard]] auto getChip8Core() -> Chip8CoreBase*;
-    [[nodiscard]] auto getChip8VideoEmulation() -> Chip8VideoEmulation&;
-    [[nodiscard]] auto getRomName() const -> std::string;
-    [[nodiscard]] auto getConsoleName() -> std::string;
-    [[nodiscard]] auto getIsBreak() const -> bool;
-    [[nodiscard]] auto getIsRomLoaded() const -> bool;
-    [[nodiscard]] auto getCanBreak() -> bool*;
-    [[nodiscard]] auto getBreakpoints() -> std::array<bool, CpuBase::MEMORY_SIZE>&;
-    [[nodiscard]] auto getBreakpointsList() -> std::set<uint16>&;
-    [[nodiscard]] auto getCoreType() const -> Chip8CoreType;
-    [[nodiscard]] auto getFrequency() const -> Chip8Frequency;
-    //    [[nodiscard]] auto getPcHistory() const -> const std::vector<uint16>&;
-
     void stop();
+    void setSoundVolume(float volume);
+
 #if defined(BUILD_PARAM_SAFE)
     void triggerEmulationError(const std::string& message);
 #endif
@@ -66,12 +56,26 @@ public:
 private:
     void OnInput(const uint8 key, const bool isPressed);
 
+public:
+    [[nodiscard]] auto getChip8Core() -> Chip8CoreBase*;
+    [[nodiscard]] auto getChip8VideoEmulation() -> Chip8VideoEmulation&;
+    [[nodiscard]] auto getRomName() const -> std::string;
+    [[nodiscard]] auto getConsoleName() -> std::string;
+    [[nodiscard]] auto getIsBreak() const -> bool;
+    [[nodiscard]] auto getIsRomLoaded() const -> bool;
+    [[nodiscard]] auto getCanBreak() -> bool*;
+    [[nodiscard]] auto getBreakpoints() -> std::array<bool, CpuBase::MEMORY_SIZE>&;
+    [[nodiscard]] auto getBreakpointsList() -> std::set<uint16>&;
+    [[nodiscard]] auto getCoreType() const -> Chip8CoreType;
+    [[nodiscard]] auto getFrequency() const -> Chip8Frequency;
+    //    [[nodiscard]] auto getPcHistory() const -> const std::vector<uint16>&;
+
 private:
     std::string m_romName = "ROM";
 
     std::unique_ptr<Chip8CoreBase> m_core;
     Chip8VideoEmulation m_videoEmulation;
-    //    Chip8SoundEmulation m_soundEmulation;
+    Chip8SoundEmulation m_soundEmulation;
 
     //    float m_accumulator;
     bool m_isRomLoaded;
@@ -80,6 +84,7 @@ private:
     bool m_step;
     bool m_canBreak;
     bool m_errorTriggered;
+    bool m_soundMuted;
 
     std::set<uint16> m_breakpointsList;
     std::array<bool, CpuBase::MEMORY_SIZE> m_breakpoints;
