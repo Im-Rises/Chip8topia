@@ -25,6 +25,7 @@ public:
     ~Chip8SoundEmulation();
 
 public:
+    void initSoundBuffer();
     void update(const std::unique_ptr<Chip8CoreBase>& chip8Core);
     void stop();
 
@@ -32,11 +33,17 @@ private:
     static void soundPlayerCallback(void* userdata, unsigned char* stream, int len);
     void soundPlayer(unsigned char* stream, int len);
 
+public:
+    [[nodiscard]] auto getIsPlaying() const -> bool;
+    [[nodiscard]] auto getFrequencyPtr() -> int*;
+    [[nodiscard]] auto getVolumePtr() -> float*;
+
 private:
     SDL_AudioSpec m_spec;
     SDL_AudioDeviceID m_dev;
     std::array<Sint16, BUFFER_LEN> m_buffer;
     int m_bufferPosition;
+    int m_squareSoundFrequency;
     float m_volume;
     bool m_isPlaying;
 };

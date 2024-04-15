@@ -40,19 +40,24 @@ Chip8SoundEmulation::Chip8SoundEmulation() : m_buffer{},
                                              },
                                              m_bufferPosition(0),
                                              m_volume(0.5),
-                                             m_isPlaying(false)
+                                             m_isPlaying(false),
+                                             m_squareSoundFrequency(440)
 {
     m_dev = SDL_OpenAudioDevice(nullptr, 0, &m_spec, nullptr, 0);
-
-    for (int i = 0; i < BUFFER_LEN; i++)
-    {
-        m_buffer[i] = format(square(440, i), m_volume);
-    }
+    initSoundBuffer();
 }
 
 Chip8SoundEmulation::~Chip8SoundEmulation()
 {
     SDL_CloseAudioDevice(m_dev);
+}
+
+void Chip8SoundEmulation::initSoundBuffer()
+{
+    for (int i = 0; i < BUFFER_LEN; i++)
+    {
+        m_buffer[i] = format(square(m_squareSoundFrequency, i), m_volume);
+    }
 }
 
 void Chip8SoundEmulation::update(const std::unique_ptr<Chip8CoreBase>& chip8Core)
@@ -104,4 +109,19 @@ void Chip8SoundEmulation::soundPlayer(unsigned char* stream, int len)
     SDL_memcpy(stream, &m_buffer[m_bufferPosition], len * 2);
 
     m_bufferPosition += len;
+}
+
+auto Chip8SoundEmulation::getIsPlaying() const -> bool
+{
+    return m_isPlaying;
+}
+
+auto Chip8SoundEmulation::getFrequencyPtr() -> int*
+{
+    return &m_squareSoundFrequency;
+}
+
+auto Chip8SoundEmulation::getVolumePtr() -> float*
+{
+    return &m_volume;
 }

@@ -30,7 +30,7 @@ void Chip8topiaUi::drawMainMenuBar(Chip8topia& chip8topia)
         drawViewMenu(chip8topia);
         m_chip8topiaEmulationUi.drawEmulationMenu(chip8topia);
         m_chip8topiaVideoUi.drawVideoMenu();
-        m_chip8topiaSoundUi.drawSoundMenu();
+        m_chip8topiaSoundUi.drawSoundMenu(chip8topia.getChip8Emulator());
         m_chip8topiatopiaDebugger.drawDebuggerMenu();
         m_chip8topiaAbout.drawAboutMenu();
 #if !defined(BUILD_RELEASE)

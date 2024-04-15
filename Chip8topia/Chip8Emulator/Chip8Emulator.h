@@ -59,6 +59,7 @@ private:
 public:
     [[nodiscard]] auto getChip8Core() -> Chip8CoreBase*;
     [[nodiscard]] auto getChip8VideoEmulation() -> Chip8VideoEmulation&;
+    [[nodiscard]] auto getChip8SoundEmulation() -> Chip8SoundEmulation&;
     [[nodiscard]] auto getRomName() const -> std::string;
     [[nodiscard]] auto getConsoleName() -> std::string;
     [[nodiscard]] auto getIsBreak() const -> bool;
