@@ -48,14 +48,14 @@ Emulated consoles:
 
 ### Main
 
-- [x] Desktop and WebAssembly version
+- [x] Desktop and Web version
 - [x] Chip8, SCHIP1.1, SCHIPC and Xo-Chip support
 - [x] Pause/Resume/Restart the emulation
 - [x] Change the emulation speed
-- [x] Change the color of the screen
-- [x] Fullscreen mode (on the current screen the window is in)
-- [x] Load rom from file in Desktop and WebAssembly build
-- [x] Load integrated games in WebAssembly build
+- [x] Change the game colors
+- [x] Fullscreen mode
+- [x] Rom loader
+- [x] Sound
 
 ### Debug Tools
 

@@ -26,6 +26,7 @@ public:
 public:
     void drawSoundMenu(Chip8Emulator& emulator);
     void drawSoundWindows(Chip8Emulator& emulator);
+    void closeAllWindows();
 
 private:
     void drawSoundState(Chip8Emulator& emulator);

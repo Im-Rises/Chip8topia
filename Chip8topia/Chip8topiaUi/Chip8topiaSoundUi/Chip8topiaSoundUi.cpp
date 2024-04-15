@@ -24,6 +24,11 @@ void Chip8topiaSoundUi::drawSoundWindows(Chip8Emulator& emulator)
     drawSoundState(emulator);
 }
 
+void Chip8topiaSoundUi::closeAllWindows()
+{
+    m_isSoundStateWindowOpen = false;
+}
+
 void Chip8topiaSoundUi::drawSoundState(Chip8Emulator& emulator)
 {
     if (!m_isSoundStateWindowOpen)
