@@ -26,11 +26,11 @@ void Chip8topiaInputHandler::update(Chip8topia& chip8topia, SDL_Event& event) co
 #endif
 
 #if !defined(__EMSCRIPTEN__)
-        case SDLK_y: m_ToggleTurboModeEvent.trigger(); break;
         case SDLK_F10: m_CenterWindowEvent.trigger(); break;
         case SDLK_F11: m_ToggleFullScreenEvent.trigger(); break;
 #endif
 
+        case SDLK_y: m_ToggleTurboModeEvent.trigger(); break;
         case SDLK_u: m_ToggleMainBarEvent.trigger(); break;
         case SDLK_i: m_CloseAllWindowsEvent.trigger(); break;
         case SDLK_p: m_TogglePauseEmulationEvent.trigger(); break;

@@ -41,13 +41,13 @@ public:
     /* Input Events */
 #ifndef __EMSCRIPTEN__
     //    SingleSubscriberEvent<> m_ExitChip8topiaEvent;
-    SingleSubscriberEvent<> m_ToggleTurboModeEvent;
     SingleSubscriberEvent<> m_CenterWindowEvent;
     SingleSubscriberEvent<> m_ToggleFullScreenEvent;
 #endif
 #if !defined(BUILD_RELEASE)
     SingleSubscriberEvent<> m_DebugRomFastLoadEvent;
 #endif
+    SingleSubscriberEvent<> m_ToggleTurboModeEvent;
     SingleSubscriberEvent<> m_ToggleMainBarEvent;
     SingleSubscriberEvent<> m_CloseAllWindowsEvent;
     SingleSubscriberEvent<> m_TogglePauseEmulationEvent;

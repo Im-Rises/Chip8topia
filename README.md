@@ -15,7 +15,6 @@ The application is compiled with CMake and uses Vcpkg for most dependencies.
 For the WebAssembly version, it uses Emscripten to compile with vcpkg for most dependencies as well.
 
 It can emulate the original Chip8, the SCHIP1.1, SCHIPC and Xo-Chip.
-Currently, no sound is implemented, but it is planned.
 
 Platforms:
 
@@ -91,7 +90,8 @@ Emulated consoles:
 
 Major:
 
-- [ ] Add audio
+- [x] Add Chip8 audio
+- [ ] Add Xo-Chip audio
 - [ ] Replace the input handler singleton with another pattern...
 
 Minor:
