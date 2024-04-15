@@ -92,6 +92,7 @@ Emulated consoles:
 Major:
 
 - [ ] Add audio
+- [ ] Replace the input handler singleton with another pattern...
 
 Minor:
 
@@ -124,6 +125,7 @@ Profiling logs:
 - [johnearnest.github.io](http://johnearnest.github.io/Octo/docs/XO-ChipSpecification.html)
 - [johnearnest.github.io/chip8Archive](https://johnearnest.github.io/chip8Archive/?sort=platform)
 - [johnearnest.github.io/Octo](https://johnearnest.github.io/Octo/)
+- [jacobsebek SDL2 audio callack demo](https://gist.github.com/jacobsebek/10867cb10cdfccf1d6cfdd24fa23ee96)
 
 ## Rom links
 

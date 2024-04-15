@@ -85,7 +85,8 @@ void Chip8topiaInputHandler::update(Chip8topia& chip8topia, SDL_Event& event) co
         {
             std::string romPath(event.drop.file);
             SDL_free(event.drop.file);
-            chip8topia.loadRomFromPath(romPath);
+            // chip8topia.loadRomFromPath(romPath);
+            m_LoadRomFromPath.trigger(romPath);
         }
         else
         {

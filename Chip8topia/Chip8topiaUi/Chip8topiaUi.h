@@ -5,10 +5,12 @@
 
 #include "Chip8topiaDebugger/Chip8topiaDebugger.h"
 #include "Chip8topiaVideoUi/Chip8topiaVideoUi.h"
+#include "Chip8topiaSoundUi/Chip8topiaSoundUi.h"
 #include "Chip8topiaAbout/Chip8topiaAbout.h"
 #include "Chip8topiaRomLoaderUi/Chip8topiaRomLoaderUi.h"
 #include "Chip8topiaEmulationUi/Chip8topiaEmulationUi.h"
 #include "Chip8topiaMessageHandler/Chip8topiaMessageHandler.h"
+
 class Chip8topia;
 class Chip8topiaUi
 {
@@ -35,12 +37,13 @@ private:
     Chip8topiaRomLoaderUi m_chip8topiaRomLoaderUi;
     Chip8topiaEmulationUi m_chip8topiaEmulationUi;
     Chip8topiaVideoUi m_chip8topiaVideoUi;
+    Chip8topiaSoundUi m_chip8topiaSoundUi;
     Chip8topiaDebugger m_chip8topiatopiaDebugger;
     Chip8topiaAbout m_chip8topiaAbout;
     Chip8topiaMessageHandler m_chip8topiaError;
 
     bool m_isMenuBarOpen = true;
-    
+
 #if defined(BUILD_DEBUG)
     bool m_showDemo = false;
     bool m_showImGuiMetrics = false;

@@ -37,8 +37,9 @@ private:
     static constexpr int FONT_AWESOME_INIT_ERROR_CODE = 5;
 #if !defined(BUILD_RELEASE)
     //    static constexpr const char* const DEBUG_ROM_PATH = "trash/chip8-test-suite-main/bin/8-scrolling.ch8";
+    static constexpr const char* const DEBUG_ROM_PATH = "trash/chip8-test-suite-main/bin/7-beep.ch8";
     //    static constexpr const char* const DEBUG_ROM_PATH = "trash/chip8-test-suite-main/bin/5-quirks.ch8";
-    static constexpr const char* const DEBUG_ROM_PATH = "trash/games/t8nks.ch8";
+//    static constexpr const char* const DEBUG_ROM_PATH = "trash/games/t8nks.ch8";
 //    static constexpr const char* const DEBUG_ROM_PATH = "trash/games/alien-inv8sion.ch8";
 //    static constexpr const char* const DEBUG_ROM_PATH = "trash/games/color-scroll-test-xochip.ch8";
 #endif
@@ -66,27 +67,33 @@ private:
     void handleInputs();
     void handleUi();
     void handleGameUpdate();
-    void handleScreenUpdate();
+    void handleSoundEmission();
+    void handleScreenRender();
 
-public:
+#ifndef __EMSCRIPTEN__
+    void setWindowIcon();
+    void updateWindowTitle(const float fps);
+#endif
+
+#if !defined(BUILD_RELEASE) && !defined(__EMSCRIPTEN__)
+    void loadDebugRom();
+#endif
     void loadRomFromPath(const std::string& filePath);
 
     void centerWindow();
     void toggleFullScreen();
     void toggleTurboMode();
     void setVsyncEnabled(const bool isVSyncEnabled);
-#ifndef __EMSCRIPTEN__
-    void setWindowIcon();
-    void updateWindowTitle(const float fps);
-#endif
 
+public:
     [[nodiscard]] auto getChip8Emulator() -> Chip8Emulator&;
     [[nodiscard]] auto getIsTurboMode() const -> bool;
 
     [[nodiscard]] auto getInputUpdateTime() const -> float;
     [[nodiscard]] auto getUiUpdateTime() const -> float;
     [[nodiscard]] auto getGameUpdateTime() const -> float;
-    [[nodiscard]] auto getScreenUpdateTime() const -> float;
+    [[nodiscard]] auto getSoundEmissionTime() const -> float;
+    [[nodiscard]] auto getScreenRenderTime() const -> float;
     [[nodiscard]] auto getDeltaTime() const -> float;
 
     [[nodiscard]] auto getWindowPosition() const -> std::pair<int, int>;
@@ -98,7 +105,6 @@ public:
     [[nodiscard]] auto getWindowMaximized() const -> bool;
     [[nodiscard]] auto getWindowMinimized() const -> bool;
 
-private:
     static auto getOpenGLVendor() -> std::string_view;
     static auto getOpenGLVersion() -> std::string_view;
     static auto getGLSLVersion() -> std::string_view;
@@ -113,10 +119,6 @@ private:
     static auto getSpdlogVersion() -> std::string;
 #endif
     static auto getDependenciesInfos() -> std::string;
-
-#if !defined(BUILD_RELEASE) && !defined(__EMSCRIPTEN__)
-    void loadDebugRom();
-#endif
 
 private:
     SDL_Window* m_window;
@@ -141,6 +143,7 @@ private:
     float m_inputUpdateTime = 0.0F;
     float m_uiUpdateTime = 0.0F;
     float m_gameUpdateTime = 0.0F;
-    float m_screenUpdateTime = 0.0F;
+    float m_soundEmissionTime = 0.0F;
+    float m_screenRenderTime = 0.0F;
     float m_deltaTime = 0.0F;
 };

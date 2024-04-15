@@ -17,7 +17,7 @@ void Chip8topiaEmulationUi::drawEmulationMenu(Chip8topia& chip8topia)
 
         if (ImGui::MenuItem(fmt::format(ICON_FA_ROCKET " Toggle turbo mode : {}", chip8topia.getIsTurboMode() ? "ON " : "OFF").c_str(), "Y", chip8topia.getIsTurboMode()))
         {
-            chip8topia.toggleTurboMode();
+            Chip8topiaInputHandler::getInstance().m_ToggleTurboModeEvent.trigger();
         }
 
         const bool isPaused = chip8topia.getChip8Emulator().getIsBreak();
@@ -149,7 +149,8 @@ void Chip8topiaEmulationUi::drawProfiler(Chip8topia& chip8topia)
             ImGui::Text("Input Time: %06.3f ms", chip8topia.getInputUpdateTime());
             ImGui::Text("UI Time: %06.3f ms", chip8topia.getUiUpdateTime());
             ImGui::Text("Game Time: %06.3f ms", chip8topia.getGameUpdateTime());
-            ImGui::Text("Screen Time: %06.3f ms", chip8topia.getScreenUpdateTime());
+            ImGui::Text("Sound Time: %06.3f ms", chip8topia.getSoundEmissionTime());
+            ImGui::Text("Screen Time: %06.3f ms", chip8topia.getScreenRenderTime());
             ImGui::Text("Total Time: %06.3f ms", chip8topia.getDeltaTime() * 1000.0F);
             ImGui::End();
         }
