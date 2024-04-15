@@ -222,11 +222,12 @@ auto Chip8topia::init() -> int
     // Set input callbacks
 #ifndef __EMSCRIPTEN__
     //    m_chip8topiaInputHandler.m_ExitChip8topiaEvent.subscribe(this, &Chip8topia::closeRequest);
-    m_chip8topiaInputHandler.m_ToggleTurboModeEvent.subscribe(this, &Chip8topia::toggleTurboMode);
     m_chip8topiaInputHandler.m_CenterWindowEvent.subscribe(this, &Chip8topia::centerWindow);
     m_chip8topiaInputHandler.m_ToggleFullScreenEvent.subscribe(this, &Chip8topia::toggleFullScreen);
     m_chip8topiaInputHandler.m_LoadRomFromPath.subscribe(this, &Chip8topia::loadRomFromPath);
 #endif
+
+    m_chip8topiaInputHandler.m_ToggleTurboModeEvent.subscribe(this, &Chip8topia::toggleTurboMode);
 
 #if !defined(BUILD_RELEASE) && !defined(__EMSCRIPTEN__)
     m_chip8topiaInputHandler.m_DebugRomFastLoadEvent.subscribe(this, &Chip8topia::loadDebugRom);
@@ -242,11 +243,12 @@ void Chip8topia::cleanup()
 {
 #ifndef __EMSCRIPTEN__
     //    m_chip8topiaInputHandler.m_ExitChip8topiaEvent.unsubscribe(this, &Chip8topia::closeRequest);
-    m_chip8topiaInputHandler.m_ToggleTurboModeEvent.unsubscribe(this, &Chip8topia::toggleTurboMode);
     m_chip8topiaInputHandler.m_CenterWindowEvent.unsubscribe(this, &Chip8topia::centerWindow);
     m_chip8topiaInputHandler.m_ToggleFullScreenEvent.unsubscribe(this, &Chip8topia::toggleFullScreen);
     m_chip8topiaInputHandler.m_LoadRomFromPath.unsubscribe(this, &Chip8topia::loadRomFromPath);
 #endif
+
+    m_chip8topiaInputHandler.m_ToggleTurboModeEvent.unsubscribe(this, &Chip8topia::toggleTurboMode);
 
 #if !defined(BUILD_RELEASE)
     m_chip8topiaInputHandler.m_DebugRomFastLoadEvent.unsubscribe(this, &Chip8topia::loadDebugRom);
