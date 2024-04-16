@@ -3,7 +3,8 @@
 #include "SubscriberEventBase.h"
 
 template <typename... Args>
-class MultiSubscriberEvent final : public SubscriberEventBase<Args...> {
+class MultiSubscriberEvent final : public SubscriberEventBase<Args...>
+{
 public:
     MultiSubscriberEvent() = default;
     MultiSubscriberEvent(const MultiSubscriberEvent&) = delete;
@@ -11,15 +12,15 @@ public:
     auto operator=(const MultiSubscriberEvent&) -> MultiSubscriberEvent& = delete;
     auto operator=(MultiSubscriberEvent&&) -> MultiSubscriberEvent& = delete;
     ~MultiSubscriberEvent() final = default;
-
+    
 public:
 #pragma region Method
     // We use two template arguments to handle the case where we register a method from the parent of the class with a child class instance
     template <class T, class U>
-    auto subscribe(U* instance, void (T::*method)(Args...)) -> bool {
-        auto it = std::find_if(m_functionMethodPointers.begin(), m_functionMethodPointers.end(), [instance, method](const auto& methodEvent) {
-            return *methodEvent == MethodEventVarying<T, Args...>(instance, method);
-        });
+    auto subscribe(U* instance, void (T::*method)(Args...)) -> bool
+    {
+        auto it = std::find_if(m_functionMethodPointers.begin(), m_functionMethodPointers.end(), [instance, method](const auto& methodEvent)
+            { return *methodEvent == MethodEventVarying<T, Args...>(instance, method); });
 
         if (it != m_functionMethodPointers.end())
             return false;
@@ -29,10 +30,10 @@ public:
     }
 
     template <class T, class U>
-    auto unsubscribe(U* instance, void (T::*method)(Args...)) -> bool {
-        auto it = std::find_if(m_functionMethodPointers.begin(), m_functionMethodPointers.end(), [instance, method](const auto& methodEvent) {
-            return *methodEvent == MethodEventVarying<T, Args...>(instance, method);
-        });
+    auto unsubscribe(U* instance, void (T::*method)(Args...)) -> bool
+    {
+        auto it = std::find_if(m_functionMethodPointers.begin(), m_functionMethodPointers.end(), [instance, method](const auto& methodEvent)
+            { return *methodEvent == MethodEventVarying<T, Args...>(instance, method); });
 
         if (it == m_functionMethodPointers.end())
             return false;
@@ -42,21 +43,23 @@ public:
     }
 
     template <class T>
-    auto operator+=(const MethodEventVarying<T, Args...>& methodEvent) -> bool {
+    auto operator+=(const MethodEventVarying<T, Args...>& methodEvent) -> bool
+    {
         return subscribe(methodEvent);
     }
 
     template <class T>
-    auto operator-=(const MethodEventVarying<T, Args...>& methodEvent) -> bool {
+    auto operator-=(const MethodEventVarying<T, Args...>& methodEvent) -> bool
+    {
         return unsubscribe(methodEvent);
     }
 
     template <class T>
-    auto isRegistered(const MethodEventVarying<T, Args...>& methodEvent) const -> bool {
+    auto isRegistered(const MethodEventVarying<T, Args...>& methodEvent) const -> bool
+    {
         if (const auto* methodEventVarying = dynamic_cast<const MethodEventVarying<Args...>*>(&methodEvent))
-            return std::any_of(m_functionMethodPointers.begin(), m_functionMethodPointers.end(), [methodEventVarying](const auto& methodEvent) {
-                return *methodEvent == *methodEventVarying;
-            });
+            return std::any_of(m_functionMethodPointers.begin(), m_functionMethodPointers.end(), [methodEventVarying](const auto& methodEvent)
+                { return *methodEvent == *methodEventVarying; });
 
         return false;
     }
@@ -64,10 +67,10 @@ public:
 #pragma endregion
 
 #pragma region Function
-    auto subscribe(FunctionPointer<Args...> function) -> bool {
-        auto it = std::find_if(m_functionMethodPointers.begin(), m_functionMethodPointers.end(), [function](const auto& methodEvent) {
-            return *methodEvent == FunctionEventVarying<Args...>(function);
-        });
+    auto subscribe(FunctionPointer<Args...> function) -> bool
+    {
+        auto it = std::find_if(m_functionMethodPointers.begin(), m_functionMethodPointers.end(), [function](const auto& methodEvent)
+            { return *methodEvent == FunctionEventVarying<Args...>(function); });
 
         if (it != m_functionMethodPointers.end())
             return false;
@@ -76,10 +79,10 @@ public:
         return true;
     }
 
-    auto unsubscribe(FunctionPointer<Args...> function) -> bool {
-        auto it = std::find_if(m_functionMethodPointers.begin(), m_functionMethodPointers.end(), [function](const auto& methodEvent) {
-            return *methodEvent == FunctionEventVarying<Args...>(function);
-        });
+    auto unsubscribe(FunctionPointer<Args...> function) -> bool
+    {
+        auto it = std::find_if(m_functionMethodPointers.begin(), m_functionMethodPointers.end(), [function](const auto& methodEvent)
+            { return *methodEvent == FunctionEventVarying<Args...>(function); });
 
         if (it == m_functionMethodPointers.end())
             return false;
@@ -88,30 +91,35 @@ public:
         return true;
     }
 
-    auto operator+=(FunctionPointer<Args...> function) -> bool {
+    auto operator+=(FunctionPointer<Args...> function) -> bool
+    {
         return subscribe(function);
     }
 
-    auto operator-=(FunctionPointer<Args...> function) -> bool {
+    auto operator-=(FunctionPointer<Args...> function) -> bool
+    {
         return unsubscribe(function);
     }
 
-    auto isRegistered(FunctionPointer<Args...> function) const -> bool {
-        return std::any_of(m_functionMethodPointers.begin(), m_functionMethodPointers.end(), [function](const auto& methodEvent) {
-            return *methodEvent == FunctionEventVarying<Args...>(function);
-        });
+    auto isRegistered(FunctionPointer<Args...> function) const -> bool
+    {
+        return std::any_of(m_functionMethodPointers.begin(), m_functionMethodPointers.end(), [function](const auto& methodEvent)
+            { return *methodEvent == FunctionEventVarying<Args...>(function); });
     }
 #pragma endregion
 
-    [[nodiscard]] auto getSubscriberCount() const -> size_t {
+    [[nodiscard]] auto getSubscriberCount() const -> size_t
+    {
         return m_functionMethodPointers.size();
     }
 
-    void clear() final {
+    void clear() final
+    {
         m_functionMethodPointers.clear();
     }
 
-    void trigger(Args... args) const final {
+    void trigger(Args... args) const final
+    {
         for (const auto& methodFunctionPointer : m_functionMethodPointers)
             (*methodFunctionPointer)(args...);
     }

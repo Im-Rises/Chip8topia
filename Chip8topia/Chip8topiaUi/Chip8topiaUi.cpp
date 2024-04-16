@@ -109,6 +109,7 @@ void Chip8topiaUi::closeAllWindows()
     m_chip8topiatopiaDebugger.closeAllWindows();
     m_chip8topiaRomLoaderUi.closeAllWindows();
     m_chip8topiaEmulationUi.closeAllWindows();
+    m_chip8topiaSoundUi.closeAllWindows();
 
 #if defined(BUILD_DEBUG)
     m_showDemo = false;

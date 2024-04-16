@@ -29,6 +29,7 @@ public:
     void closeAllWindows();
 
 private:
+    void drawSoundWaveType(Chip8Emulator& emulator);
     void drawSoundState(Chip8Emulator& emulator);
     void drawSoundFrequency(Chip8Emulator& emulator);
     void drawSoundVolume(Chip8Emulator& emulator);
