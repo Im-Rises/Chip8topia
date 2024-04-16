@@ -68,10 +68,9 @@ void Chip8topiaRomLoaderUi::drawRomWindow(Chip8topia& chip8topia)
     {
         if (ImGuiFileDialog::Instance()->IsOk())
         {
-            const std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
-
             try
             {
+                const std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
                 std::vector<uint8> rom = Chip8RomLoader::loadRomFromPath(filePathName);
                 chip8topia.getChip8Emulator().loadRom(rom);
                 chip8topia.getChip8Emulator().setRomName(Chip8RomLoader::getRomNameFromPath(filePathName));
