@@ -3,11 +3,13 @@
 #include <array>
 #include <memory>
 #include <functional>
+#include <binaryLib/binaryLib.h>
 #include <SDL.h>
 
 // TODO: Need format to move code of SDL that shouldn't be here elsewhere...
+// TODO: Check if a concurrency issue is present
 
-enum class WaveType
+enum class WaveType : uint8
 {
     Sine,
     Saw,
