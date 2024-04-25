@@ -6,6 +6,7 @@
     "A CHIP-8 emulator written in C++ for Windows, Linux, and the Web."
   ],
   "homepage": "https://github.com/Im-Rises/Chip8topia/",
+  "documentation": "https://github.com/Im-Rises/Chip8topia/README.md",
   "supports": "windows, linux, emscripten",
   "dependencies": [
     {

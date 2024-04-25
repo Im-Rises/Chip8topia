@@ -419,6 +419,11 @@ void Chip8topia::loadRomFromPath(const std::string& filePath)
         ImGui::InsertNotification({ ImGuiToastType::Error, TOAST_DURATION_ERROR, e });
         LOG_ERROR(e);
     }
+    catch (...)
+    {
+        ImGui::InsertNotification({ ImGuiToastType::Error, TOAST_DURATION_ERROR, "An unknown error occurred while loading the rom" });
+        LOG_ERROR("An unknown error occurred while loading the rom");
+    }
 }
 
 void Chip8topia::centerWindow()

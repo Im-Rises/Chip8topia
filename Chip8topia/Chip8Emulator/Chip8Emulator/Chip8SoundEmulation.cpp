@@ -110,27 +110,44 @@ void Chip8SoundEmulation::setWaveType(WaveType waveType)
     }
 }
 
-void Chip8SoundEmulation::soundPlayerCallback(void* userdata, unsigned char* stream, int len)
+void Chip8SoundEmulation::soundPlayerCallback(void* userdata, unsigned char* stream, int streamLength)
 {
     auto* chip8SoundEmulation = static_cast<Chip8SoundEmulation*>(userdata);
 
-    chip8SoundEmulation->soundPlayer(stream, len);
+    chip8SoundEmulation->soundPlayer(stream, streamLength);
 }
 
-void Chip8SoundEmulation::soundPlayer(unsigned char* stream, int len)
+void Chip8SoundEmulation::soundPlayer(unsigned char* stream, int streamLength)
 {
-    SDL_memset(stream, m_spec.silence, len);
+    static constexpr size_t SAMPLE_SIZE = sizeof(Sint16);
+    const int sampleLength = streamLength / SAMPLE_SIZE;
 
-    len /= 2;
+    SDL_memset(stream, m_spec.silence, streamLength);
 
-    if (m_bufferPosition + len >= BUFFER_LEN)
+    if (m_bufferPosition + sampleLength >= BUFFER_LEN)
     {
         m_bufferPosition = 0;
     }
 
-    SDL_memcpy(stream, &m_buffer[m_bufferPosition], len * 2);
+    // TODO: Correct this code to have no concurrency issues!!! Really important!!!
+    try
+    {
+        SDL_memcpy(stream, &m_buffer[m_bufferPosition], streamLength);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    catch (const char* const e)
+    {
+        std::cerr << e << '\n';
+    }
+    catch (...)
+    {
+        std::cerr << "Unknown error" << '\n';
+    }
 
-    m_bufferPosition += len;
+    m_bufferPosition += sampleLength;
 }
 
 auto Chip8SoundEmulation::getIsPlaying() const -> bool

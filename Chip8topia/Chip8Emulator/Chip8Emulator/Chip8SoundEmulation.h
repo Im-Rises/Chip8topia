@@ -41,8 +41,8 @@ public:
     void setWaveType(WaveType waveType);
 
 private:
-    static void soundPlayerCallback(void* userdata, unsigned char* stream, int len);
-    void soundPlayer(unsigned char* stream, int len);
+    static void soundPlayerCallback(void* userdata, unsigned char* stream, int streamLength);
+    void soundPlayer(unsigned char* stream, int streamLength);
 
 public:
     [[nodiscard]] auto getIsPlaying() const -> bool;
