@@ -16,9 +16,6 @@
  * - CPU Usage by process            | No      | No
  * */
 
-// TODO: PerformanceMonitor
-// - Add error handling everywhere
-
 #if defined(PLATFORM_WINDOWS)
 #include <cstdio>
 #include <windows.h>
