@@ -95,13 +95,13 @@ Major:
 - [ ] Add big try catch (check Chip8CoreBase todo)
 - [ ] Add Xo-Chip audio
 - [ ] Replace the input handler singleton with another pattern...
+- [ ] Add a try catch (check Chip8CoreBase todo)
 
 Minor:
 
 - [ ] Restarting a game when playing big xo-chip games will not reload the game from the start (we should reset memory
   and reload the game rom)
 - [ ] Improve disassembly (check TODO in the Chip8topiaDisassembly.cpp file)
-- [ ] Add a try catch (check Chip8CoreBase todo)
 
 <!-- Other
 Other tasks:

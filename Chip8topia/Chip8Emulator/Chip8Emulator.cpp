@@ -10,7 +10,7 @@
 #include "ChipCores/SchipCCore/SChipCCore.h"
 #include "ChipCores/XoChipCore/XoChipCore.h"
 
-Chip8Emulator::Chip8Emulator() : m_breakpoints{},
+Chip8Emulator::Chip8Emulator() : m_breakpointsStates{},
 #if defined(BUILD_DEBUG)
                                  // Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<SChipCCore>(DEFAULT_FREQUENCY)),
                                  // Chip8Emulator::Chip8Emulator() : m_core(std::make_unique<SChip11Core>(DEFAULT_FREQUENCY)),
@@ -102,7 +102,7 @@ void Chip8Emulator::update(const float deltaTime)
         {
             screenUpdated = m_core->clock();
 
-            if (m_breakpoints[m_core->getCpu()->getPc()])
+            if (m_breakpointsStates[m_core->getCpu()->getPc()])
             {
                 m_isBreak = true;
                 ImGui::InsertNotification({ ImGuiToastType::Info, TOAST_DURATION_INFO,
@@ -196,7 +196,7 @@ void Chip8Emulator::switchCoreFrequency(const Chip8CoreType coreType, const Chip
 
 void Chip8Emulator::clearBreakpoints()
 {
-    m_breakpoints.fill(false);
+    m_breakpointsStates.fill(false);
     m_breakpointsList.clear();
 }
 
@@ -272,9 +272,9 @@ auto Chip8Emulator::getCanBreak() -> bool*
     return &m_canBreak;
 }
 
-auto Chip8Emulator::getBreakpoints() -> std::array<bool, CpuBase::MEMORY_SIZE>&
+auto Chip8Emulator::getBreakpointsStates() -> std::array<bool, CpuBase::MEMORY_SIZE>&
 {
-    return m_breakpoints;
+    return m_breakpointsStates;
 }
 
 auto Chip8Emulator::getBreakpointsList() -> std::set<uint16>&

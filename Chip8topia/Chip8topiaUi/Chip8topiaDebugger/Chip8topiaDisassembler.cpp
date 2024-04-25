@@ -16,7 +16,7 @@
 void Chip8topiaDisassembler::drawDisassembly(Chip8Emulator* emulator)
 {
     const std::array<uint8, CpuBase::MEMORY_SIZE>& memory = emulator->getChip8Core()->getCpu()->getMemory();
-    std::array<bool, CpuBase::MEMORY_SIZE>& breakpoints = emulator->getBreakpoints();
+    std::array<bool, CpuBase::MEMORY_SIZE>& breakpointsStates = emulator->getBreakpointsStates();
     std::set<uint16>& breakpointsList = emulator->getBreakpointsList();
 
     const uint16 pc = emulator->getChip8Core()->getCpu()->getPc();
@@ -45,9 +45,8 @@ void Chip8topiaDisassembler::drawDisassembly(Chip8Emulator* emulator)
     bool pcIsOdd = pc % 2 != 0;
 
     // TODO: Disassembly:
-    //  - Improve this code to not draw the data read for opcode 0xF000
     //  - Optimize and clean up the code
-    //  - Change some opcode names to be more descriptive
+    //  - Do not data after a F000 opcode
 
     std::string buffer;
     ImGuiListClipper clipper;
@@ -62,7 +61,7 @@ void Chip8topiaDisassembler::drawDisassembly(Chip8Emulator* emulator)
 
             buffer = fmt::format("  0x{:04X}: ({:04X}) {}", memoryIndex, opcode, disassembler(opcode));
 
-            const bool breakpointThisPc = breakpoints[memoryIndex];
+            const bool breakpointThisPc = breakpointsStates[memoryIndex];
 
             if (pc == memoryIndex)
             {
@@ -78,9 +77,9 @@ void Chip8topiaDisassembler::drawDisassembly(Chip8Emulator* emulator)
 
             if (ImGui::IsItemClicked())
             {
-                breakpoints[memoryIndex] = !breakpoints[memoryIndex];
+                breakpointsStates[memoryIndex] = !breakpointsStates[memoryIndex];
 
-                if (breakpoints[memoryIndex])
+                if (breakpointsStates[memoryIndex])
                 {
                     breakpointsList.insert(memoryIndex);
                 }
@@ -205,17 +204,11 @@ void Chip8topiaDisassembler::drawBreakpoints(Chip8Emulator* emulator)
                 ImGui::TableSetColumnIndex(2);
                 if (ImGui::Button(fmt::format(ICON_FA_XMARK "##{}", breakpoint).c_str()))
                 {
-                    //                    breakpointToRemove = breakpoint;
-                    emulator->getBreakpoints()[breakpoint] = false;
+                    emulator->getBreakpointsStates()[breakpoint] = false;
                     breakpointsList.erase(breakpoint);
                 }
             }
         }
-
-        //        if (breakpointToRemove >= 0)
-        //        {
-        //            breakpoints[breakpointToRemove] = false;
-        //        }
 
         ImGui::EndTable();
     }

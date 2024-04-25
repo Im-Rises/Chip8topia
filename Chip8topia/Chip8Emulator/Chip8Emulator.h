@@ -65,7 +65,7 @@ public:
     [[nodiscard]] auto getIsBreak() const -> bool;
     [[nodiscard]] auto getIsRomLoaded() const -> bool;
     [[nodiscard]] auto getCanBreak() -> bool*;
-    [[nodiscard]] auto getBreakpoints() -> std::array<bool, CpuBase::MEMORY_SIZE>&;
+    [[nodiscard]] auto getBreakpointsStates() -> std::array<bool, CpuBase::MEMORY_SIZE>&;
     [[nodiscard]] auto getBreakpointsList() -> std::set<uint16>&;
     [[nodiscard]] auto getCoreType() const -> Chip8CoreType;
     [[nodiscard]] auto getFrequency() const -> Chip8Frequency;
@@ -84,5 +84,5 @@ private:
     bool m_errorTriggered;
 
     std::set<uint16> m_breakpointsList;
-    std::array<bool, CpuBase::MEMORY_SIZE> m_breakpoints;
+    std::array<bool, CpuBase::MEMORY_SIZE> m_breakpointsStates;
 };
