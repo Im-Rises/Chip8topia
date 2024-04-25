@@ -85,7 +85,6 @@ private:
     bool m_step;
     bool m_canBreak;
     bool m_errorTriggered;
-    bool m_soundMuted;
 
     std::set<uint16> m_breakpointsList;
     std::array<bool, CpuBase::MEMORY_SIZE> m_breakpoints;

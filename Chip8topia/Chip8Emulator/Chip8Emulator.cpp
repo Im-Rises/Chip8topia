@@ -27,7 +27,6 @@ Chip8Emulator::Chip8Emulator() : m_breakpoints{},
                                  m_step(false),
                                  m_canBreak(true),
                                  m_errorTriggered(false),
-                                 m_soundMuted(false)
 {
     Chip8topiaInputHandler& inputHandler = Chip8topiaInputHandler::getInstance();
     inputHandler.m_GameInput.subscribe(this, &Chip8Emulator::OnInput);
@@ -130,7 +129,7 @@ void Chip8Emulator::update(const float deltaTime)
 void Chip8Emulator::emitSound()
 {
     // TODO: Improve this condition...
-    if (!m_soundMuted && !m_isBreak && m_isRomLoaded && !m_errorTriggered)
+    if (!m_isBreak && m_isRomLoaded && !m_errorTriggered)
     {
         m_soundEmulation.update(m_core);
     }

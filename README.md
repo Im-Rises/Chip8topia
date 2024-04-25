@@ -117,17 +117,18 @@ Profiling logs:
 
 ## Documentation
 
-- [devernay.free.fr](http://devernay.free.fr/hacks/chip8/C8TECH10.HTM)
 - [chip8.gulrak.net](https://chip8.gulrak.net/)
-- [Timendus/chip8-test-suite](https://github.com/Timendus/chip8-test-suite)
 - [chip-8.github.io](https://chip-8.github.io/)
 - [tobiasvl.github.io](https://tobiasvl.github.io/blog/write-a-chip-8-emulator/)
+- [Timendus/chip8-test-suite](https://github.com/Timendus/chip8-test-suite)
 - [Timendus/silicon8](https://github.com/Timendus/silicon8/tree/)
 - [Timendus/alien-inv8sion](https://github.com/Timendus/alien-inv8sion)
 - [johnearnest.github.io](http://johnearnest.github.io/Octo/docs/XO-ChipSpecification.html)
 - [johnearnest.github.io/chip8Archive](https://johnearnest.github.io/chip8Archive/?sort=platform)
 - [johnearnest.github.io/Octo](https://johnearnest.github.io/Octo/)
 - [jacobsebek SDL2 audio callack demo](https://gist.github.com/jacobsebek/10867cb10cdfccf1d6cfdd24fa23ee96)
+
+[//]: # (- [devernay.free.fr]&#40;http://devernay.free.fr/hacks/chip8/C8TECH10.HTM&#41;)
 
 ## Rom links
 
