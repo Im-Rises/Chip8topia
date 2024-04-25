@@ -69,7 +69,6 @@ public:
     [[nodiscard]] auto getBreakpointsList() -> std::set<uint16>&;
     [[nodiscard]] auto getCoreType() const -> Chip8CoreType;
     [[nodiscard]] auto getFrequency() const -> Chip8Frequency;
-    //    [[nodiscard]] auto getPcHistory() const -> const std::vector<uint16>&;
 
 private:
     std::string m_romName = "ROM";
@@ -78,9 +77,7 @@ private:
     Chip8VideoEmulation m_videoEmulation;
     Chip8SoundEmulation m_soundEmulation;
 
-    //    float m_accumulator;
     bool m_isRomLoaded;
-    //    bool m_isTurboMode;
     bool m_isBreak;
     bool m_step;
     bool m_canBreak;
@@ -88,6 +85,4 @@ private:
 
     std::set<uint16> m_breakpointsList;
     std::array<bool, CpuBase::MEMORY_SIZE> m_breakpoints;
-
-    //    std::vector<uint16> m_pcHistory;
 };

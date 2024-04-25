@@ -39,7 +39,6 @@ private:
     void drawKeypad(Chip8CoreBase* chip8);
     void drawDisassembly(Chip8Emulator* emulator);
     void drawDisassemblyControls(Chip8Emulator* emulator);
-    //    void drawPcHistory(Chip8Emulator* emulator);
 
 private:
     MemoryEditor m_memoryEditor;
@@ -60,7 +59,5 @@ private:
             { drawDisassemblyControls(emulator); }),
         ImGuiMenuItemWindow<Chip8Emulator>("Breakpoints", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator)
             { m_disassembler.drawBreakpoints(emulator); }),
-        //        ImGuiMenuItemWindow<Chip8Emulator>("PC History", INITIAL_WINDOW_STATE, [this](Chip8Emulator* emulator)
-        //            { drawPcHistory(emulator); })
     };
 };
