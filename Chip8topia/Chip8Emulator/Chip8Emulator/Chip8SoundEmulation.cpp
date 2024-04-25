@@ -56,13 +56,14 @@ Chip8SoundEmulation::~Chip8SoundEmulation()
     SDL_CloseAudioDevice(m_dev);
 }
 
+void Chip8SoundEmulation::reset()
+{
+    stop();
+}
+
 void Chip8SoundEmulation::initSoundBuffer(std::function<double(double, unsigned long)> waveFunction)
 {
-    // TODO: Correct this code to have no concurrency issues!!! Really important!!!
-    if (m_isPlaying)
-    {
-        stop();
-    }
+    stop();
 
     for (int i = 0; i < BUFFER_LEN; i++)
     {
@@ -70,41 +71,10 @@ void Chip8SoundEmulation::initSoundBuffer(std::function<double(double, unsigned 
     }
 }
 
-void Chip8SoundEmulation::update(const std::unique_ptr<Chip8CoreBase>& chip8Core)
-{
-    const auto st = chip8Core->getCpu()->getST();
-
-    if (st > 0)
-    {
-        if (!m_isPlaying)
-        {
-            SDL_PauseAudioDevice(m_dev, 0);
-            m_isPlaying = true;
-        }
-    }
-    else
-    {
-        if (m_isPlaying)
-        {
-            SDL_PauseAudioDevice(m_dev, 1);
-            m_isPlaying = false;
-        }
-    }
-}
-
-void Chip8SoundEmulation::stop()
-{
-    SDL_PauseAudioDevice(m_dev, 1);
-    m_isPlaying = false;
-}
-
 void Chip8SoundEmulation::setWaveType(WaveType waveType)
 {
-    // TODO: Correct this code to have no concurrency issues!!! Really important!!!
-    if (m_isPlaying)
-    {
-        stop();
-    }
+    // TODO: Correct this code which may lead to crash in webassembly
+    stop();
 
     m_waveType = waveType;
 
@@ -119,6 +89,40 @@ void Chip8SoundEmulation::setWaveType(WaveType waveType)
     case WaveType::Square:
         initSoundBuffer(square);
         break;
+    }
+}
+
+void Chip8SoundEmulation::update(const std::unique_ptr<Chip8CoreBase>& chip8Core)
+{
+#if !defined(__EMSCRIPTEN__)
+    const auto st = chip8Core->getCpu()->getST();
+
+    if (st > 0)
+    {
+        play();
+    }
+    else
+    {
+        stop();
+    }
+#endif
+}
+
+void Chip8SoundEmulation::stop()
+{
+    if (m_isPlaying)
+    {
+        SDL_PauseAudioDevice(m_dev, 1);
+        m_isPlaying = false;
+    }
+}
+
+void Chip8SoundEmulation::play()
+{
+    if (!m_isPlaying)
+    {
+        SDL_PauseAudioDevice(m_dev, 0);
+        m_isPlaying = true;
     }
 }
 
@@ -141,23 +145,8 @@ void Chip8SoundEmulation::soundPlayer(unsigned char* stream, int streamLength)
         m_bufferPosition = 0;
     }
 
-    // TODO: Correct this code to have no concurrency issues!!! Really important!!!
-    try
-    {
-        SDL_memcpy(stream, &m_buffer[m_bufferPosition], streamLength);
-    }
-    catch (const std::exception& e)
-    {
-        std::cerr << e.what() << '\n';
-    }
-    catch (const char* const e)
-    {
-        std::cerr << e << '\n';
-    }
-    catch (...)
-    {
-        std::cerr << "Unknown error" << '\n';
-    }
+    // TODO: Correct the strange crash here in webassembly
+    SDL_memcpy(stream, &m_buffer[m_bufferPosition], streamLength);
 
     m_bufferPosition += sampleLength;
 }

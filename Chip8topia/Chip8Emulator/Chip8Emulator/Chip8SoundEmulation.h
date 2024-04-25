@@ -35,12 +35,15 @@ public:
     ~Chip8SoundEmulation();
 
 public:
+    void reset();
     void initSoundBuffer(std::function<double(double, unsigned long)> waveFunction);
-    void update(const std::unique_ptr<Chip8CoreBase>& chip8Core);
-    void stop();
     void setWaveType(WaveType waveType);
+    void update(const std::unique_ptr<Chip8CoreBase>& chip8Core);
 
 private:
+    void stop();
+    void play();
+
     static void soundPlayerCallback(void* userdata, unsigned char* stream, int streamLength);
     void soundPlayer(unsigned char* stream, int streamLength);
 

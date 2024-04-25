@@ -75,7 +75,7 @@ void Chip8Emulator::restart()
 {
     m_core->reset();
     m_videoEmulation.reset();
-    m_soundEmulation.stop();
+    m_soundEmulation.reset();
     m_errorTriggered = false;
     //    m_accumulator = 0.0F;
 }
@@ -146,7 +146,7 @@ void Chip8Emulator::stop()
 {
     if (m_isRomLoaded)
     {
-        m_soundEmulation.stop();
+        m_soundEmulation.reset();
         m_isRomLoaded = false;
         m_romName = "ROM";
         ImGui::InsertNotification({ ImGuiToastType::Info, TOAST_DURATION_INFO, "Emulation stopped", "The emulation has been stopped. Please load a ROM to continue." });
@@ -167,7 +167,7 @@ void Chip8Emulator::setSoundVolume(float volume)
 #if defined(BUILD_PARAM_SAFE)
 void Chip8Emulator::triggerEmulationError(const std::string& message)
 {
-    m_soundEmulation.stop();
+    m_soundEmulation.reset();
     m_errorTriggered = true;
     LOG_ERROR(message);
 }
@@ -185,7 +185,7 @@ void Chip8Emulator::setRomName(const std::string& romName)
 
 void Chip8Emulator::switchCoreFrequency(const Chip8CoreType coreType, const Chip8Frequency frequency)
 {
-    m_soundEmulation.stop();
+    m_soundEmulation.reset();
 
     switch (coreType)
     {
@@ -222,7 +222,7 @@ void Chip8Emulator::clearBreakpoints()
 
 void Chip8Emulator::stepEmulation()
 {
-    m_soundEmulation.stop();
+    m_soundEmulation.reset();
     m_isBreak = true;
     m_step = true;
 }
@@ -230,17 +230,20 @@ void Chip8Emulator::runEmulation()
 {
     m_isBreak = false;
 }
+
 void Chip8Emulator::breakEmulation()
 {
-    m_soundEmulation.stop();
+    m_soundEmulation.reset();
     m_isBreak = true;
 }
+
 void Chip8Emulator::toggleBreakEmulation()
 {
     m_isBreak = !m_isBreak;
+
     if (m_isBreak)
     {
-        m_soundEmulation.stop();
+        m_soundEmulation.reset();
     }
 }
 

@@ -279,7 +279,7 @@ void Chip8topia::handleInputs()
             m_closeRequested = true;
         if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE && event.window.windowID == SDL_GetWindowID(m_window))
             m_closeRequested = true;
-        if (event.key.keysym.sym == SDLK_ESCAPE)
+        if (event.key.keysym.sym == SDLK_ESCAPE && event.type == SDL_KEYDOWN)
             m_closeRequested = true;
 #endif
 
