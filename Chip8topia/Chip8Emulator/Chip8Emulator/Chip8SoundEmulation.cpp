@@ -58,6 +58,12 @@ Chip8SoundEmulation::~Chip8SoundEmulation()
 
 void Chip8SoundEmulation::initSoundBuffer(std::function<double(double, unsigned long)> waveFunction)
 {
+    // TODO: Correct this code to have no concurrency issues!!! Really important!!!
+    if (m_isPlaying)
+    {
+        stop();
+    }
+
     for (int i = 0; i < BUFFER_LEN; i++)
     {
         m_buffer[i] = format(waveFunction(m_squareSoundFrequency, i), m_volume);
@@ -94,6 +100,12 @@ void Chip8SoundEmulation::stop()
 
 void Chip8SoundEmulation::setWaveType(WaveType waveType)
 {
+    // TODO: Correct this code to have no concurrency issues!!! Really important!!!
+    if (m_isPlaying)
+    {
+        stop();
+    }
+
     m_waveType = waveType;
 
     switch (m_waveType)
