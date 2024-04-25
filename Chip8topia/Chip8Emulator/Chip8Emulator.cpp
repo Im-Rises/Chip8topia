@@ -20,14 +20,11 @@ Chip8Emulator::Chip8Emulator() : m_breakpoints{},
 #else
                                  m_core(std::make_unique<XoChipCore>(DEFAULT_FREQUENCY)),
 #endif
-                                 //                                 m_accumulator(0.0F),
                                  m_isRomLoaded(false),
-                                 //                                 m_isTurboMode(false),
                                  m_isBreak(false),
                                  m_step(false),
                                  m_canBreak(true),
-                                 m_errorTriggered(false),
-                                 m_soundMuted(false)
+                                 m_errorTriggered(false)
 {
     Chip8topiaInputHandler& inputHandler = Chip8topiaInputHandler::getInstance();
     inputHandler.m_GameInput.subscribe(this, &Chip8Emulator::OnInput);
@@ -42,9 +39,6 @@ Chip8Emulator::Chip8Emulator() : m_breakpoints{},
 #if defined(BUILD_PARAM_SAFE)
     inputHandler.m_EmulationError.subscribe(this, &Chip8Emulator::triggerEmulationError);
 #endif
-
-    //    m_pcHistory.reserve(PC_HISTORY_SIZE);
-    //    m_pcHistory.push_back(CpuBase::START_ADDRESS);
 
     resetColorPalette();
 }
@@ -75,9 +69,8 @@ void Chip8Emulator::restart()
 {
     m_core->reset();
     m_videoEmulation.reset();
-    m_soundEmulation.stop();
+    m_soundEmulation.reset();
     m_errorTriggered = false;
-    //    m_accumulator = 0.0F;
 }
 
 void Chip8Emulator::loadRom(const std::vector<uint8_t>& romData)
@@ -100,21 +93,14 @@ void Chip8Emulator::update(const float deltaTime)
         {
             m_step = false;
             m_core->clock();
-            //            updatePcHistory();
         }
     }
     else
     {
-        //        m_accumulator += deltaTime;
-
-        //        if (m_isTurboMode || m_accumulator >= 1.0F / Chip8Core::SCREEN_AND_TIMERS_FREQUENCY)
-        //        {
-        //        m_accumulator = 0.0F;
         bool screenUpdated = false;
         while (!screenUpdated && !m_isBreak && !m_errorTriggered)
         {
             screenUpdated = m_core->clock();
-            //                updatePcHistory();
 
             if (m_breakpoints[m_core->getCpu()->getPc()])
             {
@@ -123,14 +109,13 @@ void Chip8Emulator::update(const float deltaTime)
                     "Breakpoint hit", fmt::format("Breakpoint hit at 0x{:04X}", m_core->getCpu()->getPc()).c_str() });
             }
         }
-        //        }
     }
 }
 
 void Chip8Emulator::emitSound()
 {
     // TODO: Improve this condition...
-    if (!m_soundMuted && !m_isBreak && m_isRomLoaded && !m_errorTriggered)
+    if (!m_isBreak && m_isRomLoaded && !m_errorTriggered)
     {
         m_soundEmulation.update(m_core);
     }
@@ -146,7 +131,7 @@ void Chip8Emulator::stop()
 {
     if (m_isRomLoaded)
     {
-        m_soundEmulation.stop();
+        m_soundEmulation.reset();
         m_isRomLoaded = false;
         m_romName = "ROM";
         ImGui::InsertNotification({ ImGuiToastType::Info, TOAST_DURATION_INFO, "Emulation stopped", "The emulation has been stopped. Please load a ROM to continue." });
@@ -167,16 +152,11 @@ void Chip8Emulator::setSoundVolume(float volume)
 #if defined(BUILD_PARAM_SAFE)
 void Chip8Emulator::triggerEmulationError(const std::string& message)
 {
-    m_soundEmulation.stop();
+    m_soundEmulation.reset();
     m_errorTriggered = true;
     LOG_ERROR(message);
 }
 #endif
-
-// void Chip8Emulator::setIsTurboMode(const bool isTurboMode)
-//{
-//     m_isTurboMode = isTurboMode;
-// }
 
 void Chip8Emulator::setRomName(const std::string& romName)
 {
@@ -185,7 +165,7 @@ void Chip8Emulator::setRomName(const std::string& romName)
 
 void Chip8Emulator::switchCoreFrequency(const Chip8CoreType coreType, const Chip8Frequency frequency)
 {
-    m_soundEmulation.stop();
+    m_soundEmulation.reset();
 
     switch (coreType)
     {
@@ -222,7 +202,7 @@ void Chip8Emulator::clearBreakpoints()
 
 void Chip8Emulator::stepEmulation()
 {
-    m_soundEmulation.stop();
+    m_soundEmulation.reset();
     m_isBreak = true;
     m_step = true;
 }
@@ -230,32 +210,22 @@ void Chip8Emulator::runEmulation()
 {
     m_isBreak = false;
 }
+
 void Chip8Emulator::breakEmulation()
 {
-    m_soundEmulation.stop();
+    m_soundEmulation.reset();
     m_isBreak = true;
 }
+
 void Chip8Emulator::toggleBreakEmulation()
 {
     m_isBreak = !m_isBreak;
+
     if (m_isBreak)
     {
-        m_soundEmulation.stop();
+        m_soundEmulation.reset();
     }
 }
-
-// void Chip8Emulator::updatePcHistory()
-//{
-//     if (m_pcHistory.back() != m_core->getCpu()->getPc())
-//     {
-//         if (m_pcHistory.size() >= PC_HISTORY_SIZE)
-//         {
-//             m_pcHistory.erase(m_pcHistory.begin());
-//         }
-//
-//         m_pcHistory.push_back(m_core->getCpu()->getPc());
-//     }
-// }
 
 void Chip8Emulator::OnInput(const uint8 key, const bool isPressed)
 {
@@ -321,8 +291,3 @@ auto Chip8Emulator::getFrequency() const -> Chip8Frequency
 {
     return m_core->getFrequency();
 }
-
-// auto Chip8Emulator::getPcHistory() const -> const std::vector<uint16>&
-//{
-//     return m_pcHistory;
-// }

@@ -47,6 +47,7 @@ void Chip8topiaDisassembler::drawDisassembly(Chip8Emulator* emulator)
     // TODO: Disassembly:
     //  - Improve this code to not draw the data read for opcode 0xF000
     //  - Optimize and clean up the code
+    //  - Change some opcode names to be more descriptive
 
     std::string buffer;
     ImGuiListClipper clipper;

@@ -48,14 +48,14 @@ Emulated consoles:
 
 ### Main
 
-- [x] Desktop and WebAssembly version
+- [x] Desktop and Web version
 - [x] Chip8, SCHIP1.1, SCHIPC and Xo-Chip support
 - [x] Pause/Resume/Restart the emulation
 - [x] Change the emulation speed
-- [x] Change the color of the screen
-- [x] Fullscreen mode (on the current screen the window is in)
-- [x] Load rom from file in Desktop and WebAssembly build
-- [x] Load integrated games in WebAssembly build
+- [x] Change the game colors
+- [x] Fullscreen mode
+- [x] Rom loader
+- [x] Sound
 
 ### Debug Tools
 
@@ -90,16 +90,18 @@ Emulated consoles:
 
 Major:
 
-- [x] Add Chip8 audio
+- [ ] Correct Chip8 sound emulation issue in desktop and in web version
+- [ ] Cleanup the full handling of the sound emulation
+- [ ] Add big try catch (check Chip8CoreBase todo)
 - [ ] Add Xo-Chip audio
 - [ ] Replace the input handler singleton with another pattern...
 
 Minor:
 
-- [-] Restarting a game when playing big xo-chip games will not reload the game from the start (we should reset memory
+- [ ] Restarting a game when playing big xo-chip games will not reload the game from the start (we should reset memory
   and reload the game rom)
-- [-] Improve disassembly (check TODO in the Chip8topiaDisassembly.cpp file)
-- [-] Add a try catch (check Chip8CoreBase todo)
+- [ ] Improve disassembly (check TODO in the Chip8topiaDisassembly.cpp file)
+- [ ] Add a try catch (check Chip8CoreBase todo)
 
 <!-- Other
 Other tasks:
@@ -115,17 +117,18 @@ Profiling logs:
 
 ## Documentation
 
-- [devernay.free.fr](http://devernay.free.fr/hacks/chip8/C8TECH10.HTM)
 - [chip8.gulrak.net](https://chip8.gulrak.net/)
-- [Timendus/chip8-test-suite](https://github.com/Timendus/chip8-test-suite)
 - [chip-8.github.io](https://chip-8.github.io/)
 - [tobiasvl.github.io](https://tobiasvl.github.io/blog/write-a-chip-8-emulator/)
+- [Timendus/chip8-test-suite](https://github.com/Timendus/chip8-test-suite)
 - [Timendus/silicon8](https://github.com/Timendus/silicon8/tree/)
 - [Timendus/alien-inv8sion](https://github.com/Timendus/alien-inv8sion)
 - [johnearnest.github.io](http://johnearnest.github.io/Octo/docs/XO-ChipSpecification.html)
 - [johnearnest.github.io/chip8Archive](https://johnearnest.github.io/chip8Archive/?sort=platform)
 - [johnearnest.github.io/Octo](https://johnearnest.github.io/Octo/)
 - [jacobsebek SDL2 audio callack demo](https://gist.github.com/jacobsebek/10867cb10cdfccf1d6cfdd24fa23ee96)
+
+[//]: # (- [devernay.free.fr]&#40;http://devernay.free.fr/hacks/chip8/C8TECH10.HTM&#41;)
 
 ## Rom links
 

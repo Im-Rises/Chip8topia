@@ -6,7 +6,8 @@
 #include <functional>
 
 template <typename... Args>
-class FunctionMethodEventVaryingBase {
+class FunctionMethodEventVaryingBase
+{
 public:
     FunctionMethodEventVaryingBase() = default;
     FunctionMethodEventVaryingBase(const FunctionMethodEventVaryingBase&) = default;
@@ -25,7 +26,8 @@ template <typename... Args>
 using FunctionPointer = void (*)(Args...);
 
 template <class T, typename... Args>
-class MethodEventVarying final : public FunctionMethodEventVaryingBase<Args...> {
+class MethodEventVarying final : public FunctionMethodEventVaryingBase<Args...>
+{
 public:
     using MethodPointer = void (T::*)(Args...);
 
@@ -36,7 +38,8 @@ public:
     auto operator=(MethodEventVarying&&) noexcept -> MethodEventVarying& = default;
     ~MethodEventVarying() = default;
 
-    [[nodiscard]] auto operator==(const FunctionMethodEventVaryingBase<Args...>& other) const -> bool final {
+    [[nodiscard]] auto operator==(const FunctionMethodEventVaryingBase<Args...>& other) const -> bool final
+    {
         if (auto* otherCasted = dynamic_cast<const MethodEventVarying<T, Args...>*>(&other))
         {
             return m_instance == otherCasted->m_instance && m_method == otherCasted->m_method;
@@ -45,7 +48,8 @@ public:
         return false;
     }
 
-    void operator()(Args... args) const final {
+    void operator()(Args... args) const final
+    {
         (m_instance->*m_method)(args...);
     }
 
@@ -54,12 +58,9 @@ private:
     void (T::*m_method)(Args...);
 };
 
-
 template <typename... Args>
-using FunctionPointer = void (*)(Args...);
-
-template <typename... Args>
-class FunctionEventVarying final : public FunctionMethodEventVaryingBase<Args...> {
+class FunctionEventVarying final : public FunctionMethodEventVaryingBase<Args...>
+{
 public:
     explicit FunctionEventVarying(FunctionPointer<Args...> function) : m_function(function) {}
     FunctionEventVarying(const FunctionEventVarying&) = default;
@@ -68,7 +69,8 @@ public:
     auto operator=(FunctionEventVarying&&) noexcept -> FunctionEventVarying& = default;
     ~FunctionEventVarying() = default;
 
-    [[nodiscard]] auto operator==(const FunctionMethodEventVaryingBase<Args...>& other) const -> bool final {
+    [[nodiscard]] auto operator==(const FunctionMethodEventVaryingBase<Args...>& other) const -> bool final
+    {
         if (auto* otherCasted = dynamic_cast<const FunctionEventVarying<Args...>*>(&other))
         {
             return m_function == otherCasted->m_function;
@@ -77,7 +79,8 @@ public:
         return false;
     }
 
-    void operator()(Args... args) const final {
+    void operator()(Args... args) const final
+    {
         m_function(args...);
     }
 
@@ -86,7 +89,8 @@ private:
 };
 
 template <typename... Args>
-class SubscriberEventBase {
+class SubscriberEventBase
+{
 public:
     SubscriberEventBase() = default;
     SubscriberEventBase(const SubscriberEventBase&) = default;

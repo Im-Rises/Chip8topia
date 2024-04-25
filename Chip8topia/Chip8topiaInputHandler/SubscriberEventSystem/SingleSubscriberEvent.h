@@ -3,7 +3,8 @@
 #include "SubscriberEventBase.h"
 
 template <typename... Args>
-class SingleSubscriberEvent final : public SubscriberEventBase<Args...> {
+class SingleSubscriberEvent final : public SubscriberEventBase<Args...>
+{
 public:
     SingleSubscriberEvent() = default;
     SingleSubscriberEvent(const SingleSubscriberEvent&) = delete;
@@ -11,13 +12,14 @@ public:
     auto operator=(const SingleSubscriberEvent&) -> SingleSubscriberEvent& = delete;
     auto operator=(SingleSubscriberEvent&&) -> SingleSubscriberEvent& = delete;
     ~SingleSubscriberEvent() final = default;
-
+    
 public:
 #pragma region Method
 
     // We use two template arguments to handle the case where we register a method from the parent of the class with a child class instance
     template <class T, class U>
-    auto subscribe(U* instance, void (T::*method)(Args...)) -> bool {
+    auto subscribe(U* instance, void (T::*method)(Args...)) -> bool
+    {
         if (m_functionMethodPointer != nullptr)
             return false;
 
@@ -26,7 +28,8 @@ public:
     }
 
     template <class T, class U>
-    auto unsubscribe(U* instance, void (T::*method)(Args...)) -> bool {
+    auto unsubscribe(U* instance, void (T::*method)(Args...)) -> bool
+    {
         if (m_functionMethodPointer == nullptr)
             return false;
 
@@ -38,17 +41,20 @@ public:
     }
 
     template <class T>
-    auto operator+=(const MethodEventVarying<T, Args...>& methodEvent) -> bool {
+    auto operator+=(const MethodEventVarying<T, Args...>& methodEvent) -> bool
+    {
         return subscribe(methodEvent);
     }
 
     template <class T>
-    auto operator-=(const MethodEventVarying<T, Args...>& methodEvent) -> bool {
+    auto operator-=(const MethodEventVarying<T, Args...>& methodEvent) -> bool
+    {
         return unsubscribe(methodEvent);
     }
 
     template <class T>
-    auto isRegistered(const MethodEventVarying<T, Args...>& methodEvent) const -> bool {
+    auto isRegistered(const MethodEventVarying<T, Args...>& methodEvent) const -> bool
+    {
         if (const auto* methodEventVarying = dynamic_cast<const MethodEventVarying<Args...>*>(&methodEvent))
             return *m_functionMethodPointer == *methodEventVarying;
 
@@ -59,14 +65,16 @@ public:
 
 #pragma region Function
 
-    auto subscribe(FunctionPointer<Args...> function) -> bool {
+    auto subscribe(FunctionPointer<Args...> function) -> bool
+    {
         if (m_functionMethodPointer != nullptr)
             return false;
 
         m_functionMethodPointer = std::make_unique<FunctionEventVarying<Args...>>(function);
     }
 
-    auto unsubscribe(FunctionPointer<Args...> function) -> bool {
+    auto unsubscribe(FunctionPointer<Args...> function) -> bool
+    {
         if (m_functionMethodPointer == nullptr)
             return false;
 
@@ -77,34 +85,41 @@ public:
         return true;
     }
 
-    auto operator+=(FunctionPointer<Args...> function) -> bool {
+    auto operator+=(FunctionPointer<Args...> function) -> bool
+    {
         return subscribe(function);
     }
 
-    auto operator-=(FunctionPointer<Args...> function) -> bool {
+    auto operator-=(FunctionPointer<Args...> function) -> bool
+    {
         return unsubscribe(function);
     }
 
     template <class T>
-    auto isRegistered(FunctionPointer<Args...> function) const -> bool {
+    auto isRegistered(FunctionPointer<Args...> function) const -> bool
+    {
         return *m_functionMethodPointer == FunctionEventVarying<Args...>(function);
     }
 
 #pragma endregion
 
-    [[nodiscard]] auto getHasSubscriber() const -> bool {
+    [[nodiscard]] auto getHasSubscriber() const -> bool
+    {
         return m_functionMethodPointer != nullptr;
     }
 
-    void clear() {
+    void clear()
+    {
         m_functionMethodPointer.reset();
     }
 
-    void trigger(Args... args) const {
+    void trigger(Args... args) const
+    {
         (*m_functionMethodPointer)(args...);
     }
 
-    [[nodiscard]] auto triggerSafely(Args... args) const -> bool {
+    [[nodiscard]] auto triggerSafely(Args... args) const -> bool
+    {
         if (m_functionMethodPointer == nullptr)
             return false;
 

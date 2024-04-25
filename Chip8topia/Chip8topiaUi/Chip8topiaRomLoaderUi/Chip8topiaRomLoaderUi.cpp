@@ -68,10 +68,9 @@ void Chip8topiaRomLoaderUi::drawRomWindow(Chip8topia& chip8topia)
     {
         if (ImGuiFileDialog::Instance()->IsOk())
         {
-            const std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
-
             try
             {
+                const std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
                 std::vector<uint8> rom = Chip8RomLoader::loadRomFromPath(filePathName);
                 chip8topia.getChip8Emulator().loadRom(rom);
                 chip8topia.getChip8Emulator().setRomName(Chip8RomLoader::getRomNameFromPath(filePathName));
@@ -87,6 +86,11 @@ void Chip8topiaRomLoaderUi::drawRomWindow(Chip8topia& chip8topia)
             {
                 ImGui::InsertNotification({ ImGuiToastType::Error, TOAST_DURATION_ERROR, e });
                 LOG_ERROR(e);
+            }
+            catch (...)
+            {
+                ImGui::InsertNotification({ ImGuiToastType::Error, TOAST_DURATION_ERROR, "An unknown error occurred while loading the rom" });
+                LOG_ERROR("An unknown error occurred while loading the rom");
             }
         }
 
@@ -119,6 +123,11 @@ void Chip8topiaRomLoaderUi::handle_upload_file(std::string const& filename, std:
     {
         ImGui::InsertNotification({ ImGuiToastType::Error, TOAST_DURATION_ERROR, e });
         LOG_ERROR(e);
+    }
+    catch (...)
+    {
+        ImGui::InsertNotification({ ImGuiToastType::Error, TOAST_DURATION_ERROR, "An unknown error occurred while loading the rom" });
+        LOG_ERROR("An unknown error occurred while loading the rom");
     }
 }
 #endif

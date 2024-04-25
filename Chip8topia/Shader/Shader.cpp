@@ -59,6 +59,10 @@ void Shader::compileFromFiles(const char* vertexPath, const char* fragmentPath)
     {
         Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger(fmt::format("ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ {}", e), nullptr);
     }
+    catch (...)
+    {
+        Chip8topiaInputHandler::getInstance().m_ErrorEvent.trigger("ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ Unknown error", nullptr);
+    }
 }
 
 void Shader::compile(const char* vertexSource, const char* fragmentSource)

@@ -279,7 +279,7 @@ void Chip8topia::handleInputs()
             m_closeRequested = true;
         if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE && event.window.windowID == SDL_GetWindowID(m_window))
             m_closeRequested = true;
-        if (event.key.keysym.sym == SDLK_ESCAPE)
+        if (event.key.keysym.sym == SDLK_ESCAPE && event.type == SDL_KEYDOWN)
             m_closeRequested = true;
 #endif
 
@@ -418,6 +418,11 @@ void Chip8topia::loadRomFromPath(const std::string& filePath)
     {
         ImGui::InsertNotification({ ImGuiToastType::Error, TOAST_DURATION_ERROR, e });
         LOG_ERROR(e);
+    }
+    catch (...)
+    {
+        ImGui::InsertNotification({ ImGuiToastType::Error, TOAST_DURATION_ERROR, "An unknown error occurred while loading the rom" });
+        LOG_ERROR("An unknown error occurred while loading the rom");
     }
 }
 

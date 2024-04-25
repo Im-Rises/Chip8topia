@@ -2,9 +2,19 @@
 
 #include <array>
 #include <memory>
+#include <functional>
+#include <binaryLib/binaryLib.h>
 #include <SDL.h>
 
 // TODO: Need format to move code of SDL that shouldn't be here elsewhere...
+// TODO: Check if a concurrency issue is present
+
+enum class WaveType : uint8
+{
+    Sine,
+    Saw,
+    Square
+};
 
 class Chip8CoreBase;
 class Chip8SoundEmulation
@@ -25,18 +35,23 @@ public:
     ~Chip8SoundEmulation();
 
 public:
-    void initSoundBuffer();
+    void reset();
+    void initSoundBuffer(std::function<double(double, unsigned long)> waveFunction);
+    void setWaveType(WaveType waveType);
     void update(const std::unique_ptr<Chip8CoreBase>& chip8Core);
-    void stop();
 
 private:
-    static void soundPlayerCallback(void* userdata, unsigned char* stream, int len);
-    void soundPlayer(unsigned char* stream, int len);
+    void stop();
+    void play();
+
+    static void soundPlayerCallback(void* userdata, unsigned char* stream, int streamLength);
+    void soundPlayer(unsigned char* stream, int streamLength);
 
 public:
     [[nodiscard]] auto getIsPlaying() const -> bool;
     [[nodiscard]] auto getFrequencyPtr() -> int*;
     [[nodiscard]] auto getVolumePtr() -> float*;
+    [[nodiscard]] auto getWaveType() const -> WaveType;
 
 private:
     SDL_AudioSpec m_spec;
@@ -46,4 +61,5 @@ private:
     int m_squareSoundFrequency;
     float m_volume;
     bool m_isPlaying;
+    WaveType m_waveType;
 };
