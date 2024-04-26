@@ -94,7 +94,7 @@ void Chip8SoundEmulation::setWaveType(WaveType waveType)
 
 void Chip8SoundEmulation::update(const std::unique_ptr<Chip8CoreBase>& chip8Core)
 {
-#if !defined(__EMSCRIPTEN__)
+    // #if !defined(__EMSCRIPTEN__)
     const auto st = chip8Core->getCpu()->getST();
 
     if (st > 0)
@@ -105,7 +105,7 @@ void Chip8SoundEmulation::update(const std::unique_ptr<Chip8CoreBase>& chip8Core
     {
         stop();
     }
-#endif
+    // #endif
 }
 
 void Chip8SoundEmulation::stop()

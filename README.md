@@ -90,18 +90,18 @@ Emulated consoles:
 
 Major:
 
-- [ ] Correct Chip8 sound emulation issue in desktop and in web version
+- [ ] Add a try catch (check Chip8CoreBase todo)
+- [ ] Correct Chip8 sound emulation issue in desktop and crash in web version
 - [ ] Cleanup the full handling of the sound emulation
-- [ ] Add big try catch (check Chip8CoreBase todo)
 - [ ] Add Xo-Chip audio
 - [ ] Replace the input handler singleton with another pattern...
-- [ ] Add a try catch (check Chip8CoreBase todo)
 
 Minor:
 
+- [ ] Depending on the rom extension, load the correct console (Chip8, SCHIP, SCHIPC, Xo-Chip)
 - [ ] Restarting a game when playing big xo-chip games will not reload the game from the start (we should reset memory
   and reload the game rom)
-- [ ] Improve disassembly (check TODO in the Chip8topiaDisassembly.cpp file)
+- [ ] Improve disassembly (check TODO in the Chip8topiaDisassembly.cpp and Chip8topiaDisassembler)
 
 <!-- Other
 Other tasks:
