@@ -76,7 +76,6 @@ void Chip8topiaSoundUi::drawSoundState(Chip8Emulator& emulator)
 
 void Chip8topiaSoundUi::drawSoundFrequency(Chip8Emulator& emulator)
 {
-    // TODO: Refactor
     int* frequency = emulator.getChip8SoundEmulation().getFrequencyPtr();
     const int frequencyValue = *frequency;
     ImGui::Text("Frequency");
@@ -90,7 +89,6 @@ void Chip8topiaSoundUi::drawSoundFrequency(Chip8Emulator& emulator)
 
 void Chip8topiaSoundUi::drawSoundVolume(Chip8Emulator& emulator)
 {
-    // TODO: Refactor
     float* volume = emulator.getChip8SoundEmulation().getVolumePtr();
     const float volumeValue = *volume;
     ImGui::Text("Volume   ");

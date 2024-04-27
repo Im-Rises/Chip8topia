@@ -26,9 +26,6 @@ enum class Chip8Frequency : uint32
     Freq24000000Hz = 24000000 // 24MHz for Alien-Inv8sion
 };
 
-// TODO: make clock method private and call it in a non public virtual function ClockCore which will call the clock method in a try catch block for safety.
-//  This way we will remove the dependency to the InputHandler in the Cpu and throw error.
-
 // class CpuBase;
 class Input;
 class Chip8CoreBase

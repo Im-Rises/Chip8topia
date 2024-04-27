@@ -7,6 +7,24 @@
 #include "Chip8Emulator/Chip8VideoEmulation.h"
 #include "Chip8Emulator/Chip8SoundEmulation.h"
 
+#if defined(BUILD_PARAM_SAFE)
+#define TRIGGER_ERROR(condition, ...)                                                                            \
+    do                                                                                                           \
+    {                                                                                                            \
+        static_assert(std::is_same<decltype(condition), bool>::value, "Condition must be a boolean expression"); \
+        if ((condition))                                                                                         \
+        {                                                                                                        \
+            Chip8topiaInputHandler::getInstance().m_EmulationError.trigger(fmt::format(__VA_ARGS__));            \
+        }                                                                                                        \
+    } while (false)
+#else
+#define TRIGGER_ERROR(condition, message, ...) \
+    do                                         \
+    {                                          \
+        (void)(message);                       \
+    } while (false)
+#endif
+
 class Chip8Emulator
 {
 public:
@@ -65,7 +83,7 @@ public:
     [[nodiscard]] auto getIsBreak() const -> bool;
     [[nodiscard]] auto getIsRomLoaded() const -> bool;
     [[nodiscard]] auto getCanBreak() -> bool*;
-    [[nodiscard]] auto getBreakpoints() -> std::array<bool, CpuBase::MEMORY_SIZE>&;
+    [[nodiscard]] auto getBreakpointsStates() -> std::array<bool, CpuBase::MEMORY_SIZE>&;
     [[nodiscard]] auto getBreakpointsList() -> std::set<uint16>&;
     [[nodiscard]] auto getCoreType() const -> Chip8CoreType;
     [[nodiscard]] auto getFrequency() const -> Chip8Frequency;
@@ -84,5 +102,5 @@ private:
     bool m_errorTriggered;
 
     std::set<uint16> m_breakpointsList;
-    std::array<bool, CpuBase::MEMORY_SIZE> m_breakpoints;
+    std::array<bool, CpuBase::MEMORY_SIZE> m_breakpointsStates;
 };

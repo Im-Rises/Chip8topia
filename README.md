@@ -90,28 +90,26 @@ Emulated consoles:
 
 Major:
 
-- [ ] Correct Chip8 sound emulation issue in desktop and in web version
-- [ ] Cleanup the full handling of the sound emulation
-- [ ] Add big try catch (check Chip8CoreBase todo)
 - [ ] Add Xo-Chip audio
-- [ ] Replace the input handler singleton with another pattern...
 
 Minor:
 
+- [ ] Cleanup the full handling of the sound emulation
 - [ ] Restarting a game when playing big xo-chip games will not reload the game from the start (we should reset memory
   and reload the game rom)
-- [ ] Improve disassembly (check TODO in the Chip8topiaDisassembly.cpp file)
-- [ ] Add a try catch (check Chip8CoreBase todo)
+- [ ] Improve disassembly (check TODO in the Chip8topiaDisassembly.cpp and Chip8topiaDisassembler)
 
 <!-- Other
 Other tasks:
+- [ ] Depending on the rom extension, load the correct console (Chip8, SCHIP, SCHIPC, Xo-Chip)
+- [ ] Replace the input handler singleton with another pattern...
 - [ ] Use cpack to create a release (also update the GitHub Actions) https://cmake.org/cmake/help/book/mastering-cmake/chapter/Packaging%20With%20CPack.html
 - [ ] Add a way to change the input keys
 - [ ] Add a background when no rom is loaded
 
 Profiling logs:
 - [x] Issue with imgui viewport when vsync enabled and window out of the sdl2/glfw main window it doubles the time of the swap buffers, like its doing it two times (disabled completely vsync and use of std::this_thread::sleep_for(std::chrono::milliseconds(16)) in the main loop)
-- [x] LD_Vx_K is somehow very very slow ??? (corrected by not iterating over all the keys but only checking if the previous bitset of the keys is different from the current one)
+- [x] LD_Vx_K is somehow very, very slow ??? (corrected by not iterating over all the keys but only checking if the previous bitset of the keys is different from the current one)
 - [x] Breakpoints in Chip8Emulator is slow (stop using a std::set when checking if we should break on the current PC and use of an array)
 -->
 
@@ -126,7 +124,7 @@ Profiling logs:
 - [johnearnest.github.io](http://johnearnest.github.io/Octo/docs/XO-ChipSpecification.html)
 - [johnearnest.github.io/chip8Archive](https://johnearnest.github.io/chip8Archive/?sort=platform)
 - [johnearnest.github.io/Octo](https://johnearnest.github.io/Octo/)
-- [jacobsebek SDL2 audio callack demo](https://gist.github.com/jacobsebek/10867cb10cdfccf1d6cfdd24fa23ee96)
+- [jacobsebek SDL2 audio callback demo](https://gist.github.com/jacobsebek/10867cb10cdfccf1d6cfdd24fa23ee96)
 
 [//]: # (- [devernay.free.fr]&#40;http://devernay.free.fr/hacks/chip8/C8TECH10.HTM&#41;)
 

@@ -1,9 +1,8 @@
 #include "Chip8Cpu.h"
 
 #include "Chip8Ppu.h"
-#include "../../../../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
 
-#define TRIGGER_COMPUTE_OPCODE_ERROR(opcode) TRIGGER_EMULATION_ERROR(true, "Chip8Cpu::computeOpcode: Invalid opcode 0x{:04X}", opcode)
+#define TRIGGER_COMPUTE_OPCODE_ERROR(opcode) TRIGGER_EMULATION_ERROR("Chip8Cpu::computeOpcode: Invalid opcode 0x{:04X}", opcode)
 
 Chip8Cpu::Chip8Cpu() : m_isHalted(false),
                        m_requestDisableHalt(false)
