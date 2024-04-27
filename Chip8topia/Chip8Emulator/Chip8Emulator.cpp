@@ -114,7 +114,6 @@ void Chip8Emulator::update(const float deltaTime)
 
 void Chip8Emulator::emitSound()
 {
-    // TODO: Improve this condition...
     if (!m_isBreak && m_isRomLoaded && !m_errorTriggered)
     {
         m_soundEmulation.update(m_core);

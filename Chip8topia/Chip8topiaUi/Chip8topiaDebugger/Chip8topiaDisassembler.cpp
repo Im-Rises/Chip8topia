@@ -46,7 +46,7 @@ void Chip8topiaDisassembler::drawDisassembly(Chip8Emulator* emulator)
 
     // TODO: Disassembly:
     //  - Optimize and clean up the code
-    //  - Do not data after a F000 opcode
+    //  - Do not display data after a F000 opcode
 
     std::string buffer;
     ImGuiListClipper clipper;

@@ -33,7 +33,6 @@ private:
     void drawSoundState(Chip8Emulator& emulator);
     void drawSoundFrequency(Chip8Emulator& emulator);
     void drawSoundVolume(Chip8Emulator& emulator);
-    void drawSoundGraph(Chip8Emulator& emulator);
 
 private:
     bool m_isSoundStateWindowOpen = INITIAL_WINDOW_STATE;

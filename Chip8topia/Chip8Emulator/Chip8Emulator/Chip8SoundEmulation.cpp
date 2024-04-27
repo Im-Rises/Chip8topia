@@ -1,8 +1,6 @@
 #include "Chip8SoundEmulation.h"
 
 #include <SDL.h>
-#include <iostream>
-
 #include "../Chip8CoreBase/Chip8CoreBase.h"
 
 // Thanks to https://gist.github.com/jacobsebek/10867cb10cdfccf1d6cfdd24fa23ee96 !!!

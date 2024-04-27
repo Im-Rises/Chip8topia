@@ -15,7 +15,6 @@ void Chip8topiaSoundUi::drawSoundMenu(Chip8Emulator& emulator)
         drawSoundWaveType(emulator);
         drawSoundFrequency(emulator);
         drawSoundVolume(emulator);
-        drawSoundGraph(emulator);
 
         ImGui::EndMenu();
     }
@@ -99,11 +98,4 @@ void Chip8topiaSoundUi::drawSoundVolume(Chip8Emulator& emulator)
     {
         emulator.getChip8SoundEmulation().setWaveType(emulator.getChip8SoundEmulation().getWaveType());
     }
-}
-
-void Chip8topiaSoundUi::drawSoundGraph(Chip8Emulator& emulator)
-{
-    Chip8SoundEmulation& soundEmulation = emulator.getChip8SoundEmulation();
-
-    ImGui::PlotLines("Sound", reinterpret_cast<const float*>(soundEmulation.getBuffer().data()), Chip8SoundEmulation::BUFFER_LEN, 0, nullptr, 0, 255, ImVec2(0, 80));
 }
