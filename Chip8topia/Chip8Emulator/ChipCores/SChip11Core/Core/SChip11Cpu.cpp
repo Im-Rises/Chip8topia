@@ -1,9 +1,8 @@
 #include "SChip11Cpu.h"
 
 #include "SChip11Ppu.h"
-#include "../../../../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
 
-#define TRIGGER_COMPUTE_OPCODE_ERROR(opcode) TRIGGER_EMULATION_ERROR(true, "SChip11Cpu::computeOpcode: Invalid opcode 0x{:04X}", opcode)
+#define TRIGGER_COMPUTE_OPCODE_ERROR(opcode) TRIGGER_EMULATION_ERROR("SChip11Cpu::computeOpcode: Invalid opcode 0x{:04X}", opcode)
 
 SChip11Cpu::SChip11Cpu(bool isModernMode) : m_isModernMode(isModernMode), m_isHalted(false), m_requestDisableHalt(false)
 {

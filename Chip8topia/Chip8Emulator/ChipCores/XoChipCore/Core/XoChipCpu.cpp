@@ -3,9 +3,8 @@
 #include "XoChipPpu.h"
 
 #include "../../../Chip8CoreBase/Core/Input.h"
-#include "../../../../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
 
-#define TRIGGER_COMPUTE_OPCODE_ERROR(opcode) TRIGGER_EMULATION_ERROR(true, "XoChipCpu::computeOpcode: Invalid opcode 0x{:04X}", opcode)
+#define TRIGGER_COMPUTE_OPCODE_ERROR(opcode) TRIGGER_EMULATION_ERROR("XoChipCpu::computeOpcode: Invalid opcode 0x{:04X}", opcode)
 
 XoChipCpu::XoChipCpu()
 {

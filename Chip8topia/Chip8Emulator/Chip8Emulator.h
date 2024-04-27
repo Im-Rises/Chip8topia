@@ -7,6 +7,24 @@
 #include "Chip8Emulator/Chip8VideoEmulation.h"
 #include "Chip8Emulator/Chip8SoundEmulation.h"
 
+#if defined(BUILD_PARAM_SAFE)
+#define TRIGGER_ERROR(condition, message, ...)                                                                   \
+    do                                                                                                           \
+    {                                                                                                            \
+        static_assert(std::is_same<decltype(condition), bool>::value, "Condition must be a boolean expression"); \
+        if ((condition))                                                                                         \
+        {                                                                                                        \
+            Chip8topiaInputHandler::getInstance().m_EmulationError.trigger(fmt::format(message, __VA_ARGS__));   \
+        }                                                                                                        \
+    } while (false)
+#else
+#define TRIGGER_ERROR(condition, message, ...) \
+    do                                         \
+    {                                          \
+        (void)(message);                       \
+    } while (false)
+#endif
+
 class Chip8Emulator
 {
 public:

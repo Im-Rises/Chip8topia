@@ -82,33 +82,48 @@ void Chip8Emulator::loadRom(const std::vector<uint8_t>& romData)
 
 void Chip8Emulator::update(const float deltaTime)
 {
-    if (!m_isRomLoaded)
+    try
     {
-        return;
-    }
-
-    if (m_isBreak)
-    {
-        if (m_step)
+        if (!m_isRomLoaded)
         {
-            m_step = false;
-            m_core->clock();
+            return;
         }
-    }
-    else
-    {
-        bool screenUpdated = false;
-        while (!screenUpdated && !m_isBreak && !m_errorTriggered)
-        {
-            screenUpdated = m_core->clock();
 
-            if (m_breakpointsStates[m_core->getCpu()->getPc()])
+        if (m_isBreak)
+        {
+            if (m_step)
             {
-                m_isBreak = true;
-                ImGui::InsertNotification({ ImGuiToastType::Info, TOAST_DURATION_INFO,
-                    "Breakpoint hit", fmt::format("Breakpoint hit at 0x{:04X}", m_core->getCpu()->getPc()).c_str() });
+                m_step = false;
+                m_core->clock();
             }
         }
+        else
+        {
+            bool screenUpdated = false;
+            while (!screenUpdated && !m_isBreak && !m_errorTriggered)
+            {
+                screenUpdated = m_core->clock();
+
+                if (m_breakpointsStates[m_core->getCpu()->getPc()])
+                {
+                    m_isBreak = true;
+                    ImGui::InsertNotification({ ImGuiToastType::Info, TOAST_DURATION_INFO,
+                        "Breakpoint hit", fmt::format("Breakpoint hit at 0x{:04X}", m_core->getCpu()->getPc()).c_str() });
+                }
+            }
+        }
+    }
+    catch (const std::exception& e)
+    {
+        TRIGGER_ERROR(true, "Emulation error: {}", e.what());
+    }
+    catch (const char* const e)
+    {
+        TRIGGER_ERROR(true, "Emulation error: {}", e);
+    }
+    catch (...)
+    {
+        TRIGGER_ERROR(true, "Emulation error: An unknown error occurred during emulation.");
     }
 }
 

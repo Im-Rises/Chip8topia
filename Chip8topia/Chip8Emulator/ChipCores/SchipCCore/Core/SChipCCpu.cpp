@@ -1,9 +1,8 @@
 #include "SChipCCpu.h"
 
 #include "SChipCPpu.h"
-#include "../../../../Chip8topiaInputHandler/Chip8topiaInputHandler.h"
 
-#define TRIGGER_COMPUTE_OPCODE_ERROR(opcode) TRIGGER_EMULATION_ERROR(true, "SChipCCpu::computeOpcode: Invalid opcode 0x{:04X}", opcode)
+#define TRIGGER_COMPUTE_OPCODE_ERROR(opcode) TRIGGER_EMULATION_ERROR("SChipCCpu::computeOpcode: Invalid opcode 0x{:04X}", opcode)
 
 SChipCCpu::SChipCCpu()
 {

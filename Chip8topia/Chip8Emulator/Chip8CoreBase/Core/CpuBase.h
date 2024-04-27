@@ -5,8 +5,15 @@
 #include <array>
 #include <RandomGenerator/RandomGenerator.h>
 #include <functional>
+#include <fmt/format.h>
 
 #include "../chip8Fonts.h"
+
+#if defined(BUILD_PARAM_SAFE)
+#define TRIGGER_EMULATION_ERROR(...) throw std::runtime_error(fmt::format(__VA_ARGS__))
+#else
+#define TRIGGER_EMULATION_ERROR(...) (void)(__VA_ARGS__)
+#endif
 
 class PpuBase;
 class Input;
