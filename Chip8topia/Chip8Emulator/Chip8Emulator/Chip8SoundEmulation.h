@@ -45,7 +45,6 @@ private:
     void play();
 
     static void soundPlayerCallback(void* userdata, unsigned char* stream, int streamLength);
-    void soundPlayer(unsigned char* stream, int streamLength);
 
 public:
     [[nodiscard]] auto getIsPlaying() const -> bool;

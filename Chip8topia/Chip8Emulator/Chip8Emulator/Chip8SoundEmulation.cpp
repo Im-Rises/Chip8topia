@@ -129,26 +129,20 @@ void Chip8SoundEmulation::play()
 void Chip8SoundEmulation::soundPlayerCallback(void* userdata, unsigned char* stream, int streamLength)
 {
     auto* chip8SoundEmulation = static_cast<Chip8SoundEmulation*>(userdata);
-
-    chip8SoundEmulation->soundPlayer(stream, streamLength);
-}
-
-void Chip8SoundEmulation::soundPlayer(unsigned char* stream, int streamLength)
-{
     static constexpr size_t SAMPLE_SIZE = sizeof(Sint16);
     const int sampleLength = streamLength / SAMPLE_SIZE;
 
-    SDL_memset(stream, m_spec.silence, streamLength);
+    SDL_memset(stream, chip8SoundEmulation->m_spec.silence, streamLength);
 
-    if (m_bufferPosition + sampleLength >= BUFFER_LEN)
+    if (chip8SoundEmulation->m_bufferPosition + sampleLength >= BUFFER_LEN)
     {
-        m_bufferPosition = 0;
+        chip8SoundEmulation->m_bufferPosition = 0;
     }
 
     // TODO: Correct the strange crash here in webassembly
-    SDL_memcpy(stream, &m_buffer[m_bufferPosition], streamLength);
+    SDL_memcpy(stream, &chip8SoundEmulation->m_buffer[chip8SoundEmulation->m_bufferPosition], streamLength);
 
-    m_bufferPosition += sampleLength;
+    chip8SoundEmulation->m_bufferPosition += sampleLength;
 }
 
 auto Chip8SoundEmulation::getIsPlaying() const -> bool
