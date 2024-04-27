@@ -109,7 +109,7 @@ Other tasks:
 
 Profiling logs:
 - [x] Issue with imgui viewport when vsync enabled and window out of the sdl2/glfw main window it doubles the time of the swap buffers, like its doing it two times (disabled completely vsync and use of std::this_thread::sleep_for(std::chrono::milliseconds(16)) in the main loop)
-- [x] LD_Vx_K is somehow very very slow ??? (corrected by not iterating over all the keys but only checking if the previous bitset of the keys is different from the current one)
+- [x] LD_Vx_K is somehow very, very slow ??? (corrected by not iterating over all the keys but only checking if the previous bitset of the keys is different from the current one)
 - [x] Breakpoints in Chip8Emulator is slow (stop using a std::set when checking if we should break on the current PC and use of an array)
 -->
 
@@ -124,7 +124,7 @@ Profiling logs:
 - [johnearnest.github.io](http://johnearnest.github.io/Octo/docs/XO-ChipSpecification.html)
 - [johnearnest.github.io/chip8Archive](https://johnearnest.github.io/chip8Archive/?sort=platform)
 - [johnearnest.github.io/Octo](https://johnearnest.github.io/Octo/)
-- [jacobsebek SDL2 audio callack demo](https://gist.github.com/jacobsebek/10867cb10cdfccf1d6cfdd24fa23ee96)
+- [jacobsebek SDL2 audio callback demo](https://gist.github.com/jacobsebek/10867cb10cdfccf1d6cfdd24fa23ee96)
 
 [//]: # (- [devernay.free.fr]&#40;http://devernay.free.fr/hacks/chip8/C8TECH10.HTM&#41;)
 
