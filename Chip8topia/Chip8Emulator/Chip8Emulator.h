@@ -56,7 +56,6 @@ public:
     void render(const float screenWidth, const float screenHeight);
 
     void stop();
-    void setSoundVolume(float volume);
 
 #if defined(BUILD_PARAM_SAFE)
     void triggerEmulationError(const std::string& message);

@@ -158,17 +158,11 @@ void Chip8Emulator::stop()
     }
 }
 
-void Chip8Emulator::setSoundVolume(float volume)
-{
-    //    m_soundEmulation.setVolume(volume);
-}
-
 #if defined(BUILD_PARAM_SAFE)
 void Chip8Emulator::triggerEmulationError(const std::string& message)
 {
     m_soundEmulation.reset();
     m_errorTriggered = true;
-    LOG_ERROR(message);
 }
 #endif
 
