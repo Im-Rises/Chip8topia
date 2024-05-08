@@ -29,12 +29,15 @@
 
 Chip8topia::Chip8topia() : m_window(nullptr), m_gl_context()
 {
+    LOG_INFO("Chip8topia created");
 }
 
 Chip8topia::~Chip8topia() = default;
 
 auto Chip8topia::run() -> int
 {
+    LOG_INFO("Running Chip8topia");
+
     auto initErrorCode = init();
 
     if (initErrorCode != 0)
@@ -250,7 +253,7 @@ void Chip8topia::cleanup()
 
     m_chip8topiaInputHandler.m_ToggleTurboModeEvent.unsubscribe(this, &Chip8topia::toggleTurboMode);
 
-#if !defined(BUILD_RELEASE)
+#if !defined(BUILD_RELEASE) && !defined(__EMSCRIPTEN__)
     m_chip8topiaInputHandler.m_DebugRomFastLoadEvent.unsubscribe(this, &Chip8topia::loadDebugRom);
 #endif
 
@@ -276,11 +279,17 @@ void Chip8topia::handleInputs()
         ImGui_ImplSDL2_ProcessEvent(&event);
 #ifndef __EMSCRIPTEN__
         if (event.type == SDL_QUIT)
+        {
             m_closeRequested = true;
+        }
         if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE && event.window.windowID == SDL_GetWindowID(m_window))
+        {
             m_closeRequested = true;
+        }
         if (event.key.keysym.sym == SDLK_ESCAPE && event.type == SDL_KEYDOWN)
+        {
             m_closeRequested = true;
+        }
 #endif
 
         m_chip8topiaInputHandler.update(*this, event);
@@ -593,7 +602,7 @@ auto Chip8topia::getFmtVersion() -> std::string
     return fmt::format("{}.{}.{}", major, minor, patch);
 }
 
-#if !defined(BUILD_RELEASE)
+#if !defined(BUILD_RELEASE) && !defined(__EMSCRIPTEN__)
 auto Chip8topia::getSpdlogVersion() -> std::string
 {
     //        return std::to_string(SPDLOG_VERSION);
@@ -614,7 +623,7 @@ auto Chip8topia::getDependenciesInfos() -> std::string
                        " - stb_image version {}\n"
 #endif
                        " - fmt version {}\n"
-#if !defined(BUILD_RELEASE)
+#if !defined(BUILD_RELEASE) && !defined(__EMSCRIPTEN__)
                        " - spdlog version {}\n"
 #endif
         ,
@@ -628,7 +637,7 @@ auto Chip8topia::getDependenciesInfos() -> std::string
         getStbImageVersion(),
 #endif
         getFmtVersion()
-#if !defined(BUILD_RELEASE)
+#if !defined(BUILD_RELEASE) && !defined(__EMSCRIPTEN__)
             ,
         getSpdlogVersion()
 #endif

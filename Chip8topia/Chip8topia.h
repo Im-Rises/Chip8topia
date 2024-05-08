@@ -115,7 +115,7 @@ public:
     static auto getStbImageVersion() -> std::string;
 #endif
     static auto getFmtVersion() -> std::string;
-#if !defined(BUILD_RELEASE)
+#if !defined(BUILD_RELEASE) && !defined(__EMSCRIPTEN__)
     static auto getSpdlogVersion() -> std::string;
 #endif
     static auto getDependenciesInfos() -> std::string;
