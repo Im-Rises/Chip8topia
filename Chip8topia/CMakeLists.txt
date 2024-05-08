@@ -55,7 +55,12 @@ else ()
         --preload-file ${CMAKE_SOURCE_DIR}/shaders@/shaders
         --preload-file ${CMAKE_SOURCE_DIR}/fonts@/fonts
     #]]
-    set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-s USE_SDL=2 -s FULL_ES3=1 -s WASM=1 -s EXPORTED_RUNTIME_METHODS=[ccall] -s ALLOW_MEMORY_GROWTH=1 -s EXPORTED_FUNCTIONS=[_main,_malloc,_free] --preload-file ${CMAKE_SOURCE_DIR}/Chip8Games@/Chip8Games --preload-file ${CMAKE_SOURCE_DIR}/shaders@/shaders --preload-file ${CMAKE_SOURCE_DIR}/fonts@/fonts -fwasm-exceptions -fexceptions")
+
+    set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-s USE_SDL=2 -s FULL_ES3=1 -s WASM=1 -s EXPORTED_RUNTIME_METHODS=[ccall] -s ALLOW_MEMORY_GROWTH=1 -s EXPORTED_FUNCTIONS=[_main,_malloc,_free] --preload-file ${CMAKE_SOURCE_DIR}/Chip8Games@/Chip8Games --preload-file ${CMAKE_SOURCE_DIR}/shaders@/shaders --preload-file ${CMAKE_SOURCE_DIR}/fonts@/fonts -sNO_DISABLE_EXCEPTION_CATCHING")
+
+    target_link_options(${PROJECT_NAME} PRIVATE -sNO_DISABLE_EXCEPTION_CATCHING)
+
+    target_compile_options(${PROJECT_NAME} PRIVATE -sNO_DISABLE_EXCEPTION_CATCHING)
 
     ### Code above work except for exceptions...
 
