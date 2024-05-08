@@ -50,30 +50,37 @@ if (NOT EMSCRIPTEN)
     endif ()
 else ()
     target_link_libraries(${PROJECT_NAME} PRIVATE SDL2::SDL2 SDL2::SDL2main)
+    #[[
+        --preload-file ${CMAKE_SOURCE_DIR}/Chip8Games@/Chip8Games
+        --preload-file ${CMAKE_SOURCE_DIR}/shaders@/shaders
+        --preload-file ${CMAKE_SOURCE_DIR}/fonts@/fonts
+    #]]
+    set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-s USE_SDL=2 -s FULL_ES3=1 -s WASM=1 -s EXPORTED_RUNTIME_METHODS=[ccall] -s ALLOW_MEMORY_GROWTH=1 -s EXPORTED_FUNCTIONS=[_main,_malloc,_free] --preload-file ${CMAKE_SOURCE_DIR}/Chip8Games@/Chip8Games --preload-file ${CMAKE_SOURCE_DIR}/shaders@/shaders --preload-file ${CMAKE_SOURCE_DIR}/fonts@/fonts -fwasm-exceptions -fexceptions")
 
-    target_compile_options(${PROJECT_NAME} PRIVATE -fwasm-exceptions)
+    ### Code above work except for exceptions...
 
-    target_link_options(${PROJECT_NAME} PRIVATE
-            "-s USE_SDL=2"
-            "-s FULL_ES3=1"
-            "-s WASM=1"
-            "-s EXPORTED_RUNTIME_METHODS=[ccall]"
-            "-s ALLOW_MEMORY_GROWTH=1"
-            "-s EXPORTED_FUNCTIONS=[_main,_malloc,_free]"
-            "-fwasm-exceptions"
-    )
-
+    #    target_compile_options(${PROJECT_NAME} PRIVATE -fwasm-exceptions)
+    #
     #    target_link_options(${PROJECT_NAME} PRIVATE
-    #            "--preload-file ../../Chip8Games"
-    #            "--preload-file ../../shaders"
-    #            "--preload-file ../../fonts"
+    #            "-s USE_SDL=2"
+    #            "-s FULL_ES3=1"
+    #            "-s WASM=1"
+    #            "-s EXPORTED_RUNTIME_METHODS=[ccall]"
+    #            "-s ALLOW_MEMORY_GROWTH=1"
+    #            "-s EXPORTED_FUNCTIONS=[_main,_malloc,_free]"
+    #            "-fwasm-exceptions"
     #    )
 
-    set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS
-            "--preload-file ${CMAKE_SOURCE_DIR}/Chip8Games"
-            "--preload-file ${CMAKE_SOURCE_DIR}/shaders"
-            "--preload-file ${CMAKE_SOURCE_DIR}/fonts"
-    )
+    #    set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS
+    #            --preload-file ${CMAKE_SOURCE_DIR}/Chip8Games@/Chip8Games
+    #            --preload-file ${CMAKE_SOURCE_DIR}/shaders@/shaders
+    #            --preload-file ${CMAKE_SOURCE_DIR}/fonts@/fonts
+    #    )
+
+    #    set_target_properties(${PROJECT_NAME} PROPERTIES
+    #            --preload-file ${CMAKE_SOURCE_DIR}/Chip8Games@/Chip8Games;${CMAKE_SOURCE_DIR}/shaders@/shaders;${CMAKE_SOURCE_DIR}/fonts@/fonts
+    #    )
+
 
 endif ()
 
