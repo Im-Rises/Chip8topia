@@ -80,10 +80,10 @@ private:
     PROCESS_MEMORY_COUNTERS_EX m_pmc;
 
     // CPU usage
-    PDH_HQUERY m_cpuQuery;
-    PDH_HCOUNTER m_cpuTotal;
+    PDH_HQUERY m_cpuQuery{};
+    PDH_HCOUNTER m_cpuTotal{};
     // CPU usage current process
-    ULARGE_INTEGER m_lastCPU, m_lastSysCPU, m_lastUserCPU;
+    ULARGE_INTEGER m_lastCPU{}, m_lastSysCPU{}, m_lastUserCPU{};
     int m_numProcessors;
     HANDLE m_self;
 #elif defined(PLATFORM_LINUX)

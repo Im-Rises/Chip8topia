@@ -16,19 +16,19 @@ auto getBit(const T& value, const unsigned int& bitIndex) -> bool
 }
 
 template <typename T>
-void setBit(T& value, const unsigned int& bitIndex)
+[[maybe_unused]] void setBit(T& value, const unsigned int& bitIndex)
 {
     value |= (1 << bitIndex);
 }
 
 template <typename T>
-void resetBit(T& value, const unsigned int& bitIndex)
+[[maybe_unused]] void resetBit(T& value, const unsigned int& bitIndex)
 {
     value &= ~(1 << bitIndex);
 }
 
 template <typename T>
-void toggleBit(T& value, const unsigned int& bitIndex)
+[[maybe_unused]] void toggleBit(T& value, const unsigned int& bitIndex)
 {
     value ^= (1 << bitIndex);
 }

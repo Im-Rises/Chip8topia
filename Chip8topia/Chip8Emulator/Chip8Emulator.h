@@ -19,10 +19,11 @@
     } while (false)
 #else
 #define TRIGGER_ERROR(condition, message, ...) \
-    do                                         \
-    {                                          \
-        (void)(message);                       \
-    } while (false)
+    (void)0;                                   \
+//    do                                         \
+//    {                                          \
+//        (void)(message);                       \
+//    } while (false)
 #endif
 
 class Chip8Emulator

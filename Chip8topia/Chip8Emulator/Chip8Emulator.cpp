@@ -82,8 +82,10 @@ void Chip8Emulator::loadRom(const std::vector<uint8_t>& romData)
 
 void Chip8Emulator::update(const float /* deltaTime */)
 {
+#if defined(BUILD_PARAM_SAFE)
     try
     {
+#endif
         if (!m_isRomLoaded)
         {
             return;
@@ -112,6 +114,7 @@ void Chip8Emulator::update(const float /* deltaTime */)
                 }
             }
         }
+#if defined(BUILD_PARAM_SAFE)
     }
     catch (const std::exception& e)
     {
@@ -125,6 +128,7 @@ void Chip8Emulator::update(const float /* deltaTime */)
     {
         TRIGGER_ERROR(true, "Emulation error: An unknown error occurred during emulation.");
     }
+#endif
 }
 
 void Chip8Emulator::emitSound()

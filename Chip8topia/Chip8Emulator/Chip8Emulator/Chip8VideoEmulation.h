@@ -35,7 +35,7 @@ public:
     void updateTexture(const std::unique_ptr<Chip8CoreBase>& core);
     void update(const std::unique_ptr<Chip8CoreBase>& core, const float screenWidth, const float screenHeight, const float chip8AspectRatio);
 
-    auto getColorMode() const -> EmulationColorMode;
+    [[nodiscard]] auto getColorMode() const -> EmulationColorMode;
     auto getColor(const int index) -> ImVec4&;
     auto getHiresPlaneTexture(const int planeIndex) -> GLuint;
     auto getLoresPlaneTexture(const int planeIndex) -> GLuint;

@@ -132,24 +132,24 @@ void SChip11Cpu::SCD(const uint8 n)
     CpuBase::SCD((m_ppu->getMode() == PpuBase::PpuMode::LORES && !m_isModernMode) ? n / 2 : n);
 }
 
-void SChip11Cpu::SCR(const uint8 n)
+void SChip11Cpu::SCR(const uint8 /* n */)
 {
     CpuBase::SCR((m_ppu->getMode() == PpuBase::PpuMode::LORES && !m_isModernMode) ? 2 : 4);
 }
 
-void SChip11Cpu::SCL(const uint8 n)
+void SChip11Cpu::SCL(const uint8 /* n */)
 {
     CpuBase::SCL((m_ppu->getMode() == PpuBase::PpuMode::LORES && !m_isModernMode) ? 2 : 4);
 }
 
-void SChip11Cpu::SHR_Vx_Vy(const uint8 x, const uint8 y)
+void SChip11Cpu::SHR_Vx_Vy(const uint8 x, const uint8 /* y */)
 {
     const uint8 flag = m_V[x] & 0x1;
     m_V[x] >>= 1;
     m_V[0xF] = flag;
 }
 
-void SChip11Cpu::SHL_Vx_Vy(const uint8 x, const uint8 y)
+void SChip11Cpu::SHL_Vx_Vy(const uint8 x, const uint8 /* y */)
 {
     const uint8 flag = (m_V[x] & 0x80) >> 7;
     m_V[x] <<= 1;

@@ -205,12 +205,12 @@ auto Chip8topia::init() -> int
         return FONT_AWESOME_INIT_ERROR_CODE;
     }
 
-    static const ImWchar iconsRanges[] = { ICON_MIN_FA, ICON_MAX_16_FA, 0 };
+    static const ImWchar ICONS_RANGES[] = { ICON_MIN_FA, ICON_MAX_16_FA, 0 };
     ImFontConfig iconsConfig;
     iconsConfig.MergeMode = true;
     iconsConfig.PixelSnapH = true;
     iconsConfig.GlyphMinAdvanceX = iconFontSize;
-    io.Fonts->AddFontFromFileTTF(FONT_ICON_FILE_NAME_FAS, iconFontSize, &iconsConfig, iconsRanges);
+    io.Fonts->AddFontFromFileTTF(FONT_ICON_FILE_NAME_FAS, iconFontSize, &iconsConfig, ICONS_RANGES);
 
     // Setup Platform/Renderer backends
     ImGui_ImplSDL2_InitForOpenGL(m_window, m_gl_context);
@@ -359,7 +359,7 @@ void Chip8topia::handleScreenRender()
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
     // Update and Render additional Platform Windows
-    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    if ((io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) != 0)
     {
         SDL_Window* backup_current_window = SDL_GL_GetCurrentWindow();
         SDL_GLContext backup_current_context = SDL_GL_GetCurrentContext();
@@ -595,10 +595,10 @@ auto Chip8topia::getStbImageVersion() -> std::string
 auto Chip8topia::getFmtVersion() -> std::string
 {
     //    return std::to_string(FMT_VERSION);
-    constexpr int major = FMT_VERSION / 10000;
-    constexpr int minor = (FMT_VERSION / 100) % 100;
-    constexpr int patch = FMT_VERSION % 100;
-    return fmt::format("{}.{}.{}", major, minor, patch);
+    constexpr int MAJOR = FMT_VERSION / 10000;
+    constexpr int MINOR = (FMT_VERSION / 100) % 100;
+    constexpr int PATCH = FMT_VERSION % 100;
+    return fmt::format("{}.{}.{}", MAJOR, MINOR, PATCH);
 }
 
 #if !defined(BUILD_RELEASE) && !defined(__EMSCRIPTEN__)
