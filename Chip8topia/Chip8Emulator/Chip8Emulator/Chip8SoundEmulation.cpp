@@ -93,7 +93,7 @@ void Chip8SoundEmulation::update(const std::unique_ptr<Chip8CoreBase>& chip8Core
     }
 }
 
-void Chip8SoundEmulation::initSoundBuffer(std::function<double(double, unsigned long)> waveFunction)
+void Chip8SoundEmulation::initSoundBuffer(const std::function<double(double, unsigned long)>& waveFunction)
 {
     stop();
 

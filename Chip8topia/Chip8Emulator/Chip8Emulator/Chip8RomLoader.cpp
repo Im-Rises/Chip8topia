@@ -75,7 +75,7 @@ auto Chip8RomLoader::readRom(const std::string& romPath) -> std::vector<uint8>
     rom.resize(std::filesystem::file_size(filePath));
 
     std::ifstream romFile(romPath, std::ios::binary);
-    romFile.read(reinterpret_cast<char*>(rom.data()), rom.size());
+    romFile.read(reinterpret_cast<char*>(rom.data()), static_cast<long long>(rom.size()));
     romFile.close();
 
     return rom;

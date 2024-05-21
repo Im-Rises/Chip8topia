@@ -19,10 +19,11 @@
     } while (false)
 #else
 #define TRIGGER_ERROR(condition, message, ...) \
-    do                                         \
-    {                                          \
-        (void)(message);                       \
-    } while (false)
+    (void)0;                                   \
+//    do                                         \
+//    {                                          \
+//        (void)(message);                       \
+//    } while (false)
 #endif
 
 class Chip8Emulator
@@ -56,7 +57,6 @@ public:
     void render(const float screenWidth, const float screenHeight);
 
     void stop();
-    void setSoundVolume(float volume);
 
 #if defined(BUILD_PARAM_SAFE)
     void triggerEmulationError(const std::string& message);

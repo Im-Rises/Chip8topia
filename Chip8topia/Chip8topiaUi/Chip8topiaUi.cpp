@@ -71,7 +71,7 @@ void Chip8topiaUi::drawMainMenuBar(Chip8topia& chip8topia)
 #endif
 }
 
-void Chip8topiaUi::drawViewMenu(Chip8topia& chip8topia)
+void Chip8topiaUi::drawViewMenu(Chip8topia& /* chip8topia */)
 {
     if (ImGui::BeginMenu(ICON_FA_EYE " View"))
     {

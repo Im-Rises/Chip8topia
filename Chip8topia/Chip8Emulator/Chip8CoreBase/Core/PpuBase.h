@@ -19,13 +19,13 @@ public:
     static constexpr unsigned int PIXEL_ON = 255;
     static constexpr unsigned int PIXEL_OFF = 0;
 
-    static constexpr unsigned int SCREEN_LORES_MODE_WIDTH = 64;
-    static constexpr unsigned int SCREEN_LORES_MODE_HEIGHT = 32;
-    static constexpr unsigned int SCREEN_HIRES_MODE_WIDTH = 128;
-    static constexpr unsigned int SCREEN_HIRES_MODE_HEIGHT = 64;
+    static constexpr int SCREEN_LORES_MODE_WIDTH = 64;
+    static constexpr int SCREEN_LORES_MODE_HEIGHT = 32;
+    static constexpr int SCREEN_HIRES_MODE_WIDTH = 128;
+    static constexpr int SCREEN_HIRES_MODE_HEIGHT = 64;
 
-    static constexpr unsigned int SCREEN_LORES_MODE_SIZE = SCREEN_LORES_MODE_WIDTH * SCREEN_LORES_MODE_HEIGHT;
-    static constexpr unsigned int SCREEN_HIRES_MODE_SIZE = SCREEN_HIRES_MODE_WIDTH * SCREEN_HIRES_MODE_HEIGHT;
+    static constexpr int SCREEN_LORES_MODE_SIZE = SCREEN_LORES_MODE_WIDTH * SCREEN_LORES_MODE_HEIGHT;
+    static constexpr int SCREEN_HIRES_MODE_SIZE = SCREEN_HIRES_MODE_WIDTH * SCREEN_HIRES_MODE_HEIGHT;
 
 public:
     PpuBase();

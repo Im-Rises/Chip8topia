@@ -45,6 +45,6 @@ auto main(int argc, char* argv[]) -> int
               << " - Build date: " << __DATE__ << " " << __TIME__ << '\n'
               << '\n';
 #endif
-
+    
     return chip8topia.run();
 }

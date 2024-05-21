@@ -3,7 +3,7 @@
 #include <binaryLib/binaryLib.h>
 #include <string>
 
-namespace XoChipCpuDisassembly
+namespace xochip_cpu_disassembly
 {
     auto disassembleOpcode(const uint16 opcode) -> std::string;
 }

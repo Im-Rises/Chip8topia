@@ -77,7 +77,7 @@ auto PerformanceMonitor::getCpuUsed() -> float
     PDH_FMT_COUNTERVALUE counterVal;
 
     PdhCollectQueryData(m_cpuQuery);
-    PdhGetFormattedCounterValue(m_cpuTotal, PDH_FMT_DOUBLE, NULL, &counterVal);
+    PdhGetFormattedCounterValue(m_cpuTotal, PDH_FMT_DOUBLE, nullptr, &counterVal);
 
     return static_cast<float>(counterVal.doubleValue);
 }
@@ -194,7 +194,7 @@ void PerformanceMonitor::update()
 {
     // RAM (total physical memory)
     size_t length = sizeof(int64_t);
-    sysctl(m_mib, 2, &m_physical_memory, &length, NULL, 0);
+    sysctl(m_mib, 2, &m_physical_memory, &length, nullptr, 0);
     size_t count = sizeof(m_vm_stats) / sizeof(natural_t);
     if (KERN_SUCCESS == host_page_size(m_mach_port, &m_page_size) &&
         KERN_SUCCESS == host_statistics64(m_mach_port, HOST_VM_INFO,

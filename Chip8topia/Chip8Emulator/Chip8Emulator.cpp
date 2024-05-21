@@ -80,10 +80,12 @@ void Chip8Emulator::loadRom(const std::vector<uint8_t>& romData)
     m_isRomLoaded = true;
 }
 
-void Chip8Emulator::update(const float deltaTime)
+void Chip8Emulator::update(const float /* deltaTime */)
 {
+#if defined(BUILD_PARAM_SAFE)
     try
     {
+#endif
         if (!m_isRomLoaded)
         {
             return;
@@ -112,6 +114,7 @@ void Chip8Emulator::update(const float deltaTime)
                 }
             }
         }
+#if defined(BUILD_PARAM_SAFE)
     }
     catch (const std::exception& e)
     {
@@ -125,6 +128,7 @@ void Chip8Emulator::update(const float deltaTime)
     {
         TRIGGER_ERROR(true, "Emulation error: An unknown error occurred during emulation.");
     }
+#endif
 }
 
 void Chip8Emulator::emitSound()
@@ -158,17 +162,11 @@ void Chip8Emulator::stop()
     }
 }
 
-void Chip8Emulator::setSoundVolume(float volume)
-{
-    //    m_soundEmulation.setVolume(volume);
-}
-
 #if defined(BUILD_PARAM_SAFE)
-void Chip8Emulator::triggerEmulationError(const std::string& message)
+void Chip8Emulator::triggerEmulationError(const std::string& /* message */)
 {
     m_soundEmulation.reset();
     m_errorTriggered = true;
-    LOG_ERROR(message);
 }
 #endif
 

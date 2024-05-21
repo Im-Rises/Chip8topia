@@ -42,7 +42,7 @@ void SChip11Cpu::computeOpcode(const uint16 opcode)
             switch (opcode & 0xFFF0)
             {
             case 0x00C0: SCD(nibble1); break; // 00CN
-            default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
+            default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode);
             }
             break;
         }
@@ -58,7 +58,7 @@ void SChip11Cpu::computeOpcode(const uint16 opcode)
         switch (nibble1)
         {
         case 0x0: SE_Vx_Vy(nibble3, nibble2); break; // 5XY0
-        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
+        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode);
         }
         break;
     }
@@ -77,7 +77,7 @@ void SChip11Cpu::computeOpcode(const uint16 opcode)
         case 0x6: SHR_Vx_Vy(nibble3, nibble2); break;  // 8XY6
         case 0x7: SUBN_Vx_Vy(nibble3, nibble2); break; // 8XY7
         case 0xE: SHL_Vx_Vy(nibble3, nibble2); break;  // 8XYE
-        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
+        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode);
         }
         break;
     }
@@ -86,7 +86,7 @@ void SChip11Cpu::computeOpcode(const uint16 opcode)
         switch (nibble1)
         {
         case 0x0: SNE_Vx_Vy(nibble3, nibble2); break; // 9XY0
-        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
+        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode);
         }
         break;
     }
@@ -100,7 +100,7 @@ void SChip11Cpu::computeOpcode(const uint16 opcode)
         {
         case 0x9E: SKP_Vx(nibble3); break;  // EX9E
         case 0xA1: SKNP_Vx(nibble3); break; // EXA1
-        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
+        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode);
         }
         break;
     }
@@ -120,10 +120,10 @@ void SChip11Cpu::computeOpcode(const uint16 opcode)
         case 0x65: LD_Vx_aI(nibble3); break; // FX65
         case 0x75: LD_R_Vx(nibble3); break;  // FX75
         case 0x85: LD_Vx_R(nibble3); break;  // FX85
-        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
+        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode);
         }
     }
-    default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
+    default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode);
     }
 }
 
@@ -132,24 +132,24 @@ void SChip11Cpu::SCD(const uint8 n)
     CpuBase::SCD((m_ppu->getMode() == PpuBase::PpuMode::LORES && !m_isModernMode) ? n / 2 : n);
 }
 
-void SChip11Cpu::SCR(const uint8 n)
+void SChip11Cpu::SCR(const uint8 /* n */)
 {
     CpuBase::SCR((m_ppu->getMode() == PpuBase::PpuMode::LORES && !m_isModernMode) ? 2 : 4);
 }
 
-void SChip11Cpu::SCL(const uint8 n)
+void SChip11Cpu::SCL(const uint8 /* n */)
 {
     CpuBase::SCL((m_ppu->getMode() == PpuBase::PpuMode::LORES && !m_isModernMode) ? 2 : 4);
 }
 
-void SChip11Cpu::SHR_Vx_Vy(const uint8 x, const uint8 y)
+void SChip11Cpu::SHR_Vx_Vy(const uint8 x, const uint8 /* y */)
 {
     const uint8 flag = m_V[x] & 0x1;
     m_V[x] >>= 1;
     m_V[0xF] = flag;
 }
 
-void SChip11Cpu::SHL_Vx_Vy(const uint8 x, const uint8 y)
+void SChip11Cpu::SHL_Vx_Vy(const uint8 x, const uint8 /* y */)
 {
     const uint8 flag = (m_V[x] & 0x80) >> 7;
     m_V[x] <<= 1;

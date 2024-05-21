@@ -50,6 +50,43 @@ if (NOT EMSCRIPTEN)
     endif ()
 else ()
     target_link_libraries(${PROJECT_NAME} PRIVATE SDL2::SDL2 SDL2::SDL2main)
+    #[[
+        --preload-file ${CMAKE_SOURCE_DIR}/Chip8Games@/Chip8Games
+        --preload-file ${CMAKE_SOURCE_DIR}/shaders@/shaders
+        --preload-file ${CMAKE_SOURCE_DIR}/fonts@/fonts
+    #]]
+
+    set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-s USE_SDL=2 -s FULL_ES3=1 -s WASM=1 -s EXPORTED_RUNTIME_METHODS=[ccall] -s ALLOW_MEMORY_GROWTH=1 -s EXPORTED_FUNCTIONS=[_main,_malloc,_free] --preload-file ${CMAKE_SOURCE_DIR}/Chip8Games@/Chip8Games --preload-file ${CMAKE_SOURCE_DIR}/shaders@/shaders --preload-file ${CMAKE_SOURCE_DIR}/fonts@/fonts -sNO_DISABLE_EXCEPTION_CATCHING")
+
+    target_link_options(${PROJECT_NAME} PRIVATE -sNO_DISABLE_EXCEPTION_CATCHING)
+
+    target_compile_options(${PROJECT_NAME} PRIVATE -sNO_DISABLE_EXCEPTION_CATCHING)
+
+    ### Code above work except for exceptions...
+
+    #    target_compile_options(${PROJECT_NAME} PRIVATE -fwasm-exceptions)
+    #
+    #    target_link_options(${PROJECT_NAME} PRIVATE
+    #            "-s USE_SDL=2"
+    #            "-s FULL_ES3=1"
+    #            "-s WASM=1"
+    #            "-s EXPORTED_RUNTIME_METHODS=[ccall]"
+    #            "-s ALLOW_MEMORY_GROWTH=1"
+    #            "-s EXPORTED_FUNCTIONS=[_main,_malloc,_free]"
+    #            "-fwasm-exceptions"
+    #    )
+
+    #    set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS
+    #            --preload-file ${CMAKE_SOURCE_DIR}/Chip8Games@/Chip8Games
+    #            --preload-file ${CMAKE_SOURCE_DIR}/shaders@/shaders
+    #            --preload-file ${CMAKE_SOURCE_DIR}/fonts@/fonts
+    #    )
+
+    #    set_target_properties(${PROJECT_NAME} PROPERTIES
+    #            --preload-file ${CMAKE_SOURCE_DIR}/Chip8Games@/Chip8Games;${CMAKE_SOURCE_DIR}/shaders@/shaders;${CMAKE_SOURCE_DIR}/fonts@/fonts
+    #    )
+
+
 endif ()
 
 find_package(imgui CONFIG REQUIRED)
@@ -77,22 +114,22 @@ else ()
     message("Building with unsafe parameter")
 endif ()
 
-if (WIN32)
+if (EMSCRIPTEN)
+    set(PLATFORM_NAME "Web")
+    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_WEB)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_NAME="${PLATFORM_NAME}")
+elseif (WIN32)
     set(PLATFORM_NAME "Windows")
     target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_WINDOWS)
-    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_NAME="${PLATFORM_NAME}")
-elseif (UNIX AND NOT APPLE)
-    set(PLATFORM_NAME "Linux")
-    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_LINUX)
     target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_NAME="${PLATFORM_NAME}")
 elseif (APPLE)
     set(PLATFORM_NAME "MacOS")
     target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_MACOS)
     target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_NAME="${PLATFORM_NAME}")
-    #elseif (EMSCRIPTEN) # Use linux when building for web with emscripten
-    #    set(PLATFORM_NAME "Web")
-    #    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_WEB)
-    #    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_NAME="${PLATFORM_NAME}")
+elseif (UNIX)
+    set(PLATFORM_NAME "Linux")
+    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_LINUX)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE PLATFORM_NAME="${PLATFORM_NAME}")
 endif ()
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE PROJECT_CPP_VERSION="${CMAKE_CXX_STANDARD}")

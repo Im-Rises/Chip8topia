@@ -12,51 +12,59 @@ public:
     auto operator=(const SingleSubscriberEvent&) -> SingleSubscriberEvent& = delete;
     auto operator=(SingleSubscriberEvent&&) -> SingleSubscriberEvent& = delete;
     ~SingleSubscriberEvent() final = default;
-    
+
 public:
 #pragma region Method
 
     // We use two template arguments to handle the case where we register a method from the parent of the class with a child class instance
-    template <class T, class U>
+    template <typename T, typename U>
     auto subscribe(U* instance, void (T::*method)(Args...)) -> bool
     {
         if (m_functionMethodPointer != nullptr)
+        {
             return false;
+        }
 
         m_functionMethodPointer = std::make_unique<MethodEventVarying<T, Args...>>(instance, method);
         return true;
     }
 
-    template <class T, class U>
+    template <typename T, typename U>
     auto unsubscribe(U* instance, void (T::*method)(Args...)) -> bool
     {
         if (m_functionMethodPointer == nullptr)
+        {
             return false;
+        }
 
         if (*m_functionMethodPointer != MethodEventVarying<T, Args...>(instance, method))
+        {
             return false;
+        }
 
         m_functionMethodPointer.reset();
         return true;
     }
 
-    template <class T>
+    template <typename T>
     auto operator+=(const MethodEventVarying<T, Args...>& methodEvent) -> bool
     {
         return subscribe(methodEvent);
     }
 
-    template <class T>
+    template <typename T>
     auto operator-=(const MethodEventVarying<T, Args...>& methodEvent) -> bool
     {
         return unsubscribe(methodEvent);
     }
 
-    template <class T>
+    template <typename T>
     auto isRegistered(const MethodEventVarying<T, Args...>& methodEvent) const -> bool
     {
         if (const auto* methodEventVarying = dynamic_cast<const MethodEventVarying<Args...>*>(&methodEvent))
+        {
             return *m_functionMethodPointer == *methodEventVarying;
+        }
 
         return false;
     }
@@ -68,7 +76,9 @@ public:
     auto subscribe(FunctionPointer<Args...> function) -> bool
     {
         if (m_functionMethodPointer != nullptr)
+        {
             return false;
+        }
 
         m_functionMethodPointer = std::make_unique<FunctionEventVarying<Args...>>(function);
     }
@@ -76,10 +86,14 @@ public:
     auto unsubscribe(FunctionPointer<Args...> function) -> bool
     {
         if (m_functionMethodPointer == nullptr)
+        {
             return false;
+        }
 
         if (*m_functionMethodPointer != FunctionEventVarying<Args...>(function))
+        {
             return false;
+        }
 
         m_functionMethodPointer.reset();
         return true;
@@ -95,7 +109,6 @@ public:
         return unsubscribe(function);
     }
 
-    template <class T>
     auto isRegistered(FunctionPointer<Args...> function) const -> bool
     {
         return *m_functionMethodPointer == FunctionEventVarying<Args...>(function);
@@ -121,7 +134,9 @@ public:
     [[nodiscard]] auto triggerSafely(Args... args) const -> bool
     {
         if (m_functionMethodPointer == nullptr)
+        {
             return false;
+        }
 
         trigger(args...);
         return true;

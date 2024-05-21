@@ -39,7 +39,7 @@ public:
     void update(const std::unique_ptr<Chip8CoreBase>& chip8Core);
 
 private:
-    void initSoundBuffer(std::function<double(double, unsigned long)> waveFunction);
+    void initSoundBuffer(const std::function<double(double, unsigned long)>& waveFunction);
 
     void stop();
     void play();

@@ -25,19 +25,19 @@ void Chip8topiaDisassembler::drawDisassembly(Chip8Emulator* emulator)
     switch (emulator->getCoreType())
     {
     case Chip8CoreType::Chip8:
-        disassembler = Chip8CpuDisassembly::disassembleOpcode;
+        disassembler = chip8_cpu_disassembly::disassembleOpcode;
         break;
     case Chip8CoreType::SChip11Legacy:
     case Chip8CoreType::SChip11Modern:
         disassembler = [&](const uint16 opcode)
-        { return SChip11CpuDisassembly::disassembleOpcode(opcode, dynamic_cast<SChip11Cpu*>(emulator->getChip8Core()->getCpu().get())->getIsModernMode(), emulator->getChip8Core()->getPpu()->getMode() == PpuBase::PpuMode::LORES); };
+        { return schip11_cpu_disassembly::disassembleOpcode(opcode, dynamic_cast<SChip11Cpu*>(emulator->getChip8Core()->getCpu().get())->getIsModernMode(), emulator->getChip8Core()->getPpu()->getMode() == PpuBase::PpuMode::LORES); };
         break;
     case Chip8CoreType::SChipC:
         disassembler = [&](const uint16 opcode)
-        { return SChipCCpuDisassembly::disassembleOpcode(opcode, emulator->getChip8Core()->getPpu()->getMode() == PpuBase::PpuMode::LORES); };
+        { return schipc_cpu_disassembly::disassembleOpcode(opcode, emulator->getChip8Core()->getPpu()->getMode() == PpuBase::PpuMode::LORES); };
         break;
     case Chip8CoreType::XoChip:
-        disassembler = XoChipCpuDisassembly::disassembleOpcode;
+        disassembler = xochip_cpu_disassembly::disassembleOpcode;
         break;
     }
 

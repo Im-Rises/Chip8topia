@@ -2,7 +2,7 @@
 
 #include "../Chip8topia.h"
 
-void Chip8topiaInputHandler::update(Chip8topia& chip8topia, SDL_Event& event) const
+void Chip8topiaInputHandler::update(Chip8topia& /* chip8topia */, SDL_Event& event) const
 {
     auto& inputHandler = Chip8topiaInputHandler::getInstance();
 
@@ -85,7 +85,6 @@ void Chip8topiaInputHandler::update(Chip8topia& chip8topia, SDL_Event& event) co
         {
             std::string romPath(event.drop.file);
             SDL_free(event.drop.file);
-            // chip8topia.loadRomFromPath(romPath);
             m_LoadRomFromPath.trigger(romPath);
         }
         else

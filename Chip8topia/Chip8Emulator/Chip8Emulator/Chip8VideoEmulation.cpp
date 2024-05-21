@@ -1,7 +1,5 @@
 #include "Chip8VideoEmulation.h"
 
-#include <binaryLib/binaryLib.h>
-
 #include "../Chip8CoreBase/Chip8CoreBase.h"
 
 Chip8VideoEmulation::Chip8VideoEmulation() : m_shaderXoChipLores(PpuBase::SCREEN_LORES_MODE_WIDTH, PpuBase::SCREEN_LORES_MODE_HEIGHT),

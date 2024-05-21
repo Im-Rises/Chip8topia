@@ -3,6 +3,7 @@
 #include <functional>
 #include <queue>
 #include <string>
+#include <utility>
 #include <imgui.h>
 
 template <typename... Args>
@@ -94,12 +95,12 @@ private:
 
     struct MessageData
     {
-        const std::string m_title;
-        const std::string m_message;
-        const std::function<void()> m_callback;
+        std::string m_title;
+        std::string m_message;
+        std::function<void()> m_callback;
 
-        MessageData(const std::string& title, const std::string& message, std::function<void()> callback)
-            : m_title(title), m_message(message), m_callback(std::move(callback)) {}
+        MessageData(std::string title, std::string message, std::function<void()> callback)
+            : m_title(std::move(title)), m_message(std::move(message)), m_callback(std::move(callback)) {}
     };
 
 public:
