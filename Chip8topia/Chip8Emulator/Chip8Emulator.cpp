@@ -80,7 +80,7 @@ void Chip8Emulator::loadRom(const std::vector<uint8_t>& romData)
     m_isRomLoaded = true;
 }
 
-void Chip8Emulator::update(const float deltaTime)
+void Chip8Emulator::update(const float /* deltaTime */)
 {
     try
     {
@@ -159,7 +159,7 @@ void Chip8Emulator::stop()
 }
 
 #if defined(BUILD_PARAM_SAFE)
-void Chip8Emulator::triggerEmulationError(const std::string& message)
+void Chip8Emulator::triggerEmulationError(const std::string& /* message */)
 {
     m_soundEmulation.reset();
     m_errorTriggered = true;

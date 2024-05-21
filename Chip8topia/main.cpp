@@ -9,7 +9,6 @@
 #endif
 
 #include "Chip8topia.h"
-#include <filesystem>
 
 #if defined(WINRELEASE)
 auto WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) -> int
@@ -46,20 +45,6 @@ auto main(int argc, char* argv[]) -> int
               << " - Build date: " << __DATE__ << " " << __TIME__ << '\n'
               << '\n';
 #endif
-
-    //    // Display all dirs
-    //    std::filesystem::path path = std::filesystem::current_path();
-    //    for (const auto& entry : std::filesystem::directory_iterator(path))
-    //    {
-    //        std::cout << entry.path() << std::endl;
-    //    }
-    //
-    //    // Display what's in Chip8Games folder
-    //    std::filesystem::path path2 = std::filesystem::current_path() / "Chip8Games";
-    //    for (const auto& entry : std::filesystem::directory_iterator(path2))
-    //    {
-    //        std::cout << entry.path() << std::endl;
-    //    }
-
+    
     return chip8topia.run();
 }

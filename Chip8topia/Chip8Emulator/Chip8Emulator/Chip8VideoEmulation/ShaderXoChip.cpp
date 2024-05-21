@@ -21,9 +21,9 @@ ShaderXoChip::ShaderXoChip(int width, int height) : WIDTH(width), HEIGHT(height)
 
     glGenTextures(XoChipPpu::PLANE_COUNT, m_textures);
 
-    for (int i = 0; i < XoChipPpu::PLANE_COUNT; ++i)
+    for (unsigned int m_texture : m_textures)
     {
-        glBindTexture(GL_TEXTURE_2D, m_textures[i]);
+        glBindTexture(GL_TEXTURE_2D, m_texture);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);

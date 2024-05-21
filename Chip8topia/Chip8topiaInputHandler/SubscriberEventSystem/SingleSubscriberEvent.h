@@ -109,7 +109,6 @@ public:
         return unsubscribe(function);
     }
 
-    template <typename T>
     auto isRegistered(FunctionPointer<Args...> function) const -> bool
     {
         return *m_functionMethodPointer == FunctionEventVarying<Args...>(function);

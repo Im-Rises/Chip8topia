@@ -46,7 +46,7 @@ void Chip8Cpu::computeOpcode(const uint16 opcode)
         switch (nibble1)
         {
         case 0x0: SE_Vx_Vy(nibble3, nibble2); break; // 5XY0
-        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
+        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode);
         }
         break;
     }
@@ -65,7 +65,7 @@ void Chip8Cpu::computeOpcode(const uint16 opcode)
         case 0x6: SHR_Vx_Vy(nibble3, nibble2); break;  // 8XY6
         case 0x7: SUBN_Vx_Vy(nibble3, nibble2); break; // 8XY7
         case 0xE: SHL_Vx_Vy(nibble3, nibble2); break;  // 8XYE
-        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
+        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode);
         }
         break;
     }
@@ -74,7 +74,7 @@ void Chip8Cpu::computeOpcode(const uint16 opcode)
         switch (nibble1)
         {
         case 0x0: SNE_Vx_Vy(nibble3, nibble2); break; // 9XY0
-        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
+        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode);
         }
         break;
     }
@@ -88,7 +88,7 @@ void Chip8Cpu::computeOpcode(const uint16 opcode)
         {
         case 0x9E: SKP_Vx(nibble3); break;  // EX9E
         case 0xA1: SKNP_Vx(nibble3); break; // EXA1
-        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
+        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode);
         }
         break;
     }
@@ -105,11 +105,11 @@ void Chip8Cpu::computeOpcode(const uint16 opcode)
         case 0x33: LD_B_Vx(nibble3); break;  // FX33
         case 0x55: LD_aI_Vx(nibble3); break; // FX55
         case 0x65: LD_Vx_aI(nibble3); break; // FX65
-        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
+        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode);
         }
         break;
     }
-    default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
+    default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode);
     }
 }
 

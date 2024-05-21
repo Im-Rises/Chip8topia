@@ -11,7 +11,6 @@
 #include <imgui_emscripten/imgui_emscripten.h>
 #else
 #include <glad/glad.h>
-#include <SDL_opengl.h>
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 #endif

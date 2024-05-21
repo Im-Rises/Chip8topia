@@ -42,7 +42,7 @@ void SChip11Cpu::computeOpcode(const uint16 opcode)
             switch (opcode & 0xFFF0)
             {
             case 0x00C0: SCD(nibble1); break; // 00CN
-            default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
+            default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode);
             }
             break;
         }
@@ -58,7 +58,7 @@ void SChip11Cpu::computeOpcode(const uint16 opcode)
         switch (nibble1)
         {
         case 0x0: SE_Vx_Vy(nibble3, nibble2); break; // 5XY0
-        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
+        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode);
         }
         break;
     }
@@ -77,7 +77,7 @@ void SChip11Cpu::computeOpcode(const uint16 opcode)
         case 0x6: SHR_Vx_Vy(nibble3, nibble2); break;  // 8XY6
         case 0x7: SUBN_Vx_Vy(nibble3, nibble2); break; // 8XY7
         case 0xE: SHL_Vx_Vy(nibble3, nibble2); break;  // 8XYE
-        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
+        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode);
         }
         break;
     }
@@ -86,7 +86,7 @@ void SChip11Cpu::computeOpcode(const uint16 opcode)
         switch (nibble1)
         {
         case 0x0: SNE_Vx_Vy(nibble3, nibble2); break; // 9XY0
-        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
+        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode);
         }
         break;
     }
@@ -100,7 +100,7 @@ void SChip11Cpu::computeOpcode(const uint16 opcode)
         {
         case 0x9E: SKP_Vx(nibble3); break;  // EX9E
         case 0xA1: SKNP_Vx(nibble3); break; // EXA1
-        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
+        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode);
         }
         break;
     }
@@ -120,10 +120,10 @@ void SChip11Cpu::computeOpcode(const uint16 opcode)
         case 0x65: LD_Vx_aI(nibble3); break; // FX65
         case 0x75: LD_R_Vx(nibble3); break;  // FX75
         case 0x85: LD_Vx_R(nibble3); break;  // FX85
-        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
+        default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode);
         }
     }
-    default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode); break;
+    default: TRIGGER_COMPUTE_OPCODE_ERROR(opcode);
     }
 }
 

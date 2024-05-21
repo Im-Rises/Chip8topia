@@ -32,3 +32,13 @@ void toggleBit(T& value, const unsigned int& bitIndex)
 {
     value ^= (1 << bitIndex);
 }
+
+static_assert(sizeof(int8) == 1, "int8 is not 1 byte");
+static_assert(sizeof(int16) == 2, "int16 is not 2 bytes");
+static_assert(sizeof(int32) == 4, "int32 is not 4 bytes");
+static_assert(sizeof(int64) == 8, "int64 is not 8 bytes");
+
+static_assert(sizeof(uint8) == 1, "uint8 is not 1 byte");
+static_assert(sizeof(uint16) == 2, "uint16 is not 2 bytes");
+static_assert(sizeof(uint32) == 4, "uint32 is not 4 bytes");
+static_assert(sizeof(uint64) == 8, "uint64 is not 8 bytes");

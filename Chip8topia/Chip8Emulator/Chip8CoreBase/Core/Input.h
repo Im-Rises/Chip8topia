@@ -42,5 +42,5 @@ private:
     std::bitset<KEY_COUNT> m_pressedKeys{};
 
     std::bitset<KEY_COUNT> m_keysWaitPreviousState{};
-    uint8 m_waitKeyStep = 0;
+    //    uint8 m_waitKeyStep = 0;
 };

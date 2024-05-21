@@ -3,7 +3,7 @@
 void Input::reset()
 {
     m_pressedKeys.reset();
-    m_waitKeyStep = 0;
+    //    m_waitKeyStep = 0;
     m_keysWaitPreviousState.reset();
 }
 
