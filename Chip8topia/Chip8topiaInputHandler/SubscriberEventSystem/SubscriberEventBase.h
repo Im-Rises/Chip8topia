@@ -25,7 +25,7 @@ public:
 template <typename... Args>
 using FunctionPointer = void (*)(Args...);
 
-template <class T, typename... Args>
+template <typename T, typename... Args>
 class MethodEventVarying final : public FunctionMethodEventVaryingBase<Args...>
 {
 public:
