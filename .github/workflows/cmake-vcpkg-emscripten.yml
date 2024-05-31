@@ -33,6 +33,7 @@ jobs:
         with:
           vcpkgDirectory: ${{ github.workspace }}/vcpkg
           runVcpkgInstall: true
+          vcpkgJsonGlob: '**/vcpkg.json'
 
       - name: Install emsdk
         uses: mymindstorm/setup-emsdk@v11
