@@ -35,7 +35,7 @@ jobs:
         with:
           vcpkgGitCommitId: 47364fbc300756f64f7876b549d9422d5f3ec0d3
           vcpkgDirectory: ${{ github.workspace }}/vcpkg
-      #          runVcpkgInstall: true
+          runVcpkgInstall: true
       #          vcpkgJsonGlob: '**/vcpkg.json'
 
       - name: Install emsdk
