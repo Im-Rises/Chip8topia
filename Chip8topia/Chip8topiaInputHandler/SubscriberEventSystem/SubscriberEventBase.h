@@ -5,6 +5,16 @@
 #include <algorithm>
 #include <functional>
 
+// template <typename T>
+// concept IsFunctionPointer = std::is_function_v<T>;
+//
+// template <typename T>
+// concept IsMethodPointer = std::is_member_function_pointer_v<T>;
+//
+// template <typename T, typename... Args>
+// concept IsMethodPointerOfType = IsMethodPointer<T> && std::is_member_function_pointer_v<T>;
+
+#pragma region Function
 template <typename... Args>
 class FunctionMethodEventVaryingBase
 {
@@ -24,39 +34,6 @@ public:
 
 template <typename... Args>
 using FunctionPointer = void (*)(Args...);
-
-template <typename T, typename... Args>
-class MethodEventVarying final : public FunctionMethodEventVaryingBase<Args...>
-{
-public:
-    using MethodPointer = void (T::*)(Args...);
-
-    MethodEventVarying(T* instance, MethodPointer method) : m_instance(instance), m_method(method) {}
-    MethodEventVarying(const MethodEventVarying&) = default;
-    MethodEventVarying(MethodEventVarying&&) noexcept = default;
-    auto operator=(const MethodEventVarying&) -> MethodEventVarying& = default;
-    auto operator=(MethodEventVarying&&) noexcept -> MethodEventVarying& = default;
-    ~MethodEventVarying() = default;
-
-    [[nodiscard]] auto operator==(const FunctionMethodEventVaryingBase<Args...>& other) const -> bool final
-    {
-        if (auto* otherCasted = dynamic_cast<const MethodEventVarying<T, Args...>*>(&other))
-        {
-            return m_instance == otherCasted->m_instance && m_method == otherCasted->m_method;
-        }
-
-        return false;
-    }
-
-    void operator()(Args... args) const final
-    {
-        (m_instance->*m_method)(args...);
-    }
-
-private:
-    T* m_instance;
-    void (T::*m_method)(Args...);
-};
 
 template <typename... Args>
 class FunctionEventVarying final : public FunctionMethodEventVaryingBase<Args...>
@@ -87,7 +64,46 @@ public:
 private:
     FunctionPointer<> m_function;
 };
+#pragma endregion
 
+#pragma region Method
+template <class T, typename... Args>
+using MethodPointer = void (T::*)(Args...);
+
+template <class T, typename... Args>
+class MethodEventVarying final : public FunctionMethodEventVaryingBase<Args...>
+{
+public:
+    //    using MethodPointer = void (T::*)(Args...); // TODO: Maybe move out of class
+    MethodEventVarying(T* instance, MethodPointer<T, Args...> method) : m_instance(instance), m_method(method) {}
+    MethodEventVarying(const MethodEventVarying&) = default;
+    MethodEventVarying(MethodEventVarying&&) noexcept = default;
+    auto operator=(const MethodEventVarying&) -> MethodEventVarying& = default;
+    auto operator=(MethodEventVarying&&) noexcept -> MethodEventVarying& = default;
+    ~MethodEventVarying() = default;
+
+    [[nodiscard]] auto operator==(const FunctionMethodEventVaryingBase<Args...>& other) const -> bool final
+    {
+        if (auto* otherCasted = dynamic_cast<const MethodEventVarying<T, Args...>*>(&other))
+        {
+            return m_instance == otherCasted->m_instance && m_method == otherCasted->m_method;
+        }
+
+        return false;
+    }
+
+    void operator()(Args... args) const final
+    {
+        (m_instance->*m_method)(args...);
+    }
+
+private:
+    T* m_instance;
+    void (T::*m_method)(Args...);
+};
+#pragma endregion
+
+#pragma region SubscriberEventBase
 template <typename... Args>
 class SubscriberEventBase
 {
@@ -103,3 +119,4 @@ public:
     virtual void clear() = 0;
     virtual void trigger(Args... args) const = 0;
 };
+#pragma endregion
